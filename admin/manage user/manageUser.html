@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Add User Form</title>
+      <link rel="stylesheet" href="manageUser.css">
+  </head>
+<body>
+
+ 
+<div class="signup-container">
+  <img src="images/btn_close.png" alt="close button" id="closeButton">
+  <form id="signup-form">
+    <h2>Add User</h2>
+    <div class="input-group">
+      <i class="icon-user"></i>
+      <input type="text" placeholder="Enter Username" name="username" required>
+    </div>
+    <div class="input-group">
+      <i class="icon-lock"></i>
+      <input type="password" placeholder="Create Password" name="password" required>
+    </div>
+    <div class="input-group">
+      <i class="icon-lock"></i>
+      <input type="password" placeholder="Retype Password" name="confirm_password" required>
+    </div>
+    <div class="input-group">
+      <select name="user_type" required>
+        <option value="" disabled selected>Select role</option>
+        <option value="admin">Admin</option>
+        <option value="user">Educator</option>
+        <option value="accountant">Accountant</option>
+      </select>
+    </div>
+    <button type="submit">Add</button>
+  </form>
+</div>
+
+
+<script src="manageUser.js"></script>
+</body>
+</html>

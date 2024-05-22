@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        
+        <link rel="stylesheet" href="/admin/school/school.css">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+        <title>School Registration Form</title>
+    </head>
+<body>
+    
+<!--Side bar-->
+<div class="sidebar">
+    <!--logo on sidebar-->
+    <img src="/images/ki_logo.png" alt="Logo" class="logo">
+
+   <!--Dashboard button-->
+    <ul class="menu-item ">
+        <li >
+            <a href="/admin/adminDashboard.html">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+    </ul>
+
+    <!--Educators button-->
+    <ul class="menu-item ">
+        <li >
+            <a href="/admin/educator/educators.html">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <span>Educators</span>
+            </a>
+        </li>
+    </ul>
+
+     <!--SEL Themes button-->
+     <ul class="menu-item ">
+        <li>
+            <a href="#">
+                <i class="fas fa-book"></i>
+                <span>SEL Themes</span>
+            </a>
+        </li>
+    </ul>
+
+     <!--Schools button-->
+     <ul class="menu-item ">
+        <li class="active">
+            <a href="/admin/school/school.html">
+                <i class="fas fa-school"></i>
+                <span>Schools</span>
+            </a>
+        </li>
+    </ul>
+
+     <!--Students button-->
+     <ul class="menu-item ">
+        <li>
+            <a href="/admin/student/student.html">
+                <i class="fas fa-user-graduate"></i>
+                <span>Students</span>
+            </a>
+        </li>
+    </ul>
+
+     <!--Reports button-->
+     <ul class="menu-item ">
+        <li>
+            <a href="/admin/report/report.html">
+                <i class="fas fa-file-alt"></i>
+                <span>Reports</span>
+            </a>
+        </li>
+    </ul>
+
+     <!--Assign role button-->
+     <ul class="menu-item ">
+        <li>
+            <a href="/admin/manage user/manageUser.html">
+                <i class="fas fa-user-cog"></i>
+                <span>Assign Role</span>
+            </a>
+        </li>
+    </ul>
+
+     <!--Reports button-->
+     <ul class="menu-item ">
+        <li>
+            <a href="/admin/settings/settings.html">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </li>
+    </ul>
+
+     <!--Logout button-->
+     <ul class="menu-item ">
+        <li>
+            <a href="/login/login.html">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Log Out</span>
+            </a>
+        </li>
+    </ul>
+      
+</div>
+
+<!--main content space-->
+<div class="main-content">
+    <div class="header">
+        <div class="nav">
+           
+            <span>Admin</span>
+            <h2>Dashboard</h2>
+            
+            <div class="search">
+                <i class="fa-solid fa-search"></i>
+                    <input type="text" placeholder="Find student...">
+         
+            </div>
+            <img src="/images/user.png" alt=""/>
+
+            
+        </div>
+    </div>
+
+    <div class="stats-grid">
+
+
+<!--add new school-->
+        <ul class="add-school">
+            <li >
+                <a href="#" id="addSchoolButton">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Add new school</span>
+                </a>
+            </li>
+        </ul>
+        
+
+    
+
+        <!-- school Data collection -->
+        <div id="schoolFormContainer" class="container" style="display: none;">
+            <h1><b>School Registration Form</b></h1>
+            <form id="schoolForm">
+              <div class="logo-upload">
+                <label for="logo">Upload school Logo:</label>
+                <input type="file" id="logo" name="logo" accept="image/*">
+              </div>
+
+              <div class="form-row">
+                <label for="id">ID:</label>
+                <input type="text" id="id" name="id" required>
+              </div>
+
+              <div class="form-row">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+              </div>
+
+              <div class="form-row">
+                <label for="region">Region:</label>
+                <select id="region" name="region" required>
+                  <option value="region1"> Bono Region</option>
+                  <option value="region2">Bono East Region</option>
+                  <option value="region2">Asante Region</option>
+                </select>
+              </div>
+
+              <div class="form-row">
+                <label for="town">Town:</label>
+                <select id="town" name="town" required>
+                  <option value="town1">Town 1</option>
+                  <option value="town2">Town 2</option>
+                </select>
+              </div>
+              
+              <div class="form-row">
+                <label for="owner">School Owner:</label>
+                <input type="text" id="owner" name="owner" required>
+              </div>
+
+              <div class="form-row">
+                <label for="contact">Contact:</label>
+                <input type="tel" id="contact" name="contact" required>
+              </div>
+
+              <div class="form-row">
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" required>
+              </div>
+
+        
+
+              <div class="button-container">
+                <button type="submit" class="add-button">Add</button>
+                <button type="button" class="cancel-button">Cancel</button>
+                
+              </div>
+            </form>
+        
+        
+        </div>
+            
+            <table id="schoolTable">
+              <thead>
+                <tr>
+               
+                  <th>Name</th>
+                  <th>Region</th>
+                  <th>Town</th>
+            
+                  <th>School Owner</th>
+                  <th>Contact</th>
+                  <th>Email Address</th>
+                                                                                                                   
+              </thead>
+              <tbody></tbody>
+            </table>
+          
+
+
+
+<script src="/admin/school/school.js"></script>
+
+</body>
+</html>
