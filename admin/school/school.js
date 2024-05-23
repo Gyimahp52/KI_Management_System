@@ -2,24 +2,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const addSchoolButton = document.getElementById('addSchoolButton');
   const schoolFormContainer = document.getElementById('schoolFormContainer');
   const cancelButton = document.querySelector('.cancel-button');
-  const form = document.getElementById('schoolForm');
-  const tableBody = document.querySelector('#schoolTable tbody');
+  const SchoolForm = document.getElementById('schoolForm');
+  
+  const table = document.getElementById('schoolTable');
+  const tableBody = table.querySelector('tbody');
 
-  addSchoolButton.addEventListener('click', function(event) {
+  addSchoolButton.addEventListener('click', (event)=> {
       event.preventDefault();
       schoolFormContainer.style.display = 'block';
+      table.classList.add('hidden');
       addSchoolButton.classList.add('disabled');
       addSchoolButton.style.pointerEvents = 'none';
   });
 
-  cancelButton.addEventListener('click', function(event) {
+  cancelButton.addEventListener('click', (event)=> {
       event.preventDefault();
       schoolFormContainer.style.display = 'none';
+      table.classList.remove('hidden');
       addSchoolButton.classList.remove('disabled');
       addSchoolButton.style.pointerEvents = 'auto';
   });
 
-  form.addEventListener('submit', function(event) {
+  SchoolForm.addEventListener('submit',(event) =>{
       event.preventDefault();
 
       const id = document.getElementById('id').value;
@@ -32,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const row = tableBody.insertRow();
       row.innerHTML = `
-          <td>${id}</td>
+          
           <td>${name}</td>
           <td>${region}</td>
           <td>${town}</td>
@@ -42,8 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
 
       tableBody.appendChild(row);
-      form.reset();
+      SchoolForm.reset();
       schoolFormContainer.style.display = 'none';
+      table.classList.remove('hidden');
       addSchoolButton.classList.remove('disabled');
       addSchoolButton.style.pointerEvents = 'auto';
   });

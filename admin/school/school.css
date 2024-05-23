@@ -111,11 +111,13 @@ background-color: #34495e;
     justify-content: normal;
     box-shadow: 0 30px 8px 0 rgba(0, 0, 0, 0.2);
     z-index: 1;
+    border-radius: 25px;
 }
 .main-content .header .nav {
     width: 100%;
     display: flex;
     align-items: center;
+    
 }
 .main-content .header .nav .search {
     flex: 3;
@@ -184,20 +186,23 @@ background-color: #34495e;
 
 /* data collection style */
 .container {
-  display: none; /* Ensure form is hidden initially */
-  background-color: #41889a;
+    display: none; /* Ensure form is hidden initially */
+    background-color: #41889a;
     max-width: 900px;
+    
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin: 20px auto;
     padding: 20px;
     border: 3px solid #ccc;
     border-radius: 18px;
 
-    position: absolute; /* Position form container relative to main-content */
+    position: fixed; /* Position form container relative to main-content */
     top: 50%; /* Center vertically */
     left: 50%; /* Center horizontally */
     transform: translate(-50%, -50%); /* Center horizontally and vertically */
-    z-index: 1; 
+    z-index: 4;
+    overflow-y: auto; 
+    
   }
 
 
@@ -239,15 +244,17 @@ background-color: #34495e;
     
     display: flex;
     justify-content: space-between;
-    margin-top: 15%;
+    margin-top: 2rem;
+    
 }
 .add-button {
   background-color: #045116; /* Green color for add button */
   color: white;
-  padding: 12px 20px;
+  padding: 12px 30px;
   border: none;
   border-radius: 8px;
   margin-top: 10px;
+  margin-left: 50px;
   
 
 }
@@ -259,6 +266,7 @@ background-color: #34495e;
     border: none;
     border-radius: 8px;
     margin-top: 10px;
+    margin-left: 50px;
 }
 
 
@@ -269,12 +277,25 @@ background-color: #34495e;
     margin-top: 25px;
     border-collapse: separate;
     position: relative;
-    z-index: 0;
+    z-index: 1;
+    transition: opacity 0.5s;
+    border-spacing: 0 0px;
   }
+  table.hidden {
+    opacity: 0.3;
+}
   
-  th, td {
-    padding: 2px;
+  th{
     border-bottom: 2px solid #ccc;
+    border: 2px solid black; 
+
+  }
+  td {
+    border-bottom: 2px solid #ccc;
+    border: 1px solid rgb(55, 54, 54); 
+    padding: 2px;
+    
+    padding: 9px; 
   }
   
   th {
