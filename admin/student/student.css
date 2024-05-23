@@ -92,7 +92,7 @@ body {
     right: 5;
     width: 76vw;
     height: 10vh;
-    background: white;
+    background: rgb(255, 255, 255);
     display: flex;
     align-items: normal;
     justify-content: normal;
@@ -105,23 +105,78 @@ body {
     display: flex;
     align-items: center;
 }
-.main-content .header .nav .search {
-    flex: 3;
-    display: flex;
-    justify-content: center;
-}
-.main-content .header .nav .search i {
-    padding: 15px;
-    margin-right: 2px;
-}
-.main-content .header .nav .search input[type=text] {
-    border: none;
-    background: #f1f1f1;
-    padding: 12px;
+
+
+/* search bar */
+.wrap-input-17 * {
+    box-sizing: border-box;
+    margin-left: 100px;
+    
+   }
+   
+   .wrap-input-17 .search-box{
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+   }
+   
+   .wrap-input-17 .input-search{
+    height: 50px;
+    width: 80px;
+    border-style: none;
+    padding: 10px;
+    font-size: 18px;
+    letter-spacing: 2px;
+    outline: none;
+    border-radius: 25px;
+    transition: all .5s ease-in-out;
+    background-color: #c1cdd5;
+    padding-right: 40px;
+    color:#040404;
+   }
+
+   .wrap-input-17 .input-search::placeholder{
+    color:rgba(3, 20, 29, 0.5);
+    font-size: 18px;
+    letter-spacing: 2px;
+    font-weight: 100;
+   }
+
+   .wrap-input-17 .btn-search{
+    width: 50px;
+    height: 50px;
+    border-style: none;
+    font-size: 20px;
+    font-weight: bold;
+    outline: none;
+    cursor: pointer;
+    border-radius: 50%;
+    position: absolute;
+    right: 0px;
+    color:#052644 ;
+    background-color:transparent;
+   pointer-events: painted;  
+   }
+
+   .wrap-input-17 .btn-search:focus ~ .input-search{
     width: 400px;
-    border-radius: 12px;
-    position: sticky;
-}
+    border-radius: 0px;
+    background-color: transparent;
+    border-bottom:1px solid rgba(7, 65, 98, 0.5);
+    transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+   }
+
+   .wrap-input-17 .input-search:focus{
+    width: 300px;
+    border-radius: 0px;
+    background-color: transparent;
+    border-bottom:1px solid rgba(7, 65, 98, 0.5);
+    transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+   }
+
+
+
+
 
 .main-content .header .nav img {
     width: 50px;
@@ -284,5 +339,5 @@ th{
   }
 
 th {
-    background-color: #f2f2f2;
+    background-color: #aab5bd;
 }

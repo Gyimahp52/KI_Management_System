@@ -247,17 +247,116 @@ background-color: #34495e;
     margin-top: 2rem;
     
 }
-.add-button {
-  background-color: #045116; /* Green color for add button */
+
+.next-button,
+.next-button *,
+.next-button :after,
+.next-button :before,
+.next-button:after,
+.next-button:before {
+  border: 0 solid;
+  box-sizing: border-box;
+}
+.next-button {
+  background-color: #045116; 
   color: white;
   padding: 12px 30px;
   border: none;
   border-radius: 8px;
   margin-top: 10px;
   margin-left: 50px;
+
+
+  
+  cursor: pointer;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
+    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  font-size: 100%;
+  font-weight: 900;
+  line-height: 1.5;
+  margin: 10;
+  
+  padding: 0;
+  text-transform: uppercase;
   
 
 }
+
+.next-button:disabled {
+  cursor: default;
+}
+.next-button:-moz-focusring {
+  outline: auto;
+}
+.next-button svg {
+  display: block;
+  
+}
+.next-button [hidden] {
+  display: none;
+}
+.next-button {
+  --background: #045116;
+  background: none;
+  overflow: hidden;
+  padding: 0.8rem 3rem;
+  position: relative;
+}
+.next-button span {
+  display: block;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+.next-button:after,
+.next-button:before {
+  --tilt: 20px;
+  background: #045116;
+  -webkit-clip-path: polygon(0 0, 100% 0, 100% 50%, 100% 100%, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 50%, 100% 100%, 0 100%);
+  content: "";
+  display: block;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transition: -webkit-clip-path 0.2s ease;
+  transition: clip-path 0.2s ease;
+  transition: clip-path 0.2s ease, -webkit-clip-path 0.2s ease;
+  width: 100%;
+  z-index: -2;
+}
+.next-button:after {
+  --thickness: 5px;
+  background: var(--background);
+  height: calc(100% - var(--thickness) * 2);
+  left: var(--thickness);
+  top: var(--thickness);
+  width: calc(100% - var(--thickness) * 2);
+}
+.next-button:hover span {
+  transform: translateX(-20px);
+}
+.next-button:hover:after,
+.next-button:hover:before {
+  -webkit-clip-path: polygon(
+    0 0,
+    calc(100% - var(--tilt)) 0,
+    100% 50%,
+    calc(100% - var(--tilt)) 100%,
+    0 100%
+  );
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--tilt)) 0,
+    100% 50%,
+    calc(100% - var(--tilt)) 100%,
+    0 100%
+  );
+}
+
+
+
 
 .cancel-button {
     background-color: #dc3545; /* Red color for cancel button */
@@ -299,7 +398,7 @@ background-color: #34495e;
   }
   
   th {
-    background-color: #f2f2f2;
+    background-color: #aab5bd;
   }
 
 
