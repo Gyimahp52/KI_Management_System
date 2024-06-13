@@ -351,7 +351,7 @@
          <div class="toast-container">
         <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">
             <div class="toast-header">
-                <strong class="mr-auto">Notification</strong>
+                <strong class="mr-auto">KI Notification</strong>
                 <small class="text-muted">just now</small>
                 <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -363,26 +363,7 @@
         </div>
         </div>
 
-        <!-- Popup Modal -->
-        <div class="modal fade" id="classModal" tabindex="-1" role="dialog" aria-labelledby="classModalLabel" aria-hidden="true">
-           <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="classModalLabel">Add Classes</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Do you want to add classes?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                    <button type="button" class="btn btn-primary" id="addClassYes">Yes</button>
-                </div>
-            </div>
-            </div>
-           </div>
+       
 
            <!-- Class Form Modal -->
            <div class="modal fade" id="classFormModal" tabindex="-1" role="dialog" aria-labelledby="classFormModalLabel" aria-hidden="true">
@@ -421,26 +402,7 @@
             </div>
         </div>
 
-        <!-- Next Modal -->
-        <div class="modal fade" id="nextModal" tabindex="-1" role="dialog" aria-labelledby="nextModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="nextModalLabel">Add Students</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Do you want to add students?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                        <button type="button" class="btn btn-primary" id="addStudentYes">Yes</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+      
 
         <!-- Student Form Modal -->
         <div class="modal fade" id="studentFormModal" tabindex="-1" role="dialog" aria-labelledby="studentFormModalLabel" aria-hidden="true">
@@ -455,11 +417,13 @@
                     <div class="modal-body landscape-form">
                         <form id="studentForm" novalidate>
                             <div class="form-row">
+                                <!-- passport picture -->
                                 <div class="form-group col-md-6">
                                     <label for="passportPicture">Passport Picture</label>
                                     <input type="file" class="form-control-file" id="passportPicture" required>
                                     <div class="invalid-feedback">Passport Picture is required.</div>
                                 </div>
+                                <!-- First name -->
                                 <div class="form-group col-md-6">
                                     <label for="firstName">First Name</label>
                                     <input type="text" class="form-control" id="firstName" placeholder="Enter First Name" required>
@@ -467,18 +431,22 @@
                                 </div>
                             </div>
                             <div class="form-row">
+                                <!-- Last name -->
                                 <div class="form-group col-md-6">
                                     <label for="lastName">Last Name</label>
                                     <input type="text" class="form-control" id="lastName" placeholder="Enter Last Name" required>
                                     <div class="invalid-feedback">Last Name is required.</div>
                                 </div>
+                                <!-- date of birth -->
                                 <div class="form-group col-md-6">
                                     <label for="dateOfBirth">Date of Birth</label>
                                     <input type="date" class="form-control" id="dateOfBirth" required>
                                     <div class="invalid-feedback">Date of Birth is required.</div>
                                 </div>
                             </div>
+
                             <div class="form-row">
+                                <!-- Gender selection-->
                                 <div class="form-group col-md-6">
                                     <label for="gender">Gender</label>
                                     <select class="form-control" id="gender" required>
@@ -489,61 +457,95 @@
                                     </select>
                                     <div class="invalid-feedback">Gender is required.</div>
                                 </div>
+
+                                <!--hand selection-->
                                 <div class="form-group col-md-6">
                                     <label for="hand">Hand</label>
-                                    <input type="text" class="form-control" id="hand" placeholder="Enter Hand" required>
-                                    <div class="invalid-feedback">Hand is required.</div>
+                                    <select class="form-control" id="hand" required>
+                                        <option value="">Select</option>
+                                        <option value="left">Left dominant</option>
+                                        <option value="right">Right dominant</option>
+                                        <div class="invalid-feedback">Hand is required.</div>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="foot">Foot</label>
-                                    <input type="text" class="form-control" id="foot" placeholder="Enter Foot" required>
-                                    <div class="invalid-feedback">Foot is required.</div>
+                                    <label for="foot">Foot</label>              
+                                    <select class="form-control" id="foot" required>
+                                        <option value="">Select</option>
+                                        <option value="left">Left</option>
+                                        <option value="right">Right</option>
+                                        <div class="invalid-feedback">Foot is required.</div>
+                                    </select>
+                                    
                                 </div>
+
+                                        <!--Eye sight-->
                                 <div class="form-group col-md-6">
                                     <label for="eyeSight">Eye Sight</label>
-                                    <input type="text" class="form-control" id="eyeSight" placeholder="Enter Eye Sight" required>
-                                    <div class="invalid-feedback">Eye Sight is required.</div>
+                                    <select class="form-control" id="eyeSight" required>
+                                        <option value="">Select</option>
+                                        <option value="normal">Normal</option>
+                                        <option value="short-sighted">Short-sighted</option>
+                                        <option value="long-sighted">Long-sighted</option>
+                                        <div class="invalid-feedback">Eye Sight is required.</div>
+                                    </select>
+                                    
+                                   
                                 </div>
                             </div>
+
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="height">Height</label>
+                                    <label for="height">Height (cm)</label>
                                     <input type="text" class="form-control" id="height" placeholder="Enter Height" required>
                                     <div class="invalid-feedback">Height is required.</div>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="weight">Weight</label>
+                                    <label for="weight">Weight (kg)</label>
                                     <input type="text" class="form-control" id="weight" placeholder="Enter Weight" required>
                                     <div class="invalid-feedback">Weight is required.</div>
                                 </div>
                             </div>
-                            <h5>Parent/Guardian Information</h5>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="guardianName">Name</label>
-                                    <input type="text" class="form-control" id="guardianName" placeholder="Enter Name" required>
-                                    <div class="invalid-feedback">Name is required.</div>
+
+
+                                    <!-- Parent/Guardian information-->
+                            <fieldset>
+                                <legend>Parent/Guardian Information</legend>
+                                <div class="form-row">
+                                    <!-- name -->
+                                    <div class="form-group col-md-6">
+                                        <label for="guardianName">Name</label>
+                                        <input type="text" class="form-control" id="guardianName" placeholder="Enter Name" required>
+                                        <div class="invalid-feedback">Name is required.</div>
+                                    </div>
+                                    <!-- phone number -->
+                                    <div class="form-group col-md-6">
+                                        <label for="guardianPhoneNumber">Phone Number</label>
+                                        <input type="text" class="form-control" id="guardianPhoneNumber" placeholder="Enter Phone Number" required>
+                                        <div class="invalid-feedback">Phone Number is required.</div>
+                                    </div>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label for="guardianPhoneNumber">Phone Number</label>
-                                    <input type="text" class="form-control" id="guardianPhoneNumber" placeholder="Enter Phone Number" required>
-                                    <div class="invalid-feedback">Phone Number is required.</div>
+
+                                <!-- Whatsapp number -->
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="guardianWhatsAppNumber">WhatsApp Number</label>
+                                        <input type="text" class="form-control" id="guardianWhatsAppNumber" placeholder="Enter WhatsApp Number" required>
+                                        <div class="invalid-feedback">WhatsApp Number is required.</div>
+                                    </div>
+
+                                    <!-- Email address-->
+                                    <div class="form-group col-md-6">
+                                        <label for="guardianEmailAddress">Email Address</label>
+                                        <input type="email" class="form-control" id="guardianEmailAddress" placeholder="Enter Email Address" required>
+                                        <div class="invalid-feedback">Email Address is required.</div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="guardianWhatsAppNumber">WhatsApp Number</label>
-                                    <input type="text" class="form-control" id="guardianWhatsAppNumber" placeholder="Enter WhatsApp Number" required>
-                                    <div class="invalid-feedback">WhatsApp Number is required.</div>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="guardianEmailAddress">Email Address</label>
-                                    <input type="email" class="form-control" id="guardianEmailAddress" placeholder="Enter Email Address" required>
-                                    <div class="invalid-feedback">Email Address is required.</div>
-                                </div>
-                            </div>
+                            </fieldset>
+
+
                             <button type="submit" class="btn btn-primary">Add Student</button>
                         </form>
                     </div>
@@ -562,13 +564,13 @@
             let currentClassName = null;
 
             // Load regions dynamically (could be fetched from an API)
-            const regions = ["North", "South", "East", "West"];
+            const regions = ["Bono", "Ashanti", "Greater Accra", "Bono East"];
             regions.forEach(region => {
                 $('#region').append(`<option value="${region}">${region}</option>`);
             });
 
             // Load educators dynamically (could be fetched from an API)
-            const educators = ["John Doe", "Jane Smith", "Michael Johnson"];
+            const educators = ["King Luka", "Bright Adjei", "Bridget"];
             educators.forEach(educator => {
                 $('#educator').append(`<option value="${educator}">${educator}</option>`);
             });

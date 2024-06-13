@@ -2,6 +2,7 @@ const passportPicture = document.querySelector('.passport-picture');
 const fileInput = document.querySelector('#passport');
 const tableBody = document.querySelector('tbody');
 
+
 passportPicture.addEventListener('click', () => {
   fileInput.click();
 });

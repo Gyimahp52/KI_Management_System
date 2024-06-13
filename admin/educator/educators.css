@@ -157,6 +157,26 @@ background-color: #34495e;
     
 }
 
+/* Add new school button */
+.add-educator a {
+  font-size: 15px;
+  border-radius: 8px;
+  padding: 5px 22px;
+  width: 100%;
+  cursor: pointer;
+  text-decoration: none;
+  color: white;
+  display: flex;
+  background-color: #082e4e;
+  display: block;
+}
+
+/* Disable button */
+.add-educator a.disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
 
 
 /* data collection style */
