@@ -1,0 +1,6 @@
+{
+    "liveServer.settings.port": 5503,
+    "chatgpt.model": "gpt-4",
+    "chatgpt.apiKey": "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",
+    "chatgpt.timeoutLength": 3
+}

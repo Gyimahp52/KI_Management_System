@@ -42,7 +42,7 @@ $base_url = '/ki/KI_Management_System/';
      <!--SEL Themes button-->
      <ul class="menu-item ">
         <li>
-            <a href="#">
+            <a href="/admin/SEL Themes/sel.html">
                 <i class="fas fa-book"></i>
                 <span>SEL Themes</span>
             </a>

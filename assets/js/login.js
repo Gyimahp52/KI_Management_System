@@ -1,4 +1,3 @@
-
 const chatbotToggler = document.querySelector(".chatbot-toggler");
 const closeBtn = document.querySelector(".close-btn");
 const chatbox = document.querySelector(".chatbox");
@@ -6,7 +5,7 @@ const chatInput = document.querySelector(".chat-input textarea");
 const sendChatBtn = document.querySelector(".chat-input span");
 
 let userMessage = null; // Variable to store user's message
-const API_KEY = "PASTE-YOUR-API-KEY"; // Paste your API key here
+const API_KEY = "AIzaSyBkpkOJMjbADblWa7jsRxJtFsNSG9QW3Pw"; // Your Gemini API key
 const inputInitHeight = chatInput.scrollHeight;
 
 const createChatLi = (message, className) => {
@@ -20,7 +19,7 @@ const createChatLi = (message, className) => {
 }
 
 const generateResponse = (chatElement) => {
-    const API_URL = "https://api.openai.com/v1/chat/completions";
+    const API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent"; // Replace with actual Gemini API URL
     const messageElement = chatElement.querySelector("p");
 
     // Define the properties and message for the API request
@@ -31,17 +30,16 @@ const generateResponse = (chatElement) => {
             "Authorization": `Bearer ${API_KEY}`
         },
         body: JSON.stringify({
-            model: "gpt-3.5-turbo",
-            messages: [{role: "user", content: userMessage}],
+            query: userMessage // Adjust according to the API's expected input
         })
     }
 
-    // Send POST request to API, get response and set the reponse as paragraph text
+    // Send POST request to API, get response and set the response as paragraph text
     fetch(API_URL, requestOptions).then(res => res.json()).then(data => {
-        messageElement.textContent = data.choices[0].message.content.trim();
+        messageElement.textContent = data.response; // Adjust according to the API's response structure
     }).catch(() => {
         messageElement.classList.add("error");
-        messageElement.textContent = "Oops! Something went wrong. Please try again.";
+        messageElement.textContent = "Hold on, system down.";
     }).finally(() => chatbox.scrollTo(0, chatbox.scrollHeight));
 }
 

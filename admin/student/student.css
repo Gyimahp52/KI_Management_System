@@ -1,4 +1,4 @@
-/* Existing CSS */
+
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
 * {
     margin: 0;
@@ -104,6 +104,7 @@ body {
     width: 100%;
     display: flex;
     align-items: center;
+    background: rgba(30, 120, 155, 0.022);
 }
 
 
