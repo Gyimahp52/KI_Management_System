@@ -1,5 +1,5 @@
 /* Import Google font - Poppins */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 * {
   margin: 0;
   padding: 0;
@@ -7,134 +7,121 @@
   font-family: "Poppins", sans-serif;
 }
 body {
-    background-image: url(/images/web\ 2.png);
-    font-family: "Poppins", sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+  background: url("images/web2.png");
+  font-family: "Poppins", sans-serif;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
 }
 
 .login-container {
-    background-color: white;
-    padding: 40px;
-    border-radius: 70px;
-    box-shadow: 0 30px 9px rgba(0, 0, 0, 0.1);
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
+  background-color: white;
+  padding: 40px;
+  border-radius: 70px;
+  box-shadow: 0 30px 9px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
 }
 
 form {
-    display: flex;
-    flex-direction: column;
-    border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 30px;
 }
 
 h2 {
-    margin-bottom: 20px;
-    color: #333;
-    text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
 }
 
 img {
-    width: 80px;
-    height: 70px;
-    
-    margin-left: 100px;
+  width: 80px;
+  height: 70px;
+
+  margin-left: 100px;
 }
 
 .form-group {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 label {
-    margin-bottom: 5px;
-    font-weight: bold;
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 
 input[type="text"],
 input[type="password"] {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 100%;
 }
-
-
 
 /*login button*/
 
 .btn-login {
-    margin-right: 30px;
-    margin-left: 60px;
+  margin-right: 30px;
+  margin-left: 60px;
 
-    align-items: center;
-    appearance: none;
-    background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, orange 100%);
-    border: 0;
-    border-radius: 6px;
-    box-shadow: 
-  rgba(45, 35, 66, .4) 0 2px 4px,
-  rgba(45, 35, 66, .3) 0 7px 13px -3px,
-  rgba(58, 65, 111, .5) 0 -3px 0 inset;
-    box-sizing: border-box;
-    color: #fff;
-    cursor: pointer;
-    display: inline-flex;
-    font-family: "JetBrains Mono",monospace;
-    height: 48px;
-    justify-content: center;
-    line-height: 1;
-    list-style: none;
-    overflow: hidden;
-    padding-left: 16px;
-    padding-right: 16px;
-    position: relative;
-    text-align: left;
-    text-decoration: none;
-    transition: box-shadow .15s,transform .15s;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    white-space: nowrap;
-    will-change: box-shadow,transform;
-    font-size: 18px;
-    
-  }
-  
-  .btn-login:focus {
-    box-shadow: 
-  #3c4fe0 0 0 0 1.5px inset, 
-  rgba(45, 35, 66, .4) 0 2px 4px, 
-  rgba(45, 35, 66, .3) 0 7px 13px -3px, 
-  #3c4fe0 0 -3px 0 inset;
-  
-  }
-  
-  .btn-login:hover {
-    box-shadow: 
-  rgba(45, 35, 66, .4) 0 4px 8px, 
-  rgba(45, 35, 66, .3) 0 7px 13px -3px, 
-  #3c4fe0 0 -3px 0 inset;
-    transform: translateY(-2px);
-    
-  }
-  
-  .btn-login:active {
-    box-shadow: 
-  #3c4fe0 0 3px 7px inset;
-    transform: translateY(2px);
-  }
+  align-items: center;
+  appearance: none;
+  background-image: radial-gradient(
+    100% 100% at 100% 0,
+    #5adaff 0,
+    orange 100%
+  );
+  border: 0;
+  border-radius: 6px;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgba(58, 65, 111, 0.5) 0 -3px 0 inset;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: "JetBrains Mono", monospace;
+  height: 48px;
+  justify-content: center;
+  line-height: 1;
+  list-style: none;
+  overflow: hidden;
+  padding-left: 16px;
+  padding-right: 16px;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  transition: box-shadow 0.15s, transform 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  will-change: box-shadow, transform;
+  font-size: 18px;
+}
 
+.btn-login:focus {
+  box-shadow: #3c4fe0 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+}
 
+.btn-login:hover {
+  box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+  transform: translateY(-2px);
+}
 
-  
+.btn-login:active {
+  box-shadow: #3c4fe0 0 3px 7px inset;
+  transform: translateY(2px);
+}
+
 /* All ChatBot styles*/
-
 
 .chatbot-toggler {
   position: fixed;
@@ -160,7 +147,7 @@ body.show-chatbot .chatbot-toggler {
   position: absolute;
 }
 .chatbot-toggler span:last-child,
-body.show-chatbot .chatbot-toggler span:first-child  {
+body.show-chatbot .chatbot-toggler span:first-child {
   opacity: 0;
 }
 body.show-chatbot .chatbot-toggler span:last-child {
@@ -178,8 +165,8 @@ body.show-chatbot .chatbot-toggler span:last-child {
   pointer-events: none;
   transform: scale(0.5);
   transform-origin: bottom right;
-  box-shadow: 0 0 128px 0 rgba(0,0,0,0.1),
-              0 32px 64px -48px rgba(0,0,0,0.5);
+  box-shadow: 0 0 128px 0 rgba(0, 0, 0, 0.1),
+    0 32px 64px -48px rgba(0, 0, 0, 0.5);
   transition: all 0.1s ease;
 }
 body.show-chatbot .chatbot {
@@ -192,8 +179,8 @@ body.show-chatbot .chatbot {
   position: relative;
   text-align: center;
   color: #fff;
-  background:  orange;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  background: orange;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 .chatbot header span {
   position: absolute;
@@ -319,6 +306,3 @@ header h2 {
     display: block;
   }
 }
-
-
-
