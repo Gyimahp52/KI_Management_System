@@ -1,12 +1,11 @@
-<?php 
-$base_url = '/ki/KI_Management_System/';
-?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         
-        <link rel="stylesheet" href="<?php echo $base_url; ?>assets/css/educators.css">
+        <link rel="stylesheet" href="assets/css/educators.css">
+        <link rel="stylesheet" href="assets/css/adminDashboard.css">
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
@@ -14,123 +13,11 @@ $base_url = '/ki/KI_Management_System/';
     </head>
 <body>
     
-<!--Side bar-->
-<div class="sidebar">
-    <!--logo on sidebar-->
-    <img src="<?php echo $base_url; ?>images/ki_logo.png" alt="Logo" class="logo">
-
-   <!--Dashboard button-->
-    <ul class="menu-item ">
-        <li >
-            <a href="<?php echo $base_url; ?>admin/adminDashboard.html">
-                <i class="fas fa-tachometer-alt"></i>
-                <span>Dashboard</span>
-            </a>
-        </li>
-    </ul>
-
-    <!--Educators button-->
-    <ul class="menu-item ">
-        <li class="active">
-            <a href="/admin/educator/educators.html">
-                <i class="fas fa-chalkboard-teacher"></i>
-                <span>Educators</span>
-            </a>
-        </li>
-    </ul>
-
-     <!--SEL Themes button-->
-     <ul class="menu-item ">
-        <li>
-            <a href="/admin/SEL Themes/sel.html">
-                <i class="fas fa-book"></i>
-                <span>SEL Themes</span>
-            </a>
-        </li>
-    </ul>
-
-     <!--Schools button-->
-     <ul class="menu-item ">
-        <li>
-            <a href="/admin/school/school.html">
-                <i class="fas fa-school"></i>
-                <span>Schools</span>
-            </a>
-        </li>
-    </ul>
-
-     <!--Students button-->
-     <ul class="menu-item ">
-        <li>
-            <a href="/admin/student/student.html">
-                <i class="fas fa-user-graduate"></i>
-                <span>Students</span>
-            </a>
-        </li>
-    </ul>
-
-     <!--Reports button-->
-     <ul class="menu-item ">
-        <li>
-            <a href="/admin/report/report.html">
-                <i class="fas fa-file-alt"></i>
-                <span>Reports</span>
-            </a>
-        </li>
-    </ul>
-
-     <!--Assign role button-->
-     <ul class="menu-item ">
-        <li>
-            <a href="/admin/manage user/manageUser.html">
-                <i class="fas fa-user-cog"></i>
-                <span>Assign Role</span>
-            </a>
-        </li>
-    </ul>
-
-     <!--Reports button-->
-     <ul class="menu-item ">
-        <li>
-            <a href="/admin/settings/settings.html">
-                <i class="fas fa-cog"></i>
-                <span>Settings</span>
-            </a>
-        </li>
-    </ul>
-
-     <!--Logout button-->
-     <ul class="menu-item ">
-        <li>
-            <a href="/login/login.html">
-                <i class="fas fa-sign-out-alt"></i>
-                <span>Log Out</span>
-            </a>
-        </li>
-    </ul>
-      
-</div>
-
-
-
+<?php include_once('includes/side_bar.php');?>
 <!--main content space-->
 <div class="main-content">
-    <div class="header">
-        <div class="nav">
-           
-            <span>Admin</span>
-            <h2>Dashboard</h2>
-            
-            <div class="search">
-                <i class="fa-solid fa-search"></i>
-                    <input type="text" placeholder="Find educator...">
-         
-            </div>
-            <img src="/images/user.png" alt=""/>
 
-            
-        </div>
-    </div>
+<?php include_once('includes/header.php');?>
 
     <div class="stats-grid">
 
@@ -238,7 +125,7 @@ $base_url = '/ki/KI_Management_System/';
 
 
 
-<script src="/admin/educator/educators.js"></script>
+<script src="assets/js/educators.js"></script>
 
 </body>
 </html>

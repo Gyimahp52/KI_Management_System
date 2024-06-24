@@ -23,8 +23,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
+        <link rel="stylesheet" href="assets/css/adminDashboard.css">
 </head>
 <body>
+<?php include_once('includes/side_bar.php');?>
+<?php include_once('includes/header.php');?>
+
     <form action="add_user.php" method="post">
         <label for="username">Username:</label>
         <input type="text" name="username" id="username" required>
