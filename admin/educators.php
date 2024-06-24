@@ -1,12 +1,11 @@
-<?php 
-$base_url = '/ki/KI_Management_System/';
-?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         
-        <link rel="stylesheet" href="<?php echo $base_url; ?>assets/css/educators.css">
+        <link rel="stylesheet" href="assets/css/educators.css">
+        <link rel="stylesheet" href="assets/css/adminDashboard.css">
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
@@ -14,11 +13,11 @@ $base_url = '/ki/KI_Management_System/';
     </head>
 <body>
     
-
+<?php include_once('includes/side_bar.php');?>
 <!--main content space-->
 <div class="main-content">
 
-<?php include("/ki/KI_Management_System/includes/header.php") ?>
+<?php include_once('includes/header.php');?>
 
     <div class="stats-grid">
 
@@ -126,7 +125,7 @@ $base_url = '/ki/KI_Management_System/';
 
 
 
-<script src="/admin/educator/educators.js"></script>
+<script src="assets/js/educators.js"></script>
 
 </body>
 </html>
