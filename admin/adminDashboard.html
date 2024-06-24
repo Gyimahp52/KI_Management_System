@@ -3,6 +3,235 @@
   <head>
     <meta charset="UTF-8" />
 
+    <link rel="stylesheet" href="/assets/css/adminDashboard.css" />
+    
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <title>Admin Dashboard</title>
+  </head>
+  <body>
+    <!--Side bar-->
+    <div class="sidebar">
+      <!--logo on sidebar-->
+      <img src="/images/ki_logo.png" alt="Logo" class="logo" />
+
+      <!--Dashboard button-->
+      <ul class="menu-item">
+        <li class="active">
+          <a href="/admin/adminDashboard.html">
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+      </ul>
+
+      <!--Educators button-->
+      <ul class="menu-item">
+        <li>
+          <a href="/admin/educator/educators.html">
+            <i class="fas fa-chalkboard-teacher"></i>
+            <span>Educators</span>
+          </a>
+        </li>
+      </ul>
+
+      <!--SEL Themes button-->
+      <ul class="menu-item">
+        <li>
+            <a href="/admin/SEL Themes/sel.html">
+                <i class="fas fa-book"></i>
+                <span>SEL Themes</span>
+            </a>
+          <a href="#">
+            <i class="fas fa-book"></i>
+            <span>SEL Themes</span>
+          </a>
+        </li>
+      </ul>
+
+      <!--Schools button-->
+      <ul class="menu-item">
+        <li>
+          <a href="/admin/school/school.html">
+            <i class="fas fa-school"></i>
+            <span>Schools</span>
+          </a>
+        </li>
+      </ul>
+
+      <!--Students button-->
+      <ul class="menu-item">
+        <li>
+          <a href="/admin/student/student.html">
+            <i class="fas fa-user-graduate"></i>
+            <span>Students</span>
+          </a>
+        </li>
+      </ul>
+
+      <!--Reports button-->
+      <ul class="menu-item">
+        <li>
+          <a href="/admin/report/report.html">
+            <i class="fas fa-file-alt"></i>
+            <span>Reports</span>
+          </a>
+        </li>
+      </ul>
+
+      <!--Assign role button-->
+      <ul class="menu-item">
+        <li>
+          <a href="/admin/manage user/manageUser.html">
+            <i class="fas fa-user-cog"></i>
+            <span>Assign Role</span>
+          </a>
+        </li>
+      </ul>
+
+      <!--Reports button-->
+      <ul class="menu-item">
+        <li>
+          <a href="/admin/settings/settings.html">
+            <i class="fas fa-cog"></i>
+            <span>Settings</span>
+          </a>
+        </li>
+      </ul>
+
+      <!--Logout button-->
+      <ul class="menu-item">
+        <li>
+          <a href="/login/login.html">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Log Out</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!--main content space-->
+    <div class="main-content">
+      <div class="header">
+        <div class="nav">
+          <span>Admin</span>
+          <h2>Dashboard</h2>
+
+          <div class="search">
+            <i class="fa-solid fa-search"></i>
+            <input type="text" placeholder="Search..." />
+          </div>
+          <img src="/images/user.png" alt="" />
+        </div>
+      </div>
+
+      <!--Cards-->
+      <div class="stats-grid">
+        <div class="card">
+          <a href="/admin/school/school.html">
+            <div class="icon">
+              <img src="/images/students.png" alt="schools" />
+            </div>
+            <div class="count">500</div>
+            <span><b>Students</b></span>
+          </a>
+        </div>
+
+        <div class="card">
+          <a href="/admin/educator/educators.html">
+            <div class="icon"><img src="/images/educator.png" alt="" /></div>
+            <div class="count">12</div>
+            <span><b>Educators</b></span>
+          </a>
+        </div>
+
+        <div class="card">
+          <a href="/admin/school/school.html">
+            <div class="icon"><img src="/images/sch.png" alt="" /></div>
+            <div class="count">30</div>
+            <span><b>Schools</b></span>
+          </a>
+        </div>
+
+        <div class="card">
+          <div class="icon"><img src="/images/sel_themes.png" alt="" /></div>
+          <span><b>SEL Themes</b></span>
+        </div>
+
+        <div class="card">
+          <a href="/admin/report/report.html">
+            <div class="icon"><img src="/images/reports.png" alt="" /></div>
+            <span><b>Report</b></span>
+          </a>
+        </div>
+        <div class="card">
+          <a href="/admin/settings/settings.html">
+            <div class="icon"><img src="/images/settings.png" alt="" /></div>
+            <span><b>Settings</b></span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Overlay, initially hidden -->
+    <div id="modalOverlay" class="modal-overlay" style="display: none">
+      <div id="modalContent" class="modal-content">
+        <div class="signup-container">
+          <form id="signup-form">
+            <h2>Add User Form</h2>
+            <div class="input-group">
+              <i class="icon-user"></i>
+              <input
+                type="text"
+                placeholder="Enter Username"
+                name="username"
+                required
+              />
+            </div>
+            <div class="input-group">
+              <i class="icon-lock"></i>
+              <input
+                type="password"
+                placeholder="Create Password"
+                name="password"
+                required
+              />
+            </div>
+            <div class="input-group">
+              <i class="icon-lock"></i>
+              <input
+                type="password"
+                placeholder="Retype Password"
+                name="confirm_password"
+                required
+              />
+            </div>
+            <div class="input-group">
+              <select name="user_type" required>
+                <option value="" disabled selected>Select role</option>
+                <option value="admin">Admin</option>
+                <option value="user">Educator</option>
+                <option value="accountant">Accountant</option>
+              </select>
+            </div>
+            <button type="submit">Add</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="/admin/adminDashboard.js"></script>
+  </body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
     <link rel="stylesheet" href="assets/css/adminDashboard.css" />
     /assets/css/adminDashboard.css
     <link
