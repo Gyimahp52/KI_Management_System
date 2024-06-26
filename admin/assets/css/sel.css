@@ -1,0 +1,273 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+body {
+    display: flex;
+}
+
+.sidebar {
+    background-color: #34495e;
+    color: white;
+    height: 100vh;
+    width: 117px;
+    position: sticky;
+    top: 0;   
+    left: 0; 
+    bottom: 0;
+    overflow: hidden;
+    padding: 0 1.7rem;
+    transition: all 0.3s linear;
+    background: 113, 99, 186. 255;
+    z-index: 2;
+}
+.sidebar:hover {
+    width: 310px;
+    transition: 0.5s;
+}
+
+.logo {
+    position: sticky;
+    height: 80px;
+    padding: 12px;
+}
+
+.menu-item {
+    border-radius: 20px;
+    padding: 15px 12px;
+    border-bottom: 1px solid #2c3e50;
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+    display: block;
+    position: relative;
+    list-style: none;
+}
+.menu-item li {
+    padding: 0;
+    margin: 1px 0;
+    border-radius: 8px;
+    transition: all 0.5s ease-in-out;
+}
+
+.menu-item:hover, 
+.active {
+    background-color: #2980b9;
+    border-radius: 10px;
+}
+
+.menu-item a {
+    font-size: 17px;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    display: flex;
+    gap: 1.5rem;
+}
+.menu-item a span {
+    overflow: hidden;
+}
+
+.menu-item a i {
+    font-size: 1.2rem;
+}
+
+/* Style for main content */
+.main-content {
+    width: calc(100% - 117px);
+    padding: 1rem;
+    background: #ecf0f1;
+    position: relative;
+}
+
+/* Header style */
+.main-content .header {
+    position: fixed;
+    top: 0;
+    right: 5;
+    width: 76vw;
+    height: 10vh;
+    background: rgb(255, 255, 255);
+    display: flex;
+    align-items: normal;
+    justify-content: normal;
+    box-shadow: 0 30px 8px 0 rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 25px;
+}
+.main-content .header .nav {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background: rgba(30, 120, 155, 0.022);
+}
+
+
+/* search bar */
+.main-content .header .nav .search {
+    flex: 3;
+    display: flex;
+    justify-content: center;
+    display: flex;
+    
+}
+.main-content .header .nav .search i{
+   
+    padding: 15px;
+    margin-right: 2px;
+}
+.main-content .header .nav .search input[type=text] {
+    border: none;
+    background: #f1f1f1;
+    padding: 12px;
+    width: 400px;
+    border-radius: 12px;
+    position: sticky; 
+    
+}
+   
+/*admin logo on the header */
+.main-content .header .nav img {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+/* Cards style */
+.main-content .stats-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10vh;
+}
+
+
+
+
+.form-container {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.form-container h2 {
+    margin-bottom: 1rem;
+}
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-container form label {
+    margin-bottom: 0.5rem;
+}
+
+.form-container form input,
+.form-container form select,
+.form-container form button {
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.form-container form button {
+    background: #2980b9;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.form-container form button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.form-container form button:hover:not(:disabled) {
+    background: #3498db;
+}
+
+.table-container {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+}
+
+.table-container table th,
+.table-container table td {
+    padding: 8px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+.table-container table th {
+    background: #2980b9;
+    color: #fff;
+}
+
+.table-container table td a {
+    color: #2980b9;
+    text-decoration: none;
+}
+
+.table-container table td a:hover {
+    text-decoration: underline;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.checkbox-group input {
+    margin-right: 5px;
+}
+
+.toast {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+    white-space: nowrap;
+}
+
+.toast.show {
+    visibility: visible;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;} 
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;} 
+    to {bottom: 0; opacity: 0;}
+}
