@@ -82,22 +82,26 @@ if (isset($_POST['submit'])) {
                     $query->bindParam(':school', $school, PDO::PARAM_STR);
                     $query->execute();
 
-                    $LastInsertId = $dbh->lastInsertId();
-                    if ($LastInsertId > 0) {
-                        echo '<script>alert("Teacher detail has been added.")</script>';
-                        header('Location: educators.php');
-                    } else {
-                        echo '<script>alert("Something Went Wrong. Please try again")</script>';
-                        header('Location: educators.php');
-                    }
+                    // $LastInsertId = $dbh->lastInsertId();
+                    // if ($LastInsertId > 0) {
+                    //     echo '<script>
+                    //             alert("Teacher detail has been added.");
+                    //             window.location.href = "educators.php";
+                    //           </script>';
+                    // } else {
+                        echo '<script>
+                                alert("educator details has been added.");
+                                window.location.href = "educators.php";
+                              </script>';
+                    //}
                 } else {
-                    echo "<script>alert('Email-id, Employee Id, or Mobile Number already exists. Please try again');</script>";
+                    echo "<script>alert('Email or Mobile Number already exists. Please try again');</script>";
                 }
             } catch (PDOException $e) {
                 // Handle exceptions
                 echo '<script>alert("Database error occurred: ' . $e->getMessage() . '")</script>';
                 // Logged error to a file
-                // error_log($e->getMessage(), 3, '/var/tmp/my-errors.log');
+                 error_log($e->getMessage(), 3, '/var/tmp/my-errors.log');
             }
         }
     }
@@ -109,6 +113,7 @@ if (isset($_POST['submit'])) {
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="assets/css/educators.css">
+    <link rel="stylesheet" href="assets/css/adminDashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <title>Information Collection Form</title>
 </head>
