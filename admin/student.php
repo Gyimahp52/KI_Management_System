@@ -18,7 +18,6 @@
 <!--main content space-->
 <div class="main-content">
 <?php include_once('includes/header.php');?>
-    </div>
 
     <div class="stats-grid">
 
@@ -138,7 +137,7 @@
 
 
 
-<script src="/admin/student/student.js"></script>
+<script src="assets/js/student.js"></script>
 
 </body>
 </html>

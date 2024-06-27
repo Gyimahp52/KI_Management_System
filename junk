@@ -1,0 +1,145 @@
+<!-- jquery vendor -->
+ <!-- <script src="assets/js/lib/jquery.min.js"></script>
+    <!-- nano scroller -->
+    <script src="assets/js/lib/jquery.nanoscroller.min.js"></script>
+    <!-- sidebar -->
+    <script src="assets/js/lib/menubar/sidebar.js"></script>
+    <!-- bootstrap -->
+    <script src="assets/js/lib/bootstrap.min.js"></script>
+    <!-- Circle Progress Bar -->
+    <script src="assets/js/lib/circle-progress/circle-progress.min.js"></script>
+    <script src="assets/js/lib/circle-progress/circle-progress-init.js"></script>
+    <script src="assets/js/lib/chartist/chartist.min.js"></script>
+    <script src="assets/js/lib/chartist/chartist-init.js"></script>
+    <script src="assets/js/lib/sparklinechart/jquery.sparkline.min.js"></script>
+    <script src="assets/js/lib/sparklinechart/sparkline.init.js"></script>
+    <!-- Bar Chat Js -->
+    <script src="assets/js/lib/peitychart/jquery.peity.min.js"></script><!-- scripit init-->
+    <script src="assets/js/lib/peitychart/peitychart.init.js"></script><!-- scripit init-->
+
+
+    <script src="assets/js/lib/datamap/d3.min.js"></script>
+    <script src="assets/js/lib/datamap/topojson.js"></script>
+    <script src="assets/js/lib/datamap/datamaps.world.min.js"></script>
+    <script src="assets/js/lib/datamap/datamap-init.js"></script>
+    <!-- scripit init-->
+    <script src="assets/js/lib/owl-carousel/owl.carousel.min.js"></script>
+    <script src="assets/js/lib/owl-carousel/owl.carousel-init.js"></script>
+
+    <script src="assets/js/lib/morris-chart/raphael-min.js"></script>
+    <script src="assets/js/lib/morris-chart/morris.js"></script>
+    <script src="assets/js/lib/morris-chart/morris-init.js"></script> -->
+
+
+    
+<!--Side bar-->
+<div class="sidebar">
+    <!--logo on sidebar-->
+    <img src="https://i.ibb.co/JdQWY17/ki-logo.png" alt="ki_Logo" class="logo">
+
+   <!--Dashboard button-->
+    <ul class="menu-item ">
+        <li class="active">
+            <a href="adminDashboard.php">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+    </ul>
+    
+    <!--Educators button-->
+    <ul class="menu-item ">
+        <li>
+            <a class="sidebar-sub-toggle href="educators.php">
+                <i class="fas fa-chalkboard-teacher"></i>
+                Educator  <span class="sidebar-collapse-icon ti-angle-down"></span>
+            </a>   <ul>
+                             <li><a href="educators.php">Add educator</a>
+                    </li>
+                            <li><a href="manage-educator.php">Manage educator</a></li>
+                           
+                        </ul>
+                    </li>
+        </li>
+
+        <!-- <li><a class="sidebar-sub-toggle"><i class="ti-user"></i>  educators  <span class="sidebar-collapse-icon ti-angle-down"></span></a>
+                        <ul>
+                             <li><a href="educators.php">Add educator</a>
+                    </li>
+                            <li><a href="manage-educator.php">Manage educator</a></li>
+                           
+                        </ul>
+                    </li> -->
+    </ul>
+
+     <!--SEL Themes button-->
+     <ul class="menu-item ">
+        <li>
+            <a href="sel.php">
+                <i class="fas fa-book"></i>
+                <span>SEL Themes</span>
+            </a>
+        </li>
+    </ul>
+
+     <!--Schools button-->
+     <ul class="menu-item ">
+        <li>
+            <a href="school.php">
+                <i class="fas fa-school"></i>
+                <span>Schools</span>
+            </a>
+        </li>
+    </ul>
+
+     <!--Students button-->
+     <ul class="menu-item ">
+        <li>
+            <a href="student.php">
+                <i class="fas fa-user-graduate"></i>
+                <span>Students</span>
+            </a>
+        </li>
+    </ul>
+
+     <!--Reports button-->
+     <ul class="menu-item ">
+        <li>
+            <a href="report.php">
+                <i class="fas fa-file-alt"></i>
+                <span>Reports</span>
+            </a>
+        </li>
+    </ul>
+
+     <!--Assign role button-->
+     <ul class="menu-item ">
+        <li>
+            <a href="manageuser.php">
+                <i class="fas fa-user-cog"></i>
+                <span>Assign Role</span>
+            </a>
+        </li>
+    </ul>
+
+     <!--Reports button-->
+     <ul class="menu-item ">
+        <li>
+            <a href="settings.php">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </li>
+    </ul>
+
+     <!--Logout button-->
+     <ul class="menu-item">
+    <li>
+        <a href="logout.php">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Log Out</span>
+        </a>
+    </li>
+</ul>
+      
+</div>

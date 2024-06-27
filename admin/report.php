@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Management System - Reports</title>
-    <link rel="stylesheet" href="/admin/report/report.css">
+    <link rel="stylesheet" href="assets/css/report.css">
 </head>
 <body>
     <div class="container">
@@ -95,6 +95,6 @@
             </table>
         </div>
     </div>
-    <script src="/admin/report/report.js"></script>
+    <script src="assets/js/report.js"></script>
 </body>
 </html>
