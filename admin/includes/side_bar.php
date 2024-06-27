@@ -27,7 +27,7 @@
      <!--SEL Themes button-->
      <ul class="menu-item ">
         <li>
-            <a href="#">
+            <a href="sel.php">
                 <i class="fas fa-book"></i>
                 <span>SEL Themes</span>
             </a>
