@@ -61,10 +61,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
    
-    <link rel="stylesheet" href="assets/css/login.css"> 
-    <script src="assets/js/login.js" defer></script>
+    <link rel="stylesheet" href="css/login.css"> 
+    <script src="js/login.js" defer></script>
 </head>
-<body>
+<body style="background-image: url('images/web2.png'); height: 100vh; background: cover;">
     <!-- Login form -->
     <div class="login-container">
         <img src="images/ki_logo.png" alt="ki_logo">

@@ -9,7 +9,6 @@
                     <input type="text" placeholder="Search...">
          
             </div>
-            <img src="<?php echo $base_url; ?>/images/user.png" alt=""/>
-
-            
+            <img src="/images/user.png" alt=""/>
+</div>    
         </div>
