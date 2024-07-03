@@ -27,7 +27,7 @@
      <!--SEL Themes button-->
      <ul class="menu-item ">
         <li>
-            <a href="#">
+            <a href="sel.php">
                 <i class="fas fa-book"></i>
                 <span>SEL Themes</span>
             </a>
@@ -87,7 +87,7 @@
      <!--Logout button-->
      <ul class="menu-item">
     <li>
-        <a href="logout.php">
+        <a href="index.php">
             <i class="fas fa-sign-out-alt"></i>
             <span>Log Out</span>
         </a>

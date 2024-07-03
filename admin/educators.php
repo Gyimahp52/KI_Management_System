@@ -1,212 +1,162 @@
-<?php
-session_start();
-
-include('includes/dbconnection.php');   
-
-if (!isset($_SESSION['user_id']) || strlen($_SESSION['user_id']) == 0) {
-    header('location:logout.php');
-    exit();
-}
-
-// Validation and Sanitization Functions
-function validate_name($name) {
-    return preg_match("/^[a-zA-Z-' ]*$/", $name);
-}
-
-function validate_phone($phone) {
-    return preg_match("/^[0-9]{10}$/", $phone);
-}
-
-function validate_email($email) {
-    return filter_var($email, FILTER_VALIDATE_EMAIL);
-}
-
-function sanitize_input($data) {
-    return htmlspecialchars(stripslashes(trim($data)));
-}
-
-
-if (isset($_POST['submit'])) {
-    // Check if all required fields are set
-    $required_fields = ['name', 'phone', 'emergency', 'email', 'gender', 'dob', 'location', 'school'];
-    $missing_fields = [];
-
-    foreach ($required_fields as $field) {
-        if (empty($_POST[$field])) {
-            $missing_fields[] = $field;
-        }
-    }
-
-    if (!empty($missing_fields)) {
-        echo '<script>alert("Missing fields: ")</script>';
-    } else {
-        $name = sanitize_input($_POST['name']);
-        $phone = sanitize_input($_POST['phone']);
-        $emerg_phone = sanitize_input($_POST['emergency']);
-        $email = sanitize_input($_POST['email']);
-        $gender = sanitize_input($_POST['gender']);
-        $dob = sanitize_input($_POST['dob']);
-        $location = sanitize_input($_POST['location']);
-        $school = sanitize_input($_POST['school']);
-
-        // Validate inputs
-        if (!validate_name($name)) {
-            echo '<script>alert("Invalid name format.")</script>';
-        } elseif (!validate_phone($phone)) {
-            echo '<script>alert("Invalid phone number format. Must be 10 digits.")</script>';
-        } elseif (!validate_phone($emerg_phone)) {
-            echo '<script>alert("Invalid emergency phone number format. Must be 10 digits.")</script>';
-        } elseif (!validate_email($email)) {
-            echo '<script>alert("Invalid email format.")</script>';
-        } else {
-            try {
-                // Check if the email or phone number already exists
-                $ret = "SELECT email FROM educators WHERE email=:email OR phone_number=:phone";
-                $query = $dbh->prepare($ret);
-                $query->bindParam(':phone', $phone, PDO::PARAM_STR);
-                $query->bindParam(':email', $email, PDO::PARAM_STR);
-                $query->execute();
-                $results = $query->fetchAll(PDO::FETCH_OBJ);
-
-                if ($query->rowCount() == 0) {
-                    // Insert the new educator's details
-                    $sql = "INSERT INTO educators(name, gender, phone_number, emergency_contact, email, dob, location, school) VALUES (:name, :gender, :phone, :emerg_phone, :email, :dob, :location, :school)";
-                    $query = $dbh->prepare($sql);
-                    $query->bindParam(':name', $name, PDO::PARAM_STR);
-                    $query->bindParam(':gender', $gender, PDO::PARAM_STR);
-                    $query->bindParam(':phone', $phone, PDO::PARAM_STR);
-                    $query->bindParam(':emerg_phone', $emerg_phone, PDO::PARAM_STR);
-                    $query->bindParam(':email', $email, PDO::PARAM_STR);
-                    $query->bindParam(':dob', $dob, PDO::PARAM_STR);
-                    $query->bindParam(':location', $location, PDO::PARAM_STR);
-                    $query->bindParam(':school', $school, PDO::PARAM_STR);
-                    $query->execute();
-
-                    // $LastInsertId = $dbh->lastInsertId();
-                    // if ($LastInsertId > 0) {
-                    //     echo '<script>
-                    //             alert("Teacher detail has been added.");
-                    //             window.location.href = "educators.php";
-                    //           </script>';
-                    // } else {
-                        echo '<script>
-                                alert("educator details has been added.");
-                                window.location.href = "educators.php";
-                              </script>';
-                    //}
-                } else {
-                    echo "<script>alert('Email or Mobile Number already exists. Please try again');</script>";
-                }
-            } catch (PDOException $e) {
-                // Handle exceptions
-                echo '<script>alert("Database error occurred: ' . $e->getMessage() . '")</script>';
-                // Logged error to a file
-                 error_log($e->getMessage(), 3, '/var/tmp/my-errors.log');
-            }
-        }
-    }
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="assets/css/educators.css">
     <link rel="stylesheet" href="assets/css/adminDashboard.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <title>Information Collection Form</title>
 </head>
 <body>
+    <!-- side bar -->
+    <?php include_once('includes/side_bar.php');?>
+    <!--main content space-->
+    <div class="main-content">
+        <?php include_once('includes/header.php');?>
+        
+        <div class="container mt-5">
+            <!--add new educator button-->
+            <ul class="list-inline">
+                <li class="list-inline-item">
+                    <a href="#" id="addEducatorButton" class="btn btn-primary">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Add new Educator</span>
+                    </a>
+                </li>
+            </ul>
 
-<!-- Side bar -->
-<?php include_once('includes/side_bar.php'); ?>
+            <!-- Data collection -->
+            <div class="form-container card p-4 d-none">
+                <h2>Educator's details</h2>
+                <div class="passport-picture mb-3"></div>
+                
+                <form id="educatorForm" action="educators.php" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" placeholder="Enter your name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" name="gender" class="form-control" required>
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="Enter phone number" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="emergency">Emergency Contact</label>
+                        <input type="text" id="emergency" name="emergency" placeholder="Enter emergency contact" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="Enter email address" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dob">Date of Birth</label>
+                        <input type="date" id="dob" name="dob" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Location</label>
+                        <input type="text" id="address" name="address" placeholder="Enter residential address" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="school">School</label>
+                        <select id="school" name="school" class="form-control" required>
+                            <option value="">Select School</option>
+                            <option value="school1">School 1</option>
+                            <option value="school2">School 2</option>
+                            <option value="school3">School 3</option>
+                        </select>
+                    </div>
+                    <div class="form-group d-flex justify-content-between">
+                        <input type="submit" name="submit" value="Submit" class="btn btn-success">
+                        <button type="button" id="cancelButton" class="btn btn-secondary">Cancel</button>
+                    </div>
+                </form>
+            </div>
 
-<!-- Main content space -->
-<div class="main-content">
-    <?php include_once('includes/header.php'); ?>
+            <!--table-->
+            <table class="table table-striped mt-5">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone Number</th>
+                        <th>School</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-    <div class="stats-grid">
-
-        <!-- Data collection -->
-        <div class="form-container">
-            <h2>Educator's details</h2>
-            <div class="passport-picture"></div>
-            <input type="file" id="passport" name="passport" accept="image/*">
-
-            <form action="educators.php" method="post" enctype="multipart/form-data">
+    <!-- Popup form for editing -->
+    <div class="popup-form-container d-none" id="popupFormContainer">
+        <div class="popup-form card p-4">
+            <h2>Edit Educator's details</h2>
+            <div class="passport-picture-popup mb-3"></div>
+            <input type="file" id="passportPopup" name="passportPopup" accept="image/*" class="form-control mb-3">
+            <form id="editEducatorForm" action="educators.php" method="post" enctype="multipart/form-data">
+                <input type="hidden" id="editIndex">
                 <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" placeholder="Enter your name" class="form-control" required>
+                    <label for="namePopup">Name</label>
+                    <input type="text" id="namePopup" name="namePopup" placeholder="Enter your name" class="form-control" required>
                 </div>
-
                 <div class="form-group">
-                    <label for="gender">Gender</label>
-                    <select id="gender" name="gender" required>
+                    <label for="genderPopup">Gender</label>
+                    <select id="genderPopup" name="genderPopup" class="form-control" required>
                         <option value="">Select Gender</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                     </select>
                 </div>
-
                 <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" name="phone" placeholder="Enter phone number" required>
+                    <label for="phonePopup">Phone Number</label>
+                    <input type="tel" id="phonePopup" name="phonePopup" placeholder="Enter phone number" class="form-control" required>
                 </div>
-
                 <div class="form-group">
-                    <label for="emergency">Emergency Contact</label>
-                    <input type="text" id="emergency" name="emergency" placeholder="Enter emergency contact" required>
+                    <label for="emergencyPopup">Emergency Contact</label>
+                    <input type="text" id="emergencyPopup" name="emergencyPopup" placeholder="Enter emergency contact" class="form-control" required>
                 </div>
-
                 <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" placeholder="Enter email address" required>
+                    <label for="emailPopup">Email Address</label>
+                    <input type="email" id="emailPopup" name="emailPopup" placeholder="Enter email address" class="form-control" required>
                 </div>
-
                 <div class="form-group">
-                    <label for="dob">Date of Birth</label>
-                    <input type="date" id="dob" name="dob" required>
+                    <label for="dobPopup">Date of Birth</label>
+                    <input type="date" id="dobPopup" name="dobPopup" class="form-control" required>
                 </div>
-
                 <div class="form-group">
-                    <label for="address">Location</label>
-                    <input type="text" id="address" name="location" placeholder="Enter residential address" required>
+                    <label for="addressPopup">Location</label>
+                    <input type="text" id="addressPopup" name="addressPopup" placeholder="Enter residential address" class="form-control" required>
                 </div>
-
                 <div class="form-group">
-                    <label for="school">School</label>
-                    <select id="school" name="school" required>
+                    <label for="schoolPopup">School</label>
+                    <select id="schoolPopup" name="schoolPopup" class="form-control" required>
                         <option value="">Select School</option>
                         <option value="school1">School 1</option>
                         <option value="school2">School 2</option>
                         <option value="school3">School 3</option>
                     </select>
                 </div>
-
-                <input type="submit" name="submit" value="Submit">
+                <div class="form-group d-flex justify-content-between">
+                    <input type="submit" name="update" value="Update" class="btn btn-success">
+                    <button type="button" id="cancelPopupButton" class="btn btn-secondary">Cancel</button>
+                </div>
             </form>
-
         </div>
-
-        <!-- Table -->
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Phone Number</th>
-                    <th>School</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Rows will be dynamically added here -->
-            </tbody>
-        </table>
-
     </div>
-</div>
 
-<script src="educators.js"></script>
-
+    <script src="assets/js/educators.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

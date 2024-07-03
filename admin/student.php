@@ -4,8 +4,6 @@
         <meta charset="UTF-8">
         <link rel="stylesheet" href="assets/css/adminDashboard.css">
         <link rel="stylesheet" href="assets/css/student.css">
-
-
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
         <title>Student Registration Form</title>
@@ -44,6 +42,10 @@
                     <legend>Personal Information</legend>
                     <label for="passport-picture">Passport Picture:</label>
                     <input type="file" id="passport-picture" accept="image/*"><br>
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" required><br>
+                    <label for="password">Password:</label>
+                    <input type="text" id="password" name="password" required><br>
                     <label for="first-name">First Name:</label>
                     <input type="text" id="first-name" required><br>
                     <label for="last-name">Last Name:</label>
@@ -135,9 +137,7 @@
         </table>
           
 
-
-
-<script src="assets/js/student.js"></script>
+<script src="/admin/assets/js/student.js"></script>
 
 </body>
 </html>

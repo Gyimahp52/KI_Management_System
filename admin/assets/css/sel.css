@@ -271,3 +271,59 @@ body {
     from {bottom: 30px; opacity: 1;} 
     to {bottom: 0; opacity: 0;}
 }
+
+
+.theme-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.theme-list li {
+    background: #f1f1f1;
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.theme-list li span {
+    flex-grow: 1;
+}
+
+.theme-list li input {
+    margin-right: 10px;
+}
+
+#themeListContainer {
+    max-height: 200px; /* Adjust height as needed */
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background-color: #fff;
+}
+
+.delete-button {
+    background: #e74c3c;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    margin-top: 0;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: block;
+}
+
+.delete-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.delete-button:hover:not(:disabled) {
+    background: #c0392b;
+}
+

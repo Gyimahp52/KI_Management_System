@@ -10,11 +10,19 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    const academicYearSelect = document.getElementById('academicYear');
     const schoolSelect = document.getElementById('school');
     const classSelect = document.getElementById('class');
     const termSelect = document.getElementById('term');
+    const reportAcademicYearSelect = document.getElementById('reportAcademicYear');
+    const reportSchoolSelect = document.getElementById('reportSchool');
+    const reportClassSelect = document.getElementById('reportClass');
+    const reportTermSelect = document.getElementById('reportTerm');
     const studentsList = document.getElementById('students-list');
     const saveScoresButton = document.getElementById('save-scores');
+    const loadReportsButton = document.getElementById('loadReports');
+    const selectAllCheckbox = document.getElementById('selectAll');
+    const downloadSelectedReportsButton = document.getElementById('downloadSelectedReports');
 
     // Mock data for schools, classes, and students
     const schools = [
@@ -39,28 +47,41 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
     // Populate school dropdown
-    schools.forEach(school => {
-        const option = document.createElement('option');
-        option.value = school.id;
-        option.textContent = school.name;
-        schoolSelect.appendChild(option);
-    });
+    function populateSchoolDropdown(selectElement) {
+        selectElement.innerHTML = '<option value="">--Select School--</option>';
+        schools.forEach(school => {
+            const option = document.createElement('option');
+            option.value = school.id;
+            option.textContent = school.name;
+            selectElement.appendChild(option);
+        });
+    }
+    populateSchoolDropdown(schoolSelect);
+    populateSchoolDropdown(reportSchoolSelect);
 
     // Populate class dropdown based on selected school
-    schoolSelect.addEventListener('change', () => {
-        classSelect.innerHTML = '<option value="">--Select Class--</option>';
-        studentsList.innerHTML = '';
-        const selectedSchoolId = parseInt(schoolSelect.value);
+    function populateClassDropdown(schoolSelectElement, classSelectElement) {
+        classSelectElement.innerHTML = '<option value="">--Select Class--</option>';
+        const selectedSchoolId = parseInt(schoolSelectElement.value);
         const filteredClasses = classes.filter(cls => cls.schoolId === selectedSchoolId);
         filteredClasses.forEach(cls => {
             const option = document.createElement('option');
             option.value = cls.id;
             option.textContent = cls.name;
-            classSelect.appendChild(option);
+            classSelectElement.appendChild(option);
         });
+    }
+
+    schoolSelect.addEventListener('change', () => {
+        populateClassDropdown(schoolSelect, classSelect);
     });
 
-    // Populate students list based on selected class and term
+    reportSchoolSelect.addEventListener('change', () => {
+        populateClassDropdown(reportSchoolSelect, reportClassSelect);
+    });
+
+    // Populate students list based on selected academic year, class, and term
+    academicYearSelect.addEventListener('change', updateStudentList);
     classSelect.addEventListener('change', updateStudentList);
     termSelect.addEventListener('change', updateStudentList);
 
@@ -69,7 +90,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const selectedClassId = parseInt(classSelect.value);
         const selectedSchoolId = parseInt(schoolSelect.value);
         const selectedTerm = termSelect.value;
-        if (selectedClassId && selectedSchoolId && selectedTerm) {
+        const selectedAcademicYear = academicYearSelect.value;
+        if (selectedClassId && selectedSchoolId && selectedTerm && selectedAcademicYear) {
             const filteredStudents = students.filter(stu => stu.classId === selectedClassId);
             const selectedSchool = schools.find(school => school.id === selectedSchoolId);
 
@@ -142,65 +164,99 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log('Scores saved:', scoresData);
         alert('Scores saved successfully!');
     });
+
+    // Load reports based on selected academic year, school, class, and term
+    loadReportsButton.addEventListener('click', () => {
+        const selectedAcademicYear = reportAcademicYearSelect.value;
+        const selectedSchoolId = parseInt(reportSchoolSelect.value);
+        const selectedClassId = parseInt(reportClassSelect.value);
+        const selectedTerm = reportTermSelect.value;
+
+        if (selectedAcademicYear && selectedSchoolId && selectedClassId && selectedTerm) {
+            const filteredStudents = students.filter(stu => stu.classId === selectedClassId);
+            const selectedSchool = schools.find(school => school.id === selectedSchoolId);
+
+            if (filteredStudents.length > 0 && selectedSchool) {
+                const studentList = document.getElementById("studentList");
+                studentList.innerHTML = ""; // Clear existing data
+
+                filteredStudents.forEach(student => {
+                    const row = document.createElement("tr");
+
+                    const checkboxCell = document.createElement("td");
+                    const checkbox = document.createElement("input");
+                    checkbox.type = "checkbox";
+                    checkbox.classList.add("student-checkbox");
+                    checkbox.value = student.name;
+                    checkboxCell.appendChild(checkbox);
+                    row.appendChild(checkboxCell);
+
+                    const nameCell = document.createElement("td");
+                    nameCell.textContent = student.name;
+                    row.appendChild(nameCell);
+
+                    const classCell = document.createElement("td");
+                    classCell.textContent = selectedSchool.name;
+                    row.appendChild(classCell);
+
+                    const termCell = document.createElement("td");
+                    termCell.textContent = selectedTerm;
+                    row.appendChild(termCell);
+
+                    const reportCell = document.createElement("td");
+                    const viewButton = document.createElement("button");
+                    viewButton.classList.add("action-button", "view-button");
+                    viewButton.textContent = "View";
+                    viewButton.addEventListener("click", () => viewReport(student.name));
+                    reportCell.appendChild(viewButton);
+                    row.appendChild(reportCell);
+
+                    const actionsCell = document.createElement("td");
+                    actionsCell.innerHTML = `
+                        <button class="action-button delete-button" onclick="deleteReport('${student.name}')">Delete</button>
+                        <button class="action-button download-button" onclick="downloadReport('${student.name}')">Download</button>
+                        <button class="action-button whatsapp-button" onclick="sendWhatsApp('${student.name}')"><i class="fa fa-whatsapp whatsapp-icon"></i> WhatsApp</button>
+                           
+                    `;
+                    row.appendChild(actionsCell);
+
+                    studentList.appendChild(row);
+                });
+            }
+        }
+    });
+
+    // Select all checkboxes
+    selectAllCheckbox.addEventListener('change', () => {
+        const checkboxes = document.querySelectorAll('.student-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = selectAllCheckbox.checked;
+        });
+    });
+
+    // Download selected reports
+    downloadSelectedReportsButton.addEventListener('click', () => {
+        const selectedCheckboxes = document.querySelectorAll('.student-checkbox:checked');
+        const selectedStudents = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
+        if (selectedStudents.length > 0) {
+            alert(`Downloading reports for: ${selectedStudents.join(', ')}`);
+            // Implement download functionality
+        } else {
+            alert('No students selected.');
+        }
+    });
 });
-
-function exportData(format) {
-    alert(`Exporting data as ${format}`);
-    // Implement export functionality
-}
-
-function openTab(tabName) {
-    const tabContent = document.querySelectorAll(".tab-content");
-    tabContent.forEach(tab => {
-        tab.style.display = "none";
-    });
-    document.getElementById(tabName).style.display = "block";
-}
-
-function generateReports() {
-    const studentList = document.getElementById("studentList");
-    studentList.innerHTML = ""; // Clear existing data
-
-    // Dummy data for demonstration
-    const students = [
-        { name: "John Doe", class: "5A", term: "Term 1" },
-        { name: "Jane Smith", class: "5A", term: "Term 1" }
-    ];
-
-    students.forEach(student => {
-        const row = document.createElement("tr");
-
-        const nameCell = document.createElement("td");
-        nameCell.textContent = student.name;
-        row.appendChild(nameCell);
-
-        const classCell = document.createElement("td");
-        classCell.textContent = student.class;
-        row.appendChild(classCell);
-
-        const termCell = document.createElement("td");
-        termCell.textContent = student.term;
-        row.appendChild(termCell);
-
-        const reportCell = document.createElement("td");
-        reportCell.innerHTML = '<a href="#">Generated Report</a>';
-        row.appendChild(reportCell);
-
-        const actionsCell = document.createElement("td");
-        actionsCell.innerHTML = `
-            <button onclick="viewReport('${student.name}')">View</button>
-            <button onclick="downloadReport('${student.name}')">Download</button>
-            <button onclick="sendWhatsApp('${student.name}')">Send via WhatsApp</button>
-        `;
-        row.appendChild(actionsCell);
-
-        studentList.appendChild(row);
-    });
-}
 
 function viewReport(name) {
     alert(`Viewing report for ${name}`);
     // Implement view functionality
+}
+
+function deleteReport(name) {
+    if (confirm(`Are you sure you want to delete the report for ${name}?`)) {
+        alert(`Report for ${name} deleted.`);
+        // Implement delete functionality
+    }
 }
 
 function downloadReport(name) {
@@ -211,4 +267,14 @@ function downloadReport(name) {
 function sendWhatsApp(name) {
     alert(`Sending report via WhatsApp for ${name}`);
     // Implement WhatsApp functionality
+}
+
+function openTab(tabName) {
+    const tabContent = document.querySelectorAll(".tab-content");
+    tabContent.forEach(tab => {
+        tab.style.display = "none";
+    });
+    document.getElementById(tabName).style.display = "block";
+    document.querySelector(`.tab-button.active`).classList.remove("active");
+    document.querySelector(`.tab-button[onclick="openTab('${tabName}')"]`).classList.add("active");
 }
