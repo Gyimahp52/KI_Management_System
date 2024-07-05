@@ -1,23 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        
-        <link rel="stylesheet" href="assets/css/sel.css">
-
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-        <title>SEL THEMES</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/admin/assets/css/sel.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <title>SEL THEMES</title>
+</head>
 <body>
-    
 <!--Side bar-->
 <?php include_once('includes/side_bar.php');?>
+
 <!--main content space-->
 <div class="main-content">
-<?php include_once('includes/header.php');?>
+    <?php include_once('includes/header.php');?>
 
-   
     <div class="stats-grid">
         <!-- SEL Theme Creation Form -->
         <div class="form-container">
@@ -25,14 +21,33 @@
             <form id="themeForm">
                 <label for="themeName">SEL Theme Name:</label>
                 <input type="text" id="themeName" name="themeName" required>
-                <button type="submit">Create SEL Theme</button>
+                <button type="submit">Create</button>
+                <button type="button" id="deleteThemes" class="delete-button" disabled>Delete SEL Theme</button>
             </form>
+            <div class="checkbox-group">
+                <div id="themeListContainer">
+                    <ul id="themeList" class="theme-list">
+                        <!-- Created themes will be listed here with checkboxes -->
+                    </ul>
+                </div>
+               
+            </div>
         </div>
 
         <!-- Assign SEL Themes to Schools -->
         <div class="form-container">
             <h2>Assign SEL Themes to Schools</h2>
             <form id="assignForm">
+                <label for="academicYear">Select Academic Year:</label>
+                <select id="academicYear" name="academicYear" required>
+                <option value="">--Select Academic Year--</option>
+                    <option value="2023-2024">2023-2024</option>
+                    <option value="2024-2025">2024-2025</option>
+                    <option value="2025-2026">2025-2026</option>
+                    <option value="2026-2027">2026-2027</option>
+                    <option value="2027-2028">2027-2028</option>
+                </select>
+
                 <label for="schools">Select School:</label>
                 <select id="schools" name="schools" required>
                     <!-- Dynamically populated -->
@@ -40,18 +55,13 @@
 
                 <label for="terms">Select Term:</label>
                 <select id="terms" name="terms" required>
+                <option value="">--Select Term--</option>
                     <option value="1">Term 1</option>
                     <option value="2">Term 2</option>
                     <option value="3">Term 3</option>
                 </select>
 
-                <label for="themes">Select SEL Themes:</label>
-                <div id="themes" class="checkbox-group">
-                    <!-- Dynamically populated -->
-                </div>
-                
                 <button type="submit" id="assignButton" disabled>Assign SEL Themes</button>
-                <button type="button" id="deleteThemes" disabled>Delete Selected SEL Themes</button>
             </form>
         </div>
 
@@ -61,6 +71,7 @@
             <table id="assignedTable">
                 <thead>
                     <tr>
+                        <th>Academic Year</th>
                         <th>School</th>
                         <th>Term</th>
                         <th>SEL Themes</th>
@@ -77,11 +88,6 @@
 
 <div id="toast" class="toast">Toast message</div>
 
-        
-
-
-
-<script src="assets/js/sel.js"></script>
-
+<script src="/admin/assets/js/sel.js"></script>
 </body>
 </html>

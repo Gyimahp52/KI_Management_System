@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
     </div>
 
-    <!-- Chatbot button -->
+    <!-- Chatbot -->
     <button class="chatbot-toggler">
         <span class="material-symbols-rounded">mode_comment</span>
         <span class="material-symbols-outlined">close</span>

@@ -87,7 +87,7 @@
      <!--Logout button-->
      <ul class="menu-item">
     <li>
-        <a href="logout.php">
+        <a href="index.php">
             <i class="fas fa-sign-out-alt"></i>
             <span>Log Out</span>
         </a>

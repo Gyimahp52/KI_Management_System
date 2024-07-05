@@ -119,471 +119,332 @@ function createStudent($conn) {
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
 
-@media (max-width: 768px) {
-  .sidebar {
-    width: 80px;
-  }
-  .sidebar:hover {
-    width: 250px;
-  }
-  .main-content {
-    width: calc(100% - 80px);
-  }
-  .main-content .header {
-    width: calc(100% - 80px);
-  }
-}
-* {
-  margin: 0;
-  padding: 0;
-  border: none;
-  outline: none;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
-body {
-  display: flex;
-}
-.sidebar {
-  background-color: #34495e;
-  color: white;
-  height: 100vh;
-  width: 117px;
-  position: sticky;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  overflow: hidden;
-  padding: 0 1.7rem;
-  transition: all 0.3s linear;
-  background: 113, 99, 186 255;
-  z-index: 2;
-}
-.sidebar:hover {
-  width: 310px;
-  transition: 0.5s;
-}
-.logo {
-  position: sticky;
-  height: 80px;
-  padding: 12px;
-}
-.menu-item {
-  border-radius: 20px;
-  padding: 15px 12px;
-  border-bottom: 1px solid #2c3e50;
-  cursor: pointer;
-  text-decoration: none;
-  color: white;
-  display: block;
-  position: relative;
-  list-style: none;
-}
-.menu-item li {
-  padding: 0;
-  margin: 1px 0;
-  border-radius: 8px;
-  transition: all 0.5s ease-in-out;
-}
-.menu-item :hover,
-.active {
-  background-color: #2980b9;
-  border-radius: 10px;
-}
-.menu-item a {
-  font-size: 17px;
-  align-items: center;
-  text-decoration: none;
-  color: white;
-  display: flex;
-  gap: 1.5rem;
-}
-.menu-item a span {
-  overflow: hidden;
-}
-.menu-item a i {
-  font-size: 1.2rem;
-}
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+            }
+            .sidebar:hover {
+                width: 250px;
+            }
+            .main-content {
+                width: calc(100% - 80px);
+            }
+            .main-content .header {
+                width: calc(100% - 80px);
+            }
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            border: none;
+            outline: none;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+        body {
+            display: flex;
+        }
+        .sidebar {
+            background-color: #34495e;
+            color: white;
+            height: 100vh;
+            width: 117px;
+            position: sticky;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            overflow: hidden;
+            padding: 0 1.7rem;
+            transition: all 0.3s linear;
+            background: 113, 99, 186 255;
+            z-index: 2;
+        }
+        .sidebar:hover {
+            width: 310px;
+            transition: 0.5s;
+        }
+        .logo {
+            position: sticky;
+            height: 80px;
+            padding: 12px;
+        }
+        .menu-item {
+            border-radius: 20px;
+            padding: 15px 12px;
+            border-bottom: 1px solid #2c3e50;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            display: block;
+            position: relative;
+            list-style: none;
+        }
+        .menu-item li {
+            padding: 0;
+            margin: 1px 0;
+            border-radius: 8px;
+            transition: all 0.5s ease-in-out;
+        }
+        .menu-item :hover,
+        .active {
+            background-color: #2980b9;
+            border-radius: 10px;
+        }
+        .menu-item a {
+            font-size: 17px;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            gap: 1.5rem;
+        }
+        .menu-item a span {
+            overflow: hidden;
+        }
+        .menu-item a i {
+            font-size: 1.2rem;
+        }
 
-.main-content {
-  width: calc(100% - 117px);
-  padding: 1rem;
-  background: #ecf0f1;
-  position: relative;
-}
-.main-content .header {
-  position: fixed;
-  top: 0;
-  right: 5;
-  width: 76vw;
-  height: 10vh;
-  background: white;
-  display: flex;
-  align-items: normal;
-  justify-content: normal;
-  box-shadow: 0 30px 8px 0 rgba(0, 0, 0, 0.2);
-  z-index: 1;
-  border-radius: 25px;
-}
-.main-content .header .nav {
-  width: 100%;
-  display: flex;
-  align-items: center;
-}
-.main-content .header .nav .search {
-  flex: 3;
-  display: flex;
-  justify-content: center;
-}
-.main-content .header .nav .search i {
-  padding: 15px;
-  margin-right: 2px;
-}
-.main-content .header .nav .search input[type="text"] {
-  border: none;
-  background: #f1f1f1;
-  padding: 12px;
-  width: 400px;
-  border-radius: 12px;
-  position: sticky;
-}
-.main-content .header .nav img {
-  width: 50px;
-  height: 50px;
-  cursor: pointer;
-  border-radius: 50%;
-}
-.container {
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin-top: 10vh;
-  background-color: rgb(216, 212, 200);
-}
-.form-section {
-  margin-bottom: 20px;
-}
-.class-list {
-  margin-top: 10px;
-}
-.class-list-item {
-  margin-bottom: 5px;
-}
-.table-container {
-  margin-top: 20px;
-}
-.toast-container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
-}
-.landscape-form {
-  max-height: 60vh;
-  overflow-y: auto;
-}
-.landscape-form .form-row {
-  display: flex;
-  flex-wrap: nowrap;
-}
-.landscape-form .form-group {
-  flex: 1;
-  padding: 5px;
-}
+        .main-content {
+            width: calc(100% - 117px);
+            padding: 1rem;
+            background: #ecf0f1;
+            position: relative;
+        }
+        .main-content .header {
+            position: fixed;
+            top: 0;
+            right: 5;
+            width: 76vw;
+            height: 10vh;
+            background: white;
+            display: flex;
+            align-items: normal;
+            justify-content: normal;
+            box-shadow: 0 30px 8px 0 rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 25px;
+        }
+        .main-content .header .nav {
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+        .main-content .header .nav .search {
+            flex: 3;
+            display: flex;
+            justify-content: center;
+        }
+        .main-content .header .nav .search i {
+            padding: 15px;
+            margin-right: 2px;
+        }
+        .main-content .header .nav .search input[type="text"] {
+            border: none;
+            background: #f1f1f1;
+            padding: 12px;
+            width: 400px;
+            border-radius: 12px;
+            position: sticky;
+        }
+        .main-content .header .nav img {
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        .container {
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 10vh;
+            background-color: rgb(216, 212, 200);
+        }
+        .form-section {
+            margin-bottom: 20px;
+        }
+        .class-list {
+            margin-top: 10px;
+        }
     </style>
-    <title>School Registration Form</title>
+    <title>School Admin Dashboard</title>
 </head>
 <body>
-    <!-- Sidebar -->
-    <?php include_once('includes/side_bar.php');?>
-
-    <!-- School form body container -->
-    <div class="container">
-        <h2>School Registration Form</h2>
-        <form id="schoolForm" enctype="multipart/form-data" novalidate>
-            <input type="hidden" name="action" value="create_school" />
-            <div class="form-row form-section">
-                <div class="form-group col-md-3">
-                    <label for="schoolId">School ID</label>
-                    <input type="text" class="form-control" name="schoolId" id="schoolId" placeholder="Enter School ID" required />
-                    <div class="invalid-feedback">School ID is required.</div>
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="region">Region</label>
-                    <select class="form-control" name="region" id="region" required>
-                        <option value="">Select Region</option>
-                        <option value="north">northern Region</option>
-                        <option value="south">southen Region</option>
-                        <option value="greatorAccra">Greater Accra Region</option>
-                    </select>
-                    <div class="invalid-feedback">Region is required.</div>
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="town">Town</label>
-                    <input type="text" class="form-control" name="town" id="town" placeholder="Enter Town" required />
-                    <div class="invalid-feedback">Town is required.</div>
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="educator">Educator</label>
-                    <select class="form-control" name="educator" id="educator" required>
-                        <option value="">Select Educator</option>
-                        <option value="bright">bright</option>
-                        <option value="killua">killua</option>
-                    </select>
-                    <div class="invalid-feedback">Educator is required.</div>
-                </div>
-            </div>
-            <div class="form-row form-section">
-                <div class="form-group col-md-6">
-                    <label for="schoolName">School Name</label>
-                    <input type="text" class="form-control" name="schoolName" id="schoolName" placeholder="Enter School Name" required />
-                    <div class="invalid-feedback">School Name is required.</div>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="schoolLogo">School Logo</label>
-                    <input type="file" class="form-control-file" name="schoolLogo" id="schoolLogo" />
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Add School</button>
-        </form>
-
-        <div id="result" class="mt-4"></div>
-        <div class="table-container">
-            <h3>School List</h3>
-            <table class="table table-striped" id="schoolTable">
-                <thead>
-                    <tr>
-                        <th>School ID</th>
-                        <th>Region</th>
-                        <th>Town</th>
-                        <th>Educator</th>
-                        <th>School Name</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="assets/images/ki-logo.jpeg" alt="Logo" />
         </div>
+        <ul class="menu-item">
+            <li>
+                <a href="#">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-school"></i>
+                    <span>Schools</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>Classes</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Students</span>
+                </a>
+            </li>
+        </ul>
     </div>
-
-    <!-- Class Form Modal -->
-    <div class="modal fade" id="classFormModal" tabindex="-1" role="dialog" aria-labelledby="classFormModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="classFormModalLabel">Add Class</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+    <div class="main-content">
+        <div class="header">
+            <div class="nav">
+                <div class="search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search..." />
                 </div>
-                <div class="modal-body">
-                    <form id="classForm" novalidate>
-                        <input type="hidden" name="action" value="create_class" />
+                <img src="assets/images/profile.jpg" alt="Profile Picture" />
+            </div>
+        </div>
+        <div class="container p-4">
+            <div class="row form-section">
+                <div class="col-12">
+                    <h2>Create New School</h2>
+                    <form id="create-school-form" action="db_config.php" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="action" value="create_school">
                         <div class="form-group">
-                            <label for="className">Class Name</label>
-                            <input type="text" class="form-control" name="className" id="className" placeholder="Enter Class Name" required />
-                            <div class="invalid-feedback">Class Name is required.</div>
+                            <label for="schoolId">School ID:</label>
+                            <input type="number" class="form-control" id="schoolId" name="schoolId" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Add Class</button>
+                        <div class="form-group">
+                            <label for="region">Region:</label>
+                            <input type="text" class="form-control" id="region" name="region" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="town">Town:</label>
+                            <input type="text" class="form-control" id="town" name="town" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="educator">Educator:</label>
+                            <input type="text" class="form-control" id="educator" name="educator" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="schoolName">School Name:</label>
+                            <input type="text" class="form-control" id="schoolName" name="schoolName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="schoolLogo">School Logo:</label>
+                            <input type="file" class="form-control-file" id="schoolLogo" name="schoolLogo">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create School</button>
                     </form>
-                    <div id="classTableContainer" class="mt-3">
-                        <h5>Classes</h5>
-                        <table class="table table-striped" id="classTable">
-                            <thead>
-                                <tr>
-                                    <th>Class Name</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Student Form Modal -->
-    <div class="modal fade" id="studentFormModal" tabindex="-1" role="dialog" aria-labelledby="studentFormModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="studentFormModalLabel">Add Student</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+            <div class="row form-section">
+                <div class="col-12">
+                    <h2>Create New Class</h2>
+                    <form id="create-class-form" action="db_config.php" method="POST">
+                        <input type="hidden" name="action" value="create_class">
+                        <div class="form-group">
+                            <label for="schoolId">School ID:</label>
+                            <input type="number" class="form-control" id="schoolId" name="schoolId" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="className">Class Name:</label>
+                            <input type="text" class="form-control" id="className" name="className" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create Class</button>
+                    </form>
                 </div>
-                <div class="modal-body landscape-form">
-                    <form id="studentForm" enctype="multipart/form-data" novalidate>
-                        <input type="hidden" name="action" value="create_student" />
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="passportPicture">Passport Picture</label>
-                                <input type="file" class="form-control-file" name="passportPicture" id="passportPicture" required />
-                                <div class="invalid-feedback">Passport Picture is required.</div>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="firstName">First Name</label>
-                                <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter First Name" required />
-                                <div class="invalid-feedback">First Name is required.</div>
-                            </div>
+            </div>
+
+            <div class="row form-section">
+                <div class="col-12">
+                    <h2>Create New Student</h2>
+                    <form id="create-student-form" action="db_config.php" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="action" value="create_student">
+                        <div class="form-group">
+                            <label for="classId">Class ID:</label>
+                            <input type="number" class="form-control" id="classId" name="classId" required>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="lastName">Last Name</label>
-                                <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter Last Name" required />
-                                <div class="invalid-feedback">Last Name is required.</div>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="dateOfBirth">Date of Birth</label>
-                                <input type="date" class="form-control" name="dateOfBirth" id="dateOfBirth" required />
-                                <div class="invalid-feedback">Date of Birth is required.</div>
-                            </div>
+                        <div class="form-group">
+                            <label for="firstName">First Name:</label>
+                            <input type="text" class="form-control" id="firstName" name="firstName" required>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="gender">Gender</label>
-                                <select class="form-control" name="gender" id="gender" required>
-                                    <option value="">Select Gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                                <div class="invalid-feedback">Gender is required.</div>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="hand">Hand</label>
-                                <select class="form-control" name="hand" id="hand" required>
-                                    <option value="">Select</option>
-                                    <option value="left">Left dominant</option>
-                                    <option value="right">Right dominant</option>
-                                    <div class="invalid-feedback">Hand is required.</div>
-                                </select>
-                            </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name:</label>
+                            <input type="text" class="form-control" id="lastName" name="lastName" required>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="foot">Foot</label>
-                                <select class="form-control" name="foot" id="foot" required>
-                                    <option value="">Select</option>
-                                    <option value="left">Left</option>
-                                    <option value="right">Right</option>
-                                    <div class="invalid-feedback">Foot is required.</div>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="eyeSight">Eye Sight</label>
-                                <select class="form-control" name="eyeSight" id="eyeSight" required>
-                                    <option value="">Select</option>
-                                    <option value="normal">Normal</option>
-                                    <option value="short-sighted">Short-sighted</option>
-                                    <option value="long-sighted">Long-sighted</option>
-                                    <div class="invalid-feedback">Eye Sight is required.</div>
-                                </select>
-                            </div>
+                        <div class="form-group">
+                            <label for="dateOfBirth">Date of Birth:</label>
+                            <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" required>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="height">Height (cm)</label>
-                                <input type="text" class="form-control" name="height" id="height" placeholder="Enter Height" required />
-                                <div class="invalid-feedback">Height is required.</div>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="weight">Weight (kg)</label>
-                                <input type="text" class="form-control" name="weight" id="weight" placeholder="Enter Weight" required />
-                                <div class="invalid-feedback">Weight is required.</div>
-                            </div>
+                        <div class="form-group">
+                            <label for="gender">Gender:</label>
+                            <select class="form-control" id="gender" name="gender" required>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
                         </div>
-                        <fieldset>
-                            <legend>Parent/Guardian Information</legend>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="guardianName">Name</label>
-                                    <input type="text" class="form-control" name="guardianName" id="guardianName" placeholder="Enter Name" required />
-                                    <div class="invalid-feedback">Name is required.</div>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="guardianPhoneNumber">Phone Number</label>
-                                    <input type="text" class="form-control" name="guardianPhoneNumber" id="guardianPhoneNumber" placeholder="Enter Phone Number" required />
-                                    <div class="invalid-feedback">Phone Number is required.</div>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="guardianWhatsAppNumber">WhatsApp Number</label>
-                                    <input type="text" class="form-control" name="guardianWhatsAppNumber" id="guardianWhatsAppNumber" placeholder="Enter WhatsApp Number" required />
-                                    <div class="invalid-feedback">WhatsApp Number is required.</div>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="guardianEmailAddress">Email Address</label>
-                                    <input type="email" class="form-control" name="guardianEmailAddress" id="guardianEmailAddress" placeholder="Enter Email Address" required />
-                                    <div class="invalid-feedback">Email Address is required.</div>
-                                </div>
-                            </div>
-                        </fieldset>
-                        <button type="submit" class="btn btn-primary">Add Student</button>
+                        <div class="form-group">
+                            <label for="hand">Hand:</label>
+                            <select class="form-control" id="hand" name="hand" required>
+                                <option value="Left">Left</option>
+                                <option value="Right">Right</option>
+                                <option value="Ambidextrous">Ambidextrous</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="foot">Foot:</label>
+                            <select class="form-control" id="foot" name="foot" required>
+                                <option value="Left">Left</option>
+                                <option value="Right">Right</option>
+                                <option value="Both">Both</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="eyeSight">Eye Sight:</label>
+                            <input type="text" class="form-control" id="eyeSight" name="eyeSight" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="height">Height (cm):</label>
+                            <input type="number" class="form-control" id="height" name="height" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="weight">Weight (kg):</label>
+                            <input type="number" class="form-control" id="weight" name="weight" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="guardianName">Guardian Name:</label>
+                            <input type="text" class="form-control" id="guardianName" name="guardianName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="guardianPhoneNumber">Guardian Phone Number:</label>
+                            <input type="text" class="form-control" id="guardianPhoneNumber" name="guardianPhoneNumber" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="guardianWhatsAppNumber">Guardian WhatsApp Number:</label>
+                            <input type="text" class="form-control" id="guardianWhatsAppNumber" name="guardianWhatsAppNumber" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="guardianEmailAddress">Guardian Email Address:</label>
+                            <input type="email" class="form-control" id="guardianEmailAddress" name="guardianEmailAddress" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="passportPicture">Passport Picture:</label>
+                            <input type="file" class="form-control-file" id="passportPicture" name="passportPicture">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create Student</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script>
-    $(document).ready(function() {
-        $('#schoolForm').on('submit', function(event) {
-            event.preventDefault();
-            
-            const data = new FormData(this);
-            $.ajax({
-                url: 'school.php',
-                type: 'POST',
-                data: data,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    alert(response);
-                    location.reload(); // Reload page to see the new school
-                }
-            });
-        });
-
-        $('#classForm').on('submit', function(event) {
-            event.preventDefault();
-            
-            const data = new FormData(this);
-            $.ajax({
-                url: 'school.php',
-                type: 'POST',
-                data: data,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    alert(response);
-                    $('#classFormModal').modal('hide');
-                }
-            });
-        });
-
-        $('#studentForm').on('submit', function(event) {
-            event.preventDefault();
-            
-            const data = new FormData(this);
-            $.ajax({
-                url: 'school.php',
-                type: 'POST',
-                data: data,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    alert(response);
-                    $('#studentFormModal').modal('hide');
-                }
-            });
-        });
-    });
-    </script>
 </body>
 </html>
