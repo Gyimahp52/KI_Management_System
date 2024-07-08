@@ -309,17 +309,7 @@ function createStudent($conn) {
       <form id="schoolForm" novalidate>
         <input type="hidden" id="editingSchoolId" />
         <div class="form-row form-section">
-          <div class="form-group col-md-3">
-            <label for="schoolId">School ID</label>
-            <input
-              type="text"
-              class="form-control"
-              id="schoolId"
-              placeholder="Enter School ID"
-              required
-            />
-            <div class="invalid-feedback">School ID is required.</div>
-          </div>
+         
           <div class="form-group col-md-3">
             <label for="region">Region</label>
             <select class="form-control" id="region" required>
