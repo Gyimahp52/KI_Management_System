@@ -5,8 +5,8 @@ $username = "root";
 $password = "";
 $dbname = "ki_db";
 
-// Create connection
-//$conn = new mysqli($servername, $username, $password, $dbname);
+//Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
