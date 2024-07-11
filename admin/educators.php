@@ -1,11 +1,6 @@
 <?php
 session_start();
-include('includes/dbconnection.php');   
-
-if (!isset($_SESSION['user_id']) || strlen($_SESSION['user_id']) == 0) {
-    header('location:logout.php');
-    exit();
-}
+include('includes/dbconnection.php');
 
 // Validation and Sanitization Functions
 function validate_name($name) {
@@ -167,8 +162,8 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
                         <input type="date" id="dob" name="dob" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="address">Location</label>
-                        <input type="text" id="address" name="address" placeholder="Enter residential address" class="form-control" required>
+                        <label for="location">Location</label>
+                        <input type="text" id="location" name="location" placeholder="Enter residential address" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="school">School</label>
@@ -208,7 +203,7 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
                         </td>
                     </tr>
                     <!-- Edit Modal -->
-                    <div class="modal fade" id="editModal<?php echo $educator->id; ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?php echo $educator->id; ?>" aria-hidden="true">
+                  <div class="modal fade" id="editModal<?php echo $educator->id; ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?php echo $educator->id; ?>" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -273,7 +268,7 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
             </table>
         </div>
     </div>
-
+    <script src="assests/js/educators.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

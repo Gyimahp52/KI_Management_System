@@ -137,7 +137,7 @@
         </table>
           
 
-<script src="/admin/assets/js/student.js"></script>
+<script src="assets/js/student.js"></script>
 
 </body>
 </html>
