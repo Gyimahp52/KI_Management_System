@@ -39,6 +39,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "<script>alert('All fields are required.'); window.location.href = 'school.php';</script>";
             }
             break;
+
+            case "delete_school":
+                $schoolId = trim($_POST["schoolId"]);
+    
+                if (!empty($schoolId)) {
+                    $result = deleteSchool($schoolId);
+    
+                    if ($result) {
+                        $message = "School deleted successfully.";
+                    } else {
+                        $message = "Error deleting school.";
+                    }
+                } else {
+                    $message = "Invalid school ID.";
+                }
+    
+                echo "<script>alert('{$message}'); window.location.href = 'school.php';</script>";
+                break;
+    
+            case "edit_school":
+                $schoolId = trim($_POST["schoolId"]);
+                $schoolName = trim($_POST["schoolName"]);
+                $region = trim($_POST["region"]);
+                $town = trim($_POST["town"]);
+                $educator = trim($_POST["educator"]);
+                $logoFile = isset($_FILES['schoolLogo']) ? $_FILES['schoolLogo'] : null;
+    
+                if (!empty($schoolId) && !empty($schoolName) && !empty($region) && !empty($town) && !empty($educator)) {
+                    $result = updateSchool($schoolId, $schoolName, $region, $town, $educator, $logoFile);
+    
+                    if ($result) {
+                        $message = "School updated successfully.";
+                    } else {
+                        $message = "Error updating school.";
+                    }
+                } else {
+                    $message = "All fields are required.";
+                }
+    
+                echo "<script>alert('{$message}'); window.location.href = 'school.php';</script>";
+                break;
             
         case 'create_student':
             $studentId = trim($_POST['student_id']);
