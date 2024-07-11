@@ -1,4 +1,4 @@
-<?php include('db_config2.php')?>
+<?php include 'db_config.php'; //include('db_config2.php')?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -193,7 +193,7 @@
 
     <div class="container">
       <h2>School Registration Form</h2>
-      <form id="schoolForm" action="db_config2.php" method="POST" enctype="multipart/form-data" novalidate>
+      <form id="schoolForm" action="process.php" method="POST" enctype="multipart/form-data" novalidate>
         <input type="hidden" name="action" value="create_school">
         <input type="hidden" id="editingSchoolId" name="schoolId" />
         <div class="form-row form-section">
@@ -229,6 +229,8 @@
             <div class="invalid-feedback">Educator is required.</div>
           </div>
         </div>
+
+        <!--  SCHOOL NAME -->
         <div class="form-row form-section">
           <div class="form-group col-md-6">
             <label for="schoolName">School Name</label>
@@ -264,15 +266,15 @@
               if ($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()) {
                   echo "<tr>
-                          <td>{$row['school_id']}</td>
+                          <td>{$row['id']}</td>
                           <td>{$row['region']}</td>
                           <td>{$row['town']}</td>
                           <td>{$row['educator']}</td>
                           <td>{$row['school_name']}</td>
                           <td>
-                            <button class='btn btn-primary btn-sm add-class' data-id='{$row['school_id']}'>Add Class</button>
-                            <button class='btn btn-warning btn-sm edit-school' data-id='{$row['school_id']}'>Edit</button>
-                            <button class='btn btn-danger btn-sm delete-school' data-id='{$row['school_id']}'>Delete</button>
+                            <button class='btn btn-primary btn-sm add-class' data-id='{$row['id']}'>Add Class</button>
+                            <button class='btn btn-warning btn-sm edit-school' data-id='{$row['id']}'>Edit</button>
+                            <button class='btn btn-danger btn-sm delete-school' data-id='{$row['id']}'>Delete</button>
                           </td>
                         </tr>";
                 }
