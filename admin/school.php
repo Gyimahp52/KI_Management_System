@@ -304,7 +304,7 @@ body {
                                     <td>
                                         <button class='btn btn-primary btn-sm add-class' data-id='{$row['id']}'>Add Class</button>
                                         <button class='btn btn-warning btn-sm edit-school' data-id='{$row['id']}'>Edit</button>
-                                        <button class='btn btn-danger btn-sm delete-school' data-id='{$row['id']}'>Delete</button>
+                                        <button  class='btn btn-danger btn-sm delete-school' data-id='{$row['id']}'>Delete</button>
                                     </td>
                                   </tr>";
                         }
