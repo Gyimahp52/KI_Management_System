@@ -170,4 +170,79 @@ function generateSchoolId($schoolName) {
     $suffix = str_pad(rand(0, 999), 4, '0', STR_PAD_LEFT);
     return $prefix . $suffix;
 }
+
+
+// functions.php
+
+/**
+ * Deletes a school from the database.
+ * 
+ * @param int $schoolId The ID of the school to be deleted.
+ * @return bool Returns true if the school was deleted successfully, false otherwise.
+ */
+function deleteSchool($schoolId) {
+    global $conn;
+
+    // Prepare the SQL statement
+    $stmt = $conn->prepare("DELETE FROM schools WHERE id = ?");
+    $stmt->bind_param("i", $schoolId);
+
+    // Execute the statement
+    if ($stmt->execute()) {
+        $stmt->close();
+        return true;
+    } else {
+        $stmt->close();
+        return false;
+    }
+}
+
+
+// functions.php
+
+/**
+ * Updates a school's information in the database.
+ * 
+ * @param int $schoolId The ID of the school to be updated.
+ * @param string $schoolName The new name of the school.
+ * @param string $region The new region of the school.
+ * @param string $town The new town of the school.
+ * @param string $educator The new educator of the school.
+ * @param array|null $logoFile The new logo file of the school.
+ * @return bool Returns true if the school was updated successfully, false otherwise.
+ */
+function updateSchool($schoolId, $schoolName, $region, $town, $educator, $logoFile) {
+    global $conn;
+
+    // Initialize SQL statement
+    $sql = "UPDATE schools SET school_name = ?, region = ?, town = ?, educator = ?";
+    $params = [$schoolName, $region, $town, $educator];
+    $types = "ssss";
+
+    // Handle the school logo if provided
+    if ($logoFile && $logoFile['error'] == UPLOAD_ERR_OK) {
+        $logoContent = file_get_contents($logoFile['tmp_name']);
+        $sql .= ", school_logo = ?";
+        $params[] = $logoContent;
+        $types .= "b";
+    }
+
+    $sql .= " WHERE id = ?";
+    $params[] = $schoolId;
+    $types .= "i";
+
+    // Prepare the SQL statement
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param($types, ...$params);
+
+    // Execute the statement
+    if ($stmt->execute()) {
+        $stmt->close();
+        return true;
+    } else {
+        $stmt->close();
+        return false;
+    }
+}
+
 ?>
