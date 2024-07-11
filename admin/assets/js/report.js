@@ -216,7 +216,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         <button class="action-button delete-button" onclick="deleteReport('${student.name}')">Delete</button>
                         <button class="action-button download-button" onclick="downloadReport('${student.name}')">Download</button>
                         <button class="action-button whatsapp-button" onclick="sendWhatsApp('${student.name}')"><i class="fa fa-whatsapp whatsapp-icon"></i> WhatsApp</button>
-                           
                     `;
                     row.appendChild(actionsCell);
 
@@ -245,36 +244,240 @@ document.addEventListener("DOMContentLoaded", () => {
             alert('No students selected.');
         }
     });
-});
 
-function viewReport(name) {
-    alert(`Viewing report for ${name}`);
-    // Implement view functionality
-}
+    function viewReport(name) {
+        // Fetch student data based on name (mock data here)
+        const student = students.find(stu => stu.name === name);
+        const studentClass = classes.find(cls => cls.id === student.classId);
+        const studentSchool = schools.find(sch => sch.id === studentClass.schoolId);
 
-function deleteReport(name) {
-    if (confirm(`Are you sure you want to delete the report for ${name}?`)) {
-        alert(`Report for ${name} deleted.`);
-        // Implement delete functionality
+        // Populate the report
+        document.getElementById('student-name').textContent = student.name;
+        document.getElementById('student-name-info').textContent = student.name;
+        document.getElementById('student-school').textContent = studentSchool.name;
+        document.getElementById('student-school-info').textContent = studentSchool.name;
+        document.getElementById('student-class-info').textContent = studentClass.name;
+
+        // Show the report container
+        document.getElementById('report-view').style.display = 'block';
+
+        // Re-initialize the charts
+        new Chart(document.getElementById('keqBarChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ['Decision Making', 'Teamwork', 'Determination', 'Problem-solving', 'No Failure', 'Curiosity', 'Optimism', 'Self-confidence', 'Honesty', 'Experience', 'Kindness'],
+                datasets: [
+                    {
+                        label: 'Base',
+                        backgroundColor: '#50C878',
+                        data: [50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50]
+                    },
+                    {
+                        label: 'Improvement',
+                        backgroundColor: '#0EB7F7',
+                        data: [8, 9, 9, 4, 8, 5, 7, 9, 9, 5, 7]
+                    },
+                    {
+                        label: 'Target',
+                        backgroundColor: '#F7A60E',
+                        data: [42, 41, 41, 46, 42, 45, 43, 41, 41, 45, 43]
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Kinesthetic Emotional Intelligence Quotient (KEQ)',
+                        color: 'white',
+                        font: {
+                            size: 18,
+                            weight: 'bold'
+                        },
+                        padding: {
+                            top: 10,
+                            bottom: 30
+                        }
+                    },
+                    legend: {
+                        display: true,
+                        position: 'bottom',
+                        labels: {
+                            color: 'white',
+                            font: {
+                                weight: 'bold'
+                            }
+                        }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y;
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                        ticks: {
+                            color: 'white',
+                            font: {
+                                weight: 'bold'
+                            }
+                        }
+                    },
+                    y: {
+                        stacked: true,
+                        beginAtZero: true,
+                        ticks: {
+                            color: 'white',
+                            font: {
+                                weight: 'bold'
+                            },
+                            callback: function(value, index, ticks) {
+                                return value + '%';
+                            }
+                        },
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('selPieChart').getContext('2d'), {
+            type: 'pie',
+            data: {
+                labels: ['Self Awareness', 'Self Management', 'Social Awareness', 'Relationship Skills', 'Responsible Decision Making'],
+                datasets: [{
+                    data: [18, 18, 10, 18, 18],
+                    backgroundColor: [
+                        '#FF6384',
+                        '#36A2EB',
+                        '#FFCE56',
+                        '#4BC0C0',
+                        '#9966FF'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Competencies Chart',
+                        color: 'white',
+                        font: {
+                            size: 30,
+                            weight: 'bold'
+                        },
+                        padding: {
+                            top: 10,
+                            bottom: 30
+                        }
+                    },
+                    legend: {
+                        display: true,
+                        position: 'bottom',
+                        labels: {
+                            color: 'white',
+                            font: {
+                                weight: 'bold'
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.raw;
+                                const total = context.chart._metasets[context.datasetIndex].total;
+                                const percentage = ((value / total) * 100).toFixed(2);
+                                return `${label}: ${value} (${percentage}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('csBarChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ['First Month', 'Second Month', 'Third Month'],
+                datasets: [
+                    {
+                        label: 'Heart (SH)',
+                        backgroundColor: '#FF6384',
+                        data: [9, 9, 7]
+                    },
+                    {
+                        label: 'Mind (SM)',
+                        backgroundColor: '#36A2EB',
+                        data: [8, 4, 9]
+                    },
+                    {
+                        label: 'Will (SW)',
+                        backgroundColor: '#FFCE56',
+                        data: [9, 8, 5]
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
     }
-}
 
-function downloadReport(name) {
-    alert(`Downloading report for ${name}`);
-    // Implement download functionality
-}
+    window.viewReport = viewReport;
 
-function sendWhatsApp(name) {
-    alert(`Sending report via WhatsApp for ${name}`);
-    // Implement WhatsApp functionality
-}
+    function deleteReport(name) {
+        if (confirm(`Are you sure you want to delete the report for ${name}?`)) {
+            alert(`Report for ${name} deleted.`);
+            // Implement delete functionality
+        }
+    }
 
-function openTab(tabName) {
-    const tabContent = document.querySelectorAll(".tab-content");
-    tabContent.forEach(tab => {
-        tab.style.display = "none";
-    });
-    document.getElementById(tabName).style.display = "block";
-    document.querySelector(`.tab-button.active`).classList.remove("active");
-    document.querySelector(`.tab-button[onclick="openTab('${tabName}')"]`).classList.add("active");
-}
+    window.deleteReport = deleteReport;
+
+    function downloadReport(name) {
+        alert(`Downloading report for ${name}`);
+        // Implement download functionality
+    }
+
+    window.downloadReport = downloadReport;
+
+    function sendWhatsApp(name) {
+        alert(`Sending report via WhatsApp for ${name}`);
+        // Implement WhatsApp functionality
+    }
+
+    window.sendWhatsApp = sendWhatsApp;
+
+    function openTab(tabName) {
+        const tabContent = document.querySelectorAll(".tab-content");
+        tabContent.forEach(tab => {
+            tab.style.display = "none";
+        });
+        document.getElementById(tabName).style.display = "block";
+        document.querySelector(`.tab-button.active`).classList.remove("active");
+        document.querySelector(`.tab-button[onclick="openTab('${tabName}')"]`).classList.add("active");
+    }
+
+    window.openTab = openTab;
+});

@@ -6,7 +6,7 @@ body {
     padding: 0;
 }
 
-.container {
+.main-container {
     width: 100%;
     padding: 2rem;
     background-color: #fff;
@@ -183,4 +183,125 @@ th {
 
 .whatsapp-icon {
     margin-right: 5px;
+}
+
+
+
+/* Additional CSS for report view */
+#report-view {
+    display: none;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ddd;
+    margin: 20px 0;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+} 
+
+.report-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(43, 41, 41, 0.1);
+    position: relative;
+} 
+
+.faded-text {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 2em;
+    color: rgba(0, 0, 0, 0.1);
+    transform: rotate(0deg);
+}
+
+h1 {
+    text-align: center;
+    margin-top: 60px;
+}
+
+h2, h3 {
+    text-align: left;
+}
+
+
+.container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .left-side, .right-side {
+    flex: 1;
+    margin: 20px;
+  }
+  
+  .left-side p, .right-side p {
+    margin: 10px 0;
+  }
+
+
+
+canvas {
+    max-height: 15%;
+    display: block;
+    margin: 10 auto 20px;
+    max-width: 100%;
+    background-color: rgb(45, 44, 44);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+footer {
+    background-color: #fff;
+    color: #040404;
+    padding: 20px;
+}
+
+footer p {
+    margin: 0;
+}
+
+.contact-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.link {
+    text-decoration: underline;
+    color: #add8e6; /* light blue */
+    cursor: pointer;
+}
+
+.link:hover {
+    color: #87ceeb; /* darker blue */
+}
+
+.ki_number {
+    margin: 0 auto;
+}
+
+.ki_link {
+    text-decoration: underline;
+    color: #add8e6; /* light blue */
+    cursor: pointer;
+}
+
+.ki_link:hover {
+    color: #87ceeb; /* darker blue */
 }
