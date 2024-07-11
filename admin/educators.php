@@ -1,10 +1,8 @@
 <?php
 session_start();
-include('includes/dbconnection.php');   
-
-if (!isset($_SESSION['user_id']) || strlen($_SESSION['user_id']) == 0) {
-    header('location:logout.php');
-    exit();
+include('includes/dbconnection.php');
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    error_log('POST request received: ' . print_r($_POST, true));
 }
 
 // Validation and Sanitization Functions
@@ -95,7 +93,55 @@ if (isset($_POST['submit'])) {
         }
     }
 }
+/// Edit educator
+if (isset($_POST['edit'])) {
+    $id = $_POST['id'];
+    $name = sanitize_input($_POST['edit_name']);
+    $phone = sanitize_input($_POST['edit_phone']);
+    $school = sanitize_input($_POST['edit_school']);
 
+    if (!validate_name($name) || !validate_phone($phone)) {
+        echo '<script>alert("Invalid input. Please check the name and phone number.");</script>';
+    } else {
+        try {
+            $sql = "UPDATE educators SET name = :name, phone_number = :phone, school = :school WHERE id = :id";
+            $query = $dbh->prepare($sql);
+            $query->bindParam(':id', $id, PDO::PARAM_INT);
+            $query->bindParam(':name', $name, PDO::PARAM_STR);
+            $query->bindParam(':phone', $phone, PDO::PARAM_STR);
+            $query->bindParam(':school', $school, PDO::PARAM_STR);
+            $query->execute();
+
+            echo '<script>
+            alert("Educator details updated successfully.");
+            window.location.href = "educators.php";
+            </script>';
+        } catch (PDOException $e) {
+            echo '<script>alert("Database error occurred: ' . $e->getMessage() . '");</script>';
+            error_log($e->getMessage(), 3, '/var/tmp/my-errors.log');
+        }
+    }
+}
+
+// Delete educator
+if (isset($_POST['delete'])) {
+    $id = $_POST['id'];
+
+    try {
+        $sql = "DELETE FROM educators WHERE id = :id";
+        $query = $dbh->prepare($sql);
+        $query->bindParam(':id', $id, PDO::PARAM_INT);
+        $query->execute();
+
+        echo '<script>
+        alert("Educator deleted successfully.");
+        window.location.href = "educators.php";
+        </script>';
+    } catch (PDOException $e) {
+        echo '<script>alert("Database error occurred: ' . $e->getMessage() . '");</script>';
+        error_log($e->getMessage(), 3, '/var/tmp/my-errors.log');
+    }
+}
 // Fetch data from the database
 $sql = "SELECT * FROM educators";
 $query = $dbh->prepare($sql);
@@ -167,8 +213,8 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
                         <input type="date" id="dob" name="dob" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="address">Location</label>
-                        <input type="text" id="address" name="address" placeholder="Enter residential address" class="form-control" required>
+                        <label for="location">Location</label>
+                        <input type="text" id="location" name="location" placeholder="Enter residential address" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="school">School</label>
@@ -197,83 +243,82 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($educators as $educator): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($educator->name); ?></td>
-                        <td><?php echo htmlspecialchars($educator->phone_number); ?></td>
-                        <td><?php echo htmlspecialchars($educator->school); ?></td>
-                        <td>
-                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editModal<?php echo $educator->id; ?>">Edit</button>
-                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal<?php echo $educator->id; ?>">Delete</button>
-                        </td>
-                    </tr>
-                    <!-- Edit Modal -->
-                    <div class="modal fade" id="editModal<?php echo $educator->id; ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?php echo $educator->id; ?>" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="editModalLabel<?php echo $educator->id; ?>">Edit Educator</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="update_educator.php" method="post">
-                                        <input type="hidden" name="id" value="<?php echo $educator->id; ?>">
-                                        <div class="form-group">
-                                            <label for="name<?php echo $educator->id; ?>">Name</label>
-                                            <input type="text" id="name<?php echo $educator->id; ?>" name="name" value="<?php echo htmlspecialchars($educator->name); ?>" class="form-control" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="phone<?php echo $educator->id; ?>">Phone Number</label>
-                                            <input type="tel" id="phone<?php echo $educator->id; ?>" name="phone" value="<?php echo htmlspecialchars($educator->phone_number); ?>" class="form-control" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="email<?php echo $educator->id; ?>">Email Address</label>
-                                            <input type="email" id="email<?php echo $educator->id; ?>" name="email" value="<?php echo htmlspecialchars($educator->email); ?>" class="form-control" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="school<?php echo $educator->id; ?>">School</label>
-                                            <select id="school<?php echo $educator->id; ?>" name="school" class="form-control" required>
-                                                <option value="school1" <?php echo ($educator->school == 'school1') ? 'selected' : ''; ?>>School 1</option>
-                                                <option value="school2" <?php echo ($educator->school == 'school2') ? 'selected' : ''; ?>>School 2</option>
-                                                <option value="school3" <?php echo ($educator->school == 'school3') ? 'selected' : ''; ?>>School 3</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="submit" name="update" value="Update" class="btn btn-success">
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                <?php foreach ($educators as $educator): ?>
+<tr>
+    <td><?php echo htmlspecialchars($educator->name); ?></td>
+    <td><?php echo htmlspecialchars($educator->phone_number); ?></td>
+    <td><?php echo htmlspecialchars($educator->school); ?></td>
+    <td>
+        <button class="btn btn-primary btn-sm" onclick="document.getElementById('editForm<?php echo $educator->id; ?>').submit();">Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="if(confirm('Are you sure you want to delete this educator?')) document.getElementById('deleteForm<?php echo $educator->id; ?>').submit();">Delete</button>
+    </td>
+</tr>
+<!-- Edit Modal -->
+
+<div class="modal fade" id="editModal<?php echo $educator->id; ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?php echo $educator->id; ?>" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel<?php echo $educator->id; ?>">Edit Educator</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="editForm<?php echo $educator->id; ?>" action="educators.php" method="post">
+                <div class="modal-body">
+                    <input type="hidden" name="id" value="<?php echo $educator->id; ?>">
+                    <div class="form-group">
+                        <label for="edit_name<?php echo $educator->id; ?>">Name</label>
+                        <input type="text" class="form-control" id="edit_name<?php echo $educator->id; ?>" name="edit_name" value="<?php echo htmlspecialchars($educator->name); ?>" required>
                     </div>
-                    <!-- Delete Modal -->
-                    <div class="modal fade" id="deleteModal<?php echo $educator->id; ?>" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel<?php echo $educator->id; ?>" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="deleteModalLabel<?php echo $educator->id; ?>">Delete Educator</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    Are you sure you want to delete <?php echo htmlspecialchars($educator->name); ?>?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <a href="delete_educator.php?id=<?php echo $educator->id; ?>" class="btn btn-danger">Delete</a>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="form-group">
+                        <label for="edit_phone<?php echo $educator->id; ?>">Phone Number</label>
+                        <input type="tel" class="form-control" id="edit_phone<?php echo $educator->id; ?>" name="edit_phone" value="<?php echo htmlspecialchars($educator->phone_number); ?>" required>
                     </div>
-                    <?php endforeach; ?>
+                    <div class="form-group">
+                        <label for="edit_school<?php echo $educator->id; ?>">School</label>
+                        <input type="text" class="form-control" id="edit_school<?php echo $educator->id; ?>" name="edit_school" value="<?php echo htmlspecialchars($educator->school); ?>" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" name="edit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal<?php echo $educator->id; ?>" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel<?php echo $educator->id; ?>" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel<?php echo $educator->id; ?>">Delete Educator</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this educator?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form id="deleteForm<?php echo $educator->id; ?>" action="educators.php" method="post">
+                    <input type="hidden" name="id" value="<?php echo $educator->id; ?>">
+                    <button type="submit" name="delete" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php endforeach; ?>
                 </tbody>
             </table>
         </div>
     </div>
-
+    <script src="assests/js/educators.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

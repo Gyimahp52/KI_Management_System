@@ -83,8 +83,8 @@ $base_url = '/ki/KI_Management_System/';
         <div class="card">
             <a href="school.php">
              <div class="icon"><img src="assets/images/students.png" alt="schools"></div>
-            <a href="/admin/school.php">
-        
+            <a href="school.php">
+
              <div class="count">500</div>
              <span><b>Students</b></span>
             </a>
@@ -93,7 +93,7 @@ $base_url = '/ki/KI_Management_System/';
         <div class="card">
             <a href="educators.php">
              <div class="icon"><img src="assets/images/educator.png" alt=""></div>
-            <a href="/admin/educators.php">
+            <a href="educators.php">
             
              <div class="count">12</div>
              <span><b>Educators</b></span>
@@ -103,7 +103,7 @@ $base_url = '/ki/KI_Management_System/';
         <div class="card">
             <a href="school.php">
               <div class="icon"><img src="assets/images/sch.png" alt=""></div>
-            <a href="/admin/school.php">
+            <a href="school.php">
              
               <div class="count">30</div>
               <span><b>Schools</b></span>
@@ -120,7 +120,7 @@ $base_url = '/ki/KI_Management_System/';
         <div class="card">
             <a href="report.php">
              <div class="icon"><img src="assets/images/reports.png" alt=""></div>
-            <a href="/admin/report.php">
+            <a href="report.php">
             
              <span><b>Report</b></span>
             </a>
@@ -128,7 +128,7 @@ $base_url = '/ki/KI_Management_System/';
         <div class="card">
             <a href="settings.php">
               <div class="icon"><img src="assets/images/settings.png" alt=""></div>
-            <a href="/admin/settings.php">
+            <a href="settings.php">
              
               <span><b>Settings</b></span>
             </a>
