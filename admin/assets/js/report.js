@@ -259,7 +259,11 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById('student-class-info').textContent = studentClass.name;
 
         // Show the report container
-        document.getElementById('report-view').style.display = 'block';
+        const modal = document.getElementById('report-view');
+        modal.style.display = 'flex';
+
+        // Fade out the main container
+        document.querySelector('.main-container').classList.add('fade-out');
 
         // Re-initialize the charts
         new Chart(document.getElementById('keqBarChart').getContext('2d'), {
@@ -445,6 +449,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     window.viewReport = viewReport;
+
+    function closeReport() {
+        document.getElementById('report-view').style.display = 'none';
+        document.querySelector('.main-container').classList.remove('fade-out');
+    }
+
+    window.closeReport = closeReport;
 
     function deleteReport(name) {
         if (confirm(`Are you sure you want to delete the report for ${name}?`)) {

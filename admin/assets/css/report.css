@@ -1,9 +1,9 @@
-
 body {
     font-family: 'Montserrat', sans-serif;
     background-color: #f5f5f5;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
 }
 
 .main-container {
@@ -92,7 +92,7 @@ header h1 {
     border-radius: 4px;
 }
 
-.btn-load-report{
+.btn-load-report {
     color: white;
     border: none;
     background-color: #2980b9;
@@ -156,7 +156,6 @@ th {
 
 .whatsapp-button {
     background-color: #25d366;
-
     align-items: center;
     justify-content: center;
 }
@@ -185,29 +184,44 @@ th {
     margin-right: 5px;
 }
 
-
-
 /* Additional CSS for report view */
-#report-view {
+.modal {
     display: none;
-    padding: 20px;
-    background: #fff;
-    border: 1px solid #ddd;
-    margin: 20px 0;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-} 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    overflow: auto;
+}
 
-.report-container {
-    max-width: 800px;
-    margin: 0 auto;
+.modal .report-container {
+    margin-top: 190%;
+    max-width: 900px;
+    width: 100%;
     padding: 20px;
     background-color: #ffffff;
     border: 1px solid #ccc;
     box-shadow: 0 0 10px rgba(43, 41, 41, 0.1);
     position: relative;
-} 
+}
 
-.faded-text {
+.modal .close-btn {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    background: none;
+    border: none;
+    font-size: 2em;
+    cursor: pointer;
+    color: #f70303;
+}
+
+.modal .faded-text {
     position: absolute;
     top: 10px;
     right: 20px;
@@ -225,22 +239,25 @@ h2, h3 {
     text-align: left;
 }
 
-
 .container {
     display: flex;
     justify-content: space-between;
-  }
-  
-  .left-side, .right-side {
+}
+
+.left-side {
     flex: 1;
     margin: 20px;
-  }
-  
-  .left-side p, .right-side p {
+}
+
+.right-side {
+    flex: 1;
+    margin: 20px;
+    margin-top: 9%;
+}
+
+.left-side p, .right-side p {
     margin: 10px 0;
-  }
-
-
+}
 
 canvas {
     max-height: 15%;
@@ -304,4 +321,9 @@ footer p {
 
 .ki_link:hover {
     color: #87ceeb; /* darker blue */
+}
+
+.fade-out {
+    opacity: 0.5;
+    pointer-events: none;
 }

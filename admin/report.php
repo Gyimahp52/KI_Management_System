@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="assets/css/report.css">
     <link rel="stylesheet" href="assets/css/adminDashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-   
 </head>
 <body>
 <!-- side bar -->
@@ -133,13 +132,13 @@
     </div>
 </div>
 
-<!-- results format -->
 <!-- Report view container (initially hidden) -->
-<div id="report-view" style="display: none;">
+<div id="report-view" class="modal">
     <div class="report-container">
+        <button class="close-btn" onclick="closeReport()"><strong>X</strong></button>
         <div class="faded-text"><strong>KI EDUCATION</strong></div>
         <h1><u>KIE STUDENT PROGRESS REPORT</u></h1>
-        <p> Kinesthetic Intelligence Education personal progress report for <span id="student-name"></span> at <span id="student-school"></span>. This term we practiced eleven soft skills for character development. The focus is not on the marks we emphasize on marginal improvement over time and creating cognizance of these strengths for students.</p>
+        <p> Kinesthetic Intelligence Education personal progress report for <strong> <span id="student-name"></span></strong> at <span id="student-school"></span>. This term we practiced eleven soft skills for character development. The focus is not on the marks we emphasize on marginal improvement over time and creating cognizance of these strengths for students.</p>
         
         <div class="container">
             <div class="left-side">
@@ -159,7 +158,7 @@
               <p><strong>Heart Rate:</strong> NOT AVAILABLE</p>
               <p><strong>Medical Condition:</strong> NOT AVAILABLE</p>
             </div>
-        </div>
+          </div>
 
         <section class="data-tables">
             <h2>1. Student KEQ Field Data</h2>
@@ -228,7 +227,7 @@
                     <th>Optim.</th>
                     <th>Self-Con.</th>
                     <th>Hone.</th>
-                    <th>Exper.</th>
+                    <th>Exper.</s</th>
                     <th>Kindne.</th>
                 </tr>
                 <tr>
@@ -337,7 +336,6 @@
     </div>
 </div>
 
-<!-- script -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="assets/js/report.js"></script>
 <script src="assets/js/results.js"></script>
