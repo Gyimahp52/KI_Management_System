@@ -367,9 +367,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     data: [18, 18, 10, 18, 18],
                     backgroundColor: [
                         '#FF6384',
+
                         '#36A2EB',
+
                         '#FFCE56',
+
                         '#4BC0C0',
+                        
                         '#9966FF'
                     ]
                 }]
@@ -466,9 +470,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.deleteReport = deleteReport;
 
-    function downloadReport(name) {
-        alert(`Downloading report for ${name}`);
-        // Implement download functionality
+    async function downloadReport(name) {
+        // Populate the report view for the selected student
+        viewReport(name);
+
+        // Wait for the charts to render (you can replace this with a more robust approach if necessary)
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        // Generate the PDF
+        const reportContainer = document.querySelector('.report-container');
+        const canvas = await html2canvas(reportContainer);
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jspdf.jsPDF('p', 'pt', 'a4');
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save(`${name}_report.pdf`);
+
+        // Close the report view
+        closeReport();
     }
 
     window.downloadReport = downloadReport;

@@ -106,7 +106,6 @@ body {
     background: rgba(30, 120, 155, 0.022);
 }
 
-
 /* search bar */
 .wrap-input-17 * {
     box-sizing: border-box;
@@ -174,7 +173,6 @@ body {
     transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
    }
 
-
 .main-content .header .nav img {
     width: 50px;
     height: 50px;
@@ -195,57 +193,41 @@ body {
     font-size: 15px;
     border-radius: 8px;
     padding: 5px 22px;
-    width: 100%;
+    width: fit-content;
     cursor: pointer;
     text-decoration: none;
-    color: blue;
+    color:rgb(243, 243, 248);
     display: flex;
-    background-color: white;
+    background-color: rgb(3, 53, 18);
     display: block;
+    margin-top: 15%;
 }
 
 .add-educator a.disabled {
-    background-color: #cccccc;
+    background-color: #282727;
     cursor: not-allowed;
 }
 
 /* data collection style */
-.form-container card p-4{
-  display: none;
-  max-width: 90%;
-  width: wrap;
-  margin: 40px auto;
-  background: #fff;
-  border: 4px solid #ccc;
-  padding: 8px;
-  border-radius: 18px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 4;
-  overflow-y: auto;
-  max-height: 90%;
-}
-
-.form-container card p-4,
-.popup-form-container d-none {
+.form-container {
     display: none;
+    max-width: 90%;
+    margin: 40px auto;
+    background: #fff;
+    border: 4px solid #ccc;
+    padding: 8px;
+    border-radius: 18px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.popup-form-container d-none {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.form-container.d-none {
+    display: none;
 }
 
 /* Adjusting button styles to be side by side */
 .form-group .btn {
     width: auto;
 }
-
-
 
 h2 {
     text-align: center;
@@ -272,13 +254,6 @@ select {
     border-radius: 5px;
 }
 
-input[type="file"] {
-    margin-bottom: 10px;
-    display: none;
-}
-
-
-
 input[type="submit"] {
     background-color: #129dc7;
     color: #fff;
@@ -295,15 +270,29 @@ input[type="submit"]:hover {
 
 /* Table style */
 table {
+    position: relative;
+    z-index: 1;
+    border-spacing: 0 0px;
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+    border-collapse: separate;
+    margin-top: 25px;
+    transition: opacity 0.5s;
+    transition: opacity 0.5s;
+}
+table.hidden {
+    opacity: 0.3;
 }
 
-th, td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+th{
+    border-bottom: 3px solid #ccc;
+    border: 2px solid black; 
+} 
+td {
+    border-bottom: 2px solid #ccc;
+    border: 1px solid rgb(55, 54, 54); 
+    padding: 2px;
+    
+    padding: 9px; 
 }
 
 th {

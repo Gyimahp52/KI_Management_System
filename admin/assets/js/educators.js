@@ -1,27 +1,23 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const addEducatorButton = document.getElementById('addEducatorButton');
-  const formContainer = document.querySelector('.form-container');
-  const table = document.querySelector('table');
-  const cancelButton = document.getElementById('cancelButton');
-  const popupFormContainer = document.getElementById('popupFormContainer');
-  const cancelPopupButton = document.getElementById('cancelPopupButton');
-  const tableBody = document.querySelector('tbody');
+document.addEventListener('DOMContentLoaded', function() {
+    const addEducatorButton = document.getElementById('addEducatorButton');
+    const formContainer = document.querySelector('.form-container');
+    const table = document.querySelector('#educatorTable');
+    const cancelButton = document.getElementById('cancelButton');
 
-  addEducatorButton.addEventListener('click', (e) => {
-      e.preventDefault();
-      formContainer.classList.remove('d-none');
-      table.style.opacity = '0.3';
-      addEducatorButton.classList.add('disabled');
-      addEducatorButton.style.pointerEvents = 'none';
-  });
+    addEducatorButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        formContainer.classList.remove('d-none');
+        $(table).fadeTo(300, 0.3); // Using jQuery to fade out
+        addEducatorButton.classList.add('disabled');
+        addEducatorButton.style.pointerEvents = 'none';
+    });
 
-  cancelButton.addEventListener('click', () => {
-      formContainer.classList.add('d-none');
-      table.style.opacity = '1';
-      addEducatorButton.classList.remove('disabled');
-      addEducatorButton.style.pointerEvents = 'auto';
-  });
-
+    cancelButton.addEventListener('click', function() {
+        formContainer.classList.add('d-none');
+        $(table).fadeTo(300, 1); // Using jQuery to fade in
+        addEducatorButton.classList.remove('disabled');
+        addEducatorButton.style.pointerEvents = 'auto';
+    });
   const passportPicture = document.querySelector('.passport-picture');
   const fileInput = document.querySelector('#passport');
 

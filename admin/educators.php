@@ -1,9 +1,6 @@
 <?php
 session_start();
 include('includes/dbconnection.php');
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    error_log('POST request received: ' . print_r($_POST, true));
-}
 
 // Validation and Sanitization Functions
 function validate_name($name) {
@@ -93,55 +90,7 @@ if (isset($_POST['submit'])) {
         }
     }
 }
-/// Edit educator
-if (isset($_POST['edit'])) {
-    $id = $_POST['id'];
-    $name = sanitize_input($_POST['edit_name']);
-    $phone = sanitize_input($_POST['edit_phone']);
-    $school = sanitize_input($_POST['edit_school']);
 
-    if (!validate_name($name) || !validate_phone($phone)) {
-        echo '<script>alert("Invalid input. Please check the name and phone number.");</script>';
-    } else {
-        try {
-            $sql = "UPDATE educators SET name = :name, phone_number = :phone, school = :school WHERE id = :id";
-            $query = $dbh->prepare($sql);
-            $query->bindParam(':id', $id, PDO::PARAM_INT);
-            $query->bindParam(':name', $name, PDO::PARAM_STR);
-            $query->bindParam(':phone', $phone, PDO::PARAM_STR);
-            $query->bindParam(':school', $school, PDO::PARAM_STR);
-            $query->execute();
-
-            echo '<script>
-            alert("Educator details updated successfully.");
-            window.location.href = "educators.php";
-            </script>';
-        } catch (PDOException $e) {
-            echo '<script>alert("Database error occurred: ' . $e->getMessage() . '");</script>';
-            error_log($e->getMessage(), 3, '/var/tmp/my-errors.log');
-        }
-    }
-}
-
-// Delete educator
-if (isset($_POST['delete'])) {
-    $id = $_POST['id'];
-
-    try {
-        $sql = "DELETE FROM educators WHERE id = :id";
-        $query = $dbh->prepare($sql);
-        $query->bindParam(':id', $id, PDO::PARAM_INT);
-        $query->execute();
-
-        echo '<script>
-        alert("Educator deleted successfully.");
-        window.location.href = "educators.php";
-        </script>';
-    } catch (PDOException $e) {
-        echo '<script>alert("Database error occurred: ' . $e->getMessage() . '");</script>';
-        error_log($e->getMessage(), 3, '/var/tmp/my-errors.log');
-    }
-}
 // Fetch data from the database
 $sql = "SELECT * FROM educators";
 $query = $dbh->prepare($sql);
@@ -169,7 +118,7 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
         
         <div class="container mt-5">
             <!-- Add new educator button -->
-            <ul class="list-inline">
+            <ul class="add-educator">
                 <li class="list-inline-item">
                     <a href="#" id="addEducatorButton" class="btn btn-primary">
                         <i class="fas fa-plus-circle"></i>
@@ -181,8 +130,6 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
             <!-- Data collection form -->
             <div class="form-container card p-4 d-none">
                 <h2>Educator's details</h2>
-                <div class="passport-picture mb-3"></div>
-                
                 <form id="educatorForm" action="educators.php" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="name">Name</label>
@@ -233,7 +180,7 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
             </div>
 
             <!-- Table displaying educators -->
-            <table class="table table-striped mt-5">
+            <table class="table table-striped mt-5" id="educatorTable">
                 <thead class="thead-dark">
                     <tr>
                         <th>Name</th>
@@ -318,17 +265,9 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
             </table>
         </div>
     </div>
-    <script src="assests/js/educators.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        document.getElementById('addEducatorButton').addEventListener('click', function() {
-            document.querySelector('.form-container').classList.toggle('d-none');
-        });
-        document.getElementById('cancelButton').addEventListener('click', function() {
-            document.querySelector('.form-container').classList.add('d-none');
-        });
-    </script>
+    <script src="assets/js/educators.js"></script>
 </body>
 </html>

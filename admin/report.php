@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="assets/css/report.css">
     <link rel="stylesheet" href="assets/css/adminDashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
 </head>
 <body>
 <!-- side bar -->
@@ -111,7 +113,7 @@
                     <option value="3">Term 3</option>
                 </select>
             </div>
-            <button id="loadReports" class="btn-load-report">Load Reports</button>
+            <button id="loadReports" class="btn-load-report">Load</button>
         </div>
         <button id="downloadSelectedReports" class="button">Download Selected Reports</button>
         <table>
