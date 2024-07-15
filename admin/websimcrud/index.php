@@ -1,7 +1,7 @@
 
 
 <?php
-require_once 'function.php';
+require_once 'functions.php';
 ?>
 
 <!DOCTYPE html>
@@ -11,14 +11,8 @@ require_once 'function.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Management System</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/adminDashboard.css">
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 <body>
-
-<?php include_once('includes/side_bar.php');?>
-
     <div class="container mt-5">
         <h1 class="mb-4">School Management System</h1>
         
