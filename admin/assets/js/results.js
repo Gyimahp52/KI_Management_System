@@ -9,17 +9,20 @@ new Chart(keqBarChart, {
         datasets: [
             {
                 label: 'Base',
-                backgroundColor: '#50C878',
+                backgroundColor: '#6CD65D',
+                borderWidth: 1,
                 data: [50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50]
             },
             {
                 label: 'Improvement',
-                backgroundColor: '#0EB7F7',
+                backgroundColor: '#47B2E0',
+                borderWidth: 1,
                 data: [8, 9, 9, 4, 8, 5, 7, 9, 9, 5, 7]
             },
             {
                 label: 'Target',
-                backgroundColor: '#F7A60E',
+                backgroundColor: '#F6D23E',
+                borderWidth: 1,
                 data: [42, 41, 41, 46, 42, 45, 43, 41, 41, 45, 43]
             }
         ]
@@ -104,12 +107,13 @@ new Chart(selPieChart, {
         datasets: [{
             data: [18, 18, 10, 18, 18],
             backgroundColor:[
-            '#FF6384',
-            '#36A2EB',
-            '#FFCE56', 
-            '#4BC0C0', 
-            '#9966FF'
-            ]
+            '#296BBF', //self awareness
+            '#DA6C11', //Self Management
+            '#81807E', // Social Awareness
+            '#FACD05', // Relationship Skills
+            '#56A5F5' // Responsible Decision Making
+            ],
+            hoverOffset: 10
         }]
     },
     options: {
@@ -132,7 +136,7 @@ new Chart(selPieChart, {
                 display: true,
                 position: 'bottom',
                 labels: {
-                    color: 'white',
+                    color: 'black',
                     font: {
                         weight: 'bold'
                     }
@@ -143,15 +147,108 @@ new Chart(selPieChart, {
                     label: function(context) {
                         const label = context.label || '';
                         const value = context.raw;
+                        /*const total = context.dataset.data.reduce((a, b) => a + b, 0);*/
                         const total = context.chart._metasets[context.datasetIndex].total;
                         const percentage = ((value / total) * 100).toFixed(2);
                         return `${label}: ${value} (${percentage}%)`;
                     }
                 }
             }
+        },
+        layout: {
+            padding: {
+                left: 10,
+                right: 10,
+                top: 10,
+                bottom: 10
+            }
         }
-    }
-});
+    },
+    plugins: [{
+        id: '3d-pie-plugin',
+        afterDatasetsDraw(chart) {
+            const ctx = chart.ctx;
+            const chartArea = chart.chartArea;
+            const centerX = (chartArea.left + chartArea.right) / 2;
+            const centerY = (chartArea.top + chartArea.bottom) / 2;
+            const radius = Math.min((chartArea.right - chartArea.left) / 2, (chartArea.bottom - chartArea.top) / 2);
+            const depth = 0; // Depth of the 3D effect
+            const offset = 20; // Offset for the shadow
+
+            // Draw shadows
+            chart.data.datasets.forEach((dataset, datasetIndex) => {
+                const meta = chart.getDatasetMeta(datasetIndex);
+                meta.data.forEach((slice, index) => {
+                    const startAngle = slice.startAngle;
+                    const endAngle = slice.endAngle;
+                    const midAngle = (startAngle + endAngle) / 2;
+                    const x = Math.cos(midAngle) * radius;
+                    const y = Math.sin(midAngle) * radius;
+
+
+                    ctx.save();
+                    ctx.translate(centerX, centerY + offset);
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.lineTo(x, y);
+                    ctx.lineTo(x, y + depth);
+                    ctx.lineTo(0, depth);
+                    ctx.closePath();
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+                    ctx.fill();
+                    ctx.restore();
+                });
+            });
+
+             // Draw slices
+             chart.data.datasets.forEach((dataset, datasetIndex) => {
+                const meta = chart.getDatasetMeta(datasetIndex);
+                meta.data.forEach((slice, index) => {
+                    const startAngle = slice.startAngle;
+                    const endAngle = slice.endAngle;
+                    const midAngle = (startAngle + endAngle) / 2;
+                    const x = Math.cos(midAngle) * radius;
+                    const y = Math.sin(midAngle) * radius;
+
+                    const gradient = ctx.createLinearGradient(0, 0, x, y);
+                    gradient.addColorStop(0, dataset.backgroundColor[index]);
+                    gradient.addColorStop(1, 'rgba(0, 0, 0, 0.5)');
+
+                  
+
+                    ctx.save();
+                    ctx.translate(centerX, centerY);
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.lineTo(x, y);
+                    ctx.lineTo(x, y + depth);
+                    ctx.lineTo(0, depth);
+                    ctx.closePath();
+                    ctx.fillStyle = dataset.backgroundColor[index];
+                    ctx.fill();
+                    ctx.restore();
+                });
+            });
+            ctx.save();
+                ctx.translate(centerX, centerY);
+                chart.data.datasets.forEach((dataset, datasetIndex) => {
+                    const meta = chart.getDatasetMeta(datasetIndex);
+                    meta.data.forEach((slice, index) => {
+                        const startAngle = slice.startAngle;
+                        const endAngle = slice.endAngle;
+                        ctx.beginPath();
+                        ctx.arc(0, 0, radius, startAngle, endAngle);
+                        ctx.lineTo(0, 0);
+                        ctx.closePath();
+                        ctx.fillStyle = dataset.backgroundColor[index];
+                        ctx.fill();
+                    });
+                });
+                ctx.restore();   
+        }
+    }]
+    
+}); 
 
 // Character Strengths Bar Chart
 const csBarChart = document.getElementById('csBarChart').getContext('2d');
@@ -162,26 +259,66 @@ new Chart(csBarChart, {
         datasets: [
             {
                 label: 'Heart (SH)',
-                backgroundColor: '#FF6384',
+                backgroundColor: '#296BBF',
                 data: [9, 9, 7]
             },
             {
                 label: 'Mind (SM)',
-                backgroundColor: '#36A2EB',
+                backgroundColor: '#DA6C11',
                 data: [8, 4, 9]
             },
             {
                 label: 'Will (SW)',
-                backgroundColor: '#FFCE56',
+                backgroundColor: '#81807E',
                 data: [9, 8, 5]
             }
         ]
     },
     options: {
         responsive: true,
-        scales: {
-            y: {
-                beginAtZero: true
+        plugins: {
+            title: {
+                display: true,
+                text: 'CHARACTER STRENGTHS',
+                color: 'white',
+                font: {
+                    size: 30,
+                    weight: 'bold'
+                },
+                padding: {
+                    top: 10,
+                    bottom: 30
+                }
+            },
+            legend: {
+                display: true,
+                position: 'bottom',
+                labels: {
+                    color: 'black',
+                    font: {
+                        weight: 'bold'
+                    }
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        const label = context.label || '';
+                        const value = context.raw;
+                        /*const total = context.dataset.data.reduce((a, b) => a + b, 0);*/
+                        const total = context.chart._metasets[context.datasetIndex].total;
+                        const percentage = ((value / total) * 100).toFixed(2);
+                        return `${label}: ${value} (${percentage}%)`;
+                    }
+                }
+            }
+        },
+        layout: {
+            padding: {
+                left: 10,
+                right: 10,
+                top: 10,
+                bottom: 10
             }
         }
     }

@@ -95,8 +95,8 @@ if (isset($_POST['submit'])) {
 $sql = "SELECT * FROM educators";
 $query = $dbh->prepare($sql);
 $query->execute();
-$educators = $query->fetchAll(PDO::FETCH_OBJ);
-?>
+$educators = $query->fetchAll(PDO::FETCH_OBJ); 
+?> 
 
 <!DOCTYPE html>
 <html lang="en">

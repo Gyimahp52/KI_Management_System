@@ -19,8 +19,31 @@
         <div class="form-container">
             <h2>Create SEL Theme</h2>
             <form id="themeForm">
+                <!-- SEL name-->
                 <label for="themeName">SEL Theme Name:</label>
                 <input type="text" id="themeName" name="themeName" required>
+
+                <!-- Competencies -->
+                <label for="competencies">Competencies</label>
+                <select id="competencies" name="competencies" required>
+                <option value="">--Select Competencies--</option>
+                    <option value="1">SA - Self Awareness</option>
+                    <option value="2">RS - Relationship Skills</option>
+                    <option value="3">SM - Self Management</option>
+                    <option value="4">SA - Social Awareness</option>
+                    <option value="5">RDM  - Responsible Decision Making</option>
+                </select>
+
+                <!-- Character Strength -->
+                <label for="Character Strength">Character Strength</label>
+                <select id="Character Strength" name="Character Strength" required>
+                <option value="">--Select Character Strength--</option>
+                    <option value="1">SH - Strength of Heart</option>
+                    <option value="2">SM - Strength of Mind</option>
+                    <option value="3">SW - Strength of Will</option>
+                    
+                </select>
+                <!--create sel button -->
                 <button type="submit">Create</button>
                 <button type="button" id="deleteThemes" class="delete-button" disabled>Delete SEL Theme</button>
             </form>
