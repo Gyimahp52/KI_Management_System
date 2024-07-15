@@ -18,7 +18,7 @@ require_once 'function.php';
 <body>
 
 <?php include_once('includes/side_bar.php');?>
-
+c
     <div class="container mt-5">
         <h1 class="mb-4">School Management System</h1>
         

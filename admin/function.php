@@ -116,9 +116,16 @@ function generateUniqueId($table, $column) {
     return $id;
 }
 
+function generateSchoolId($schoolName) {
+    $prefix = strtoupper(substr($schoolName, 0, 3));
+    $suffix = str_pad(rand(0, 999), 4, '0', STR_PAD_LEFT);
+    return $prefix . $suffix;
+}
+
+
 function createSchool($name, $region, $town, $educator, $logo) {
     global $pdo;
-    $school_id = generateUniqueId('schools', 'school_id');
+    $school_id = generateSchoolId($name);
     $stmt = $pdo->prepare("INSERT INTO schools (school_id, name, region, town, educator, logo) VALUES (?, ?, ?, ?, ?, ?)");
     return $stmt->execute([$school_id, $name, $region, $town, $educator, $logo]);
 }
