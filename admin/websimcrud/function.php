@@ -17,7 +17,7 @@ function deleteStudent($student_id) {
 // Add these new functions
 function updateSchool($school_id, $name) {
     global $pdo;
-    $stmt = $pdo->prepare("UPDATE schools SET name = ? WHERE school_id = ?");
+    $stmt = $pdo->prepare("UPDATE schools SET school_name = ? WHERE id = ?");
     return $stmt->execute([$name, $school_id]);
 }
 

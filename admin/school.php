@@ -42,7 +42,7 @@ c
                 <select name="schoolId" required class="form-control mb-2">
                     <option value="">Select School</option>
                     <?php foreach (getSchools() as $school): ?>
-                        <option value="<?= $school['school_id'] ?>"><?= $school['name'] ?></option>
+                        <option value="<?= $school['id'] ?>"><?= $school['school_name'] ?></option>
                     <?php endforeach; ?>
                 </select>
                 <input type="text" name="className" placeholder="Class Name" required class="form-control mb-2">
@@ -96,7 +96,7 @@ c
         <select name="schoolId" onchange="loadClasses(this.value)" required class="form-control mb-2">
             <option value="">Select School</option>
             <?php foreach (getSchools() as $school): ?>
-                <option value="<?= $school['school_id'] ?>"><?= $school['name'] ?></option>
+                <option value="<?= $school['id'] ?>"><?= $school['school_name'] ?></option>
             <?php endforeach; ?>
         </select>
         <select name="classId" required class="form-control mb-2" disabled>
@@ -143,7 +143,7 @@ c
                 <select name="filterSchoolId" onchange="updateFilterClassSelect(this.value)" class="form-control mb-2">
                     <option value="">All Schools</option>
                     <?php foreach (getSchools() as $school): ?>
-                        <option value="<?= $school['school_id'] ?>"><?= $school['name'] ?></option>
+                        <option value="<?= $school['id'] ?>"><?= $school['school_name'] ?></option>
                     <?php endforeach; ?>
                 </select>
                 <select name="filterClassId" class="form-control mb-2">

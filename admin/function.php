@@ -4,7 +4,7 @@ require_once 'config.php';
 function createClass($school_id, $name) {
     global $pdo;
     $class_id = generateUniqueId('classes', 'class_id');
-    $stmt = $pdo->prepare("INSERT INTO classes (class_id, school_id, name) VALUES (?, ?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO classes (class_id, school_id, class_name) VALUES (?, ?, ?)");
     return $stmt->execute([$class_id, $school_id, $name]);
 }
 
@@ -17,10 +17,9 @@ function deleteStudent($student_id) {
 // Add these new functions
 function updateSchool($school_id, $name) {
     global $pdo;
-    $stmt = $pdo->prepare("UPDATE schools SET name = ? WHERE school_id = ?");
+    $stmt = $pdo->prepare("UPDATE schools SET school_name = ? WHERE id = ?");
     return $stmt->execute([$name, $school_id]);
 }
-
 function deleteSchool($school_id) {
     global $pdo;
     
@@ -126,7 +125,7 @@ function generateSchoolId($schoolName) {
 function createSchool($name, $region, $town, $educator, $logo) {
     global $pdo;
     $school_id = generateSchoolId($name);
-    $stmt = $pdo->prepare("INSERT INTO schools (school_id, name, region, town, educator, logo) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO schools (id, school_name, region, town, educator, school_logo) VALUES (?, ?, ?, ?, ?, ?)");
     return $stmt->execute([$school_id, $name, $region, $town, $educator, $logo]);
 }
 
