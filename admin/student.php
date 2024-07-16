@@ -9,7 +9,8 @@ require_once 'function.php';
     <link rel="stylesheet" href="assets/css/adminDashboard.css">
     <link rel="stylesheet" href="assets/css/student.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <title>Student Management</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Student page</title>
     <style>
         .modal {
             display: none;
@@ -57,8 +58,34 @@ require_once 'function.php';
             Add new student
         </button>
 
+
+
+        <!-- FILTER -->
+        <div id="filterForm" class="mb-4">
+            <h2>Filter Students</h2>
+            <form onsubmit="filterStudents(event)">
+                <select name="filterSchoolId" onchange="updateFilterClassSelect(this.value)" class="form-control mb-2">
+                    <option value="">All Schools</option>
+                    <?php foreach (getSchools() as $school): ?>
+                        <option value="<?= $school['id'] ?>"><?= $school['school_name'] ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <select name="filterClassId" class="form-control mb-2">
+                    <option value="">All Classes</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </form>
+        </div>
+
+        <div id="tableContainer"></div>
+            <nav>
+                <ul class="pagination">
+            
+                </ul>
+            </nav>
+        </div>
         <!-- Student Table -->
-        <table id="studentTable">
+        <!-- <table id="studentTable">
             <thead>
                 <tr>
                     <th>First Name</th>
@@ -70,7 +97,7 @@ require_once 'function.php';
                 </tr>
             </thead>
             <tbody></tbody>
-        </table>
+        </table> -->
     </div>
 </div>
 
@@ -80,8 +107,9 @@ require_once 'function.php';
         <span class="close">&times;</span>
         <h2>Student Registration Form</h2>
         <form id="studentForm" onsubmit="createStudent(event)">
-            <div>
-                <label>Personal Information</label>
+            <!-- form fields -->
+            <fieldset>
+                <legend>Personal Information</legend>
                 <input type="file" name="passport_picture" accept="image/*">
                 <input type="text" name="username" placeholder="Username" required>
                 <input type="password" name="password" placeholder="Password" required>
@@ -109,20 +137,20 @@ require_once 'function.php';
                     <option value="Normal">Normal</option>
                     <option value="Glasses">Glasses</option>
                     <option value="Contact Lenses">Contact Lenses</option>
-                </select>
-                <textarea name="medical_condition" placeholder="Not available" disabled></textarea>
+                </select><br>
+                <textarea name="medical_condition" placeholder="Not available" disabled></textarea><br>
                 <input type="number" name="height" placeholder="Height (cm)" required>
                 <input type="number" name="weight" placeholder="Weight (kg)" required>
-            </div>
-            <div>
-                <label>Parent/Guardian</label>
+            </fieldset>
+            <fieldset>
+            <legend>Parent/Guardian</legend>
                 <input type="text" name="parent_name" placeholder="Parent/Guardian Name" required>
                 <input type="tel" name="parent_phone" placeholder="Phone Number" required>
                 <input type="tel" name="parent_whatsapp" placeholder="WhatsApp Number">
                 <input type="email" name="parent_email" placeholder="Email Address">
-            </div>
-            <div>
-                <label>Others</label>
+            </fieldset>
+            <fieldset>
+            <legend>Others</legend>
                 <select name="schoolId" onchange="loadClasses(this.value)" required>
                     <option value="">Select School</option>
                     <?php foreach (getSchools() as $school): ?>
@@ -132,14 +160,34 @@ require_once 'function.php';
                 <select name="classId" required disabled>
                     <option value="">Select Class</option>
                 </select>
-            </div>
-            <button type="submit">Add</button>
-            <button type="button" onclick="closeModal()">Cancel</button>
+            </fieldset>
+            <button class="add-button" type="submit">Add</button>
+            <button class="cancel-button" type="button" onclick="closeModal()">Cancel</button>
         </form>
+    </div>
+</div>
+  <!-- EDIT MODAL -->
+
+  <div class="modal fade" id="editStudentModal" tabindex="-1" role="dialog" aria-labelledby="editStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editStudentModalLabel">Edit Student</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editStudentForm" onsubmit="updateStudent(event)">
+                    <!-- Form fields will be dynamically populated -->
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 <script>
     // Get the modal
     var modal = document.getElementById("studentModal");
@@ -171,6 +219,8 @@ require_once 'function.php';
         modal.style.display = "none";
         document.getElementById("studentForm").reset();
     }
+
+   
 
     function createStudent(event) {
         event.preventDefault();

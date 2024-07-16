@@ -57,9 +57,7 @@ require_once 'function.php';
         
         <select name="schoolId" onchange="loadClasses(this.value)" required class="form-control mb-2">
             <option value="">Select School</option>
-            <?php foreach (getSchools() as $school): ?>
-                <option value="<?= $school['id'] ?>"><?= $school['school_name'] ?></option>
-            <?php endforeach; ?>
+          
         </select>
         <select name="classId" required class="form-control mb-2" disabled>
             <option value="">Select Class</option>
@@ -99,7 +97,7 @@ require_once 'function.php';
 </div> -->
 
 <!-- FILTER -->
-        <div id="filterForm" class="mb-4">
+        <!-- <div id="filterForm" class="mb-4">
             <h2>Filter Students</h2>
             <form onsubmit="filterStudents(event)">
                 <select name="filterSchoolId" onchange="updateFilterClassSelect(this.value)" class="form-control mb-2">
@@ -113,24 +111,23 @@ require_once 'function.php';
                 </select>
                 <button type="submit" class="btn btn-primary">Filter</button>
             </form>
-        </div>
+        </div> -->
 
         <!-- TOGGLE -->
         <div class="mb-3">
             <button class="btn btn-primary" onclick="showTable('schools')">Schools</button>
             <button class="btn btn-primary" onclick="showTable('classes')">Classes</button>
-            <button class="btn btn-primary" onclick="showTable('students')">Students</button>
+            <!-- <button class="btn btn-primary" onclick="showTable('students')">Students</button> -->
         </div>
         <div id="tableContainer"></div>
-        <nav>
-        <ul class="pagination">
+            <nav>
+                <ul class="pagination">
             
-        </ul>
-    </nav>
-    </div>
+                </ul>
+            </nav>
+        </div>
 
   <!-- EDIT MODAL -->
-
 <div class="modal fade" id="editStudentModal" tabindex="-1" role="dialog" aria-labelledby="editStudentModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
