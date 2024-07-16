@@ -27,7 +27,7 @@
                 <label for="competencies">Competencies</label>
                 <select id="competencies" name="competencies" required>
                 <option value="">--Select Competencies--</option>
-                    <option value="1">SA - Self Awareness</option>
+                    <option value="1">SEA - Self Awareness</option>
                     <option value="2">RS - Relationship Skills</option>
                     <option value="3">SM - Self Management</option>
                     <option value="4">SA - Social Awareness</option>
