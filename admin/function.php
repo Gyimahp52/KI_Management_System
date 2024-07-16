@@ -4,7 +4,7 @@ require_once 'config.php';
 function createClass($school_id, $name) {
     global $pdo;
     $class_id = generateUniqueId('classes', 'class_id');
-    $stmt = $pdo->prepare("INSERT INTO classes (class_id, school_id, name) VALUES (?, ?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO classes (class_id, school_id, class_name) VALUES (?, ?, ?)");
     return $stmt->execute([$class_id, $school_id, $name]);
 }
 
@@ -14,13 +14,11 @@ function deleteStudent($student_id) {
     return $stmt->execute([$student_id]);
 }
 
-// Add these new functions
 function updateSchool($school_id, $name) {
     global $pdo;
-    $stmt = $pdo->prepare("UPDATE schools SET name = ? WHERE school_id = ?");
+    $stmt = $pdo->prepare("UPDATE schools SET school_name = ? WHERE id = ?");
     return $stmt->execute([$name, $school_id]);
 }
-
 function deleteSchool($school_id) {
     global $pdo;
     
@@ -44,7 +42,7 @@ function deleteSchool($school_id) {
         $stmt->execute([$school_id]);
         
         // Finally, delete the school
-        $stmt = $pdo->prepare("DELETE FROM schools WHERE school_id = ?");
+        $stmt = $pdo->prepare("DELETE FROM schools WHERE id = ?");
         $stmt->execute([$school_id]);
         
         $pdo->commit();
@@ -68,7 +66,6 @@ function deleteClass($class_id) {
     return $stmt->execute([$class_id]);
 }
 
-// Modify these functions to include pagination
 function getSchools($page = 1, $perPage = 10) {
     global $pdo;
     $offset = ($page - 1) * $perPage;
@@ -79,24 +76,6 @@ function getSchools($page = 1, $perPage = 10) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// function getClasses($school_id = null, $page = 1, $perPage = 10) {
-//     global $pdo;
-//     $offset = ($page - 1) * $perPage;
-//     if ($school_id) {
-//         $stmt = $pdo->prepare("SELECT * FROM classes WHERE school_id = ? LIMIT ? OFFSET ?");
-//         $stmt->bindValue(1, $school_id, PDO::PARAM_STR);
-//         $stmt->bindValue(2, $perPage, PDO::PARAM_INT);
-//         $stmt->bindValue(3, $offset, PDO::PARAM_INT);
-//     } else {
-//         $stmt = $pdo->prepare("SELECT * FROM classes LIMIT ? OFFSET ?");
-//         $stmt->bindValue(1, $perPage, PDO::PARAM_INT);
-//         $stmt->bindValue(2, $offset, PDO::PARAM_INT);
-//     }
-//     $stmt->execute();
-//     return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
- 
-// }
 
 function getTotal($table) {
     global $pdo;
@@ -122,17 +101,104 @@ function generateSchoolId($schoolName) {
     return $prefix . $suffix;
 }
 
+function generateStudentId($school_name) {
+    $prefix = strtoupper(substr($school_name, 0, 2));
+    $random_letters = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 5);
+    return $prefix . $random_letters;
+}
 
 function createSchool($name, $region, $town, $educator, $logo) {
     global $pdo;
     $school_id = generateSchoolId($name);
-    $stmt = $pdo->prepare("INSERT INTO schools (school_id, name, region, town, educator, logo) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO schools (id, school_name, region, town, educator, school_logo) VALUES (?, ?, ?, ?, ?, ?)");
     return $stmt->execute([$school_id, $name, $region, $town, $educator, $logo]);
 }
 
-function createStudent($class_id, $name, $dob, $gender, $hand, $foot, $eye_sight, $medical_condition, $height, $weight, $parent_name, $parent_phone, $parent_whatsapp, $parent_email, $passport_picture, $password) {
+// function createStudent($class_id, $name, $dob, $gender, $hand, $foot, $eye_sight, $medical_condition, $height, $weight, $parent_name, $parent_phone, $parent_whatsapp, $parent_email, $passport_picture, $password) {
+//     global $pdo;
+//     $student_id = generateUniqueId('students', 'student_id');
+    
+//     // Start transaction
+//     $pdo->beginTransaction();
+    
+//     try {
+//         // Insert into students table
+//         $stmt = $pdo->prepare("INSERT INTO students (student_id, class_id, name, dob, gender, hand, foot, eye_sight, medical_condition, height, weight, parent_name, parent_phone, parent_whatsapp, parent_email, passport_picture) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+//         $stmt->execute([$student_id, $class_id, $name, $dob, $gender, $hand, $foot, $eye_sight, $medical_condition, $height, $weight, $parent_name, $parent_phone, $parent_whatsapp, $parent_email, $passport_picture]);
+
+//         // Insert into users table
+//         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+//         $stmt = $pdo->prepare("INSERT INTO users (username, password, role) VALUES (?, ?, 'student')");
+//         $stmt->execute([$student_id, $hashed_password]);
+
+//         // Commit transaction
+//         $pdo->commit();
+//         return true;
+//     } catch (Exception $e) {
+//         // Rollback transaction on error
+//         $pdo->rollBack();
+//         return false;
+//     }
+// }
+
+// function createStudent($school_id, $class_id, $name, $dob, $gender, $hand, $foot, $eye_sight, $medical_condition, $height, $weight, $parent_name, $parent_phone, $parent_whatsapp, $parent_email, $passport_picture, $password) {
+//     global $pdo;
+    
+//     // Get the school name
+//     $stmt = $pdo->prepare("SELECT school_name FROM schools WHERE id = ?");
+//     $stmt->execute([$school_id]);
+//     $school = $stmt->fetch(PDO::FETCH_ASSOC);
+//     $school_name = $school['school_name'];
+    
+//     // Generate unique student ID
+//     do {
+//         $student_id = generateStudentId($school_name);
+//         $stmt = $pdo->prepare("SELECT COUNT(*) FROM students WHERE student_id = ?");
+//         $stmt->execute([$student_id]);
+//     } while ($stmt->fetchColumn() > 0);
+    
+//     // Start transaction
+//     $pdo->beginTransaction();
+    
+//     try {
+//         // Insert into students table
+//         $stmt = $pdo->prepare("INSERT INTO students (student_id, school_id, class_id, name, dob, gender, hand, foot, eye_sight, medical_condition, height, weight, parent_name, parent_phone, parent_whatsapp, parent_email, passport_picture) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+//         $stmt->execute([$student_id, $school_id, $class_id, $name, $dob, $gender, $hand, $foot, $eye_sight, $medical_condition, $height, $weight, $parent_name, $parent_phone, $parent_whatsapp, $parent_email, $passport_picture]);
+
+//         // Insert into users table
+//         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+//         $stmt = $pdo->prepare("INSERT INTO users (username, password, role) VALUES (?, ?, 'student')");
+//         $stmt->execute([$student_id, $hashed_password]);
+
+//         // Commit transaction
+//         $pdo->commit();
+//         return true;
+//     } catch (Exception $e) {
+//         // Rollback transaction on error
+//         $pdo->rollBack();
+//         error_log("Error creating student: " . $e->getMessage());
+//         return false;
+//     }
+// }
+
+function createStudent($school_id, $class_id, $name, $dob, $gender, $hand, $foot, $eye_sight, $medical_condition, $height, $weight, $parent_name, $parent_phone, $parent_whatsapp, $parent_email, $passport_picture, $password) {
     global $pdo;
-    $student_id = generateUniqueId('students', 'student_id');
+    
+    // Get the school name
+    $stmt = $pdo->prepare("SELECT school_name FROM schools WHERE id = ?");
+    $stmt->execute([$school_id]);
+    $school = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$school) {
+        return "Invalid school ID";
+    }
+    $school_name = $school['school_name'];
+    
+    // Generate unique student ID
+    do {
+        $student_id = generateStudentId($school_name);
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM students WHERE student_id = ?");
+        $stmt->execute([$student_id]);
+    } while ($stmt->fetchColumn() > 0);
     
     // Start transaction
     $pdo->beginTransaction();
@@ -149,15 +215,14 @@ function createStudent($class_id, $name, $dob, $gender, $hand, $foot, $eye_sight
 
         // Commit transaction
         $pdo->commit();
-        return true;
+        return "Student created successfully with ID: " . $student_id;
     } catch (Exception $e) {
         // Rollback transaction on error
         $pdo->rollBack();
-        return false;
+        error_log("Error creating student: " . $e->getMessage());
+        return "Failed to create student: " . $e->getMessage();
     }
 }
-
-// ... (keep other existing functions)
 
 function getStudents($class_id = null, $page = 1, $perPage = 10) {
     global $pdo;
@@ -183,11 +248,21 @@ function updateStudent($student_id, $name, $dob, $gender, $hand, $foot, $eye_sig
 }
 
 
+// function getStudent($student_id) {
+//     global $pdo;
+//     $stmt = $pdo->prepare("SELECT * FROM students WHERE student_id = ?");
+//     $stmt->execute([$student_id]);
+//     return $stmt->fetch(PDO::FETCH_ASSOC);
+// }
 function getStudent($student_id) {
     global $pdo;
     $stmt = $pdo->prepare("SELECT * FROM students WHERE student_id = ?");
     $stmt->execute([$student_id]);
-    return $stmt->fetch(PDO::FETCH_ASSOC);
+    $student = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$student) {
+        return null;
+    }
+    return $student;
 }
 
 
