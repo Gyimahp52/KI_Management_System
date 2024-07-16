@@ -42,7 +42,7 @@ function deleteSchool($school_id) {
         $stmt->execute([$school_id]);
         
         // Finally, delete the school
-        $stmt = $pdo->prepare("DELETE FROM schools WHERE school_id = ?");
+        $stmt = $pdo->prepare("DELETE FROM schools WHERE id = ?");
         $stmt->execute([$school_id]);
         
         $pdo->commit();
