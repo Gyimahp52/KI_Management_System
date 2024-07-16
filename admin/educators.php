@@ -160,123 +160,112 @@ if (isset($_POST['submit'])) {
     }
 }
 
-// if (isset($_POST['delete'])) {
-//     $id = $_POST['id'];
-//     try {
-//         $dbh->beginTransaction();
 
-//         // Get the educator's email
-//         $sql = "SELECT email FROM educators WHERE id = :id";
-//         $query = $dbh->prepare($sql);
-//         $query->bindParam(':id', $id, PDO::PARAM_INT);
-//         $query->execute();
-//         $email = $query->fetchColumn();
 
-//         // Delete from educators table
-//         $sql = "DELETE FROM educators WHERE id = :id";
-//         $query = $dbh->prepare($sql);
-//         $query->bindParam(':id', $id, PDO::PARAM_INT);
-//         $query->execute();
+// // Fetch data from the database
+// // Pagination
+// $recordsPerPage = 10;
+// $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
+// $offset = ($page - 1) * $recordsPerPage;
 
-//         // Delete from users table
-//         $sql = "DELETE FROM users WHERE username = :username";
-//         $query = $dbh->prepare($sql);
-//         $query->bindParam(':username', $email, PDO::PARAM_STR);
-//         $query->execute();
+// // Fetch all schools
+// $schoolQuery = $dbh->query("SELECT DISTINCT school FROM educators ORDER BY school");
+// $schools = $schoolQuery->fetchAll(PDO::FETCH_COLUMN);
 
-//         $dbh->commit();
-//         echo '<script>alert("Educator deleted successfully."); window.location.href="educators.php";</script>';
-//     } catch (PDOException $e) {
-//         $dbh->rollBack();
-//         echo '<script>alert("Error deleting educator: ' . $e->getMessage() . '");</script>';
-//     }
-// }
-// if (isset($_POST['submit'])) {
-//     $required_fields = ['name', 'phone', 'emergency', 'email', 'gender', 'dob', 'location', 'school'];
-//     $missing_fields = [];
+// // Handle sorting
+// $sortSchool = isset($_GET['sort_school']) ? $_GET['sort_school'] : '';
+// $sortOrder = isset($_GET['sort_order']) && $_GET['sort_order'] === 'desc' ? 'DESC' : 'ASC';
 
-//     foreach ($required_fields as $field) {
-//         if (empty($_POST[$field])) {
-//             $missing_fields[] = $field;
-//         }
-//     }
+// // Construct the main query
+// $sql = "SELECT * FROM educators";
+// $countSql = "SELECT COUNT(*) FROM educators";
+// $params = array();
 
-//     if (!empty($missing_fields)) {
-//         echo '<script>alert("Missing fields: '.implode(', ', $missing_fields).'")</script>';
-//     } else {
-//         $name = sanitize_input($_POST['name']);
-//         $phone = sanitize_input($_POST['phone']);
-//         $emerg_phone = sanitize_input($_POST['emergency']);
-//         $email = sanitize_input($_POST['email']);
-//         $gender = sanitize_input($_POST['gender']);
-//         $dob = sanitize_input($_POST['dob']);
-//         $location = sanitize_input($_POST['location']);
-//         $school = sanitize_input($_POST['school']);
-
-//         // Validate inputs
-//         if (!validate_name($name)) {
-//             echo '<script>alert("Invalid name format.")</script>';
-//         } elseif (!validate_phone($phone)) {
-//             echo '<script>alert("Invalid phone number format. Must be 10 digits.")</script>';
-//         } elseif (!validate_phone($emerg_phone)) {
-//             echo '<script>alert("Invalid emergency phone number format. Must be 10 digits.")</script>';
-//         } elseif (!validate_email($email)) {
-//             echo '<script>alert("Invalid email format.")</script>';
-//         } else {
-//             try {
-//                 // Check if the email or phone number already exists
-//                 $ret = "SELECT email FROM educators WHERE email=:email OR phone_number=:phone";
-//                 $query = $dbh->prepare($ret);
-//                 $query->bindParam(':phone', $phone, PDO::PARAM_STR);
-//                 $query->bindParam(':email', $email, PDO::PARAM_STR);
-//                 $query->execute();
-//                 $results = $query->fetchAll(PDO::FETCH_OBJ);
-
-//                 if ($query->rowCount() == 0) {
-//                     // Insert the new educator's details
-//                     $sql = "INSERT INTO educators(name, gender, phone_number, emergency_contact, email, dob, location, school) VALUES (:name, :gender, :phone, :emerg_phone, :email, :dob, :location, :school)";
-//                     $query = $dbh->prepare($sql);
-//                     $query->bindParam(':name', $name, PDO::PARAM_STR);
-//                     $query->bindParam(':gender', $gender, PDO::PARAM_STR);
-//                     $query->bindParam(':phone', $phone, PDO::PARAM_STR);
-//                     $query->bindParam(':emerg_phone', $emerg_phone, PDO::PARAM_STR);
-//                     $query->bindParam(':email', $email, PDO::PARAM_STR);
-//                     $query->bindParam(':dob', $dob, PDO::PARAM_STR);
-//                     $query->bindParam(':location', $location, PDO::PARAM_STR);
-//                     $query->bindParam(':school', $school, PDO::PARAM_STR);
-//                     $query->execute();
-//                     $form_submitted = true;
-//                     echo '<script>
-//                     alert("Educator detail has been added.");
-//                     window.location.href = "educators.php";
-//                     </script>';
-//                 } else {
-//                     echo '<script>alert("Email or Mobile Number already exists. Please try again");
-//                     window.location.href = "educators.php";</script>';
-//                 }
-//             } catch (PDOException $e) {
-//                 echo '<script>alert("Database error occurred: ' . $e->getMessage() . '");</script>';
-//                 error_log($e->getMessage(), 3, '/var/tmp/my-errors.log');
-//             }
-//         }
-//     }
+// if ($sortSchool) {
+//     $sql .= " WHERE school = :sort_school";
+//     $countSql .= " WHERE school = :sort_school";
+//     $params[':sort_school'] = $sortSchool;
 // }
 
+// $sql .= " ORDER BY id DESC";  // Keep the newest first as default
+// if ($sortSchool) {
+//     $sql .= ", school $sortOrder";
+// }
+
+// // Fetch total number of educators (with filter applied if any)
+// $countQuery = $dbh->prepare($countSql);
+// if ($sortSchool) {
+//     $countQuery->bindParam(':sort_school', $sortSchool, PDO::PARAM_STR);
+// }
+// $countQuery->execute();
+// $total = $countQuery->fetchColumn();
+// $totalPages = ceil($total / $recordsPerPage);
+
+// // Add pagination to the main query
+// $sql .= " LIMIT :offset, :limit";
+
+// // Prepare and execute the main query
+// $query = $dbh->prepare($sql);
+// foreach ($params as $key => $value) {
+//     $query->bindValue($key, $value, PDO::PARAM_STR);
+// }
+// $query->bindParam(':offset', $offset, PDO::PARAM_INT);
+// $query->bindParam(':limit', $recordsPerPage, PDO::PARAM_INT);
+// $query->execute();
+// $educators = $query->fetchAll(PDO::FETCH_OBJ);
 // Fetch data from the database
 // Pagination
 $recordsPerPage = 10;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 $offset = ($page - 1) * $recordsPerPage;
 
-// Fetch total number of educators
-$totalQuery = $dbh->query("SELECT COUNT(*) FROM educators");
-$total = $totalQuery->fetchColumn();
+// Fetch all schools
+$schoolQuery = $dbh->query("SELECT DISTINCT school FROM educators ORDER BY school");
+$schools = $schoolQuery->fetchAll(PDO::FETCH_COLUMN);
+
+// Handle sorting
+$sortSchool = isset($_GET['sort_school']) ? $_GET['sort_school'] : '';
+$sortOrder = isset($_GET['sort_order']) && $_GET['sort_order'] === 'desc' ? 'DESC' : 'ASC';
+$isSorting = isset($_GET['sort_school']) || isset($_GET['sort_order']);
+
+// Construct the main query
+$sql = "SELECT * FROM educators";
+$countSql = "SELECT COUNT(*) FROM educators";
+$params = array();
+
+if ($sortSchool) {
+    $sql .= " WHERE school = :sort_school";
+    $countSql .= " WHERE school = :sort_school";
+    $params[':sort_school'] = $sortSchool;
+}
+
+if ($isSorting) {
+    if ($sortSchool) {
+        $sql .= " ORDER BY school $sortOrder, id DESC";
+    } else {
+        $sql .= " ORDER BY id DESC";
+    }
+} else {
+    $sql .= " ORDER BY id DESC";  // Default sorting
+}
+
+// Fetch total number of educators (with filter applied if any)
+$countQuery = $dbh->prepare($countSql);
+if ($sortSchool) {
+    $countQuery->bindParam(':sort_school', $sortSchool, PDO::PARAM_STR);
+}
+$countQuery->execute();
+$total = $countQuery->fetchColumn();
 $totalPages = ceil($total / $recordsPerPage);
 
+// Add pagination to the main query
+$sql .= " LIMIT :offset, :limit";
 
-// Fetch educators with pagination, ordered by newest first
-$sql = "SELECT * FROM educators ORDER BY id DESC LIMIT :offset, :limit";
+// Prepare and execute the main query
 $query = $dbh->prepare($sql);
+foreach ($params as $key => $value) {
+    $query->bindValue($key, $value, PDO::PARAM_STR);
+}
 $query->bindParam(':offset', $offset, PDO::PARAM_INT);
 $query->bindParam(':limit', $recordsPerPage, PDO::PARAM_INT);
 $query->execute();
@@ -367,7 +356,29 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
                     </div>
                 </form>
             </div>
-
+            <div class="sorting-controls mb-3">
+    <form action="" method="get" class="form-inline">
+        <div class="form-group mr-2">
+            <label for="sort_school" class="mr-2">Sort by School:</label>
+            <select name="sort_school" id="sort_school" class="form-control">
+                <option value="">All Schools</option>
+                <?php foreach ($schools as $school): ?>
+                    <option value="<?php echo htmlspecialchars($school); ?>" <?php echo $sortSchool === $school ? 'selected' : ''; ?>>
+                        <?php echo htmlspecialchars($school); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="form-group mr-2">
+            <label for="sort_order" class="mr-2">Order:</label>
+            <select name="sort_order" id="sort_order" class="form-control">
+                <option value="asc" <?php echo $sortOrder === 'ASC' ? 'selected' : ''; ?>>Ascending</option>
+                <option value="desc" <?php echo $sortOrder === 'DESC' ? 'selected' : ''; ?>>Descending</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Apply Sorting</button>
+    </form>
+</div>
             <!-- Table displaying educators -->
             <table class="table table-striped mt-5" id="educatorTable">
                 <thead class="thead-dark">
@@ -460,9 +471,14 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
             </table>
             <nav aria-label="Page navigation">
     <ul class="pagination justify-content-center">
-        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+        <?php 
+        $queryParams = $_GET;
+        for ($i = 1; $i <= $totalPages; $i++): 
+            $queryParams['page'] = $i;
+            $queryString = http_build_query($queryParams);
+        ?>
             <li class="page-item <?php echo $page == $i ? 'active' : ''; ?>">
-                <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                <a class="page-link" href="?<?php echo $queryString; ?>"><?php echo $i; ?></a>
             </li>
         <?php endfor; ?>
     </ul>
@@ -474,28 +490,35 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="assets/js/educators.js"></script>
     <script>
-//         $(document).ready(function() {
-//     $('.edit-btn').click(function() {
-//         var id = $(this).data('id');
-//         $('#editModal' + id).modal('show');
-//     });
 
-//     $('.delete-btn').click(function() {
-//         var id = $(this).data('id');
-//         if (confirm('Are you sure you want to delete this educator?')) {
-//             $('#deleteForm' + id).submit();
-//         }
-//     });
-
-//     $('.view-btn').click(function() {
-//         var id = $(this).data('id');
-//         window.location.href = 'educator_profile.php?id=' + id;
-//     });
-// });
 $(document).ready(function() {
     $('.edit-btn').click(function() {
         var id = $(this).data('id');
         $('#editModal' + id).modal('show');
+    });
+});
+
+// document.addEventListener('DOMContentLoaded', function() {
+//     const sortSchool = document.getElementById('sort_school');
+//     const sortOrder = document.getElementById('sort_order');
+//     const sortForm = sortSchool.closest('form');
+
+//     sortSchool.addEventListener('change', function() {
+//         sortForm.submit();
+//     });
+
+//     sortOrder.addEventListener('change', function() {
+//         sortForm.submit();
+//     });
+// });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const sortForm = document.querySelector('.sorting-controls form');
+    const applyButton = sortForm.querySelector('button[type="submit"]');
+
+    applyButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        sortForm.submit();
     });
 });
 
