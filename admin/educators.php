@@ -18,10 +18,61 @@ function validate_email($email) {
 function sanitize_input($data) {
     return htmlspecialchars(stripslashes(trim($data)));
 }
+if (isset($_POST['delete'])) {
+    $id = $_POST['id'];
+    try {
+        $dbh->beginTransaction();
 
+        // Get the educator's email
+        $sql = "SELECT email FROM educators WHERE id = :id";
+        $query = $dbh->prepare($sql);
+        $query->bindParam(':id', $id, PDO::PARAM_INT);
+        $query->execute();
+        $email = $query->fetchColumn();
+
+        // Delete from educators table
+        $sql = "DELETE FROM educators WHERE id = :id";
+        $query = $dbh->prepare($sql);
+        $query->bindParam(':id', $id, PDO::PARAM_INT);
+        $query->execute();
+
+        // Delete from users table
+        $sql = "DELETE FROM users WHERE username = :username";
+        $query = $dbh->prepare($sql);
+        $query->bindParam(':username', $email, PDO::PARAM_STR);
+        $query->execute();
+
+        $dbh->commit();
+        echo '<script>alert("Educator deleted successfully."); window.location.href="educators.php";</script>';
+    } catch (PDOException $e) {
+        $dbh->rollBack();
+        echo '<script>alert("Error deleting educator: ' . $e->getMessage() . '");</script>';
+    }
+}
+
+if (isset($_POST['edit'])) {
+    $id = $_POST['id'];
+    $name = sanitize_input($_POST['edit_name']);
+    $phone = sanitize_input($_POST['edit_phone']);
+    $school = sanitize_input($_POST['edit_school']);
+
+    try {
+        $sql = "UPDATE educators SET name = :name, phone_number = :phone, school = :school WHERE id = :id";
+        $query = $dbh->prepare($sql);
+        $query->bindParam(':name', $name, PDO::PARAM_STR);
+        $query->bindParam(':phone', $phone, PDO::PARAM_STR);
+        $query->bindParam(':school', $school, PDO::PARAM_STR);
+        $query->bindParam(':id', $id, PDO::PARAM_INT);
+        $query->execute();
+
+        echo '<script>alert("Educator updated successfully."); window.location.href="educators.php";</script>';
+    } catch (PDOException $e) {
+        echo '<script>alert("Error updating educator: ' . $e->getMessage() . '");</script>';
+    }
+}
 $form_submitted = false;
 if (isset($_POST['submit'])) {
-    $required_fields = ['name', 'phone', 'emergency', 'email', 'gender', 'dob', 'location', 'school'];
+    $required_fields = ['name', 'phone', 'emergency', 'email', 'gender', 'dob', 'location', 'school', 'password'];
     $missing_fields = [];
 
     foreach ($required_fields as $field) {
@@ -41,6 +92,7 @@ if (isset($_POST['submit'])) {
         $dob = sanitize_input($_POST['dob']);
         $location = sanitize_input($_POST['location']);
         $school = sanitize_input($_POST['school']);
+        $password = $_POST['password']; // Will be hashed later
 
         // Validate inputs
         if (!validate_name($name)) {
@@ -54,7 +106,7 @@ if (isset($_POST['submit'])) {
         } else {
             try {
                 // Check if the email or phone number already exists
-                $ret = "SELECT email FROM educators WHERE email=:email OR phone_number=:phone";
+                $ret = "SELECT email FROM educators WHERE email = :email OR phone_number = :phone";
                 $query = $dbh->prepare($ret);
                 $query->bindParam(':phone', $phone, PDO::PARAM_STR);
                 $query->bindParam(':email', $email, PDO::PARAM_STR);
@@ -62,6 +114,12 @@ if (isset($_POST['submit'])) {
                 $results = $query->fetchAll(PDO::FETCH_OBJ);
 
                 if ($query->rowCount() == 0) {
+                    $dbh->beginTransaction();
+
+                    // Hash the password
+                    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                    $username = strtolower(explode(' ', $name)[0]); // First word of the name
+
                     // Insert the new educator's details
                     $sql = "INSERT INTO educators(name, gender, phone_number, emergency_contact, email, dob, location, school) VALUES (:name, :gender, :phone, :emerg_phone, :email, :dob, :location, :school)";
                     $query = $dbh->prepare($sql);
@@ -74,7 +132,17 @@ if (isset($_POST['submit'])) {
                     $query->bindParam(':location', $location, PDO::PARAM_STR);
                     $query->bindParam(':school', $school, PDO::PARAM_STR);
                     $query->execute();
-                    $form_submitted = true;
+
+                    $educator_id = $dbh->lastInsertId();
+
+                    // Insert into users table
+                    $sql = "INSERT INTO users(username, password, role) VALUES (:username, :password, 'educator')";
+                    $query = $dbh->prepare($sql);
+                    $query->bindParam(':username', $username, PDO::PARAM_STR);
+                    $query->bindParam(':password', $hashed_password, PDO::PARAM_STR);
+                    $query->execute();
+
+                    $dbh->commit();
                     echo '<script>
                     alert("Educator detail has been added.");
                     window.location.href = "educators.php";
@@ -84,6 +152,7 @@ if (isset($_POST['submit'])) {
                     window.location.href = "educators.php";</script>';
                 }
             } catch (PDOException $e) {
+                $dbh->rollBack();
                 echo '<script>alert("Database error occurred: ' . $e->getMessage() . '");</script>';
                 error_log($e->getMessage(), 3, '/var/tmp/my-errors.log');
             }
@@ -91,9 +160,125 @@ if (isset($_POST['submit'])) {
     }
 }
 
+// if (isset($_POST['delete'])) {
+//     $id = $_POST['id'];
+//     try {
+//         $dbh->beginTransaction();
+
+//         // Get the educator's email
+//         $sql = "SELECT email FROM educators WHERE id = :id";
+//         $query = $dbh->prepare($sql);
+//         $query->bindParam(':id', $id, PDO::PARAM_INT);
+//         $query->execute();
+//         $email = $query->fetchColumn();
+
+//         // Delete from educators table
+//         $sql = "DELETE FROM educators WHERE id = :id";
+//         $query = $dbh->prepare($sql);
+//         $query->bindParam(':id', $id, PDO::PARAM_INT);
+//         $query->execute();
+
+//         // Delete from users table
+//         $sql = "DELETE FROM users WHERE username = :username";
+//         $query = $dbh->prepare($sql);
+//         $query->bindParam(':username', $email, PDO::PARAM_STR);
+//         $query->execute();
+
+//         $dbh->commit();
+//         echo '<script>alert("Educator deleted successfully."); window.location.href="educators.php";</script>';
+//     } catch (PDOException $e) {
+//         $dbh->rollBack();
+//         echo '<script>alert("Error deleting educator: ' . $e->getMessage() . '");</script>';
+//     }
+// }
+// if (isset($_POST['submit'])) {
+//     $required_fields = ['name', 'phone', 'emergency', 'email', 'gender', 'dob', 'location', 'school'];
+//     $missing_fields = [];
+
+//     foreach ($required_fields as $field) {
+//         if (empty($_POST[$field])) {
+//             $missing_fields[] = $field;
+//         }
+//     }
+
+//     if (!empty($missing_fields)) {
+//         echo '<script>alert("Missing fields: '.implode(', ', $missing_fields).'")</script>';
+//     } else {
+//         $name = sanitize_input($_POST['name']);
+//         $phone = sanitize_input($_POST['phone']);
+//         $emerg_phone = sanitize_input($_POST['emergency']);
+//         $email = sanitize_input($_POST['email']);
+//         $gender = sanitize_input($_POST['gender']);
+//         $dob = sanitize_input($_POST['dob']);
+//         $location = sanitize_input($_POST['location']);
+//         $school = sanitize_input($_POST['school']);
+
+//         // Validate inputs
+//         if (!validate_name($name)) {
+//             echo '<script>alert("Invalid name format.")</script>';
+//         } elseif (!validate_phone($phone)) {
+//             echo '<script>alert("Invalid phone number format. Must be 10 digits.")</script>';
+//         } elseif (!validate_phone($emerg_phone)) {
+//             echo '<script>alert("Invalid emergency phone number format. Must be 10 digits.")</script>';
+//         } elseif (!validate_email($email)) {
+//             echo '<script>alert("Invalid email format.")</script>';
+//         } else {
+//             try {
+//                 // Check if the email or phone number already exists
+//                 $ret = "SELECT email FROM educators WHERE email=:email OR phone_number=:phone";
+//                 $query = $dbh->prepare($ret);
+//                 $query->bindParam(':phone', $phone, PDO::PARAM_STR);
+//                 $query->bindParam(':email', $email, PDO::PARAM_STR);
+//                 $query->execute();
+//                 $results = $query->fetchAll(PDO::FETCH_OBJ);
+
+//                 if ($query->rowCount() == 0) {
+//                     // Insert the new educator's details
+//                     $sql = "INSERT INTO educators(name, gender, phone_number, emergency_contact, email, dob, location, school) VALUES (:name, :gender, :phone, :emerg_phone, :email, :dob, :location, :school)";
+//                     $query = $dbh->prepare($sql);
+//                     $query->bindParam(':name', $name, PDO::PARAM_STR);
+//                     $query->bindParam(':gender', $gender, PDO::PARAM_STR);
+//                     $query->bindParam(':phone', $phone, PDO::PARAM_STR);
+//                     $query->bindParam(':emerg_phone', $emerg_phone, PDO::PARAM_STR);
+//                     $query->bindParam(':email', $email, PDO::PARAM_STR);
+//                     $query->bindParam(':dob', $dob, PDO::PARAM_STR);
+//                     $query->bindParam(':location', $location, PDO::PARAM_STR);
+//                     $query->bindParam(':school', $school, PDO::PARAM_STR);
+//                     $query->execute();
+//                     $form_submitted = true;
+//                     echo '<script>
+//                     alert("Educator detail has been added.");
+//                     window.location.href = "educators.php";
+//                     </script>';
+//                 } else {
+//                     echo '<script>alert("Email or Mobile Number already exists. Please try again");
+//                     window.location.href = "educators.php";</script>';
+//                 }
+//             } catch (PDOException $e) {
+//                 echo '<script>alert("Database error occurred: ' . $e->getMessage() . '");</script>';
+//                 error_log($e->getMessage(), 3, '/var/tmp/my-errors.log');
+//             }
+//         }
+//     }
+// }
+
 // Fetch data from the database
-$sql = "SELECT * FROM educators";
+// Pagination
+$recordsPerPage = 10;
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
+$offset = ($page - 1) * $recordsPerPage;
+
+// Fetch total number of educators
+$totalQuery = $dbh->query("SELECT COUNT(*) FROM educators");
+$total = $totalQuery->fetchColumn();
+$totalPages = ceil($total / $recordsPerPage);
+
+
+// Fetch educators with pagination, ordered by newest first
+$sql = "SELECT * FROM educators ORDER BY id DESC LIMIT :offset, :limit";
 $query = $dbh->prepare($sql);
+$query->bindParam(':offset', $offset, PDO::PARAM_INT);
+$query->bindParam(':limit', $recordsPerPage, PDO::PARAM_INT);
 $query->execute();
 $educators = $query->fetchAll(PDO::FETCH_OBJ);
 ?>
@@ -134,6 +319,10 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" id="name" name="name" placeholder="Enter your name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                       <label for="password">Password</label>
+                       <input type="password" id="password" name="password" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="gender">Gender</label>
@@ -190,18 +379,22 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
                     </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($educators as $educator): ?>
+
+<?php foreach ($educators as $educator): ?>
 <tr>
     <td><?php echo htmlspecialchars($educator->name); ?></td>
     <td><?php echo htmlspecialchars($educator->phone_number); ?></td>
     <td><?php echo htmlspecialchars($educator->school); ?></td>
     <td>
-        <button class="btn btn-primary btn-sm" onclick="document.getElementById('editForm<?php echo $educator->id; ?>').submit();">Edit</button>
-        <button class="btn btn-danger btn-sm" onclick="if(confirm('Are you sure you want to delete this educator?')) document.getElementById('deleteForm<?php echo $educator->id; ?>').submit();">Delete</button>
+        <a href="educator_profile.php?id=<?php echo $educator->id; ?>" class="btn btn-info btn-sm">View</a>
+        <button class="btn btn-primary btn-sm edit-btn" data-id="<?php echo $educator->id; ?>">Edit</button>
+        <form action="educators.php" method="post" style="display:inline;">
+            <input type="hidden" name="id" value="<?php echo $educator->id; ?>">
+            <button type="submit" name="delete" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this educator?');">Delete</button>
+        </form>
     </td>
 </tr>
 <!-- Edit Modal -->
-
 <div class="modal fade" id="editModal<?php echo $educator->id; ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?php echo $educator->id; ?>" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -211,7 +404,7 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="editForm<?php echo $educator->id; ?>" action="educators.php" method="post">
+            <form action="educators.php" method="post">
                 <div class="modal-body">
                     <input type="hidden" name="id" value="<?php echo $educator->id; ?>">
                     <div class="form-group">
@@ -235,6 +428,8 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
         </div>
     </div>
 </div>
+
+
 
 <!-- Delete Modal -->
 <div class="modal fade" id="deleteModal<?php echo $educator->id; ?>" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel<?php echo $educator->id; ?>" aria-hidden="true">
@@ -263,11 +458,47 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
 <?php endforeach; ?>
                 </tbody>
             </table>
+            <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+            <li class="page-item <?php echo $page == $i ? 'active' : ''; ?>">
+                <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+            </li>
+        <?php endfor; ?>
+    </ul>
+</nav>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="assets/js/educators.js"></script>
+    <script>
+//         $(document).ready(function() {
+//     $('.edit-btn').click(function() {
+//         var id = $(this).data('id');
+//         $('#editModal' + id).modal('show');
+//     });
+
+//     $('.delete-btn').click(function() {
+//         var id = $(this).data('id');
+//         if (confirm('Are you sure you want to delete this educator?')) {
+//             $('#deleteForm' + id).submit();
+//         }
+//     });
+
+//     $('.view-btn').click(function() {
+//         var id = $(this).data('id');
+//         window.location.href = 'educator_profile.php?id=' + id;
+//     });
+// });
+$(document).ready(function() {
+    $('.edit-btn').click(function() {
+        var id = $(this).data('id');
+        $('#editModal' + id).modal('show');
+    });
+});
+
+    </script>
 </body>
 </html>
