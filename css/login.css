@@ -1,5 +1,5 @@
 /* Import Google font - Poppins */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 * {
   margin: 0;
   padding: 0;
@@ -7,120 +7,130 @@
   font-family: "Poppins", sans-serif;
 }
 body {
-  background: url("images/web2.png");
-  font-family: "Poppins", sans-serif;
-  background-color: #f4f4f4;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
+    background-image: url(/images/1\ web.png);
+    font-family: "Poppins", sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
 }
 
 .login-container {
-  background-color: white;
-  padding: 40px;
-  border-radius: 70px;
-  box-shadow: 0 30px 9px rgba(0, 0, 0, 0.1);
-  position: absolute;
-  transform: translate(-50%, -50%);
-  top: 50%;
-  left: 50%;
+    background-color: white;
+    padding: 40px;
+    border-radius: 70px;
+    box-shadow: 0 30px 9px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
 }
 
 form {
-  display: flex;
-  flex-direction: column;
-  border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 30px;
 }
 
 h2 {
-  margin-bottom: 20px;
-  color: #333;
-  text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
 }
 
 img {
-  width: 80px;
-  height: 70px;
-
-  margin-left: 100px;
+    width: 80px;
+    height: 70px;
+    
+    margin-left: 100px;
 }
 
 .form-group {
-  margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 label {
-  margin-bottom: 5px;
-  font-weight: bold;
+    margin-bottom: 5px;
+    font-weight: bold;
 }
 
 input[type="text"],
 input[type="password"] {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
 }
+
 
 /*login button*/
 
 .btn-login {
-  margin-right: 30px;
-  margin-left: 60px;
+    margin-right: 30px;
+    margin-left: 60px;
 
-  align-items: center;
-  appearance: none;
-  background-image: radial-gradient(
-    100% 100% at 100% 0,
-    #5adaff 0,
-    orange 100%
-  );
-  border: 0;
-  border-radius: 6px;
-  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,
-    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgba(58, 65, 111, 0.5) 0 -3px 0 inset;
-  box-sizing: border-box;
-  color: #fff;
-  cursor: pointer;
-  display: inline-flex;
-  font-family: "JetBrains Mono", monospace;
-  height: 48px;
-  justify-content: center;
-  line-height: 1;
-  list-style: none;
-  overflow: hidden;
-  padding-left: 16px;
-  padding-right: 16px;
-  position: relative;
-  text-align: left;
-  text-decoration: none;
-  transition: box-shadow 0.15s, transform 0.15s;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  white-space: nowrap;
-  will-change: box-shadow, transform;
-  font-size: 18px;
-}
+    align-items: center;
+    appearance: none;
+    background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, orange 100%);
+    border: 0;
+    border-radius: 6px;
+    box-shadow: 
+  rgba(45, 35, 66, .4) 0 2px 4px,
+  rgba(45, 35, 66, .3) 0 7px 13px -3px,
+  rgba(58, 65, 111, .5) 0 -3px 0 inset;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: "JetBrains Mono",monospace;
+    height: 48px;
+    justify-content: center;
+    line-height: 1;
+    list-style: none;
+    overflow: hidden;
+    padding-left: 16px;
+    padding-right: 16px;
+    position: relative;
+    text-align: left;
+    text-decoration: none;
+    transition: box-shadow .15s,transform .15s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    will-change: box-shadow,transform;
+    font-size: 18px;
+    
+  }
+  
+  .btn-login:focus {
+    box-shadow: 
+  #3c4fe0 0 0 0 1.5px inset, 
+  rgba(45, 35, 66, .4) 0 2px 4px, 
+  rgba(45, 35, 66, .3) 0 7px 13px -3px, 
+  #3c4fe0 0 -3px 0 inset;
+  
+  }
+  
+  .btn-login:hover {
+    box-shadow: 
+  rgba(45, 35, 66, .4) 0 4px 8px, 
+  rgba(45, 35, 66, .3) 0 7px 13px -3px, 
+  #3c4fe0 0 -3px 0 inset;
+    transform: translateY(-2px);
+    
+  }
+  
+  .btn-login:active {
+    box-shadow: 
+  #3c4fe0 0 3px 7px inset;
+    transform: translateY(2px);
+  }
 
-.btn-login:focus {
-  box-shadow: #3c4fe0 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px,
-    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
-}
 
-.btn-login:hover {
-  box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,
-    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
-  transform: translateY(-2px);
-}
-
-.btn-login:active {
-  box-shadow: #3c4fe0 0 3px 7px inset;
-  transform: translateY(2px);
-}
-
+  
 /* All ChatBot styles*/
 
 .chatbot-toggler {
@@ -129,30 +139,49 @@ input[type="password"] {
   right: 35px;
   outline: none;
   border: none;
-  height: 50px;
-  width: 50px;
+  height: 70px; /* Increased size */
+  width: 70px;  /* Increased size */
   display: flex;
   cursor: pointer;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: #724ae8;
+  background: #ff5722; /* Bright color */
   transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Added shadow */
+  animation: pulse 1.5s infinite; /* Added animation */
 }
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 body.show-chatbot .chatbot-toggler {
   transform: rotate(90deg);
 }
+
 .chatbot-toggler span {
   color: #fff;
   position: absolute;
 }
+
 .chatbot-toggler span:last-child,
-body.show-chatbot .chatbot-toggler span:first-child {
+body.show-chatbot .chatbot-toggler span:first-child  {
   opacity: 0;
 }
+
 body.show-chatbot .chatbot-toggler span:last-child {
   opacity: 1;
 }
+
 .chatbot {
   position: fixed;
   right: 35px;
@@ -165,23 +194,26 @@ body.show-chatbot .chatbot-toggler span:last-child {
   pointer-events: none;
   transform: scale(0.5);
   transform-origin: bottom right;
-  box-shadow: 0 0 128px 0 rgba(0, 0, 0, 0.1),
-    0 32px 64px -48px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 128px 0 rgba(0,0,0,0.1),
+              0 32px 64px -48px rgba(0,0,0,0.5);
   transition: all 0.1s ease;
 }
+
 body.show-chatbot .chatbot {
   opacity: 1;
   pointer-events: auto;
   transform: scale(1);
 }
+
 .chatbot header {
   padding: 6px 0;
   position: relative;
   text-align: center;
   color: #fff;
-  background: orange;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background:  orange;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
+
 .chatbot header span {
   position: absolute;
   right: 15px;
@@ -190,45 +222,49 @@ body.show-chatbot .chatbot {
   cursor: pointer;
   transform: translateY(-50%);
 }
+
 header h2 {
   font-size: 1.4rem;
 }
+
 .chatbot .chatbox {
   overflow-y: auto;
   height: 510px;
   padding: 30px 20px 100px;
 }
+
 .chatbot :where(.chatbox, textarea)::-webkit-scrollbar {
   width: 6px;
 }
+
 .chatbot :where(.chatbox, textarea)::-webkit-scrollbar-track {
   background: #fff;
   border-radius: 25px;
 }
+
 .chatbot :where(.chatbox, textarea)::-webkit-scrollbar-thumb {
   background: #ccc;
   border-radius: 25px;
 }
+
 .chatbox .chat {
   display: flex;
   list-style: none;
 }
+
 .chatbox .outgoing {
   margin: 20px 0;
   justify-content: flex-end;
 }
-.chatbox .incoming span {
+
+.chatbox .incoming img.company-logo {
   width: 32px;
   height: 32px;
-  color: #fff;
   cursor: default;
-  text-align: center;
-  line-height: 32px;
-  align-self: flex-end;
-  background: #724ae8;
-  border-radius: 4px;
+  border-radius: 50%;
   margin: 0 10px 7px 0;
 }
+
 .chatbox .chat p {
   white-space: pre-wrap;
   padding: 12px 16px;
@@ -238,17 +274,21 @@ header h2 {
   font-size: 0.95rem;
   background: #724ae8;
 }
+
 .chatbox .incoming p {
   border-radius: 10px 10px 10px 0;
 }
+
 .chatbox .chat p.error {
   color: #721c24;
   background: #f8d7da;
 }
+
 .chatbox .incoming p {
   color: #000;
   background: #f2f2f2;
 }
+
 .chatbot .chat-input {
   display: flex;
   gap: 5px;
@@ -259,6 +299,7 @@ header h2 {
   padding: 3px 20px;
   border-top: 1px solid #ddd;
 }
+
 .chat-input textarea {
   height: 55px;
   width: 100%;
@@ -269,6 +310,7 @@ header h2 {
   padding: 15px 15px 15px 0;
   font-size: 0.95rem;
 }
+
 .chat-input span {
   align-self: flex-end;
   color: #724ae8;
@@ -279,6 +321,7 @@ header h2 {
   visibility: hidden;
   font-size: 1.35rem;
 }
+
 .chat-input textarea:valid ~ span {
   visibility: visible;
 }
@@ -288,6 +331,7 @@ header h2 {
     right: 20px;
     bottom: 20px;
   }
+
   .chatbot {
     right: 0;
     bottom: 0;
@@ -295,14 +339,21 @@ header h2 {
     border-radius: 0;
     width: 100%;
   }
+
   .chatbot .chatbox {
     height: 90%;
     padding: 25px 15px 100px;
   }
+
   .chatbot .chat-input {
     padding: 5px 15px;
   }
+
   .chatbot header span {
     display: block;
   }
+}
+
+.chatbot-toggler {
+  color: white;
 }

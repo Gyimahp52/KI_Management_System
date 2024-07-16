@@ -269,8 +269,8 @@ foreach ($params as $key => $value) {
 $query->bindParam(':offset', $offset, PDO::PARAM_INT);
 $query->bindParam(':limit', $recordsPerPage, PDO::PARAM_INT);
 $query->execute();
-$educators = $query->fetchAll(PDO::FETCH_OBJ);
-?>
+$educators = $query->fetchAll(PDO::FETCH_OBJ); 
+?> 
 
 <!DOCTYPE html>
 <html lang="en">

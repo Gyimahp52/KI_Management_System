@@ -1,3 +1,5 @@
+// report.js
+
 document.addEventListener("DOMContentLoaded", () => {
     const tabs = document.querySelectorAll(".tab-button");
     tabs.forEach(tab => {
@@ -27,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Mock data for schools, classes, and students
     const schools = [
         { id: 1, name: 'Glory', scoreFields: ['Math', 'English', 'Science'] },
-        { id: 2, name: 'School B', scoreFields: ['History', 'Geography', 'Biology'] },
+        { id: 2, name: 'Zoe', scoreFields: ['GRATI.', 'DM', 'SELF-CONF.','NF', 'KIND.', 'DETER.' ,'CONF.', 'CURIO.', 'OPTI','HON.','PROB- EXPE'] },
         { id: 3, name: 'School C', scoreFields: ['Physics', 'Chemistry', 'Math'] }
     ];
 
@@ -265,193 +267,9 @@ document.addEventListener("DOMContentLoaded", () => {
         // Fade out the main container
         document.querySelector('.main-container').classList.add('fade-out');
 
-        // Re-initialize the charts
-        new Chart(document.getElementById('keqBarChart').getContext('2d'), {
-            type: 'bar',
-            data: {
-                labels: ['Decision Making', 'Teamwork', 'Determination', 'Problem-solving', 'No Failure', 'Curiosity', 'Optimism', 'Self-confidence', 'Honesty', 'Experience', 'Kindness'],
-                datasets: [
-                    {
-                        label: 'Base',
-                        backgroundColor: '#50C878',
-                        data: [50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50]
-                    },
-                    {
-                        label: 'Improvement',
-                        backgroundColor: '#0EB7F7',
-                        data: [8, 9, 9, 4, 8, 5, 7, 9, 9, 5, 7]
-                    },
-                    {
-                        label: 'Target',
-                        backgroundColor: '#F7A60E',
-                        data: [42, 41, 41, 46, 42, 45, 43, 41, 41, 45, 43]
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Kinesthetic Emotional Intelligence Quotient (KEQ)',
-                        color: 'white',
-                        font: {
-                            size: 18,
-                            weight: 'bold'
-                        },
-                        padding: {
-                            top: 10,
-                            bottom: 30
-                        }
-                    },
-                    legend: {
-                        display: true,
-                        position: 'bottom',
-                        labels: {
-                            color: 'white',
-                            font: {
-                                weight: 'bold'
-                            }
-                        }
-                    },
-                    tooltip: {
-                        mode: 'index',
-                        intersect: false,
-                        callbacks: {
-                            label: function(context) {
-                                let label = context.dataset.label || '';
-                                if (label) {
-                                    label += ': ';
-                                }
-                                if (context.parsed.y !== null) {
-                                    label += context.parsed.y;
-                                }
-                                return label;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        stacked: true,
-                        ticks: {
-                            color: 'white',
-                            font: {
-                                weight: 'bold'
-                            }
-                        }
-                    },
-                    y: {
-                        stacked: true,
-                        beginAtZero: true,
-                        ticks: {
-                            color: 'white',
-                            font: {
-                                weight: 'bold'
-                            },
-                            callback: function(value, index, ticks) {
-                                return value + '%';
-                            }
-                        },
-                        max: 100
-                    }
-                }
-            }
-        });
-
-        new Chart(document.getElementById('selPieChart').getContext('2d'), {
-            type: 'pie',
-            data: {
-                labels: ['Self Awareness', 'Self Management', 'Social Awareness', 'Relationship Skills', 'Responsible Decision Making'],
-                datasets: [{
-                    data: [18, 18, 10, 18, 18],
-                    backgroundColor: [
-                        '#FF6384',
-
-                        '#36A2EB',
-
-                        '#FFCE56',
-
-                        '#4BC0C0',
-                        
-                        '#9966FF'
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Competencies Chart',
-                        color: 'white',
-                        font: {
-                            size: 30,
-                            weight: 'bold'
-                        },
-                        padding: {
-                            top: 10,
-                            bottom: 30
-                        }
-                    },
-                    legend: {
-                        display: true,
-                        position: 'bottom',
-                        labels: {
-                            color: 'white',
-                            font: {
-                                weight: 'bold'
-                            }
-                        }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const label = context.label || '';
-                                const value = context.raw;
-                                const total = context.chart._metasets[context.datasetIndex].total;
-                                const percentage = ((value / total) * 100).toFixed(2);
-                                return `${label}: ${value} (${percentage}%)`;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        new Chart(document.getElementById('csBarChart').getContext('2d'), {
-            type: 'bar',
-            data: {
-                labels: ['First Month', 'Second Month', 'Third Month'],
-                datasets: [
-                    {
-                        label: 'Heart (SH)',
-                        backgroundColor: '#FF6384',
-                        data: [9, 9, 7]
-                    },
-                    {
-                        label: 'Mind (SM)',
-                        backgroundColor: '#36A2EB',
-                        data: [8, 4, 9]
-                    },
-                    {
-                        label: 'Will (SW)',
-                        backgroundColor: '#FFCE56',
-                        data: [9, 8, 5]
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
     }
 
+   
     window.viewReport = viewReport;
 
     function closeReport() {
@@ -477,16 +295,23 @@ document.addEventListener("DOMContentLoaded", () => {
         // Wait for the charts to render (you can replace this with a more robust approach if necessary)
         await new Promise(resolve => setTimeout(resolve, 1000));
 
-        // Generate the PDF
-        const reportContainer = document.querySelector('.report-container');
-        const canvas = await html2canvas(reportContainer);
-        const imgData = canvas.toDataURL('image/png');
         const pdf = new jspdf.jsPDF('p', 'pt', 'a4');
-        const imgProps = pdf.getImageProperties(imgData);
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        const pages = document.querySelectorAll('.report-container > div[id^="report-page-"]');
 
-        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        for (const page of pages) {
+            await html2canvas(page).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const imgProps = pdf.getImageProperties(imgData);
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                pdf.addPage();
+            });
+        }
+
+        // Remove the last blank page
+        pdf.deletePage(pdf.getNumberOfPages());
+
         pdf.save(`${name}_report.pdf`);
 
         // Close the report view

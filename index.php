@@ -1,7 +1,7 @@
 <?php
 session_start();
 require 'includes/dbconnection.php'; 
-// require 'includes/login_function.php'; 
+ require 'includes/login_function.php'; 
 function login($username, $password) {
     $pdo = dbConnect();
     $stmt = $pdo->prepare('SELECT id, password, role FROM users WHERE username = ?');
@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="css/login.css"> 
     <script src="js/login.js" defer></script>
 </head>
-<body style="background-image: url('images/web2.png'); height: 100vh; background: cover;">
+<body>
     <!-- Login form -->
     <div class="login-container">
         <img src="images/ki_logo.png" alt="ki_logo">
@@ -82,10 +82,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
     </div>
 
-    <!-- Chatbot -->
-    <button class="chatbot-toggler">
-        <span class="material-symbols-rounded">mode_comment</span>
-        <span class="material-symbols-outlined">close</span>
+    <!-- Chatbot button -->
+    <button class="chatbot-toggler attention-grabber">
+        <strong>Chat KIE </strong> 
     </button>
 
     <!-- Chatbot container -->
@@ -96,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </header>
         <ul class="chatbox">
             <li class="chat incoming">
-                <span class="material-symbols-outlined">smart_toy</span>
+                <img src="/images/ki_logo.png" alt="Company Logo" class="company-logo">
                 <p>Hi there 👋<br>How can I help you today?</p>
             </li>
         </ul>
