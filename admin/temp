@@ -85,7 +85,8 @@ require_once 'function.php';
                 <input type="file" name="passport_picture" accept="image/*">
                 <input type="text" name="username" placeholder="Username" required>
                 <input type="password" name="password" placeholder="Password" required>
-                <input type="text" name="name" placeholder="Name" required>
+                <input type="text" name="first_name" placeholder="First Name" required>
+                <input type="text" name="last_name" placeholder="Last Name" required>
                 <input type="date" name="dob" required>
                 <select name="gender" required>
                     <option value="">Select Gender</option>
@@ -110,7 +111,7 @@ require_once 'function.php';
                     <option value="Glasses">Glasses</option>
                     <option value="Contact Lenses">Contact Lenses</option>
                 </select>
-                <textarea name="medical_condition" placeholder="Not available" disabled></textarea>
+                <textarea name="medical_condition" placeholder="Medical Condition"></textarea>
                 <input type="number" name="height" placeholder="Height (cm)" required>
                 <input type="number" name="weight" placeholder="Weight (kg)" required>
             </div>
@@ -217,11 +218,11 @@ require_once 'function.php';
 }
 
 
-// function showTable(type, page = 1) {
-//     $.get('ajax_handlers.php', { action: 'getTable', type: type, page: page }, function(response) {
-//         $('#tableContainer').html(response);
-//     });
-// }
+function showTable(type, page = 1) {
+    $.get('ajax_handlers.php', { action: 'getTable', type: type, page: page }, function(response) {
+        $('#tableContainer').html(response);
+    });
+}
 
 function editStudent(studentId) {
     $.get('ajax_handlers.php', { action: 'getStudent', studentId: studentId }, function(response) {

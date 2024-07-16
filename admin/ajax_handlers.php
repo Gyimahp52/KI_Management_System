@@ -2,7 +2,7 @@
 require_once 'function.php';
 
 
-
+//ajax_handler.php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     switch ($_POST['action']) {
       
@@ -21,8 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $passport_picture = $_FILES['passport_picture']['name'];
             $target_dir = "uploads/";
             $target_file = $target_dir . basename($_FILES["passport_picture"]["name"]);
-            move_uploaded_file($_FILES["passport_picture"]["tmp_name"], $target_file);
-            echo createStudent($_POST['classId'], $_POST['name'], $_POST['dob'], $_POST['gender'], $_POST['hand'], $_POST['foot'], $_POST['eye_sight'], $_POST['medical_condition'], $_POST['height'], $_POST['weight'], $_POST['parent_name'], $_POST['parent_phone'], $_POST['parent_whatsapp'], $_POST['passport_picture'], $_POST['password']) ? "Student created successfully" : "Failed to create student";
+            if (move_uploaded_file($_FILES["passport_picture"]["tmp_name"], $target_file)) {
+                $result = createStudent($_POST['schoolId'], $_POST['classId'], $_POST['name'], $_POST['dob'], $_POST['gender'], $_POST['hand'], $_POST['foot'], $_POST['eye_sight'], $_POST['medical_condition'], $_POST['height'], $_POST['weight'], $_POST['parent_name'], $_POST['parent_phone'], $_POST['parent_whatsapp'], $_POST['parent_email'], $passport_picture, $_POST['password']);
+                echo $result;
+            } else {
+                echo "Failed to upload passport picture";
+            }
             break;
         case 'updateStudent':
             echo updateStudent($_POST['studentId'], $_POST['name'], $_POST['dob'], $_POST['gender'], $_POST['hand'], $_POST['foot'], $_POST['eye_sight'], $_POST['medical_condition'], $_POST['height'], $_POST['weight'], $_POST['parent_name'], $_POST['parent_phone'], $_POST['parent_whatsapp'], $_POST['parent_email']) ? "Student updated successfully" : "Failed to update student";
@@ -45,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
        
     }
 }
-
 
 elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
     switch ($_GET['action']) {
@@ -160,9 +163,17 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
             echo getClasses($_GET['schoolId']);
             break;
         
-            case 'getStudent':
-                echo json_encode(getStudent($_GET['studentId']));
-                break;
+        // case 'getStudent':
+        //         echo json_encode(getStudent($_GET['studentId']));
+        //         break;
+        case 'getStudent':
+            $student = getStudent($_GET['studentId']);
+            if ($student) {
+                echo json_encode($student);
+            } else {
+                echo json_encode(['error' => 'Student not found']);
+            }
+            break;
     }
 }
 // ... (keep existing functions)

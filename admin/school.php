@@ -4,6 +4,7 @@
 require_once 'function.php';
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,12 +19,9 @@ require_once 'function.php';
 <body>
 
 <?php include_once('includes/side_bar.php');?>
-c
-    <div class="container mt-5">
-        <h1 class="mb-4">School Management System</h1>
-        
-     
 
+    <div class="container mt-5">
+        
         <div id="schoolForm" class="mb-4">
     <h2>Create School</h2>
     <form onsubmit="createSchool(event)" enctype="multipart/form-data">
@@ -50,49 +48,13 @@ c
             </form>
         </div>
 
+
+<!-- STUDENT FORM -->
+
 <!-- <div id="studentForm" class="mb-4">
     <h2>Create Student</h2>
     <form onsubmit="createStudent(event)" enctype="multipart/form-data">
-        <select name="classId" required class="form-control mb-2">
-            <option value="">Select Class</option>
-          
-        </select>
-        <input type="text" name="name" placeholder="Student Name" required class="form-control mb-2">
-        <input type="date" name="dob" required class="form-control mb-2">
-        <select name="gender" required class="form-control mb-2">
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-        </select>
-        <select name="hand" required class="form-control mb-2">
-            <option value="">Select Hand</option>
-            <option value="Right">Right</option>
-            <option value="Left">Left</option>
-            <option value="Ambidextrous">Ambidextrous</option>
-        </select>
-        <select name="foot" required class="form-control mb-2">
-            <option value="">Select Foot</option>
-            <option value="Right">Right</option>
-            <option value="Left">Left</option>
-        </select>
-        <input type="text" name="eye_sight" placeholder="Eye Sight" required class="form-control mb-2">
-        <textarea name="medical_condition" placeholder="Medical Condition" class="form-control mb-2"></textarea>
-        <input type="number" name="height" placeholder="Height (cm)" required class="form-control mb-2">
-        <input type="number" name="weight" placeholder="Weight (kg)" required class="form-control mb-2">
-        <input type="text" name="parent_name" placeholder="Parent/Guardian Name" required class="form-control mb-2">
-        <input type="tel" name="parent_phone" placeholder="Parent/Guardian Phone" required class="form-control mb-2">
-        <input type="tel" name="parent_whatsapp" placeholder="Parent/Guardian WhatsApp" class="form-control mb-2">
-        <input type="email" name="parent_email" placeholder="Parent/Guardian Email" class="form-control mb-2">
-        <input type="file" name="passport_picture" required class="form-control mb-2">
-        <input type="password" name="password" placeholder="Password" required class="form-control mb-2">
-        <button type="submit" class="btn btn-success">Create Student</button>
-    </form>
-</div> -->
-
-<div id="studentForm" class="mb-4">
-    <h2>Create Student</h2>
-    <form onsubmit="createStudent(event)" enctype="multipart/form-data">
+        
         <select name="schoolId" onchange="loadClasses(this.value)" required class="form-control mb-2">
             <option value="">Select School</option>
             <?php foreach (getSchools() as $school): ?>
@@ -102,7 +64,7 @@ c
         <select name="classId" required class="form-control mb-2" disabled>
             <option value="">Select Class</option>
         </select>
-        <!-- Rest of the form fields remain the same -->
+      
         <input type="text" name="name" placeholder="Student Name" required class="form-control mb-2">
         <input type="date" name="dob" required class="form-control mb-2">
         <select name="gender" required class="form-control mb-2">
@@ -130,13 +92,13 @@ c
         <input type="tel" name="parent_phone" placeholder="Parent/Guardian Phone" required class="form-control mb-2">
         <input type="tel" name="parent_whatsapp" placeholder="Parent/Guardian WhatsApp" class="form-control mb-2">
         <input type="email" name="parent_email" placeholder="Parent/Guardian Email" class="form-control mb-2">
-        <input type="file" name="passport_picture" required class="form-control mb-2">
+        <input type="file" name="passport_picture"  class="form-control mb-2">
         <input type="password" name="password" placeholder="Password" required class="form-control mb-2">
         <button type="submit" class="btn btn-success">Create Student</button>
-        <button type="submit" class="btn btn-success">Create Student</button>
     </form>
-</div>
+</div> -->
 
+<!-- FILTER -->
         <div id="filterForm" class="mb-4">
             <h2>Filter Students</h2>
             <form onsubmit="filterStudents(event)">
@@ -152,6 +114,8 @@ c
                 <button type="submit" class="btn btn-primary">Filter</button>
             </form>
         </div>
+
+        <!-- TOGGLE -->
         <div class="mb-3">
             <button class="btn btn-primary" onclick="showTable('schools')">Schools</button>
             <button class="btn btn-primary" onclick="showTable('classes')">Classes</button>
@@ -165,7 +129,8 @@ c
     </nav>
     </div>
 
-    <!-- Add this at the end of the body tag -->
+  <!-- EDIT MODAL -->
+
 <div class="modal fade" id="editStudentModal" tabindex="-1" role="dialog" aria-labelledby="editStudentModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -188,47 +153,35 @@ c
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
     <script>
 
-function showTable(type, page = 1) {
-        $.get('ajax_handlers.php', { action: 'getTable', type: type, page: page }, function(response) {
-            $('#tableContainer').html(response);
-        });
-    }
-        // function showTable(type) {
-        //     $.get('ajax_handlers.php', { action: 'getTable', type: type }, function(response) {
-        //         $('#tableContainer').html(response);
-        //     });
-        // }
-
-        // function createSchool(event) {
+// function showTable(type, page = 1) {
+//         $.get('ajax_handlers.php', { action: 'getTable', type: type, page: page }, function(response) {
+//             $('#tableContainer').html(response);
+//         });
+//     }
+  
+        // function createClass(event) {
         //     event.preventDefault();
-        //     const schoolName = event.target.schoolName.value;
-        //     $.post('ajax_handlers.php', { action: 'createSchool', name: schoolName }, function(response) {
+        //     const schoolId = event.target.schoolId.value;
+        //     const className = event.target.className.value;
+        //     $.post('ajax_handlers.php', { action: 'createClass', schoolId: schoolId, name: className }, function(response) {
         //         alert(response);
-        //         showTable('schools');
+        //         showTable('classes');
         //     });
         // }
-
         function createClass(event) {
-            event.preventDefault();
-            const schoolId = event.target.schoolId.value;
-            const className = event.target.className.value;
-            $.post('ajax_handlers.php', { action: 'createClass', schoolId: schoolId, name: className }, function(response) {
-                alert(response);
-                showTable('classes');
-            });
+    event.preventDefault();
+    const schoolId = event.target.schoolId.value;
+    const className = event.target.className.value;
+    $.post('ajax_handlers.php', { action: 'createClass', schoolId: schoolId, name: className }, function(response) {
+        alert(response);
+        if (response.includes("successfully")) {
+            // Reset the form
+            $('#classForm form')[0].reset();
+            showTable('classes');
         }
-
-        // function createStudent(event) {
-        //     event.preventDefault();
-        //     const classId = event.target.classId.value;
-        //     const studentName = event.target.studentName.value;
-        //     const studentDob = event.target.studentDob.value;
-        //     $.post('ajax_handlers.php', { action: 'createStudent', classId: classId, name: studentName, dob: studentDob }, function(response) {
-        //         alert(response);
-        //         showTable('students');
-        //     });
-        // }
-
+    });
+}
+  
         function updateClassSelect(schoolId) {
             $.get('ajax_handlers.php', { action: 'getClasses', schoolId: schoolId }, function(response) {
                 $('select[name="classId"]').html(response);
@@ -240,7 +193,7 @@ function showTable(type, page = 1) {
                 $('select[name="filterClassId"]').html(response);
             });
         }
-  // ... (keep existing functions)
+
 
   function editSchool(schoolId) {
         const newName = prompt("Enter new school name:");
@@ -289,29 +242,23 @@ function showTable(type, page = 1) {
             });
         }
 
-        // function editStudent(studentId) {
-        //     const newName = prompt("Enter new name:");
-        //     const newDob = prompt("Enter new date of birth (YYYY-MM-DD):");
-        //     if (newName && newDob) {
-        //         $.post('ajax_handlers.php', { action: 'updateStudent', studentId: studentId, name: newName, dob: newDob }, function(response) {
-        //             alert(response);
-        //             showTable('students');
-        //         });
-        //     }
-        // }
 
-        // function deleteStudent(studentId) {
-        //     if (confirm("Are you sure you want to delete this student?")) {
-        //         $.post('ajax_handlers.php', { action: 'deleteStudent', studentId: studentId }, function(response) {
-        //             alert(response);
-        //             showTable('students');
-        //         });
-        //     }
-        // }
-
-
-
-//new
+// function createSchool(event) {
+//     event.preventDefault();
+//     var formData = new FormData(event.target);
+//     formData.append('action', 'createSchool');
+//     $.ajax({
+//         url: 'ajax_handlers.php',
+//         type: 'POST',
+//         data: formData,
+//         processData: false,
+//         contentType: false,
+//         success: function(response) {
+//             alert(response);
+//             showTable('schools');
+//         }
+//     });
+// }
 
 function createSchool(event) {
     event.preventDefault();
@@ -325,11 +272,35 @@ function createSchool(event) {
         contentType: false,
         success: function(response) {
             alert(response);
-            showTable('schools');
+            if (response.includes("successfully")) {
+                // Reset the form
+                $('#schoolForm form')[0].reset();
+                // Clear the file input
+                $('#schoolForm input[type="file"]').val('');
+                showTable('schools');
+            }
         }
     });
 }
 
+
+
+// function createStudent(event) {
+//     event.preventDefault();
+//     var formData = new FormData(event.target);
+//     formData.append('action', 'createStudent');
+//     $.ajax({
+//         url: 'ajax_handlers.php',
+//         type: 'POST',
+//         data: formData,
+//         processData: false,
+//         contentType: false,
+//         success: function(response) {
+//             alert(response);
+//             showTable('students');
+//         }
+//     });
+// }
 function createStudent(event) {
     event.preventDefault();
     var formData = new FormData(event.target);
@@ -342,15 +313,29 @@ function createStudent(event) {
         contentType: false,
         success: function(response) {
             alert(response);
-            showTable('students');
+            if (response.includes("successfully")) {
+                // Reset the form
+                $('#studentForm form')[0].reset();
+                // Clear the file input
+                $('#studentForm input[type="file"]').val('');
+                // Disable the class select
+                $('select[name="classId"]').prop('disabled', true);
+                showTable('students');
+            }
         }
     });
 }
 
+
 function editStudent(studentId) {
-    // Fetch student data and populate a form
-    $.get('ajax_handlers.php', { action: 'getStudent', studentId: studentId }, function(student) {
-        // Populate a modal or form with student data
+    $.get('ajax_handlers.php', { action: 'getStudent', studentId: studentId }, function(response) {
+        var student = JSON.parse(response);
+        if (student.error) {
+            alert(student.error);
+            return;
+        }
+        
+        // Populate the modal with student data
         $('#editStudentModal').modal('show');
         $('#editStudentForm').html(`
             <input type="hidden" name="studentId" value="${student.student_id}">
@@ -410,13 +395,13 @@ function deleteStudent(studentId) {
     }
 }
 
-// Similar functions for editing and deleting schools...
 
 function showTable(type, page = 1) {
     $.get('ajax_handlers.php', { action: 'getTable', type: type, page: page }, function(response) {
         $('#tableContainer').html(response);
     });
 }
+
 
 function loadClasses(schoolId) {
     if (schoolId) {
@@ -431,57 +416,7 @@ function loadClasses(schoolId) {
         classSelect.prop('disabled', true);
     }
 }
-// ... (keep other existing functions)
 
-
-
-    //     function showTable(type, page = 1) {
-    //     $.get('ajax_handlers.php', { action: 'getTable', type: type, page: page }, function(response) {
-    //         $('#tableContainer').html(response);
-    //     });
-    // }
-
-    // ... (keep existing functions)
-
-    // function editSchool(schoolId) {
-    //     const newName = prompt("Enter new school name:");
-    //     if (newName) {
-    //         $.post('ajax_handlers.php', { action: 'updateSchool', schoolId: schoolId, name: newName }, function(response) {
-    //             alert(response);
-    //             showTable('schools');
-    //         });
-    //     }
-    // }
-
-    // function deleteSchool(schoolId) {
-    //     if (confirm("Are you sure you want to delete this school?")) {
-    //         $.post('ajax_handlers.php', { action: 'deleteSchool', schoolId: schoolId }, function(response) {
-    //             alert(response);
-    //             showTable('schools');
-    //         });
-    //     }
-    // }
-
-    // function editClass(classId) {
-    //     const newName = prompt("Enter new class name:");
-    //     if (newName) {
-    //         $.post('ajax_handlers.php', { action: 'updateClass', classId: classId, name: newName }, function(response) {
-    //             alert(response);
-    //             showTable('classes');
-    //         });
-    //     }
-    // }
-
-    // function deleteClass(classId) {
-    //     if (confirm("Are you sure you want to delete this class?")) {
-    //         $.post('ajax_handlers.php', { action: 'deleteClass', classId: classId }, function(response) {
-    //             alert(response);
-    //             showTable('classes');
-    //         });
-    //     }
-    // }
-
-    // ... (keep existing functions)
     </script>
 </body>
 </html>
