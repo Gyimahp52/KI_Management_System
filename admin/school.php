@@ -49,69 +49,6 @@ require_once 'function.php';
         </div>
 
 
-<!-- STUDENT FORM -->
-
-<!-- <div id="studentForm" class="mb-4">
-    <h2>Create Student</h2>
-    <form onsubmit="createStudent(event)" enctype="multipart/form-data">
-        
-        <select name="schoolId" onchange="loadClasses(this.value)" required class="form-control mb-2">
-            <option value="">Select School</option>
-          
-        </select>
-        <select name="classId" required class="form-control mb-2" disabled>
-            <option value="">Select Class</option>
-        </select>
-      
-        <input type="text" name="name" placeholder="Student Name" required class="form-control mb-2">
-        <input type="date" name="dob" required class="form-control mb-2">
-        <select name="gender" required class="form-control mb-2">
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-        </select>
-        <select name="hand" required class="form-control mb-2">
-            <option value="">Select Hand</option>
-            <option value="Right">Right</option>
-            <option value="Left">Left</option>
-            <option value="Ambidextrous">Ambidextrous</option>
-        </select>
-        <select name="foot" required class="form-control mb-2">
-            <option value="">Select Foot</option>
-            <option value="Right">Right</option>
-            <option value="Left">Left</option>
-        </select>
-        <input type="text" name="eye_sight" placeholder="Eye Sight" required class="form-control mb-2">
-        <textarea name="medical_condition" placeholder="Medical Condition" class="form-control mb-2"></textarea>
-        <input type="number" name="height" placeholder="Height (cm)" required class="form-control mb-2">
-        <input type="number" name="weight" placeholder="Weight (kg)" required class="form-control mb-2">
-        <input type="text" name="parent_name" placeholder="Parent/Guardian Name" required class="form-control mb-2">
-        <input type="tel" name="parent_phone" placeholder="Parent/Guardian Phone" required class="form-control mb-2">
-        <input type="tel" name="parent_whatsapp" placeholder="Parent/Guardian WhatsApp" class="form-control mb-2">
-        <input type="email" name="parent_email" placeholder="Parent/Guardian Email" class="form-control mb-2">
-        <input type="file" name="passport_picture"  class="form-control mb-2">
-        <input type="password" name="password" placeholder="Password" required class="form-control mb-2">
-        <button type="submit" class="btn btn-success">Create Student</button>
-    </form>
-</div> -->
-
-<!-- FILTER -->
-        <!-- <div id="filterForm" class="mb-4">
-            <h2>Filter Students</h2>
-            <form onsubmit="filterStudents(event)">
-                <select name="filterSchoolId" onchange="updateFilterClassSelect(this.value)" class="form-control mb-2">
-                    <option value="">All Schools</option>
-                    <?php foreach (getSchools() as $school): ?>
-                        <option value="<?= $school['id'] ?>"><?= $school['school_name'] ?></option>
-                    <?php endforeach; ?>
-                </select>
-                <select name="filterClassId" class="form-control mb-2">
-                    <option value="">All Classes</option>
-                </select>
-                <button type="submit" class="btn btn-primary">Filter</button>
-            </form>
-        </div> -->
 
         <!-- TOGGLE -->
         <div class="mb-3">
@@ -240,22 +177,6 @@ require_once 'function.php';
         }
 
 
-// function createSchool(event) {
-//     event.preventDefault();
-//     var formData = new FormData(event.target);
-//     formData.append('action', 'createSchool');
-//     $.ajax({
-//         url: 'ajax_handlers.php',
-//         type: 'POST',
-//         data: formData,
-//         processData: false,
-//         contentType: false,
-//         success: function(response) {
-//             alert(response);
-//             showTable('schools');
-//         }
-//     });
-// }
 
 function createSchool(event) {
     event.preventDefault();
@@ -281,23 +202,6 @@ function createSchool(event) {
 }
 
 
-
-// function createStudent(event) {
-//     event.preventDefault();
-//     var formData = new FormData(event.target);
-//     formData.append('action', 'createStudent');
-//     $.ajax({
-//         url: 'ajax_handlers.php',
-//         type: 'POST',
-//         data: formData,
-//         processData: false,
-//         contentType: false,
-//         success: function(response) {
-//             alert(response);
-//             showTable('students');
-//         }
-//     });
-// }
 function createStudent(event) {
     event.preventDefault();
     var formData = new FormData(event.target);

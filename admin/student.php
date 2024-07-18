@@ -43,6 +43,9 @@ require_once 'function.php';
             text-decoration: none;
             cursor: pointer;
         }
+        select.option{
+            color: black;
+        }
     </style>
 </head>
 <body>

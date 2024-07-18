@@ -224,9 +224,9 @@ function getClasses($school_id = null, $page = null, $perPage = null) {
         }
         $classes = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
-        $options = '<option value="">Select Class</option>';
+        $options = '<option style="color: #000000;" style="color: #000000;" value="">Select Class</option>';
         foreach ($classes as $class) {
-            $options .= "<option value='{$class['class_id']}'>{$class['name']}</option>";
+            $options .= "<option style='color: #000000;' value='{$class['class_id']}'>{$class['class_name']}</option>";
         }
         return $options;
     }
