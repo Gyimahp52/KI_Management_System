@@ -1,6 +1,7 @@
 <?php
 // Start the session
 session_start();
+include('includes/dbconnection.php');
 $base_url = '/ki/KI_Management_System/';
 // Check if the user is logged in and has the role of 'admin'.
 // Redirect to login page if not.
@@ -16,46 +17,6 @@ $base_url = '/ki/KI_Management_System/';
 
 
 ?>
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="/admin/adminDashboard.css"> Link to your CSS file 
-</head>
-<body>
-    <header>
-        <div class="user-info">
-            <img src=" ?>" alt="User Photo" class="user-photo">
-            <span>//</span>
-        </div>
-    </header>
-    <nav>
-    <ul>
-        <li><a href="#">User Management</a></li>
-        <li><a href="#" class="menu-item" id="roles-permissions">Roles & Permissions</a></li>
-        <li><a href="#">System Settings</a></li>
-        <li><a href="#">Reports Overview</a></li>
-        <!- Add more navigation items as needed -
-    </ul>
-</nav>
-
-<main>
-    <h1>Welcome to the Admin Dashboard</h1>
-    <!- Dashboard specific content goes here 
-    <div class="roles-permissions-form">
-        <h2>Roles & Permissions</h2>
-        <!- Add your form elements here 
-        <form>
-            <!- Form fields for roles and permissions 
-            <button type="submit">Save</button>
-        </form>
-    </div>
-</main>
-</body>
-</html> -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -84,8 +45,15 @@ $base_url = '/ki/KI_Management_System/';
             <a href="school.php">
              <div class="icon"><img src="assets/images/students.png" alt="schools"></div>
             <a href="school.php">
-
-             <div class="count">500</div>
+            <?php 
+                        
+                        $sql1 ="SELECT * from  students";
+                        $query1 = $dbh -> prepare($sql1);
+                        $query1->execute();
+                        $results1=$query1->fetchAll(PDO::FETCH_OBJ);
+                        $toteducators=$query1->rowCount();
+                        ?>
+             <div class="count"><?php echo htmlentities($toteducators);?></div>
              <span><b>Students</b></span>
             </a>
         </div>
@@ -94,8 +62,15 @@ $base_url = '/ki/KI_Management_System/';
             <a href="educators.php">
              <div class="icon"><img src="assets/images/educator.png" alt=""></div>
             <a href="educators.php">
-            
-             <div class="count">12</div>
+            <?php 
+                        
+                        $sql1 ="SELECT * from  educators";
+                        $query1 = $dbh -> prepare($sql1);
+                        $query1->execute();
+                        $results1=$query1->fetchAll(PDO::FETCH_OBJ);
+                        $totstudents=$query1->rowCount();
+                        ?>
+             <div class="count"><?php echo htmlentities($totstudents);?></div>
              <span><b>Educators</b></span>
             </a>
         </div>
@@ -104,8 +79,15 @@ $base_url = '/ki/KI_Management_System/';
             <a href="school.php">
               <div class="icon"><img src="assets/images/sch.png" alt=""></div>
             <a href="school.php">
-             
-              <div class="count">30</div>
+            <?php 
+                        
+                        $sql1 ="SELECT * from  schools";
+                        $query1 = $dbh -> prepare($sql1);
+                        $query1->execute();
+                        $results1=$query1->fetchAll(PDO::FETCH_OBJ);
+                        $totschools=$query1->rowCount();
+                        ?>
+              <div class="count"><?php echo htmlentities($totschools);?></div>
               <span><b>Schools</b></span>
             </a>
         </div>

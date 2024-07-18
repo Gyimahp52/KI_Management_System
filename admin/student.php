@@ -111,9 +111,9 @@ require_once 'function.php';
             <fieldset>
                 <legend>Personal Information</legend>
                 <input type="file" name="passport_picture" accept="image/*">
-                <input type="text" name="username" placeholder="Username" required>
-                <input type="password" name="password" placeholder="Password" required>
-                <input type="text" name="name" placeholder="Name" required>
+                <!-- <input type="text" name="username" placeholder="Username" required> -->
+                <input type="text" name="name" placeholder="Name" required> <br><br>
+                <input type="password" name="password" placeholder="Password" required><br><br>
                 <input type="date" name="dob" required>
                 <select name="gender" required>
                     <option value="">Select Gender</option>
