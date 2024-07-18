@@ -1,3 +1,20 @@
+const images = [
+
+    '/images/web2.png',
+    '/images/web3.png'
+];
+
+let currentIndex = 0;
+
+function changeBackgroundImage() {
+    document.body.style.backgroundImage = `url(${images[currentIndex]})`;
+    currentIndex = (currentIndex + 1) % images.length;
+}
+
+setInterval(changeBackgroundImage, 3000); // Change image every 3 seconds
+
+window.onload = changeBackgroundImage; // Set initial background image
+
 const chatbotToggler = document.querySelector(".chatbot-toggler");
 const closeBtn = document.querySelector(".close-btn");
 const chatbox = document.querySelector(".chatbox");

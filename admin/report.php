@@ -50,7 +50,7 @@
     <div class="tab-content active" id="enterScores">
         <h2>Enter Scores</h2>
         <div class="selection-panel">
-            <div class="dropdown-container">
+            <!--<div class="dropdown-container">
                 <label for="academicYear">Select Academic Year:</label>
                 <select id="academicYear" class="dropdown">
                     <option value="">--Select Academic Year--</option>
@@ -60,7 +60,7 @@
                     <option value="2026">2026-2027</option>
                     <option value="2027">2027-2028</option>
                 </select>
-            </div>
+            </div>-->
             <div class="dropdown-container">
                 <label for="school">Select School:</label>
                 <select id="school" class="dropdown">
