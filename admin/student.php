@@ -1,5 +1,5 @@
 <?php
-require_once 'function.php';
+//require_once 'function.php';
 ?>
 
 <!DOCTYPE html>
@@ -12,25 +12,44 @@ require_once 'function.php';
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <title>Student page</title>
     <style>
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-        }
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 500px;
-        }
+       .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 7px;
+    border: 1px solid #888;
+    max-width: 80%;
+    bottom: 100px;
+    left: 50px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -16px;
+    
+}
+
+.col {
+    flex: 1px;
+    padding: 10px;
+}
+
+input, select, textarea {
+    width: 100%;
+    margin-bottom: 10px;
+}
         .close {
             color: #aaa;
             float: right;
@@ -39,7 +58,7 @@ require_once 'function.php';
         }
         .close:hover,
         .close:focus {
-            color: black;
+            color: red;
             text-decoration: none;
             cursor: pointer;
         }
@@ -53,6 +72,8 @@ require_once 'function.php';
     <?php include_once('includes/header.php');?>
 
     <div class="stats-grid">
+
+    
         <button id="addStudentBtn" class="btn btn-primary">
             <i class="fas fa-plus-circle"></i>
             Add new student
@@ -101,6 +122,7 @@ require_once 'function.php';
     </div>
 </div>
 
+
 <!-- Student Registration Modal -->
 <div id="studentModal" class="modal">
     <div class="modal-content">
@@ -110,59 +132,90 @@ require_once 'function.php';
             <!-- form fields -->
             <fieldset>
                 <legend>Personal Information</legend>
-                <input type="file" name="passport_picture" accept="image/*">
-                <input type="text" name="username" placeholder="Username" required>
-                <input type="password" name="password" placeholder="Password" required>
-                <input type="text" name="name" placeholder="Name" required>
-                <input type="date" name="dob" required>
-                <select name="gender" required>
-                    <option value="">Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                </select>
-                <select name="hand" required>
-                    <option value="">Select Hand</option>
-                    <option value="Right">Right</option>
-                    <option value="Left">Left</option>
-                    <option value="Ambidextrous">Ambidextrous</option>
-                </select>
-                <select name="foot" required>
-                    <option value="">Select Foot</option>
-                    <option value="Right">Right</option>
-                    <option value="Left">Left</option>
-                </select>
-                <select name="eye_sight" required>
-                    <option value="">Select Eye Sight</option>
-                    <option value="Normal">Normal</option>
-                    <option value="Glasses">Glasses</option>
-                    <option value="Contact Lenses">Contact Lenses</option>
-                </select><br>
-                <textarea name="medical_condition" placeholder="Not available" disabled></textarea><br>
-                <input type="number" name="height" placeholder="Height (cm)" required>
-                <input type="number" name="weight" placeholder="Weight (kg)" required>
+                <div class="row">
+                    <div class="col">
+                        <input type="file" name="passport_picture" accept="image/*">
+                        <input type="text" name="username" placeholder="Username" required>
+                        <input type="password" name="password" placeholder="Password" required>
+                        
+                    </div>
+                    <div class="col">
+                        <input type="text" name="name" placeholder="Name" required>
+                        <input type="date" name="dob" required>
+                        <select name="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <select name="hand" required>
+                            <option value="">Select Hand</option>
+                            <option value="Right">Right</option>
+                            <option value="Left">Left</option>
+                            <option value="Ambidextrous">Ambidextrous</option>
+                        </select>
+                        <select name="foot" required>
+                            <option value="">Select Foot</option>
+                            <option value="Right">Right</option>
+                            <option value="Left">Left</option>
+                        </select>
+                        <select name="eye_sight" required>
+                            <option value="">Select Eye Sight</option>
+                            <option value="Normal">Normal</option>
+                            <option value="Glasses">Glasses</option>
+                            <option value="Contact Lenses">Contact Lenses</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                   <!-- <div class="col">
+                        <textarea name="medical_condition" placeholder="Not available" disabled></textarea>
+                    </div> -->
+                    <div class="col">
+                        <input type="number" name="height" placeholder="Height (cm)" required>
+                        <input type="number" name="weight" placeholder="Weight (kg)" required>
+                    </div>
+                </div>
             </fieldset>
             <fieldset>
-            <legend>Parent/Guardian</legend>
-                <input type="text" name="parent_name" placeholder="Parent/Guardian Name" required>
-                <input type="tel" name="parent_phone" placeholder="Phone Number" required>
-                <input type="tel" name="parent_whatsapp" placeholder="WhatsApp Number">
-                <input type="email" name="parent_email" placeholder="Email Address">
+                <legend>Parent/Guardian</legend>
+                <div class="row">
+                    <div class="col">
+                        <input type="text" name="parent_name" placeholder="Parent/Guardian Name" required>
+                        <input type="tel" name="parent_phone" placeholder="Phone Number" required>
+                    </div>
+                    <div class="col">
+                        <input type="tel" name="parent_whatsapp" placeholder="WhatsApp Number">
+                        <input type="email" name="parent_email" placeholder="Email Address">
+                    </div>
+                </div>
             </fieldset>
             <fieldset>
-            <legend>Others</legend>
-                <select name="schoolId" onchange="loadClasses(this.value)" required>
-                    <option value="">Select School</option>
-                    <?php foreach (getSchools() as $school): ?>
-                        <option value="<?= $school['id'] ?>"><?= $school['school_name'] ?></option>
-                    <?php endforeach; ?>
-                </select>
-                <select name="classId" required disabled>
-                    <option value="">Select Class</option>
-                </select>
+                <legend>Others</legend>
+                <div class="row">
+                    <div class="col">
+                        <select name="schoolId" onchange="loadClasses(this.value)" required>
+                            <option value="">Select School</option>
+                            <!-- php codes here-->
+                        </select>
+                    </div>
+                    <div class="col">
+                        <select name="classId" required disabled>
+                            <option value="">Select Class</option>
+                        </select>
+                    </div>
+                </div>
             </fieldset>
-            <button class="add-button" type="submit">Add</button>
-            <button class="cancel-button" type="button" onclick="closeModal()">Cancel</button>
+            <div class="row">
+                <div class="col">
+                    <button class="add-button" type="submit">Add</button>
+                </div>
+                <div class="col">
+                    <button class="cancel-button" type="button" onclick="closeModal()">Cancel</button>
+                </div>
+            </div>
         </form>
     </div>
 </div>

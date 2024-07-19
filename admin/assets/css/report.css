@@ -8,11 +8,12 @@ body {
 
 .main-container {
     width: 100%;
-    padding: 2rem;
+    padding: 1rem;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     height: max-content;
-    position: relative;
+    position: sticky;
+  
 }
 
 header {
@@ -68,12 +69,14 @@ header h1 {
 
 .tab-content.active {
     display: block;
+    background-color: #fff;
 }
 
 .selection-panel {
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
+    background-color: #fff;
 }
 
 .dropdown-container {
@@ -126,6 +129,8 @@ table {
 
 table, th, td {
     border: 1px solid #ddd;
+    padding: 5px;
+    text-align: center;
 }
 
 th, td {
@@ -262,7 +267,7 @@ h2, h3 {
 }
 
 canvas {
-    max-height: 15%;
+    max-height: 35%;
     display: block;
     margin: 10 auto 20px;
     max-width: 100%;
@@ -287,7 +292,7 @@ th, td {
 footer {
     background-color: #fff;
     color: #040404;
-    padding: 20px;
+    padding: 10px;
 }
 
 footer p {

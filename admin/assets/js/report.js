@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    const academicYearSelect = document.getElementById('academicYear');
+    //const academicYearSelect = document.getElementById('academicYear');
     const schoolSelect = document.getElementById('school');
     const classSelect = document.getElementById('class');
     const termSelect = document.getElementById('term');
@@ -83,7 +83,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Populate students list based on selected academic year, class, and term
-    academicYearSelect.addEventListener('change', updateStudentList);
     classSelect.addEventListener('change', updateStudentList);
     termSelect.addEventListener('change', updateStudentList);
 
@@ -92,8 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const selectedClassId = parseInt(classSelect.value);
         const selectedSchoolId = parseInt(schoolSelect.value);
         const selectedTerm = termSelect.value;
-        const selectedAcademicYear = academicYearSelect.value;
-        if (selectedClassId && selectedSchoolId && selectedTerm && selectedAcademicYear) {
+        if (selectedClassId && selectedSchoolId && selectedTerm ) {
             const filteredStudents = students.filter(stu => stu.classId === selectedClassId);
             const selectedSchool = schools.find(school => school.id === selectedSchoolId);
 
@@ -266,10 +264,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Fade out the main container
         document.querySelector('.main-container').classList.add('fade-out');
-
     }
 
-   
     window.viewReport = viewReport;
 
     function closeReport() {
@@ -296,6 +292,13 @@ document.addEventListener("DOMContentLoaded", () => {
         await new Promise(resolve => setTimeout(resolve, 1000));
 
         const pdf = new jspdf.jsPDF('p', 'pt', 'a4');
+
+        const page1 = document.getElementById('report-page-1');
+        const page2 = document.getElementById('report-page-2');
+        const page3 = document.getElementById('report-page-3');
+
+       
+
         const pages = document.querySelectorAll('.report-container > div[id^="report-page-"]');
 
         for (const page of pages) {
