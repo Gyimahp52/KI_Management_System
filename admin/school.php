@@ -238,6 +238,7 @@ function showTable(type, page = 1) {
         $('#tableContainer').html(response);
     });
 }
+}
 </script>
 </body>
 </html>
@@ -249,7 +250,7 @@ function showTable(type, page = 1) {
 
 
 
- <!-- create school form --
+ /* create school form --
         <div id="schoolForm" class="mb-4">
             <h2>Create School</h2>
             <form onsubmit="createSchool(event)" enctype="multipart/form-data">
@@ -274,4 +275,4 @@ function showTable(type, page = 1) {
                         <button type="submit" class="btn btn-success">Create Class</button>
                     </form>
         </div>
-                            -->
+  */
