@@ -1,3 +1,4 @@
+<?php include('includes/dbconnection.php');?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,8 +63,24 @@
     </header>
 
     <section class="summary">
-        <div class="card">Total Schools: <span id="totalSchools">10</span></div>
-        <div class="card">Total Students: <span id="totalStudents">5000</span></div>
+    <?php 
+                        
+                        $sql1 ="SELECT * from  schools";
+                        $query1 = $dbh -> prepare($sql1);
+                        $query1->execute();
+                        $results1=$query1->fetchAll(PDO::FETCH_OBJ);
+                        $totschools=$query1->rowCount();
+                        ?>
+        <div class="card">Total Schools: <span id="totalSchools"><?php echo htmlentities($totschools);?></span></div>
+        <?php 
+                        
+                        $sql1 ="SELECT * from  students";
+                        $query1 = $dbh -> prepare($sql1);
+                        $query1->execute();
+                        $results1=$query1->fetchAll(PDO::FETCH_OBJ);
+                        $toteducators=$query1->rowCount();
+                        ?>
+        <div class="card">Total Students: <span id="totalStudents"><?php echo htmlentities($toteducators);?></span></div>
     </section>
 
     <section class="tabs">

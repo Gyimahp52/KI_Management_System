@@ -43,6 +43,24 @@ require_once 'function.php';
       <input type="file" name="logo" required class="form-control mb-2">
       <button type="submit" class="btn btn-success">Create School</button>
     </form>
+
+</div>
+
+<div id="classForm" class="mb-4">
+            <h2>Create Class</h2>
+            <form onsubmit="createClass(event)">
+                <select name="schoolId" required class="form-control mb-2">
+                    <option value="">Select School</option>
+                    <?php foreach (getSchools() as $school): ?>
+                        <option value="<?= $school['id'] ?>"><?= $school['school_name'] ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <input type="text" name="className" placeholder="Class Name" required class="form-control mb-2">
+                <button type="submit" class="btn btn-success">Create Class</button>
+            </form>
+        </div>
+
+
   </div>
 
   <!-- create class form -->
@@ -58,6 +76,7 @@ require_once 'function.php';
     </form>
   </div>
 </div>
+
 
 
 <div id="tableContainer"></div>
@@ -107,6 +126,70 @@ function showForm(formId) {
   document.querySelector(`.nav-link[onclick="showForm('${formId}')"]`).classList.add('active');
 }
 
+  
+        function updateClassSelect(schoolId) {
+            $.get('ajax_handlers.php', { action: 'getClasses', schoolId: schoolId }, function(response) {
+                $('select[name="classId"]').html(response);
+            });
+        }
+
+        function updateFilterClassSelect(schoolId) {
+            $.get('ajax_handlers.php', { action: 'getClasses', schoolId: schoolId }, function(response) {
+                $('select[name="filterClassId"]').html(response);
+            });
+        }
+
+
+  function editSchool(schoolId) {
+        const newName = prompt("Enter new school name:");
+        if (newName) {
+            $.post('ajax_handlers.php', { action: 'updateSchool', schoolId: schoolId, name: newName }, function(response) {
+                alert(response);
+                showTable('schools');
+            });
+        }
+    }
+
+    function deleteSchool(schoolId) {
+        if (confirm("Are you sure you want to delete this school?")) {
+            $.post('ajax_handlers.php', { action: 'deleteSchool', schoolId: schoolId }, function(response) {
+                alert(response);
+                showTable('schools');
+            });
+        }
+    }
+
+    function editClass(classId) {
+        const newName = prompt("Enter new class name:");
+        if (newName) {
+            $.post('ajax_handlers.php', { action: 'updateClass', classId: classId, name: newName }, function(response) {
+                alert(response);
+                showTable('classes');
+            });
+        }
+    }
+
+    function deleteClass(classId) {
+        if (confirm("Are you sure you want to delete this class?")) {
+            $.post('ajax_handlers.php', { action: 'deleteClass', classId: classId }, function(response) {
+                alert(response);
+                showTable('classes');
+            });
+        }
+    }
+
+        function filterStudents(event) {
+            event.preventDefault();
+            const schoolId = event.target.filterSchoolId.value;
+            const classId = event.target.filterClassId.value;
+            $.get('ajax_handlers.php', { action: 'getTable', type: 'students', schoolId: schoolId, classId: classId }, function(response) {
+                $('#tableContainer').html(response);
+            });
+        }
+
+
+
+
 function createSchool(event) {
     event.preventDefault();
     var formData = new FormData(event.target);
@@ -130,7 +213,12 @@ function createSchool(event) {
     });
 }
 
+
+
+function createStudent(event) {
+
 function createClass(event) {
+
     event.preventDefault();
     const schoolId = event.target.schoolId.value;
     const className = event.target.className.value;

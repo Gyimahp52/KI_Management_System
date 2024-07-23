@@ -176,7 +176,7 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
             break;
     }
 }
-// ... (keep existing functions)
+
 function generatePagination($currentPage, $totalPages, $type) {
     $html = "<nav><ul class='pagination'>";
     for ($i = 1; $i <= $totalPages; $i++) {

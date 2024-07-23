@@ -62,6 +62,9 @@ input, select, textarea {
             text-decoration: none;
             cursor: pointer;
         }
+        select.option{
+            color: black;
+        }
     </style>
 </head>
 <body>
@@ -132,6 +135,39 @@ input, select, textarea {
             <!-- form fields -->
             <fieldset>
                 <legend>Personal Information</legend>
+
+                <input type="file" name="passport_picture" accept="image/*">
+                <!-- <input type="text" name="username" placeholder="Username" required> -->
+                <input type="text" name="name" placeholder="Name" required> <br><br>
+                <input type="password" name="password" placeholder="Password" required><br><br>
+                <input type="date" name="dob" required>
+                <select name="gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+                <select name="hand" required>
+                    <option value="">Select Hand</option>
+                    <option value="Right">Right</option>
+                    <option value="Left">Left</option>
+                    <option value="Ambidextrous">Ambidextrous</option>
+                </select>
+                <select name="foot" required>
+                    <option value="">Select Foot</option>
+                    <option value="Right">Right</option>
+                    <option value="Left">Left</option>
+                </select>
+                <select name="eye_sight" required>
+                    <option value="">Select Eye Sight</option>
+                    <option value="Normal">Normal</option>
+                    <option value="Glasses">Glasses</option>
+                    <option value="Contact Lenses">Contact Lenses</option>
+                </select><br>
+                <textarea name="medical_condition" placeholder="Not available" disabled></textarea><br>
+                <input type="number" name="height" placeholder="Height (cm)" required>
+                <input type="number" name="weight" placeholder="Weight (kg)" required>
+
                 <div class="row">
                     <div class="col">
                         <input type="file" name="passport_picture" accept="image/*">
@@ -178,6 +214,7 @@ input, select, textarea {
                         <input type="number" name="weight" placeholder="Weight (kg)" required>
                     </div>
                 </div>
+
             </fieldset>
             <fieldset>
                 <legend>Parent/Guardian</legend>
