@@ -11,6 +11,47 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+    <style>
+        /* Additional CSS for toast message */
+        .toast {
+            visibility: hidden;
+            max-width: 50%;
+            margin: 0 auto;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 16px;
+            font-size: 17px;
+        }
+
+        .toast.show {
+            visibility: visible;
+            animation: fadeInOut 3s linear;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        /* Reduce table height */
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 5px;
+            text-align: center;
+            height: 30px;
+        }
+
+        th, td {
+            padding: 5px;
+        }
+    </style>
 </head>
 <body>
 <!-- side bar -->
@@ -50,17 +91,6 @@
     <div class="tab-content active" id="enterScores">
         <h2>Enter Scores</h2>
         <div class="selection-panel">
-            <!--<div class="dropdown-container">
-                <label for="academicYear">Select Academic Year:</label>
-                <select id="academicYear" class="dropdown">
-                    <option value="">--Select Academic Year--</option>
-                    <option value="2023">2023-2024</option>
-                    <option value="2024">2024-2025</option>
-                    <option value="2025">2025-2026</option>
-                    <option value="2026">2026-2027</option>
-                    <option value="2027">2027-2028</option>
-                </select>
-            </div>-->
             <div class="dropdown-container">
                 <label for="school">Select School:</label>
                 <select id="school" class="dropdown">
@@ -73,15 +103,6 @@
                 <select id="class" class="dropdown">
                     <option value="">--Select Class--</option>
                     <!-- Add class options dynamically -->
-                </select>
-            </div>
-            <div class="dropdown-container">
-                <label for="term">Select Term:</label>
-                <select id="term" class="dropdown">
-                    <option value="">--Select Term--</option>
-                    <option value="1">Term 1</option>
-                    <option value="2">Term 2</option>
-                    <option value="3">Term 3</option>
                 </select>
             </div>
         </div>
@@ -151,82 +172,90 @@
     </div>
 </div>
 
+<!-- Toast message -->
+<div id="toast" class="toast"></div>
+
 <!-- Report view container (initially hidden) -->
 <div id="report-view" class="modal">
     <div class="report-container">
         <button class="close-btn" onclick="closeReport()"><strong>X</strong></button>
         <div class="faded-text"><strong>KI EDUCATION</strong></div>
-        <h1><u>KIE STUDENT PROGRESS REPORT</u></h1>
-        <p> Kinesthetic Intelligence Education personal progress report for <strong> <span id="student-name"></span></strong> at <span id="student-school"></span>. This term we practiced eleven soft skills for character development. The focus is not on the marks we emphasize on marginal improvement over time and creating cognizance of these strengths for students.</p>
-        
-        <div class="container">
-            <div class="left-side">
-              <h2>Personal Information</h2>
-              <p><strong>Name:</strong> <span id="student-name-info"></span></p>
-              <p><strong>Age:</strong> 2 YEARS</p>
-              <p><strong>School:</strong> <span id="student-school-info"></span></p>
-              <p><strong>Class:</strong> <span id="student-class-info"></span></p>
-              <p><strong>Height:</strong></p>
-              <p><strong>Weight:</strong></p>
-            </div>
+
+        <!-- Page 1 -->
+        <div id="report-page-1">
+            <h1><u>KIE STUDENT PROGRESS REPORT</u></h1>
+            <p> Kinesthetic Intelligence Education personal progress report for <strong> <span id="student-name"></span></strong> at <span id="student-school"></span>. This term we practiced eleven soft skills for character development. The focus is not on the marks we emphasize on marginal improvement over time and creating cognizance of these strengths for students.</p>
             
-            <div class="right-side">
-              <p><strong>Foot:</strong> RIGHT FOOT DOMINANT</p>
-              <p><strong>Hand:</strong> RIGHT-HANDED</p>
-              <p><strong>Eyesight:</strong> NORMAL</p>
-              <p><strong>Heart Rate:</strong> NOT AVAILABLE</p>
-              <p><strong>Medical Condition:</strong> NOT AVAILABLE</p>
-            </div>
-          </div>
+            <div class="container">
+                <div class="left-side">
+                  <h2>Personal Information</h2>
+                  <p><strong>Name:</strong> <span id="student-name-info"></span></p>
+                  <p><strong>Age:</strong> 2 YEARS</p>
+                  <p><strong>School:</strong> <span id="student-school-info"></span></p>
+                  <p><strong>Class:</strong> <span id="student-class-info"></span></p>
+                  <p><strong>Height:</strong></p>
+                  <p><strong>Weight:</strong></p>
+                </div>
+                
+                <div class="right-side">
+                  <p><strong>Foot:</strong> RIGHT FOOT DOMINANT</p>
+                  <p><strong>Hand:</strong> RIGHT-HANDED</p>
+                  <p><strong>Eyesight:</strong> NORMAL</p>
+                  <p><strong>Heart Rate:</strong> NOT AVAILABLE</p>
+                  <p><strong>Medical Condition:</strong> NOT AVAILABLE</p>
+                </div>
+              </div>
 
-        <section class="data-tables">
-            <h2>1. Student KEQ Field Data</h2>
-            <table>
-                <tr>
-                    <th>Metrics</th>
-                    <th>Dec. Ma.</th>
-                    <th>Teamwk.</th>
-                    <th>Deter.</th>
-                    <th>Pro. Sol.</th>
-                    <th>No Fail.</th>
-                    <th>Curiou.</th>
-                    <th>Optim.</th>
-                    <th>Self-Con.</th>
-                    <th>Hone.</th>
-                    <th>Exper.</th>
-                    <th>Kindne.</th>
-                </tr>
-                <tr>
-                    <td>KEQ</td>
-                    <td id="keq-1">8</td>
-                    <td id="keq-2">9</td>
-                    <td id="keq-3">9</td>
-                    <td id="keq-4">4</td>
-                    <td id="keq-5">8</td>
-                    <td id="keq-6">5</td>
-                    <td id="keq-7">7</td>
-                    <td id="keq-8">9</td>
-                    <td id="keq-9">9</td>
-                    <td id="keq-10">5</td>
-                    <td id="keq-11">7</td>
-                </tr>
-            </table>
-        </section>
+            <section class="data-tables">
+                <h2>1. Student KEQ Field Data</h2>
+                <table>
+                    <tr>
+                        <th>Metrics</th>
+                        <th>Dec. Ma.</th>
+                        <th>Teamwk.</th>
+                        <th>Deter.</th>
+                        <th>Pro. Sol.</th>
+                        <th>No Fail.</th>
+                        <th>Curiou.</th>
+                        <th>Optim.</th>
+                        <th>Self-Con.</th>
+                        <th>Hone.</th>
+                        <th>Exper.</th>
+                        <th>Kindne.</th>
+                    </tr>
+                    <tr>
+                        <td>KEQ</td>
+                        <td id="keq-1">8</td>
+                        <td id="keq-2">9</td>
+                        <td id="keq-3">9</td>
+                        <td id="keq-4">4</td>
+                        <td id="keq-5">8</td>
+                        <td id="keq-6">5</td>
+                        <td id="keq-7">7</td>
+                        <td id="keq-8">9</td>
+                        <td id="keq-9">9</td>
+                        <td id="keq-10">5</td>
+                        <td id="keq-11">7</td>
+                    </tr>
+                </table>
+            </section>
 
-        <section class="graphs">
-            <div class="graph-description">
-                <h3>GRAPH DESCRIPTION</h3>
-                <ul>
-                    <li>Each student starts from the green base line of 50% and work their way up.</li>
-                    <li>The blue area represents the marginal percentage improvement this term.</li>
-                    <li>The yellow area represents the target they are working towards over a period.</li>
-                    <li>Students are expected to have a termly marginal improvement over a period.</li>
-                </ul>
-            </div><br>
+            
+                <div class="graph-description">
+                    <h3>GRAPH DESCRIPTION</h3>
+                    <ul>
+                        <li>Each student starts from the green base line of 50% and work their way up.</li>
+                        <li>The blue area represents the marginal percentage improvement this term.</li>
+                        <li>The yellow area represents the target they are working towards over a period.</li>
+                        <li>Students are expected to have a termly marginal improvement over a period.</li>
+                    </ul>
+                </div><br>
+                <canvas id="keqBarChart"></canvas>
+        </div>
 
-            <canvas id="keqBarChart"></canvas>
-        
-            <h3>RESULTS ANALYSIS</h3>
+        <!-- Page 2 -->
+        <div id="report-page-2">
+        <h3>RESULTS ANALYSIS</h3>
             <ul>
                 <li><strong>Strength Recognition:</strong>  Keep an eye on 8% - 10% marginal improvement. This is one of your ward’s strengths. Be aware of this skill especially in challenging situations at home. We will keep working on it.</li>
                 <li><strong>Skill Development:</strong>  Next keep an eye on 5% - 7% marginal improvement. Your ward has some ability in this skill but with more practice we could get better.</li>
@@ -246,7 +275,7 @@
                     <th>Optim.</th>
                     <th>Self-Con.</th>
                     <th>Hone.</th>
-                    <th>Exper.</s</th>
+                    <th>Exper.</th>
                     <th>Kindne.</th>
                 </tr>
                 <tr>
@@ -287,7 +316,10 @@
                 <li><strong>Focus on Improvement:</strong>  The emphasis is on fostering continuous marginal improvement each term rather than solely achieving high scores.</li>
                 <li><strong>Understanding Scores:</strong>  An SEL score above 15 indicates robust emotional intelligence while a score below 10 signals opportunities for ongoing improvement.</li>
             </ul>
+        </div>
 
+        <!-- Page 3 -->
+        <div id="report-page-3">
             <h2>Character Strengths (CS)</h2>
             <table>
                 <tr>
@@ -342,21 +374,24 @@
                 <li>Scores falling within 5 - 7 indicate a medium level of strength. Your child possesses some ability in these areas and with consistent effort and practice they can further enhance their capabilities.</li>
                 <li>A score of 2 – 4 is positive feedback. The K.I coach will provide additional attention to support your child in developing these character strengths more fully. Your engagement and encouragement are crucial during this developmental process.</li>
             </ul>
-        </section>
 
-        <footer>
-            <p><strong>Joseph A. Adams</strong> <br><strong>Founder, K.I. Education LLC</strong></p>
-            <div class="contact-info">
-              <p class="link"><strong>hi@kiedu.net</strong></p>
-              <p class="ki_number">054 396 1150</p>
-              <p class="ki_link"><strong>www.kiedu.net</strong></p>
-            </div>
-          </footer>
+            <footer>
+                <p><strong>Joseph A. Adams</strong> <br><strong>Founder, K.I. Education LLC</strong></p>
+                <div class="contact-info">
+                  <p class="link"><strong>hi@kiedu.net</strong></p>
+                  <p class="ki_number">054 396 1150</p>
+                  <p class="ki_link"><strong>www.kiedu.net</strong></p>
+                </div>
+            </footer>
+        </div>
     </div>
 </div>
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="assets/js/report.js"></script>
 <script src="assets/js/results.js"></script>
+<script src="assets/js/toast.js"></script>
 </body>
 </html>
