@@ -10,6 +10,47 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+    <style>
+        /* Additional CSS for toast message */
+        .toast {
+            visibility: hidden;
+            max-width: 50%;
+            margin: 0 auto;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 16px;
+            font-size: 17px;
+        }
+
+        .toast.show {
+            visibility: visible;
+            animation: fadeInOut 3s linear;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        /* Reduce table height */
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 5px;
+            text-align: center;
+            height: 30px;
+        }
+
+        th, td {
+            padding: 5px;
+        }
+    </style>
 </head>
 <body>
 <!-- side bar -->
@@ -45,15 +86,6 @@
                 <select id="class" class="dropdown">
                     <option value="">--Select Class--</option>
                     <!-- Add class options dynamically -->
-                </select>
-            </div>
-            <div class="dropdown-container">
-                <label for="term">Select Term:</label>
-                <select id="term" class="dropdown">
-                    <option value="">--Select Term--</option>
-                    <option value="1">Term 1</option>
-                    <option value="2">Term 2</option>
-                    <option value="3">Term 3</option>
                 </select>
             </div>
         </div>
@@ -122,6 +154,9 @@
         </table>
     </div>
 </div>
+
+<!-- Toast message -->
+<div id="toast" class="toast"></div>
 
 <!-- Report view container (initially hidden) -->
 <div id="report-view" class="modal">
@@ -199,9 +234,6 @@
                     </ul>
                 </div><br>
                 <canvas id="keqBarChart"></canvas>
-
-               
-           
         </div>
 
         <!-- Page 2 -->
@@ -226,7 +258,7 @@
                     <th>Optim.</th>
                     <th>Self-Con.</th>
                     <th>Hone.</th>
-                    <th>Exper.</s</th>
+                    <th>Exper.</th>
                     <th>Kindne.</th>
                 </tr>
                 <tr>
@@ -267,7 +299,6 @@
                 <li><strong>Focus on Improvement:</strong>  The emphasis is on fostering continuous marginal improvement each term rather than solely achieving high scores.</li>
                 <li><strong>Understanding Scores:</strong>  An SEL score above 15 indicates robust emotional intelligence while a score below 10 signals opportunities for ongoing improvement.</li>
             </ul>
-           
         </div>
 
         <!-- Page 3 -->
@@ -339,8 +370,11 @@
     </div>
 </div>
 
+
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="assets/js/report.js"></script>
 <script src="assets/js/results.js"></script>
+<script src="assets/js/toast.js"></script>
 </body>
 </html>

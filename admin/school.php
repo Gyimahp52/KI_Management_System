@@ -1,6 +1,6 @@
 <!--
 <?php
-//require_once 'function.php';
+require_once 'function.php';
 ?>
 -->
 
@@ -51,9 +51,7 @@
     <form onsubmit="createClass(event)">
       <select name="schoolId" required class="form-control mb-2">
         <option value="">Select School</option>
-        <?php foreach (getSchools() as $school): ?>
-          <option value="<?= $school['id'] ?>"><?= $school['school_name'] ?></option>
-        <?php endforeach; ?>
+       <!-- phph code here -->
       </select>
       <input type="text" name="className" placeholder="Class Name" required class="form-control mb-2">
       <button type="submit" class="btn btn-success">Create Class</button>
@@ -61,11 +59,7 @@
   </div>
 </div>
 
-<!-- TOGGLE -->
-<div class="mb-3">
-  <button class="btn btn-primary" onclick="showTable('schools')">Schools</button>
-  <button class="btn btn-primary" onclick="showTable('classes')">Classes</button>
-</div>
+
 <div id="tableContainer"></div>
 <nav>
   <ul class="pagination"></ul>
@@ -150,7 +144,7 @@ function createClass(event) {
     });
 }
 
-// Uncomment this function and its corresponding HTML to enable table display functionality
+
 function showTable(type, page = 1) {
     $.get('ajax_handlers.php', { action: 'getTable', type: type, page: page }, function(response) {
         $('#tableContainer').html(response);

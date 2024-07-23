@@ -13,18 +13,19 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     height: max-content;
     position: sticky;
-  
 }
 
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: -10px;
 }
 
 header h1 {
     font-family: 'Wedges', sans-serif;
     color: #2a9d8f;
+    margin-bottom: -10px;
 }
 
 .summary {
@@ -74,19 +75,19 @@ header h1 {
 
 .selection-panel {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
+    justify-content: left;
+    margin-bottom: 10px;
     background-color: #fff;
 }
 
 .dropdown-container {
-    width: 24%;
+    width: 20%;
 }
 
 .dropdown, .input-field, .button {
     display: block;
     width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 2px;
 }
 
 .dropdown {
@@ -96,7 +97,7 @@ header h1 {
 }
 
 .btn-load-report {
-    background-color: #0d1e04;
+    background-color: #762004;
     padding: 5px 5px;
     margin: 0 2px;
     border: none;
@@ -105,6 +106,8 @@ header h1 {
     color: white;
     font-size: 14px;
     border-radius: 5px;
+    height: max-content;
+    margin-top: 3%;
 }
 
 .button {
@@ -285,7 +288,7 @@ table, th, td {
 }
 
 th, td {
-    padding: 10px;
+    padding: 5px;
     text-align: center;
 }
 
@@ -333,4 +336,50 @@ footer p {
 .fade-out {
     opacity: 0.5;
     pointer-events: none;
+}
+
+/* Toast CSS */
+.toast {
+    visibility: hidden;
+    max-width: 50%;
+    height: 50px;
+    margin: auto;
+    background-color: rgb(1, 36, 52);
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    right: 0;
+    top: 50%;
+    font-size: 17px;
+    white-space: nowrap;
+    line-height: 50px;
+}
+
+.toast.show {
+    visibility: visible;
+    animation: fadeInOut 3s;
+}
+
+.toast.success {
+    background-color: green;
+}
+
+.toast.error {
+    background-color: red;
+}
+
+.toast.info {
+    background-color: blue;
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
+
+.invalid {
+    border: 2px solid red;
 }
