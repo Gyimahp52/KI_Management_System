@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('includes/dbconnection.php');
+//include('includes/dbconnection.php');
 
 // Validation and Sanitization Functions
 function validate_name($name) {

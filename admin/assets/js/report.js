@@ -1,6 +1,6 @@
-// report.js
+ // report.js
 
-document.addEventListener("DOMContentLoaded", () => {
+ document.addEventListener("DOMContentLoaded", () => {
     const tabs = document.querySelectorAll(".tab-button");
     tabs.forEach(tab => {
         tab.addEventListener("click", () => {
@@ -12,10 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    const academicYearSelect = document.getElementById('academicYear');
     const schoolSelect = document.getElementById('school');
     const classSelect = document.getElementById('class');
-    const termSelect = document.getElementById('term');
     const reportAcademicYearSelect = document.getElementById('reportAcademicYear');
     const reportSchoolSelect = document.getElementById('reportSchool');
     const reportClassSelect = document.getElementById('reportClass');
@@ -82,18 +80,14 @@ document.addEventListener("DOMContentLoaded", () => {
         populateClassDropdown(reportSchoolSelect, reportClassSelect);
     });
 
-    // Populate students list based on selected academic year, class, and term
-    academicYearSelect.addEventListener('change', updateStudentList);
+    // Populate students list based on selected academic year and class
     classSelect.addEventListener('change', updateStudentList);
-    termSelect.addEventListener('change', updateStudentList);
 
     function updateStudentList() {
         studentsList.innerHTML = '';
         const selectedClassId = parseInt(classSelect.value);
         const selectedSchoolId = parseInt(schoolSelect.value);
-        const selectedTerm = termSelect.value;
-        const selectedAcademicYear = academicYearSelect.value;
-        if (selectedClassId && selectedSchoolId && selectedTerm && selectedAcademicYear) {
+        if (selectedClassId && selectedSchoolId) {
             const filteredStudents = students.filter(stu => stu.classId === selectedClassId);
             const selectedSchool = schools.find(school => school.id === selectedSchoolId);
 
@@ -129,10 +123,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     selectedSchool.scoreFields.forEach(field => {
                         const td = document.createElement('td');
                         const inputField = document.createElement('input');
-                        inputField.type = 'text';
+                        inputField.type = 'number';
                         inputField.classList.add('input-field');
                         inputField.placeholder = field;
-                        inputField.pattern = "\\d*"; // Allow only numbers
+                        inputField.min = 2;
+                        inputField.max = 9;
+                        inputField.addEventListener('input', validateInput);
                         td.appendChild(inputField);
                         row.appendChild(td);
                     });
@@ -146,10 +142,23 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // Validate input fields
+    function validateInput(event) {
+        const input = event.target;
+        if (input.value < 2 || input.value > 9) {
+            input.classList.add('invalid');
+            showToast('Scores must be between 2 and 9.');
+        } else {
+            input.classList.remove('invalid');
+        }
+    }
+
     // Save scores (mock function)
     saveScoresButton.addEventListener('click', () => {
         const rows = document.querySelectorAll('tbody tr');
         const scoresData = [];
+        let isValid = true;
+        let invalidFields = [];
 
         rows.forEach(row => {
             const studentName = row.cells[0].textContent;
@@ -157,14 +166,26 @@ document.addEventListener("DOMContentLoaded", () => {
             const scores = {};
 
             scoreFields.forEach(field => {
+                const value = parseInt(field.value);
+                if (value < 2 || value > 9 || isNaN(value)) {
+                    isValid = false;
+                    invalidFields.push(field);
+                }
                 scores[field.placeholder] = field.value;
             });
 
             scoresData.push({ studentName, scores });
         });
 
-        console.log('Scores saved:', scoresData);
-        alert('Scores saved successfully!');
+        if (isValid) {
+            console.log('Scores saved:', scoresData);
+            showToast('Scores saved successfully!', 'success');
+        } else {
+            showToast('Please ensure all score fields have values between 2 and 9.', 'error');
+            invalidFields.forEach(field => {
+                field.classList.add('invalid');
+            });
+        }
     });
 
     // Load reports based on selected academic year, school, class, and term
@@ -240,10 +261,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const selectedCheckboxes = document.querySelectorAll('.student-checkbox:checked');
         const selectedStudents = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
         if (selectedStudents.length > 0) {
-            alert(`Downloading reports for: ${selectedStudents.join(', ')}`);
-            // Implement download functionality
+            showToast('Hold on, report will download soon', 'info');
+            setTimeout(() => {
+                alert(`Downloading reports for: ${selectedStudents.join(', ')}`);
+                // Implement download functionality
+            }, 3000);
         } else {
-            alert('No students selected.');
+            showToast('No students selected.', 'error');
         }
     });
 
@@ -266,10 +290,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Fade out the main container
         document.querySelector('.main-container').classList.add('fade-out');
-
     }
 
-   
     window.viewReport = viewReport;
 
     function closeReport() {
@@ -289,39 +311,43 @@ document.addEventListener("DOMContentLoaded", () => {
     window.deleteReport = deleteReport;
 
     async function downloadReport(name) {
-        // Populate the report view for the selected student
-        viewReport(name);
+        showToast('Hold on, report will download soon', 'info');
+        setTimeout(async () => {
+            // Populate the report view for the selected student
+            viewReport(name);
 
-        // Wait for the charts to render (you can replace this with a more robust approach if necessary)
-        await new Promise(resolve => setTimeout(resolve, 1000));
+            // Wait for the charts to render (you can replace this with a more robust approach if necessary)
+            await new Promise(resolve => setTimeout(resolve, 1000));
 
-        const pdf = new jspdf.jsPDF('p', 'pt', 'a4');
-        const pages = document.querySelectorAll('.report-container > div[id^="report-page-"]');
+            const pdf = new jspdf.jsPDF('p', 'pt', 'a4');
 
-        for (const page of pages) {
-            await html2canvas(page).then(canvas => {
-                const imgData = canvas.toDataURL('image/png');
-                const imgProps = pdf.getImageProperties(imgData);
-                const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-                pdf.addPage();
-            });
-        }
+            const pages = document.querySelectorAll('.report-container > div[id^="report-page-"]');
 
-        // Remove the last blank page
-        pdf.deletePage(pdf.getNumberOfPages());
+            for (const page of pages) {
+                await html2canvas(page).then(canvas => {
+                    const imgData = canvas.toDataURL('image/png');
+                    const imgProps = pdf.getImageProperties(imgData);
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                    pdf.addPage();
+                });
+            }
 
-        pdf.save(`${name}_report.pdf`);
+            // Remove the last blank page
+            pdf.deletePage(pdf.getNumberOfPages());
 
-        // Close the report view
-        closeReport();
+            pdf.save(`${name}_report.pdf`);
+
+            // Close the report view
+            closeReport();
+        }, 3000);
     }
 
     window.downloadReport = downloadReport;
 
     function sendWhatsApp(name) {
-        alert(`Sending report via WhatsApp for ${name}`);
+        showToast(`Sending report via WhatsApp for ${name}`, 'info');
         // Implement WhatsApp functionality
     }
 
@@ -338,4 +364,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     window.openTab = openTab;
+
+    function showToast(message, type) {
+        const toast = document.getElementById("toast");
+        toast.textContent = message;
+        toast.className = `toast show ${type}`;
+        setTimeout(() => {
+            toast.className = toast.className.replace("show", "");
+        }, 3000);
+    }
 });

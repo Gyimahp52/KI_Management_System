@@ -1,12 +1,21 @@
 <?php
 session_start();
 require 'includes/dbconnection.php'; 
+
  require 'includes/login_function.php'; 
 // function login($username, $password) {
 //     $pdo = dbConnect();
 //     $stmt = $pdo->prepare('SELECT id, password, role FROM users WHERE username = ?');
 //     $stmt->execute([$username]);
 //     $user = $stmt->fetch();
+
+ //require 'includes/login_function.php'; 
+function login($username, $password) {
+    $pdo = dbConnect();
+    $stmt = $pdo->prepare('SELECT id, password, role FROM users WHERE username = ?');
+    $stmt->execute([$username]);
+    $user = $stmt->fetch();
+
 
 //     if ($user && password_verify($password, $user['password'])) {
 //         $_SESSION['user_id'] = $user['id'];

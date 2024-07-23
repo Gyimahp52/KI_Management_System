@@ -1,4 +1,4 @@
-// script.js
+// results.js
 
 // KEQ Bar Chart
 const keqBarChart = document.getElementById('keqBarChart').getContext('2d');
@@ -136,7 +136,7 @@ new Chart(selPieChart, {
                 display: true,
                 position: 'bottom',
                 labels: {
-                    color: 'black',
+                    color: 'white',
                     font: {
                         weight: 'bold'
                     }
@@ -147,7 +147,6 @@ new Chart(selPieChart, {
                     label: function(context) {
                         const label = context.label || '';
                         const value = context.raw;
-                        /*const total = context.dataset.data.reduce((a, b) => a + b, 0);*/
                         const total = context.chart._metasets[context.datasetIndex].total;
                         const percentage = ((value / total) * 100).toFixed(2);
                         return `${label}: ${value} (${percentage}%)`;
@@ -172,8 +171,8 @@ new Chart(selPieChart, {
             const centerX = (chartArea.left + chartArea.right) / 2;
             const centerY = (chartArea.top + chartArea.bottom) / 2;
             const radius = Math.min((chartArea.right - chartArea.left) / 2, (chartArea.bottom - chartArea.top) / 2);
-            const depth = 0; // Depth of the 3D effect
-            const offset = 20; // Offset for the shadow
+            const depth = 20; // Depth of the 3D effect
+            const offset = 10; // Offset for the shadow
 
             // Draw shadows
             chart.data.datasets.forEach((dataset, datasetIndex) => {
@@ -184,7 +183,6 @@ new Chart(selPieChart, {
                     const midAngle = (startAngle + endAngle) / 2;
                     const x = Math.cos(midAngle) * radius;
                     const y = Math.sin(midAngle) * radius;
-
 
                     ctx.save();
                     ctx.translate(centerX, centerY + offset);
@@ -200,8 +198,8 @@ new Chart(selPieChart, {
                 });
             });
 
-             // Draw slices
-             chart.data.datasets.forEach((dataset, datasetIndex) => {
+            // Draw slices
+            chart.data.datasets.forEach((dataset, datasetIndex) => {
                 const meta = chart.getDatasetMeta(datasetIndex);
                 meta.data.forEach((slice, index) => {
                     const startAngle = slice.startAngle;
@@ -210,12 +208,18 @@ new Chart(selPieChart, {
                     const x = Math.cos(midAngle) * radius;
                     const y = Math.sin(midAngle) * radius;
 
-                    const gradient = ctx.createLinearGradient(0, 0, x, y);
-                    gradient.addColorStop(0, dataset.backgroundColor[index]);
-                    gradient.addColorStop(1, 'rgba(0, 0, 0, 0.5)');
+                    ctx.save();
+                    ctx.translate(centerX, centerY);
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.arc(0, 0, radius, startAngle, endAngle);
+                    ctx.lineTo(0, 0);
+                    ctx.closePath();
+                    ctx.fillStyle = dataset.backgroundColor[index];
+                    ctx.fill();
+                    ctx.restore();
 
-                  
-
+                    // Draw the 3D sides
                     ctx.save();
                     ctx.translate(centerX, centerY);
                     ctx.beginPath();
@@ -229,26 +233,28 @@ new Chart(selPieChart, {
                     ctx.restore();
                 });
             });
-            ctx.save();
-                ctx.translate(centerX, centerY);
-                chart.data.datasets.forEach((dataset, datasetIndex) => {
-                    const meta = chart.getDatasetMeta(datasetIndex);
-                    meta.data.forEach((slice, index) => {
-                        const startAngle = slice.startAngle;
-                        const endAngle = slice.endAngle;
-                        ctx.beginPath();
-                        ctx.arc(0, 0, radius, startAngle, endAngle);
-                        ctx.lineTo(0, 0);
-                        ctx.closePath();
-                        ctx.fillStyle = dataset.backgroundColor[index];
-                        ctx.fill();
-                    });
+
+            // Draw top slice
+            chart.data.datasets.forEach((dataset, datasetIndex) => {
+                const meta = chart.getDatasetMeta(datasetIndex);
+                meta.data.forEach((slice, index) => {
+                    const startAngle = slice.startAngle;
+                    const endAngle = slice.endAngle;
+
+                    ctx.save();
+                    ctx.translate(centerX, centerY);
+                    ctx.beginPath();
+                    ctx.arc(0, 0, radius, startAngle, endAngle);
+                    ctx.lineTo(0, 0);
+                    ctx.closePath();
+                    ctx.fillStyle = dataset.backgroundColor[index];
+                    ctx.fill();
+                    ctx.restore();
                 });
-                ctx.restore();   
+            });
         }
     }]
-    
-}); 
+});
 
 // Character Strengths Bar Chart
 const csBarChart = document.getElementById('csBarChart').getContext('2d');
@@ -294,7 +300,7 @@ new Chart(csBarChart, {
                 display: true,
                 position: 'bottom',
                 labels: {
-                    color: 'black',
+                    color: 'white',
                     font: {
                         weight: 'bold'
                     }
@@ -305,7 +311,6 @@ new Chart(csBarChart, {
                     label: function(context) {
                         const label = context.label || '';
                         const value = context.raw;
-                        /*const total = context.dataset.data.reduce((a, b) => a + b, 0);*/
                         const total = context.chart._metasets[context.datasetIndex].total;
                         const percentage = ((value / total) * 100).toFixed(2);
                         return `${label}: ${value} (${percentage}%)`;

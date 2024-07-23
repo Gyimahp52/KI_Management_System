@@ -42,9 +42,10 @@ $base_url = '/ki/KI_Management_System/';
     <div class="stats-grid">
         
         <div class="card">
-            <a href="school.php">
+            <a href="student.php">
              <div class="icon"><img src="assets/images/students.png" alt="schools"></div>
-            <a href="school.php">
+
+            <a href="student.php">
             <?php 
                         
                         $sql1 ="SELECT * from  students";
@@ -54,6 +55,11 @@ $base_url = '/ki/KI_Management_System/';
                         $toteducators=$query1->rowCount();
                         ?>
              <div class="count"><?php echo htmlentities($toteducators);?></div>
+
+            
+
+             <div class="count">500</div>
+
              <span><b>Students</b></span>
             </a>
         </div>
@@ -61,6 +67,7 @@ $base_url = '/ki/KI_Management_System/';
         <div class="card">
             <a href="educators.php">
              <div class="icon"><img src="assets/images/educator.png" alt=""></div>
+
             <a href="educators.php">
             <?php 
                         
@@ -71,6 +78,11 @@ $base_url = '/ki/KI_Management_System/';
                         $totstudents=$query1->rowCount();
                         ?>
              <div class="count"><?php echo htmlentities($totstudents);?></div>
+
+            
+            
+             <div class="count">12</div>
+
              <span><b>Educators</b></span>
             </a>
         </div>
@@ -78,6 +90,7 @@ $base_url = '/ki/KI_Management_System/';
         <div class="card">
             <a href="school.php">
               <div class="icon"><img src="assets/images/sch.png" alt=""></div>
+
             <a href="school.php">
             <?php 
                         
@@ -88,21 +101,28 @@ $base_url = '/ki/KI_Management_System/';
                         $totschools=$query1->rowCount();
                         ?>
               <div class="count"><?php echo htmlentities($totschools);?></div>
+
+            
+             
+              <div class="count">30</div>
+
               <span><b>Schools</b></span>
             </a>
         </div>
 
 
         <div class="card">
+            <a href="sel.php">
             <div class="icon"><img src="assets/images/sel_themes.png" alt=""></div>
             <span><b>SEL Themes</b></span>
+            </a>
         </div>
 
 
         <div class="card">
             <a href="report.php">
              <div class="icon"><img src="assets/images/reports.png" alt=""></div>
-            <a href="report.php">
+            
             
              <span><b>Report</b></span>
             </a>
@@ -110,8 +130,6 @@ $base_url = '/ki/KI_Management_System/';
         <div class="card">
             <a href="settings.php">
               <div class="icon"><img src="assets/images/settings.png" alt=""></div>
-            <a href="settings.php">
-             
               <span><b>Settings</b></span>
             </a>
         </div>
@@ -125,7 +143,7 @@ $base_url = '/ki/KI_Management_System/';
 
 
 <!-- Modal Overlay, initially hidden -->
-<div id="modalOverlay" class="modal-overlay" style="display: none;">
+<!--<div id="modalOverlay" class="modal-overlay" style="display: none;">
     <div id="modalContent" class="modal-content">
         <div class="signup-container">
            
@@ -154,10 +172,8 @@ $base_url = '/ki/KI_Management_System/';
               <button type="submit">Add</button>
             </form>
           </div>
-    </div>
-
-    
-</div>
+    </div> 
+</div> -->
 
 
 
