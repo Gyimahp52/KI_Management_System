@@ -44,7 +44,7 @@ $base_url = '/ki/KI_Management_System/';
         <div class="card">
             <a href="school.php">
              <div class="icon"><img src="assets/images/students.png" alt="schools"></div>
-            <a href="school.php">
+            <a href="students.php">
             <?php 
                         
                         $sql1 ="SELECT * from  students";
@@ -68,9 +68,9 @@ $base_url = '/ki/KI_Management_System/';
                         $query1 = $dbh -> prepare($sql1);
                         $query1->execute();
                         $results1=$query1->fetchAll(PDO::FETCH_OBJ);
-                        $totstudents=$query1->rowCount();
+                        $toteducators=$query1->rowCount();
                         ?>
-             <div class="count"><?php echo htmlentities($totstudents);?></div>
+             <div class="count"><?php echo htmlentities($toteducators);?></div>
              <span><b>Educators</b></span>
             </a>
         </div>
