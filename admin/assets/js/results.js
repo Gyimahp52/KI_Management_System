@@ -1,5 +1,3 @@
-// results.js
-
 // KEQ Bar Chart
 const keqBarChart = document.getElementById('keqBarChart').getContext('2d');
 new Chart(keqBarChart, {
