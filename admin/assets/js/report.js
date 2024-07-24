@@ -1,6 +1,4 @@
- // report.js
-
- document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
     const tabs = document.querySelectorAll(".tab-button");
     tabs.forEach(tab => {
         tab.addEventListener("click", () => {
@@ -153,7 +151,7 @@
         }
     }
 
-    // Save scores (mock function)
+    // Save scores to local storage
     saveScoresButton.addEventListener('click', () => {
         const rows = document.querySelectorAll('tbody tr');
         const scoresData = [];
@@ -178,7 +176,7 @@
         });
 
         if (isValid) {
-            console.log('Scores saved:', scoresData);
+            localStorage.setItem('studentScores', JSON.stringify(scoresData));
             showToast('Scores saved successfully!', 'success');
         } else {
             showToast('Please ensure all score fields have values between 2 and 9.', 'error');
@@ -277,12 +275,23 @@
         const studentClass = classes.find(cls => cls.id === student.classId);
         const studentSchool = schools.find(sch => sch.id === studentClass.schoolId);
 
+        // Load saved scores
+        const savedScores = JSON.parse(localStorage.getItem('studentScores')) || [];
+        const studentScores = savedScores.find(score => score.studentName === name);
+
         // Populate the report
         document.getElementById('student-name').textContent = student.name;
         document.getElementById('student-name-info').textContent = student.name;
         document.getElementById('student-school').textContent = studentSchool.name;
         document.getElementById('student-school-info').textContent = studentSchool.name;
         document.getElementById('student-class-info').textContent = studentClass.name;
+
+        // Populate scores in the report
+        if (studentScores) {
+            studentSchool.scoreFields.forEach((field, index) => {
+                document.getElementById(`keq-${index + 1}`).textContent = studentScores.scores[field];
+            });
+        }
 
         // Show the report container
         const modal = document.getElementById('report-view');
