@@ -69,7 +69,9 @@ require_once 'function.php';
     <form onsubmit="createClass(event)">
       <select name="schoolId" required class="form-control mb-2">
         <option value="">Select School</option>
-       <!-- phph code here -->
+        <?php foreach (getSchools() as $school): ?>
+                        <option value="<?= $school['id'] ?>"><?= $school['school_name'] ?></option>
+                    <?php endforeach; ?>
       </select>
       <input type="text" name="className" placeholder="Class Name" required class="form-control mb-2">
       <button type="submit" class="btn btn-success">Create Class</button>
