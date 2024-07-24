@@ -243,36 +243,3 @@ function showTable(type, page = 1) {
 </body>
 </html>
 
-
-
-
-
-
-
-
- /* create school form --
-        <div id="schoolForm" class="mb-4">
-            <h2>Create School</h2>
-            <form onsubmit="createSchool(event)" enctype="multipart/form-data">
-                <input type="text" name="schoolName" placeholder="School Name" required class="form-control mb-2">
-                <input type="text" name="region" placeholder="Region" required class="form-control mb-2">
-                <input type="text" name="town" placeholder="Town" required class="form-control mb-2">
-                <input type="text" name="educator" placeholder="Educator" required class="form-control mb-2">
-                <input type="file" name="logo" required class="form-control mb-2">
-                <button type="submit" class="btn btn-success">Create School</button>
-            </form>
-        </div>
-
-        <!- create class form --
-        <div id="classForm" class="mb-4">
-                    <h2>Create Class</h2>
-                    <form onsubmit="createClass(event)">
-                        <select name="schoolId" required class="form-control mb-2">
-                            <option value="">Select School</option>
-                            
-                        </select>
-                        <input type="text" name="className" placeholder="Class Name" required class="form-control mb-2">
-                        <button type="submit" class="btn btn-success">Create Class</button>
-                    </form>
-        </div>
-  */
