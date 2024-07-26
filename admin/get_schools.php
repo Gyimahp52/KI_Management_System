@@ -1,7 +1,7 @@
 <?php
 // Database connection
 $host = 'localhost';
-$db = 'school_management';
+$db = 'ki_db';
 $user = 'root';
 $pass = '';
 $dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
@@ -13,7 +13,7 @@ try {
     exit;
 }
 
-$query = $pdo->query("SELECT id, name FROM schools");
+$query = $pdo->query("SELECT id, school_name FROM schools");
 $schools = $query->fetchAll(PDO::FETCH_ASSOC);
 
 echo json_encode($schools);

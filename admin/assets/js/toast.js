@@ -1,3 +1,5 @@
+//toast.js
+
 function showToast(message, type) {
     const toast = document.getElementById("toast");
     toast.textContent = message;

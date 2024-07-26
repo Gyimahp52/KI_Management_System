@@ -1,3 +1,7 @@
+//result.js
+
+
+
 // KEQ Bar Chart
 const keqBarChart = document.getElementById('keqBarChart').getContext('2d');
 new Chart(keqBarChart, {
@@ -55,7 +59,7 @@ new Chart(keqBarChart, {
                 mode: 'index',
                 intersect: false,
                 callbacks: {
-                    label: function(context) {
+                    label: function (context) {
                         let label = context.dataset.label || '';
                         if (label) {
                             label += ': ';
@@ -86,7 +90,7 @@ new Chart(keqBarChart, {
                     font: {
                         weight: 'bold'
                     },
-                    callback: function(value, index, ticks) {
+                    callback: function (value, index, ticks) {
                         return value + '%';
                     }
                 },
@@ -104,12 +108,12 @@ new Chart(selPieChart, {
         labels: ['Self Awareness', 'Self Management', 'Social Awareness', 'Relationship Skills', 'Responsible Decision Making'],
         datasets: [{
             data: [18, 18, 10, 18, 18],
-            backgroundColor:[
-            '#296BBF', //self awareness
-            '#DA6C11', //Self Management
-            '#81807E', // Social Awareness
-            '#FACD05', // Relationship Skills
-            '#56A5F5' // Responsible Decision Making
+            backgroundColor: [
+                '#296BBF', //self awareness
+                '#DA6C11', //Self Management
+                '#81807E', // Social Awareness
+                '#FACD05', // Relationship Skills
+                '#56A5F5' // Responsible Decision Making
             ],
             hoverOffset: 10
         }]
@@ -142,7 +146,7 @@ new Chart(selPieChart, {
             },
             tooltip: {
                 callbacks: {
-                    label: function(context) {
+                    label: function (context) {
                         const label = context.label || '';
                         const value = context.raw;
                         const total = context.chart._metasets[context.datasetIndex].total;
@@ -306,7 +310,7 @@ new Chart(csBarChart, {
             },
             tooltip: {
                 callbacks: {
-                    label: function(context) {
+                    label: function (context) {
                         const label = context.label || '';
                         const value = context.raw;
                         const total = context.chart._metasets[context.datasetIndex].total;
