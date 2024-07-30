@@ -1,6 +1,8 @@
 <?php
-require_once 'function.php';
-include('includes/dbconnection.php');
+include 'function.php';
+include 'includes/dbconnection.php';
+
+
 
 $sql1 ="SELECT * from educators";
 $query1 = $dbh->prepare($sql1);
@@ -68,12 +70,23 @@ $educators = $query1->fetchAll(PDO::FETCH_OBJ);
             <button type="submit" class="btn btn-success">Create Class</button>
         </form>
     </div>
-</div>
-
-<div id="tableContainer"></div>
+    <div class="mb-3">
+            <button class="btn btn-primary" onclick="showTable('schools')">Schools</button>
+            <button class="btn btn-primary" onclick="showTable('classes')">Classes</button>
+        </div>
+        <div id="tableContainer"></div>
 <nav>
     <ul class="pagination"></ul>
 </nav>
+</div>
+<!-- <div class="mb-3">
+            <button class="btn btn-primary" onclick="showTable('schools')">Schools</button>
+            <button class="btn btn-primary" onclick="showTable('classes')">Classes</button>
+        </div>
+<div id="tableContainer"></div>
+<nav>
+    <ul class="pagination"></ul>
+</nav> -->
 
 <!-- EDIT MODAL -->
 <div class="modal fade" id="editStudentModal" tabindex="-1" role="dialog" aria-labelledby="editStudentModalLabel" aria-hidden="true">
@@ -114,6 +127,7 @@ function showForm(formId) {
     tabs.forEach(tab => {
         tab.classList.remove('active');
     });
+    // document.querySelector(`.nav-link[onclick="showForm('${formId}')"]`).classList.add('active');
     document.querySelector(`.nav-link[onclick="showForm('${formId}')"]`).classList.add('active');
 }
 

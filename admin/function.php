@@ -1,5 +1,6 @@
 <?php
-require_once 'config.php';
+// require_once 'config.php';
+require_once 'db_connection.php';
 
 function createClass($school_id, $name) {
     global $pdo;
@@ -101,11 +102,17 @@ function generateSchoolId($schoolName) {
     return $prefix . $suffix;
 }
 
+// function generateStudentId($school_name) {
+//     $prefix = strtoupper(substr($school_name, 0, 2));
+//     $random_letters = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 5);
+//     return $prefix . $random_letters;
+// }
 function generateStudentId($school_name) {
-    $prefix = strtoupper(substr($school_name, 0, 2));
-    $random_letters = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 5);
-    return $prefix . $random_letters;
+    $prefix = strtoupper(substr($school_name, 0, 2)); // Extract the first two letters and convert to uppercase
+    $random_numbers = substr(str_shuffle('0123456789'), 0, 5); // Generate a string of 5 random numbers
+    return $prefix . $random_numbers; // Concatenate the prefix and random numbers
 }
+
 
 function createSchool($name, $region, $town, $educator, $logo) {
     global $pdo;
@@ -231,3 +238,6 @@ function getClasses($school_id = null, $page = null, $perPage = null) {
         return $options;
     }
 }
+
+
+//MANAGE SEL THEMES

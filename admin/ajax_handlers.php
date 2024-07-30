@@ -17,22 +17,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             move_uploaded_file($_FILES["logo"]["tmp_name"], $target_file);
             echo createSchool($_POST['schoolName'], $_POST['region'], $_POST['town'], $_POST['educator'], $logo) ? "School created successfully" : "Failed to create school";
             break;
+        // case 'createStudent':
+        //     $passport_picture = $_FILES['passport_picture']['name'];
+        //     $target_dir = "uploads/";
+        //     $target_file = $target_dir . basename($_FILES["passport_picture"]["name"]);
+        //     if (move_uploaded_file($_FILES["passport_picture"]["tmp_name"], $target_file)) {
+        //         $result = createStudent($_POST['schoolId'], $_POST['classId'], $_POST['name'], $_POST['dob'], $_POST['gender'], $_POST['hand'], $_POST['foot'], $_POST['eye_sight'], $_POST['medical_condition'], $_POST['height'], $_POST['weight'], $_POST['parent_name'], $_POST['parent_phone'], $_POST['parent_whatsapp'], $_POST['parent_email'], $passport_picture, $_POST['password']);
+        //         echo $result;
+        //     } else {
+        //         echo "Failed to upload passport picture";
+        //     }
         case 'createStudent':
-            $passport_picture = $_FILES['passport_picture']['name'];
-            $target_dir = "uploads/";
-            $target_file = $target_dir . basename($_FILES["passport_picture"]["name"]);
-            if (move_uploaded_file($_FILES["passport_picture"]["tmp_name"], $target_file)) {
-                $result = createStudent($_POST['schoolId'], $_POST['classId'], $_POST['name'], $_POST['dob'], $_POST['gender'], $_POST['hand'], $_POST['foot'], $_POST['eye_sight'], $_POST['medical_condition'], $_POST['height'], $_POST['weight'], $_POST['parent_name'], $_POST['parent_phone'], $_POST['parent_whatsapp'], $_POST['parent_email'], $passport_picture, $_POST['password']);
-                echo $result;
+            $passport_picture = '';
+            if (!empty($_FILES['passport_picture']['name'])) {
+                $passport_picture = $_FILES['passport_picture']['name'];
+                $target_dir = "uploads/";
+                $target_file = $target_dir . basename($_FILES["passport_picture"]["name"]);
+                if (move_uploaded_file($_FILES["passport_picture"]["tmp_name"], $target_file)) {
+                    $upload_success = true;
+                } else {
+                    echo "Failed to upload passport picture";
+                    $upload_success = false;
+                }
             } else {
-                echo "Failed to upload passport picture";
+                $upload_success = true;
+            }
+        
+            if ($upload_success) {
+                $result = createStudent(
+                    $_POST['schoolId'],
+                    $_POST['classId'],
+                    $_POST['name'],
+                    $_POST['dob'],
+                    $_POST['gender'],
+                    $_POST['hand'],
+                    $_POST['foot'],
+                    $_POST['eye_sight'],
+                    $_POST['medical_condition'],
+                    $_POST['height'],
+                    $_POST['weight'],
+                    $_POST['parent_name'],
+                    $_POST['parent_phone'],
+                    $_POST['parent_whatsapp'],
+                    $_POST['parent_email'],
+                    $passport_picture,
+                    $_POST['password']
+                );
+                echo $result;
+                // echo "<script>setTimeout(function(){ window.location.reload(); }, 2000);</script>";
             }
             break;
         case 'updateStudent':
             echo updateStudent($_POST['studentId'], $_POST['name'], $_POST['dob'], $_POST['gender'], $_POST['hand'], $_POST['foot'], $_POST['eye_sight'], $_POST['medical_condition'], $_POST['height'], $_POST['weight'], $_POST['parent_name'], $_POST['parent_phone'], $_POST['parent_whatsapp'], $_POST['parent_email']) ? "Student updated successfully" : "Failed to update student";
             break;
         case 'deleteStudent':
-            echo deleteStudent($_POST['studentId']) ? "Student deleted successfully" : "Failed to delete student";
+            echo deleteStudent($_POST['studentId']) ? "Student deleted successfully " : "Failed to delete student";
+            echo "<script>setTimeout(function(){ window.location.reload(); }, 2000);</script>";
             break;
         case 'updateSchool':
             echo updateSchool($_POST['schoolId'], $_POST['name']) ? "School updated successfully" : "Failed to update school";

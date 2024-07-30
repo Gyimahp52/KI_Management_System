@@ -27,7 +27,7 @@
      <!--SEL Themes button-->
      <ul class="menu-item ">
         <li>
-            <a href="sel.php">
+            <a href="sel_themes_management.php">
                 <i class="fas fa-book"></i>
                 <span>SEL Themes</span>
             </a>
@@ -57,7 +57,7 @@
      <!--Reports button-->
      <ul class="menu-item ">
         <li>
-            <a href="report.php">
+            <a href="combined_sel_page.php">
                 <i class="fas fa-file-alt"></i>
                 <span>Reports</span>
             </a>

@@ -8,12 +8,11 @@ if (!isset($_GET['student_id']) || !isset($_GET['term_id'])) {
     die("Student ID and Term ID are required.");
 }
 
-$student_id = intval($_GET['student_id']);
+$student_id = $_GET['student_id'];
 $term_id = intval($_GET['term_id']);
 
 // Fetch student information
-$stmt = $pdo->prepare("
-    SELECT s.*, c.class_name, sc.school_name
+$stmt = $pdo->prepare(" SELECT s.*, c.class_name, sc.school_name
     FROM students s
     JOIN classes c ON s.class_id = c.class_id
     JOIN schools sc ON c.school_id = sc.id
@@ -43,8 +42,6 @@ $calcAge = $student['dob'];
 $dob = new DateTime($calcAge);
 $today = new DateTime('now');  
 $age = $today->diff($dob)->y;  
-
-// echo "Age: $age";
 
 ?>
 
@@ -83,8 +80,8 @@ $age = $today->diff($dob)->y;
                     <p><strong>Age:</strong> <?php echo htmlspecialchars($age ?? 'N/A'); ?> YEARS</p>
                     <p><strong>School:</strong> <span id="student-school-info"><?php echo htmlspecialchars($student['school_name']); ?></span></p>
                     <p><strong>Class:</strong> <span id="student-class-info"><?php echo htmlspecialchars($student['class_name']); ?></span></p>
-                    <p><strong>Height:</strong> <?php echo htmlspecialchars($student['height'] ?? 'N/A'); ?></p>
-                    <p><strong>Weight:</strong> <?php echo htmlspecialchars($student['weight'] ?? 'N/A'); ?></p>
+                    <p><strong>Height:</strong> <?php echo htmlspecialchars($student['height'] ?? 'N/A'); ?> cm</p>
+                    <p><strong>Weight:</strong> <?php echo htmlspecialchars($student['weight'] ?? 'N/A'); ?> kg</p>
                 </div>
                 
                 <div class="right-side">
@@ -123,7 +120,7 @@ $age = $today->diff($dob)->y;
             </div>
             <br>
             <!-- Placeholder for KEQ Bar Chart -->
-            <div id="keqBarChart"></div>
+            <canvas id="keqBarChart"></canvas>
         </div>
 
         <!-- Page 2 -->
@@ -158,7 +155,7 @@ $age = $today->diff($dob)->y;
         
             </table>
             <!-- Placeholder for SEL Pie Chart -->
-            <div id="selPieChart"></div>
+            <canvas id="selPieChart"></canvas>
 
             <h3>RESULTS ANALYSIS</h3>
             <ul>
@@ -193,7 +190,7 @@ $age = $today->diff($dob)->y;
         </tr> 
             </table>
             <!-- Placeholder for CS Bar Chart -->
-            <div id="csBarChart"></div>
+            <canvas id="csBarChart"></canvas>
 
             <h3>RESULTS ANALYSIS</h3>
             <ul>
@@ -216,6 +213,12 @@ $age = $today->diff($dob)->y;
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="assets/js/results.js"></script>
-<script src="assets/js/report.js"></script>
+<!-- <script src="assets/js/report.js"></script> -->
+<script>
+    // Pass PHP data to JavaScript
+    var studentData = <?php echo json_encode($sel_themes); ?>;
+    var studentName = <?php echo json_encode($student['name']); ?>;
+    var schoolName = <?php echo json_encode($student['school_name']); ?>;
+</script>
 </body>
 </html>

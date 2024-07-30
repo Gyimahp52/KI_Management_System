@@ -27,11 +27,12 @@ require_once 'function.php';
 .modal-content {
     background-color: #fefefe;
     margin: 15% auto;
-    padding: 7px;
+    padding: 20px;
     border: 1px solid #888;
-    max-width: 80%;
+    max-width: 30%;
     bottom: 100px;
     left: 50px;
+    /* overflow: scroll; */
 }
 
 .row {
@@ -123,6 +124,7 @@ input, select, textarea {
             <tbody></tbody>
         </table> -->
     </div>
+    
 </div>
 
 
@@ -147,18 +149,18 @@ input, select, textarea {
                     <option value="Female">Female</option>
                     <option value="Other">Other</option>
                 </select>
-                <select name="hand" required>
+                <select name="hand" >
                     <option value="">Select Hand</option>
                     <option value="Right">Right</option>
                     <option value="Left">Left</option>
                     <option value="Ambidextrous">Ambidextrous</option>
                 </select>
-                <select name="foot" required>
+                <select name="foot" >
                     <option value="">Select Foot</option>
                     <option value="Right">Right</option>
                     <option value="Left">Left</option>
                 </select>
-                <select name="eye_sight" required>
+                <select name="eye_sight" >
                     <option value="">Select Eye Sight</option>
                     <option value="Normal">Normal</option>
                     <option value="Glasses">Glasses</option>
@@ -167,53 +169,6 @@ input, select, textarea {
                 <textarea name="medical_condition" placeholder="Not available" disabled></textarea><br>
                 <input type="number" name="height" placeholder="Height (cm)" required>
                 <input type="number" name="weight" placeholder="Weight (kg)" required>
-
-                <div class="row">
-                    <div class="col">
-                        <input type="file" name="passport_picture" accept="image/*">
-                        <input type="text" name="username" placeholder="Username" required>
-                        <input type="password" name="password" placeholder="Password" required>
-                        
-                    </div>
-                    <div class="col">
-                        <input type="text" name="name" placeholder="Name" required>
-                        <input type="date" name="dob" required>
-                        <select name="gender" required>
-                            <option value="">Select Gender</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <div class="col">
-                        <select name="hand" required>
-                            <option value="">Select Hand</option>
-                            <option value="Right">Right</option>
-                            <option value="Left">Left</option>
-                            <option value="Ambidextrous">Ambidextrous</option>
-                        </select>
-                        <select name="foot" required>
-                            <option value="">Select Foot</option>
-                            <option value="Right">Right</option>
-                            <option value="Left">Left</option>
-                        </select>
-                        <select name="eye_sight" required>
-                            <option value="">Select Eye Sight</option>
-                            <option value="Normal">Normal</option>
-                            <option value="Glasses">Glasses</option>
-                            <option value="Contact Lenses">Contact Lenses</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                   <!-- <div class="col">
-                        <textarea name="medical_condition" placeholder="Not available" disabled></textarea>
-                    </div> -->
-                    <div class="col">
-                        <input type="number" name="height" placeholder="Height (cm)" required>
-                        <input type="number" name="weight" placeholder="Weight (kg)" required>
-                    </div>
-                </div>
 
             </fieldset>
             <fieldset>
@@ -233,15 +188,17 @@ input, select, textarea {
                 <legend>Others</legend>
                 <div class="row">
                     <div class="col">
-                        <select name="schoolId" onchange="loadClasses(this.value)" required>
-                            <option value="">Select School</option>
-                            <!-- php codes here-->
-                        </select>
+                    <select name="schoolId" onchange="loadClasses(this.value)" required class="form-control mb-2">
+            <option value="">Select School</option>
+            <?php foreach (getSchools() as $school): ?>
+                <option value="<?= $school['id'] ?>"><?= $school['school_name'] ?></option>
+            <?php endforeach; ?>
+        </select>
                     </div>
                     <div class="col">
-                        <select name="classId" required disabled>
-                            <option value="">Select Class</option>
-                        </select>
+                    <select name="classId" required class="form-control mb-2" disabled>
+            <option value="">Select Class</option>
+        </select>
                     </div>
                 </div>
             </fieldset>

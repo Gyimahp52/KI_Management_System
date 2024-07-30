@@ -52,13 +52,11 @@ $base_url = '/ki/KI_Management_System/';
                         $query1 = $dbh -> prepare($sql1);
                         $query1->execute();
                         $results1=$query1->fetchAll(PDO::FETCH_OBJ);
-                        $toteducators=$query1->rowCount();
+                        $totstudents=$query1->rowCount();
                         ?>
-             <div class="count"><?php echo htmlentities($toteducators);?></div>
+             <div class="count"><?php echo htmlentities($totstudents);?></div>
 
             
-
-             <div class="count">500</div>
 
              <span><b>Students</b></span>
             </a>
@@ -77,11 +75,11 @@ $base_url = '/ki/KI_Management_System/';
                         $results1=$query1->fetchAll(PDO::FETCH_OBJ);
                         $toteducators=$query1->rowCount();
                         ?>
-             <div class="count"><?php echo htmlentities($totstudents);?></div>
+             <div class="count"><?php echo htmlentities($toteducators);?></div>
 
             
             
-             <div class="count">12</div>
+        
 
              <span><b>Educators</b></span>
             </a>
@@ -103,8 +101,7 @@ $base_url = '/ki/KI_Management_System/';
               <div class="count"><?php echo htmlentities($totschools);?></div>
 
             
-             
-              <div class="count">30</div>
+            
 
               <span><b>Schools</b></span>
             </a>
