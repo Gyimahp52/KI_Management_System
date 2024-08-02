@@ -1,3 +1,6 @@
+
+//repport.js
+
 document.addEventListener("DOMContentLoaded", () => {
     const tabs = document.querySelectorAll(".tab-button");
     tabs.forEach(tab => {
@@ -25,111 +28,111 @@ document.addEventListener("DOMContentLoaded", () => {
     let schools = [];
 
     // Fetch schools from the database
-    function fetchSchools() {
-        fetch('get_schools.php')
-            .then(response => response.json())
-            .then(data => {
-                schools = data;
-                populateSchoolDropdown(schoolSelect, data);
-                populateSchoolDropdown(reportSchoolSelect, data);
-            })
-            .catch(error => console.error('Error fetching schools:', error));
-    }
+    // function fetchSchools() {
+    //     fetch('get_schools.php')
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             schools = data;
+    //             populateSchoolDropdown(schoolSelect, data);
+    //             populateSchoolDropdown(reportSchoolSelect, data);
+    //         })
+    //         .catch(error => console.error('Error fetching schools:', error));
+    // }
 
     // Populate school dropdown
-    function populateSchoolDropdown(selectElement, schools) {
-        selectElement.innerHTML = '<option value="">--Select School--</option>';
-        schools.forEach(school => {
-            const option = document.createElement('option');
-            option.value = school.id;
-            option.textContent = school.name;
-            selectElement.appendChild(option);
-        });
-    }
+    // function populateSchoolDropdown(selectElement, schools) {
+    //     selectElement.innerHTML = '<option value="">--Select School--</option>';
+    //     schools.forEach(school => {
+    //         const option = document.createElement('option');
+    //         option.value = school.id;
+    //         option.textContent = school.school_name;
+    //         selectElement.appendChild(option);
+    //     });
+    // }
 
     // Fetch classes based on selected school
-    function fetchClasses(schoolId, classSelectElement) {
-        fetch(`get_classes.php?school_id=${schoolId}`)
-            .then(response => response.json())
-            .then(data => populateClassDropdown(classSelectElement, data))
-            .catch(error => console.error('Error fetching classes:', error));
-    }
+    // function fetchClasses(schoolId, classSelectElement) {
+    //     fetch(`get_classes.php?school_id=${schoolId}`)
+    //         .then(response => response.json())
+    //         .then(data => populateClassDropdown(classSelectElement, data))
+    //         .catch(error => console.error('Error fetching classes:', error));
+    // }
 
     // Populate class dropdown
-    function populateClassDropdown(classSelectElement, classes) {
-        classSelectElement.innerHTML = '<option value="">--Select Class--</option>';
-        classes.forEach(cls => {
-            const option = document.createElement('option');
-            option.value = cls.id;
-            option.textContent = cls.name;
-            classSelectElement.appendChild(option);
-        });
-    }
+    // function populateClassDropdown(classSelectElement, classes) {
+    //     classSelectElement.innerHTML = '<option value="">--Select Class--</option>';
+    //     classes.forEach(cls => {
+    //         const option = document.createElement('option');
+    //         option.value = cls.id;
+    //         option.textContent = cls.name;
+    //         classSelectElement.appendChild(option);
+    //     });
+    // }
 
     // Fetch students based on selected class
-    function fetchStudents(classId) {
-        fetch(`get_students.php?class_id=${classId}`)
-            .then(response => response.json())
-            .then(data => updateStudentList(data, classId))
-            .catch(error => console.error('Error fetching students:', error));
-    }
+    // function fetchStudents(classId) {
+    //     fetch(`get_students.php?class_id=${classId}`)
+    //         .then(response => response.json())
+    //         .then(data => updateStudentList(data, classId))
+    //         .catch(error => console.error('Error fetching students:', error));
+    // }
 
     // Update students list
-    function updateStudentList(students, classId) {
-        studentsList.innerHTML = '';
-        if (students.length > 0) {
-            const selectedSchoolId = parseInt(schoolSelect.value);
-            const selectedSchool = schools.find(school => school.id === selectedSchoolId);
-            const scoreFields = selectedSchool ? selectedSchool.score_fields.split(',') : [];
+    // function updateStudentList(students, classId) {
+    //     studentsList.innerHTML = '';
+    //     if (students.length > 0) {
+    //         const selectedSchoolId = parseInt(schoolSelect.value);
+    //         const selectedSchool = schools.find(school => school.id === selectedSchoolId);
+    //         const scoreFields = selectedSchool ? selectedSchool.score_fields.split(',') : [];
 
-            const table = document.createElement('table');
+    //         const table = document.createElement('table');
 
-            // Create table header
-            const thead = document.createElement('thead');
-            const headerRow = document.createElement('tr');
+    //         // Create table header
+    //         const thead = document.createElement('thead');
+    //         const headerRow = document.createElement('tr');
 
-            const studentHeader = document.createElement('th');
-            studentHeader.textContent = 'Student';
-            headerRow.appendChild(studentHeader);
+    //         const studentHeader = document.createElement('th');
+    //         studentHeader.textContent = 'Student';
+    //         headerRow.appendChild(studentHeader);
 
-            scoreFields.forEach(field => {
-                const th = document.createElement('th');
-                th.textContent = field;
-                headerRow.appendChild(th);
-            });
+    //         scoreFields.forEach(field => {
+    //             const th = document.createElement('th');
+    //             th.textContent = field;
+    //             headerRow.appendChild(th);
+    //         });
 
-            thead.appendChild(headerRow);
-            table.appendChild(thead);
+    //         thead.appendChild(headerRow);
+    //         table.appendChild(thead);
 
-            // Create table body
-            const tbody = document.createElement('tbody');
-            students.forEach(student => {
-                const row = document.createElement('tr');
+    //         // Create table body
+    //         const tbody = document.createElement('tbody');
+    //         students.forEach(student => {
+    //             const row = document.createElement('tr');
 
-                const studentName = document.createElement('td');
-                studentName.textContent = student.name;
-                row.appendChild(studentName);
+    //             const studentName = document.createElement('td');
+    //             studentName.textContent = student.name;
+    //             row.appendChild(studentName);
 
-                scoreFields.forEach(field => {
-                    const td = document.createElement('td');
-                    const inputField = document.createElement('input');
-                    inputField.type = 'number';
-                    inputField.classList.add('input-field');
-                    inputField.placeholder = field;
-                    inputField.min = 2;
-                    inputField.max = 9;
-                    inputField.addEventListener('input', validateInput);
-                    td.appendChild(inputField);
-                    row.appendChild(td);
-                });
+    //             scoreFields.forEach(field => {
+    //                 const td = document.createElement('td');
+    //                 const inputField = document.createElement('input');
+    //                 inputField.type = 'number';
+    //                 inputField.classList.add('input-field');
+    //                 inputField.placeholder = field;
+    //                 inputField.min = 2;
+    //                 inputField.max = 9;
+    //                 inputField.addEventListener('input', validateInput);
+    //                 td.appendChild(inputField);
+    //                 row.appendChild(td);
+    //             });
 
-                tbody.appendChild(row);
-            });
+    //             tbody.appendChild(row);
+    //         });
 
-            table.appendChild(tbody);
-            studentsList.appendChild(table);
-        }
-    }
+    //         table.appendChild(tbody);
+    //         studentsList.appendChild(table);
+    //     }
+    // }
 
     // Validate input fields
     function validateInput(event) {
@@ -143,61 +146,61 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Save scores to local storage
-    saveScoresButton.addEventListener('click', () => {
-        const rows = document.querySelectorAll('tbody tr');
-        const scoresData = [];
-        let isValid = true;
-        let invalidFields = [];
+    // saveScoresButton.addEventListener('click', () => {
+    //     const rows = document.querySelectorAll('tbody tr');
+    //     const scoresData = [];
+    //     let isValid = true;
+    //     let invalidFields = [];
 
-        rows.forEach(row => {
-            const studentName = row.cells[0].textContent;
-            const scoreFields = row.querySelectorAll('.input-field');
-            const scores = {};
+    //     rows.forEach(row => {
+    //         const studentName = row.cells[0].textContent;
+    //         const scoreFields = row.querySelectorAll('.input-field');
+    //         const scores = {};
 
-            scoreFields.forEach(field => {
-                const value = parseInt(field.value);
-                if (value < 2 || value > 9 || isNaN(value)) {
-                    isValid = false;
-                    invalidFields.push(field);
-                }
-                scores[field.placeholder] = field.value;
-            });
+    //         scoreFields.forEach(field => {
+    //             const value = parseInt(field.value);
+    //             if (value < 2 || value > 9 || isNaN(value)) {
+    //                 isValid = false;
+    //                 invalidFields.push(field);
+    //             }
+    //             scores[field.placeholder] = field.value;
+    //         });
 
-            scoresData.push({ studentName, scores });
-        });
+    //         scoresData.push({ studentName, scores });
+    //     });
 
-        if (isValid) {
-            localStorage.setItem('studentScores', JSON.stringify(scoresData));
-            showToast('Scores saved successfully!', 'success');
-        } else {
-            showToast('Please ensure all score fields have values between 2 and 9.', 'error');
-            invalidFields.forEach(field => {
-                field.classList.add('invalid');
-            });
-        }
-    });
+    //     if (isValid) {
+    //         localStorage.setItem('studentScores', JSON.stringify(scoresData));
+    //         showToast('Scores saved successfully!', 'success');
+    //     } else {
+    //         showToast('Please ensure all score fields have values between 2 and 9.', 'error');
+    //         invalidFields.forEach(field => {
+    //             field.classList.add('invalid');
+    //         });
+    //     }
+    // });
 
-    // Load reports based on selected academic year, school, class, and term
-    loadReportsButton.addEventListener('click', () => {
-        const selectedAcademicYear = reportAcademicYearSelect.value;
-        const selectedSchoolId = parseInt(reportSchoolSelect.value);
-        const selectedClassId = parseInt(reportClassSelect.value);
-        const selectedTerm = reportTermSelect.value;
+    // ---Load reports based on selected academic year, school, class, and term
+    // loadReportsButton.addEventListener('click', () => {
+    //     const selectedAcademicYear = reportAcademicYearSelect.value;
+    //     const selectedSchoolId = parseInt(reportSchoolSelect.value);
+    //     const selectedClassId = parseInt(reportClassSelect.value);
+    //     const selectedTerm = reportTermSelect.value;
 
-        if (selectedAcademicYear && selectedSchoolId && selectedClassId && selectedTerm) {
-            fetchStudents(selectedClassId);
-        }
-    });
+    //     if (selectedAcademicYear && selectedSchoolId && selectedClassId && selectedTerm) {
+    //         fetchStudents(selectedClassId);
+    //     }
+    // });
 
-    // Select all checkboxes
-    selectAllCheckbox.addEventListener('change', () => {
-        const checkboxes = document.querySelectorAll('.student-checkbox');
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = selectAllCheckbox.checked;
-        });
-    });
+    // // Select all checkboxes
+    // selectAllCheckbox.addEventListener('change', () => {
+    //     const checkboxes = document.querySelectorAll('.student-checkbox');
+    //     checkboxes.forEach(checkbox => {
+    //         checkbox.checked = selectAllCheckbox.checked;
+    //     });
+    // });
 
-    // Download selected reports
+    //---- Download selected reports
     downloadSelectedReportsButton.addEventListener('click', () => {
         const selectedCheckboxes = document.querySelectorAll('.student-checkbox:checked');
         const selectedStudents = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);

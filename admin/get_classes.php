@@ -3,7 +3,7 @@ $schoolId = $_GET['school_id'];
 
 // Database connection
 $host = 'localhost';
-$db = 'school_management';
+$db = 'ki_db';
 $user = 'root';
 $pass = '';
 $dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
@@ -15,7 +15,7 @@ try {
     exit;
 }
 
-$query = $pdo->prepare("SELECT id, name FROM classes WHERE school_id = ?");
+$query = $pdo->prepare("SELECT class_id, class_name FROM classes WHERE school_id = ?");
 $query->execute([$schoolId]);
 $classes = $query->fetchAll(PDO::FETCH_ASSOC);
 

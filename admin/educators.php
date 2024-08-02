@@ -1,6 +1,6 @@
 <?php
 session_start();
-//include('includes/dbconnection.php');
+include('includes/dbconnection.php');
 
 // Validation and Sanitization Functions
 function validate_name($name) {
@@ -161,58 +161,6 @@ if (isset($_POST['submit'])) {
 }
 
 
-
-// // Fetch data from the database
-// // Pagination
-// $recordsPerPage = 10;
-// $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
-// $offset = ($page - 1) * $recordsPerPage;
-
-// // Fetch all schools
-// $schoolQuery = $dbh->query("SELECT DISTINCT school FROM educators ORDER BY school");
-// $schools = $schoolQuery->fetchAll(PDO::FETCH_COLUMN);
-
-// // Handle sorting
-// $sortSchool = isset($_GET['sort_school']) ? $_GET['sort_school'] : '';
-// $sortOrder = isset($_GET['sort_order']) && $_GET['sort_order'] === 'desc' ? 'DESC' : 'ASC';
-
-// // Construct the main query
-// $sql = "SELECT * FROM educators";
-// $countSql = "SELECT COUNT(*) FROM educators";
-// $params = array();
-
-// if ($sortSchool) {
-//     $sql .= " WHERE school = :sort_school";
-//     $countSql .= " WHERE school = :sort_school";
-//     $params[':sort_school'] = $sortSchool;
-// }
-
-// $sql .= " ORDER BY id DESC";  // Keep the newest first as default
-// if ($sortSchool) {
-//     $sql .= ", school $sortOrder";
-// }
-
-// // Fetch total number of educators (with filter applied if any)
-// $countQuery = $dbh->prepare($countSql);
-// if ($sortSchool) {
-//     $countQuery->bindParam(':sort_school', $sortSchool, PDO::PARAM_STR);
-// }
-// $countQuery->execute();
-// $total = $countQuery->fetchColumn();
-// $totalPages = ceil($total / $recordsPerPage);
-
-// // Add pagination to the main query
-// $sql .= " LIMIT :offset, :limit";
-
-// // Prepare and execute the main query
-// $query = $dbh->prepare($sql);
-// foreach ($params as $key => $value) {
-//     $query->bindValue($key, $value, PDO::PARAM_STR);
-// }
-// $query->bindParam(':offset', $offset, PDO::PARAM_INT);
-// $query->bindParam(':limit', $recordsPerPage, PDO::PARAM_INT);
-// $query->execute();
-// $educators = $query->fetchAll(PDO::FETCH_OBJ);
 // Fetch data from the database
 // Pagination
 $recordsPerPage = 10;
@@ -307,15 +255,15 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
                 <form id="educatorForm" action="educators.php" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" id="name" name="name" placeholder="Enter your name" class="form-control" required>
+                        <input type="text" id="name" name="name" placeholder="Enter your name" class="form-control" >
                     </div>
                     <div class="form-group">
                        <label for="password">Password</label>
-                       <input type="password" id="password" name="password" class="form-control" required>
+                       <input type="password" id="password" name="password" class="form-control" >
                     </div>
                     <div class="form-group">
                         <label for="gender">Gender</label>
-                        <select id="gender" name="gender" class="form-control" required>
+                        <select id="gender" name="gender" class="form-control" >
                             <option value="">Select Gender</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
@@ -323,27 +271,27 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
                     </div>
                     <div class="form-group">
                         <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" placeholder="Enter phone number" class="form-control" required>
+                        <input type="tel" id="phone" name="phone" placeholder="Enter phone number" class="form-control" >
                     </div>
                     <div class="form-group">
                         <label for="emergency">Emergency Contact</label>
-                        <input type="text" id="emergency" name="emergency" placeholder="Enter emergency contact" class="form-control" required>
+                        <input type="text" id="emergency" name="emergency" placeholder="Enter emergency contact" class="form-control" >
                     </div>
                     <div class="form-group">
                         <label for="email">Email Address</label>
-                        <input type="email" id="email" name="email" placeholder="Enter email address" class="form-control" required>
+                        <input type="email" id="email" name="email" placeholder="Enter email address" class="form-control" >
                     </div>
                     <div class="form-group">
                         <label for="dob">Date of Birth</label>
-                        <input type="date" id="dob" name="dob" class="form-control" required>
+                        <input type="date" id="dob" name="dob" class="form-control" >
                     </div>
                     <div class="form-group">
                         <label for="location">Location</label>
-                        <input type="text" id="location" name="location" placeholder="Enter residential address" class="form-control" required>
+                        <input type="text" id="location" name="location" placeholder="Enter residential address" class="form-control" >
                     </div>
                     <div class="form-group">
                         <label for="school">School</label>
-                        <select id="school" name="school" class="form-control" required>
+                        <select id="school" name="school" class="form-control" >
                             <option value="">Select School</option>
                             <option value="school1">School 1</option>
                             <option value="school2">School 2</option>

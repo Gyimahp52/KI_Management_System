@@ -1,8 +1,9 @@
 <?php
 session_start();
 require 'includes/dbconnection.php'; 
-require 'includes/login_function.php'; 
-/*function login($username, $password) {
+
+
+function login($username, $password) {
     $pdo = dbConnect();
     $stmt = $pdo->prepare('SELECT id, password, role FROM users WHERE username = ?');
     $stmt->execute([$username]);
@@ -15,7 +16,7 @@ require 'includes/login_function.php';
     } else {
         return false;
     }
-}*/
+}
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
