@@ -1,7 +1,7 @@
 <?php
 // view_report.php
 
-require_once 'db_connection.php';
+require_once 'db_connction.php';
 
 // Check if student_id and term_id are provided
 if (!isset($_GET['student_id']) || !isset($_GET['term_id'])) {

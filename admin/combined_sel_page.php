@@ -1,7 +1,7 @@
 <?php
 // combined_scores.php
 
-require_once 'db_connection.php';
+require_once 'db_connction.php';
 require_once 'StudentScoreService.php';
 
 session_start(); // Start the session
@@ -27,6 +27,27 @@ if (isset($_GET['class_id'])) {
     $students = $studentScoreService->getStudentsWithThemesAndScores($_GET['class_id']);
 }
 
+// if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['view']) && $_POST['view'] === 'enter') {
+//     $scores = $_POST['scores'] ?? [];
+//     $current_term_id = $studentScoreService->getCurrentTermId();
+
+//     if (!$current_term_id) {
+//         $_SESSION['message'] = "Error: No active term found. Please check the term dates.";
+//     } else {
+//         try {
+//             $studentScoreService->saveScores($scores, $current_term_id);
+//             $_SESSION['message'] = "Scores saved successfully.";
+//         } catch (Exception $e) {
+//             $_SESSION['message'] = "Error: An error occurred while saving the scores: " . $e->getMessage();
+//         }
+//     }
+
+//     // Redirect to the same page with GET request
+//     $redirect_url = $_SERVER['PHP_SELF'] . '?school_id=' . $_GET['school_id'] . '&class_id=' . $_GET['class_id'] . '&view=enter';
+//     header('Location: ' . $redirect_url);
+//     exit();
+// }
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['view']) && $_POST['view'] === 'enter') {
     $scores = $_POST['scores'] ?? [];
     $current_term_id = $studentScoreService->getCurrentTermId();
@@ -42,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['view']) && $_POST['vie
         }
     }
 
-    // Redirect to the same page with GET request
+    // Redirect to prevent form resubmission
     $redirect_url = $_SERVER['PHP_SELF'] . '?school_id=' . $_GET['school_id'] . '&class_id=' . $_GET['class_id'] . '&view=enter';
     header('Location: ' . $redirect_url);
     exit();

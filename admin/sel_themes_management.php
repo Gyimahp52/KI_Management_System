@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'db_connection.php';
+require_once 'db_connction.php';
 require_once 'manage_sel_functions.php';
 
 $schools = getSchools();
@@ -49,13 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      exit();
 }
 
-
-// if (isset($_SESSION['toast_message'])) {
-//   echo "toastr." . $_SESSION['toast_type'] . "('" . $_SESSION['toast_message'] . "');";
-//   unset($_SESSION['toast_message']);
-//   unset($_SESSION['toast_type']);
-// }
-
 ?>
 
 <!DOCTYPE html>
@@ -64,13 +57,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SEL Themes Management</title>
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="assets/css/adminDashboard.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="assets/css/adminDashboard.css">
     <style>
         .btn-flex{
             display: flex;
@@ -125,7 +117,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-<!-- <script src="script.js"></script> -->
+<script src="assets/js/adminDashboard.js"></script>
+<script src="assets/js/scripts.j"></script>
 <script>
 toastr.options = {
   "closeButton": true,
@@ -172,9 +165,7 @@ if (isset($_SESSION['toast_message']) && isset($_SESSION['toast_type'])) {
 
 ?>
 </script>
-<script src="assets/js/adminDashboard.js"></script>
-<script src="assets/js/scripts.j"></script>
-<script src="/admin/assets/js/adminDashboard.js"></script>
+
 
 </body>
 </html>

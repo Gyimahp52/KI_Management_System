@@ -1,5 +1,7 @@
 <?php
+session_start();
 require_once 'function.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -10,6 +12,7 @@ require_once 'function.php';
     <link rel="stylesheet" href="assets/css/student.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <title>Student page</title>
     <style>
        .modal {
@@ -51,7 +54,8 @@ input, select, textarea {
     width: 100%;
     margin-bottom: 10px;
 }
-        .close {
+
+    .close {
             color: #aaa;
             float: right;
             font-size: 28px;
@@ -66,6 +70,19 @@ input, select, textarea {
         select.option{
             color: black;
         }
+
+
+
+        .table td, .table th {
+    /* padding: 4px; */
+    /* vertical-align: top; */
+    border-top: 1px solid #dee2e6;
+}
+
+.table td{
+    /* padding: 2px;  */
+    padding-top: 10px;
+}
     </style>
 </head>
 <body>
@@ -100,8 +117,9 @@ input, select, textarea {
                 </select>
                 <button type="submit" class="btn btn-primary">Filter</button>
             </form>
+            <input type="text" id="studentSearch" placeholder="Search students...">
+            <button onclick="searchStudents()">Search</button>
         </div>
-
         <div id="tableContainer"></div>
             <nav>
                 <ul class="pagination">
@@ -109,20 +127,7 @@ input, select, textarea {
                 </ul>
             </nav>
         </div>
-        <!-- Student Table -->
-        <!-- <table id="studentTable">
-            <thead>
-                <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Date of Birth</th>
-                    <th>Gender</th>
-                    <th>School</th>
-                    <th>Class</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table> -->
+
     </div>
     
 </div>
@@ -233,9 +238,52 @@ input, select, textarea {
     </div>
 </div>
 
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-<script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+    <?php
+    if (isset($_SESSION['flash'])) {
+        $flash = $_SESSION['flash'];
+        echo "toastr.{$flash['type']}('{$flash['message']}');";
+        unset($_SESSION['flash']);
+    }
+    ?>
+
+    // function showTable(type, page = 1, schoolId = null, classId = null) {
+    //     $.get('ajax_handlers.php', { 
+    //         action: 'getTable', 
+    //         type: type, 
+    //         page: page,
+    //         schoolId: schoolId,
+    //         classId: classId
+    //     }, function(response) {
+    //         $('#tableContainer').html(response);
+    //     });
+    // }
+
+    // function filterStudents(event) {
+    //     event.preventDefault();
+    //     const schoolId = event.target.filterSchoolId.value;
+    //     const classId = event.target.filterClassId.value;
+    //     showTable('students', 1, schoolId, classId);
+    // }
+//     function filterStudents(event) {
+//     event.preventDefault();
+//     const schoolId = event.target.filterSchoolId.value;
+//     const classId = event.target.filterClassId.value;
+//     const searchTerm = $('#studentSearch').val(); // Assuming you've added a search input
+//     showTable('students', 1, schoolId, classId, searchTerm);
+// }
+
+function filterStudents(event) {
+    event.preventDefault();
+    const schoolId = event.target.filterSchoolId.value;
+    const classId = event.target.filterClassId.value;
+    const searchTerm = $('#studentSearch').val();
+    showTable('students', 1, schoolId, classId, searchTerm);
+}
     // Get the modal
     var modal = document.getElementById("studentModal");
 
@@ -303,7 +351,6 @@ input, select, textarea {
         }
     }
 
-    // Add other necessary functions (showTable, editStudent, deleteStudent, etc.) here
     function deleteStudent(studentId) {
     if (confirm("Are you sure you want to delete this student?")) {
         $.post('ajax_handlers.php', { action: 'deleteStudent', studentId: studentId }, function(response) {
@@ -314,53 +361,84 @@ input, select, textarea {
 }
 
 
-// function showTable(type, page = 1) {
-//     $.get('ajax_handlers.php', { action: 'getTable', type: type, page: page }, function(response) {
-//         $('#tableContainer').html(response);
+// function editStudent(studentId) {
+//     $.get('ajax_handlers.php', { action: 'getStudent', studentId: studentId }, function(response) {
+//         var student = JSON.parse(response);
+//         if (student.error) {
+//             alert(student.error);
+//             return;
+//         }
+        
+//         // Populate the modal with student data
+//         $('#editStudentModal').modal('show');
+//         $('#editStudentForm').html(`
+//             <input type="hidden" name="studentId" value="${student.student_id}">
+//             <input type="text" name="name" value="${student.name}" required class="form-control mb-2">
+//             <input type="date" name="dob" value="${student.dob}" required class="form-control mb-2">
+//             <select name="gender" required class="form-control mb-2">
+//                 <option value="Male" ${student.gender === 'Male' ? 'selected' : ''}>Male</option>
+//                 <option value="Female" ${student.gender === 'Female' ? 'selected' : ''}>Female</option>
+//                 <option value="Other" ${student.gender === 'Other' ? 'selected' : ''}>Other</option>
+//             </select>
+//             <select name="hand" required class="form-control mb-2">
+//                 <option value="Right" ${student.hand === 'Right' ? 'selected' : ''}>Right</option>
+//                 <option value="Left" ${student.hand === 'Left' ? 'selected' : ''}>Left</option>
+//                 <option value="Ambidextrous" ${student.hand === 'Ambidextrous' ? 'selected' : ''}>Ambidextrous</option>
+//             </select>
+//             <select name="foot" required class="form-control mb-2">
+//                 <option value="Right" ${student.foot === 'Right' ? 'selected' : ''}>Right</option>
+//                 <option value="Left" ${student.foot === 'Left' ? 'selected' : ''}>Left</option>
+//             </select>
+//             <input type="text" name="eye_sight" value="${student.eye_sight}" required class="form-control mb-2">
+//             <textarea name="medical_condition" class="form-control mb-2">${student.medical_condition}</textarea>
+//             <input type="number" name="height" value="${student.height}" required class="form-control mb-2">
+//             <input type="number" name="weight" value="${student.weight}" required class="form-control mb-2">
+//             <input type="text" name="parent_name" value="${student.parent_name}" required class="form-control mb-2">
+//             <input type="tel" name="parent_phone" value="${student.parent_phone}" required class="form-control mb-2">
+//             <input type="tel" name="parent_whatsapp" value="${student.parent_whatsapp}" class="form-control mb-2">
+//             <input type="email" name="parent_email" value="${student.parent_email}" class="form-control mb-2">
+//             <button type="submit" class="btn btn-primary">Update Student</button>
+//         `);
 //     });
 // }
-
 function editStudent(studentId) {
     $.get('ajax_handlers.php', { action: 'getStudent', studentId: studentId }, function(response) {
-        var student = JSON.parse(response);
-        if (student.error) {
-            alert(student.error);
+        if (response.error) {
+            alert(response.error);
             return;
         }
         
-        // Populate the modal with student data
         $('#editStudentModal').modal('show');
         $('#editStudentForm').html(`
-            <input type="hidden" name="studentId" value="${student.student_id}">
-            <input type="text" name="name" value="${student.name}" required class="form-control mb-2">
-            <input type="date" name="dob" value="${student.dob}" required class="form-control mb-2">
+            <input type="hidden" name="studentId" value="${response.student_id}">
+            <input type="text" name="name" value="${response.name}" required class="form-control mb-2">
+            <input type="date" name="dob" value="${response.dob}" required class="form-control mb-2">
             <select name="gender" required class="form-control mb-2">
-                <option value="Male" ${student.gender === 'Male' ? 'selected' : ''}>Male</option>
-                <option value="Female" ${student.gender === 'Female' ? 'selected' : ''}>Female</option>
-                <option value="Other" ${student.gender === 'Other' ? 'selected' : ''}>Other</option>
+                <option value="Male" ${response.gender === 'Male' ? 'selected' : ''}>Male</option>
+                <option value="Female" ${response.gender === 'Female' ? 'selected' : ''}>Female</option>
+                <option value="Other" ${response.gender === 'Other' ? 'selected' : ''}>Other</option>
             </select>
             <select name="hand" required class="form-control mb-2">
-                <option value="Right" ${student.hand === 'Right' ? 'selected' : ''}>Right</option>
-                <option value="Left" ${student.hand === 'Left' ? 'selected' : ''}>Left</option>
-                <option value="Ambidextrous" ${student.hand === 'Ambidextrous' ? 'selected' : ''}>Ambidextrous</option>
+                <option value="Right" ${response.hand === 'Right' ? 'selected' : ''}>Right</option>
+                <option value="Left" ${response.hand === 'Left' ? 'selected' : ''}>Left</option>
+                <option value="Ambidextrous" ${response.hand === 'Ambidextrous' ? 'selected' : ''}>Ambidextrous</option>
             </select>
             <select name="foot" required class="form-control mb-2">
-                <option value="Right" ${student.foot === 'Right' ? 'selected' : ''}>Right</option>
-                <option value="Left" ${student.foot === 'Left' ? 'selected' : ''}>Left</option>
+                <option value="Right" ${response.foot === 'Right' ? 'selected' : ''}>Right</option>
+                <option value="Left" ${response.foot === 'Left' ? 'selected' : ''}>Left</option>
             </select>
-            <input type="text" name="eye_sight" value="${student.eye_sight}" required class="form-control mb-2">
-            <textarea name="medical_condition" class="form-control mb-2">${student.medical_condition}</textarea>
-            <input type="number" name="height" value="${student.height}" required class="form-control mb-2">
-            <input type="number" name="weight" value="${student.weight}" required class="form-control mb-2">
-            <input type="text" name="parent_name" value="${student.parent_name}" required class="form-control mb-2">
-            <input type="tel" name="parent_phone" value="${student.parent_phone}" required class="form-control mb-2">
-            <input type="tel" name="parent_whatsapp" value="${student.parent_whatsapp}" class="form-control mb-2">
-            <input type="email" name="parent_email" value="${student.parent_email}" class="form-control mb-2">
+            <input type="text" name="eye_sight" value="${response.eye_sight}" required class="form-control mb-2">
+            <textarea name="medical_condition" class="form-control mb-2">${response.medical_condition}</textarea>
+            <input type="number" name="height" value="${response.height}" required class="form-control mb-2">
+            <input type="number" name="weight" value="${response.weight}" required class="form-control mb-2">
+            <input type="text" name="parent_name" value="${response.parent_name}" required class="form-control mb-2">
+            <input type="tel" name="parent_phone" value="${response.parent_phone}" required class="form-control mb-2">
+            <input type="tel" name="parent_whatsapp" value="${response.parent_whatsapp}" class="form-control mb-2">
+            <input type="email" name="parent_email" value="${response.parent_email}" class="form-control mb-2">
             <button type="submit" class="btn btn-primary">Update Student</button>
         `);
     });
 }
-
 function updateStudent(event) {
     event.preventDefault();
     var formData = new FormData(event.target);
@@ -390,16 +468,90 @@ function updateClassSelect(schoolId) {
             $.get('ajax_handlers.php', { action: 'getClasses', schoolId: schoolId }, function(response) {
                 $('select[name="filterClassId"]').html(response);
             });
-        }
+            }
 
-        function filterStudents(event) {
-            event.preventDefault();
-            const schoolId = event.target.filterSchoolId.value;
-            const classId = event.target.filterClassId.value;
-            $.get('ajax_handlers.php', { action: 'getTable', type: 'students', schoolId: schoolId, classId: classId }, function(response) {
-                $('#tableContainer').html(response);
-            });
-        }
+
+//         function searchStudents() {
+//     var searchTerm = $('#studentSearch').val();
+//     showTable('students', 1, currentSchoolId, currentClassId, searchTerm);
+// }
+function searchStudents() {
+    var searchTerm = $('#studentSearch').val();
+    var schoolId = $('select[name="filterSchoolId"]').val();
+    var classId = $('select[name="filterClassId"]').val();
+    showTable('students', 1, schoolId, classId, searchTerm);
+}
+
+// function showTable(type, page = 1, schoolId = null, classId = null, search = null) {
+//     $.get('ajax_handlers.php', { 
+//         action: 'getTable', 
+//         type: type, 
+//         page: page,
+//         schoolId: schoolId,
+//         classId: classId,
+//         search: search
+//     }, function(response) {
+//         $('#tableContainer').html(response);
+//     });
+// }
+
+// function showTable(params) {
+//     $.get('ajax_handlers.php', { 
+//         action: 'getTable', 
+//         type: params.type, 
+//         page: params.page,
+//         schoolId: params.schoolId,
+//         classId: params.classId,
+//         search: params.search
+//     }, function(response) {
+//         $('#tableContainer').html(response);
+//     });
+// }
+
+// function showTable(type, page = 1, schoolId = null, classId = null, search = null) {
+//     // Log the parameters for debugging
+//     console.log('showTable parameters:', { type, page, schoolId, classId, search });
+
+//     // Ensure all parameters are defined
+//     const params = {
+//         action: 'getTable',
+//         type: type || 'students', // Default to 'students' if type is not provided
+//         page: page || 1,
+//         schoolId: schoolId || '',
+//         classId: classId || '',
+//         search: search || ''
+//     };
+
+//     // Log the final params object
+//     console.log('AJAX request params:', params);
+
+//     $.get('ajax_handlers.php', params, function(response) {
+//         $('#tableContainer').html(response);
+//     }).fail(function(jqXHR, textStatus, errorThrown) {
+//         console.error('AJAX request failed:', textStatus, errorThrown);
+//     });
+// }
+function showTable(type, page = 1, schoolId = null, classId = null, search = null) {
+    console.log('showTable parameters:', { type, page, schoolId, classId, search });
+
+    const params = {
+        action: 'getTable',
+        type: type,
+        page: page,
+        schoolId: schoolId,
+        classId: classId,
+        search: search
+    };
+
+    // Remove null or undefined values
+    Object.keys(params).forEach(key => params[key] == null && delete params[key]);
+
+    $.get('ajax_handlers.php', params, function(response) {
+        $('#tableContainer').html(response);
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        console.error('AJAX request failed:', textStatus, errorThrown);
+    });
+}
 </script>
 
 </body>
