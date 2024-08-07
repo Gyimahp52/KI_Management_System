@@ -4,25 +4,25 @@
 require_once 'db_connection.php';
 
 function createClass($school_id, $name) {
-    global $pdo;
-    $class_id = generateUniqueId('classes', 'class_id');
-    $stmt = $pdo->prepare("INSERT INTO classes (class_id, school_id, class_name) VALUES (?, ?, ?)");
-    return $stmt->execute([$class_id, $school_id, $name]);
+    $pdo = Database::getConnection();
+    // $class_id = generateUniqueId('classes', 'class_id');
+    $stmt = $pdo->prepare("INSERT INTO classes (school_id, class_name) VALUES (?, ?)");
+    return $stmt->execute([$school_id, $name]);
 }
 
 function deleteStudent($student_id) {
-    global $pdo;
+    $pdo = Database::getConnection();
     $stmt = $pdo->prepare("DELETE FROM students WHERE student_id = ?");
     return $stmt->execute([$student_id]);
 }
 
 function updateSchool($school_id, $name) {
-    global $pdo;
+    $pdo = Database::getConnection();
     $stmt = $pdo->prepare("UPDATE schools SET school_name = ? WHERE id = ?");
     return $stmt->execute([$name, $school_id]);
 }
 function deleteSchool($school_id) {
-    global $pdo;
+    $pdo = Database::getConnection();
     
     try {
         $pdo->beginTransaction();
@@ -57,28 +57,28 @@ function deleteSchool($school_id) {
 }
 
 function updateClass($class_id, $name) {
-    global $pdo;
+    $pdo = Database::getConnection();
     $stmt = $pdo->prepare("UPDATE classes SET name = ? WHERE class_id = ?");
     return $stmt->execute([$name, $class_id]);
 }
 
 function deleteClass($class_id) {
-    global $pdo;
+    $pdo = Database::getConnection();
     $stmt = $pdo->prepare("DELETE FROM classes WHERE class_id = ?");
     return $stmt->execute([$class_id]);
 }
 
 
-function generateUniqueId($table, $column) {
-    global $pdo;
-    $id = uniqid();
-    $stmt = $pdo->prepare("SELECT COUNT(*) FROM $table WHERE $column = ?");
-    $stmt->execute([$id]);
-    if ($stmt->fetchColumn() > 0) {
-        return generateUniqueId($table, $column);
-    }
-    return $id;
-}
+// function generateUniqueId($table, $column) {
+//     $pdo = Database::getConnection();
+//     $id = uniqid();
+//     $stmt = $pdo->prepare("SELECT COUNT(*) FROM $table WHERE $column = ?");
+//     $stmt->execute([$id]);
+//     if ($stmt->fetchColumn() > 0) {
+//         return generateUniqueId($table, $column);
+//     }
+//     return $id;
+// }
 
 function generateSchoolId($schoolName) {
     $prefix = strtoupper(substr($schoolName, 0, 3));
@@ -147,12 +147,6 @@ function createStudent($school_id, $class_id, $name, $dob, $gender, $hand, $foot
 }
 
 
-
-// function updateStudent($student_id, $name, $dob, $gender, $hand, $foot, $eye_sight, $medical_condition, $height, $weight, $parent_name, $parent_phone, $parent_whatsapp, $parent_email) {
-//     global $pdo;
-//     $stmt = $pdo->prepare("UPDATE students SET name = ?, dob = ?, gender = ?, hand = ?, foot = ?, eye_sight = ?, medical_condition = ?, height = ?, weight = ?, parent_name = ?, parent_phone = ?, parent_whatsapp = ?, parent_email = ? WHERE student_id = ?");
-//     return $stmt->execute([$name, $dob, $gender, $hand, $foot, $eye_sight, $medical_condition, $height, $weight, $parent_name, $parent_phone, $parent_whatsapp, $parent_email, $student_id]);
-// }
 function updateStudent($studentId, $name, $dob, $gender, $hand, $foot, $eye_sight, $medical_condition, $height, $weight, $parent_name, $parent_phone, $parent_whatsapp, $parent_email) {
     global $pdo;
     $stmt = $pdo->prepare("UPDATE students SET name = ?, dob = ?, gender = ?, hand = ?, foot = ?, eye_sight = ?, medical_condition = ?, height = ?, weight = ?, parent_name = ?, parent_phone = ?, parent_whatsapp = ?, parent_email = ? WHERE student_id = ?");
@@ -174,18 +168,18 @@ function getStudent($student_id) {
 
 
 function getClasses($school_id = null, $page = null, $perPage = null) {
-    global $pdo;
+    $pdo = Database::getConnection();
     
     if ($page !== null && $perPage !== null) {
         // Paginated query for table view
         $offset = ($page - 1) * $perPage;
         if ($school_id) {
-            $stmt = $pdo->prepare("SELECT * FROM classes WHERE school_id = ? LIMIT ? OFFSET ?");
+            $stmt = $pdo->prepare("SELECT c.*, s.school_name FROM classes c JOIN schools s ON c.school_id = s.id WHERE c.school_id = ? LIMIT ? OFFSET ?");
             $stmt->bindValue(1, $school_id, PDO::PARAM_STR);
             $stmt->bindValue(2, $perPage, PDO::PARAM_INT);
             $stmt->bindValue(3, $offset, PDO::PARAM_INT);
         } else {
-            $stmt = $pdo->prepare("SELECT * FROM classes LIMIT ? OFFSET ?");
+            $stmt = $pdo->prepare("SELECT c.*, s.school_name FROM classes c JOIN schools s ON c.school_id = s.id LIMIT ? OFFSET ?");
             $stmt->bindValue(1, $perPage, PDO::PARAM_INT);
             $stmt->bindValue(2, $offset, PDO::PARAM_INT);
         }
@@ -201,9 +195,9 @@ function getClasses($school_id = null, $page = null, $perPage = null) {
         }
         $classes = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
-        $options = '<option style="color: #000000;" style="color: #000000;" value="">Select Class</option>';
+        $options = '<option value="">Select Class</option>';
         foreach ($classes as $class) {
-            $options .= "<option style='color: #000000;' value='{$class['class_id']}'>{$class['class_name']}</option>";
+            $options .= "<option value='{$class['class_id']}'>{$class['class_name']}</option>";
         }
         return $options;
     }
@@ -225,38 +219,7 @@ function getSchools($page = 1, $perPage = 10) {
     return $stmt->fetchAll();
 }
 
-// function getStudents($schoolId = null, $classId = null, $page = 1, $perPage = 10) {
-//     $pdo = Database::getConnection();
-//     $offset = ($page - 1) * $perPage;
-//     $query = "SELECT s.*, c.class_name, sch.school_name 
-//               FROM students s
-//               JOIN classes c ON s.class_id = c.class_id
-//               JOIN schools sch ON c.school_id = sch.id";
-//     $params = [];
-    
-//     if ($schoolId) {
-//         $query .= " WHERE sch.id = :schoolId";
-//         $params[':schoolId'] = $schoolId;
-//         if ($classId) {
-//             $query .= " AND c.class_id = :classId";
-//             $params[':classId'] = $classId;
-//         }
-//     } elseif ($classId) {
-//         $query .= " WHERE c.class_id = :classId";
-//         $params[':classId'] = $classId;
-//     }
-    
-//     $query .= " LIMIT :limit OFFSET :offset";
-//     $params[':limit'] = $perPage;
-//     $params[':offset'] = $offset;
-    
-//     $stmt = $pdo->prepare($query);
-//     foreach ($params as $key => &$val) {
-//         $stmt->bindParam($key, $val);
-//     }
-//     $stmt->execute();
-//     return $stmt->fetchAll();
-// }
+
 function getStudents($schoolId = null, $classId = null, $page = 1, $perPage = 10, $search = null) {
     $pdo = Database::getConnection();
     $offset = ($page - 1) * $perPage;
@@ -268,34 +231,40 @@ function getStudents($schoolId = null, $classId = null, $page = 1, $perPage = 10
     
     $conditions = [];
     if ($schoolId) {
-        $conditions[] = "sch.id = :schoolId";
-        $params[':schoolId'] = $schoolId;
+        $conditions[] = "sch.id = ?";
+        $params[] = $schoolId;
     }
     if ($classId) {
-        $conditions[] = "c.class_id = :classId";
-        $params[':classId'] = $classId;
+        $conditions[] = "c.class_id = ?";
+        $params[] = $classId;
     }
     if ($search) {
-        $conditions[] = "(s.name LIKE :search OR s.student_id LIKE :search OR s.parent_name LIKE :search OR s.parent_phone LIKE :search)";
-        $params[':search'] = "%$search%";
+        $conditions[] = "(s.name LIKE ? OR s.student_id LIKE ? OR s.parent_name LIKE ? OR s.parent_phone LIKE ?)";
+        $searchParam = "%$search%";
+        $params[] = $searchParam;
+        $params[] = $searchParam;
+        $params[] = $searchParam;
+        $params[] = $searchParam;
     }
     
     if (!empty($conditions)) {
         $query .= " WHERE " . implode(" AND ", $conditions);
     }
     
-    $query .= " LIMIT :limit OFFSET :offset";
-    $params[':limit'] = $perPage;
-    $params[':offset'] = $offset;
+    $query .= " ORDER BY s.name ASC LIMIT ? OFFSET ?";
+    $params[] = $perPage;
+    $params[] = $offset;
     
     $stmt = $pdo->prepare($query);
-    foreach ($params as $key => &$val) {
-        $stmt->bindParam($key, $val);
+    
+    if (!empty($params)) {
+        $stmt->execute($params);
+    } else {
+        $stmt->execute();
     }
-    $stmt->execute();
+    
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-
 function getTotal($table, $schoolId = null, $classId = null) {
     $pdo = Database::getConnection();
     $query = "SELECT COUNT(*) FROM $table";

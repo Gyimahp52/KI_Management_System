@@ -79,14 +79,6 @@ $educators = $query1->fetchAll(PDO::FETCH_OBJ);
     <ul class="pagination"></ul>
 </nav>
 </div>
-<!-- <div class="mb-3">
-            <button class="btn btn-primary" onclick="showTable('schools')">Schools</button>
-            <button class="btn btn-primary" onclick="showTable('classes')">Classes</button>
-        </div>
-<div id="tableContainer"></div>
-<nav>
-    <ul class="pagination"></ul>
-</nav> -->
 
 <!-- EDIT MODAL -->
 <div class="modal fade" id="editStudentModal" tabindex="-1" role="dialog" aria-labelledby="editStudentModalLabel" aria-hidden="true">
@@ -109,7 +101,26 @@ $educators = $query1->fetchAll(PDO::FETCH_OBJ);
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script>
+    toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": true,
+    "positionClass": "toast-top-right",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+};
 function showForm(formId) {
     const schoolForm = document.getElementById('schoolForm');
     const classForm = document.getElementById('classForm');
@@ -167,6 +178,46 @@ function createClass(event) {
         }
     });
 }
+
+function deleteSchool(schoolId) {
+        if (confirm("Are you sure you want to delete this school?")) {
+            $.post('ajax_handlers.php', { action: 'deleteSchool', schoolId: schoolId }, function(response) {
+                alert(response);
+                showTable('schools');
+            });
+        }
+    }
+
+function editSchool(schoolId) {
+        const newName = prompt("Enter new school name:");
+        if (newName) {
+            $.post('ajax_handlers.php', { action: 'updateSchool', schoolId: schoolId, name: newName }, function(response) {
+                alert(response);
+                showTable('schools');
+            });
+        }
+    }
+
+
+    function editClass(classId) {
+        const newName = prompt("Enter new class name:");
+        if (newName) {
+            $.post('ajax_handlers.php', { action: 'updateClass', classId: classId, name: newName }, function(response) {
+                alert(response);
+                showTable('classes');
+            });
+        }
+    }
+
+    function deleteClass(classId) {
+        if (confirm("Are you sure you want to delete this class?")) {
+            $.post('ajax_handlers.php', { action: 'deleteClass', classId: classId }, function(response) {
+                alert(response);
+                showTable('classes');
+            });
+        }
+    }
+
 
 function showTable(type, page = 1) {
     $.get('ajax_handlers.php', { action: 'getTable', type: type, page: page }, function(response) {

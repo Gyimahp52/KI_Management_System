@@ -218,6 +218,7 @@ $query->bindParam(':offset', $offset, PDO::PARAM_INT);
 $query->bindParam(':limit', $recordsPerPage, PDO::PARAM_INT);
 $query->execute();
 $educators = $query->fetchAll(PDO::FETCH_OBJ); 
+
 ?> 
 
 <!DOCTYPE html>
@@ -292,10 +293,9 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
                     <div class="form-group">
                         <label for="school">School</label>
                         <select id="school" name="school" class="form-control" >
-                            <option value="">Select School</option>
-                            <option value="school1">School 1</option>
-                            <option value="school2">School 2</option>
-                            <option value="school3">School 3</option>
+                        <?php foreach ($schools as $school): ?>
+                            <option value="<?= $school->school_name ?>"><?= $school->school_name ?></option>
+                        <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="form-group d-flex justify-content-between">

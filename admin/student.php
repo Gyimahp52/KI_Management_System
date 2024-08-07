@@ -83,6 +83,58 @@ input, select, textarea {
     /* padding: 2px;  */
     padding-top: 10px;
 }
+tbody{
+    /* display: flex;
+    flex-direction: column; */
+}
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1rem;
+        background-color: #fff;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+    .table th,
+    .table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #e0e0e0;
+    }
+    .table th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+    }
+    .table tr:hover {
+        background-color: #f5f5f5;
+    }
+    .table .btn {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+    }
+    .pagination {
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .pagination .page-item.active .page-link {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+    #filterForm {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+    #studentSearch {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+    }
+
     </style>
 </head>
 <body>
@@ -104,22 +156,21 @@ input, select, textarea {
 
         <!-- FILTER -->
         <div id="filterForm" class="mb-4">
-            <h2>Filter Students</h2>
-            <form onsubmit="filterStudents(event)">
-                <select name="filterSchoolId" onchange="updateFilterClassSelect(this.value)" class="form-control mb-2">
-                    <option value="">All Schools</option>
-                    <?php foreach (getSchools() as $school): ?>
-                        <option value="<?= $school['id'] ?>"><?= $school['school_name'] ?></option>
-                    <?php endforeach; ?>
-                </select>
-                <select name="filterClassId" class="form-control mb-2">
-                    <option value="">All Classes</option>
-                </select>
-                <button type="submit" class="btn btn-primary">Filter</button>
-            </form>
-            <input type="text" id="studentSearch" placeholder="Search students...">
-            <button onclick="searchStudents()">Search</button>
-        </div>
+    <h2>Filter Students</h2>
+    <form onsubmit="filterStudents(event)">
+        <select name="filterSchoolId" onchange="updateFilterClassSelect(this.value)" class="form-control mb-2">
+            <option value="">All Schools</option>
+            <?php foreach (getSchools() as $school): ?>
+                <option value="<?= $school['id'] ?>"><?= $school['school_name'] ?></option>
+            <?php endforeach; ?>
+        </select>
+        <select name="filterClassId" class="form-control mb-2">
+            <option value="">All Classes</option>
+        </select>
+        <input type="text" id="studentSearch" placeholder="Search students..." class="form-control mb-2">
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </form>
+</div>
         <div id="tableContainer"></div>
             <nav>
                 <ul class="pagination">
@@ -277,10 +328,17 @@ input, select, textarea {
 //     showTable('students', 1, schoolId, classId, searchTerm);
 // }
 
+// function filterStudents(event) {
+//     event.preventDefault();
+//     const schoolId = event.target.filterSchoolId.value;
+//     const classId = event.target.filterClassId.value;
+//     const searchTerm = $('#studentSearch').val();
+//     showTable('students', 1, schoolId, classId, searchTerm);
+// }
 function filterStudents(event) {
     event.preventDefault();
-    const schoolId = event.target.filterSchoolId.value;
-    const classId = event.target.filterClassId.value;
+    const schoolId = $('select[name="filterSchoolId"]').val();
+    const classId = $('select[name="filterClassId"]').val();
     const searchTerm = $('#studentSearch').val();
     showTable('students', 1, schoolId, classId, searchTerm);
 }
@@ -475,6 +533,13 @@ function updateClassSelect(schoolId) {
 //     var searchTerm = $('#studentSearch').val();
 //     showTable('students', 1, currentSchoolId, currentClassId, searchTerm);
 // }
+// function searchStudents() {
+//     var searchTerm = $('#studentSearch').val();
+//     var schoolId = $('select[name="filterSchoolId"]').val();
+//     var classId = $('select[name="filterClassId"]').val();
+//     showTable('students', 1, schoolId, classId, searchTerm);
+// }
+
 function searchStudents() {
     var searchTerm = $('#studentSearch').val();
     var schoolId = $('select[name="filterSchoolId"]').val();
@@ -524,6 +589,27 @@ function searchStudents() {
 
 //     // Log the final params object
 //     console.log('AJAX request params:', params);
+
+//     $.get('ajax_handlers.php', params, function(response) {
+//         $('#tableContainer').html(response);
+//     }).fail(function(jqXHR, textStatus, errorThrown) {
+//         console.error('AJAX request failed:', textStatus, errorThrown);
+//     });
+// }
+// function showTable(type, page = 1, schoolId = null, classId = null, search = null) {
+//     console.log('showTable parameters:', { type, page, schoolId, classId, search });
+
+//     const params = {
+//         action: 'getTable',
+//         type: type,
+//         page: page,
+//         schoolId: schoolId,
+//         classId: classId,
+//         search: search
+//     };
+
+//     // Remove null or undefined values
+//     Object.keys(params).forEach(key => params[key] == null && delete params[key]);
 
 //     $.get('ajax_handlers.php', params, function(response) {
 //         $('#tableContainer').html(response);
