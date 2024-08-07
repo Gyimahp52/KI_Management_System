@@ -12,12 +12,10 @@ $student_id = $_GET['student_id'];
 $term_id = intval($_GET['term_id']);
 
 // Fetch student information
-$stmt = $pdo->prepare(" SELECT s.*, c.class_name, sc.school_name
-    FROM students s
+$stmt = $pdo->prepare(" SELECT s.*, c.class_name, sc.school_name FROM students s
     JOIN classes c ON s.class_id = c.class_id
     JOIN schools sc ON c.school_id = sc.id
-    WHERE s.student_id = ?
-");
+    WHERE s.student_id = ? ");
 $stmt->execute([$student_id]);
 $student = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -211,10 +209,13 @@ $age = $today->diff($dob)->y;
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 <script src="assets/js/results.js"></script>
-<!-- <script src="assets/js/report.js"></script> -->
+
 <script>
+ 
     // Pass PHP data to JavaScript
     var studentData = <?php echo json_encode($sel_themes); ?>;
     var studentName = <?php echo json_encode($student['name']); ?>;
