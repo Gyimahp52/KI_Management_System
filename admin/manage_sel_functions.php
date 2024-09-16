@@ -1,4 +1,7 @@
 <?php
+
+
+// manage_sel_themes.php
 function createSELTheme($theme_name, $competency, $character_strength) {
     global $pdo;
     $sql = "INSERT INTO sel_themes (theme_name, competency, character_strength) VALUES (:theme_name, :competency, :character_strength)";
@@ -32,34 +35,7 @@ function deleteSELTheme($theme_id) {
     return $stmt->execute([':id' => $theme_id]);
 }
 
-// function startNewTerm($academic_year_id, $term_number, $start_date, $end_date) {
-//     global $pdo;
-    
-//     try {
-//         $pdo->beginTransaction();
-        
-//         $stmt = $pdo->prepare("INSERT INTO terms (academic_year_id, term_number, start_date, end_date) VALUES (?, ?, ?, ?)");
-//         $stmt->execute([$academic_year_id, $term_number, $start_date, $end_date]);
-//         $new_term_id = $pdo->lastInsertId();
-        
-//         $pdo->commit();
-//         $_SESSION['toast_message'] = 'New term started successfully. Please assign themes to schools for the new term.';
-//         $_SESSION['toast_type'] = 'success';
-        
-//         $stmt = $pdo->prepare("SELECT t.id, t.term_number, ay.year_name 
-//                                FROM terms t 
-//                                JOIN academic_years ay ON t.academic_year_id = ay.id 
-//                                WHERE t.id = ?");
-//         $stmt->execute([$new_term_id]);
-//         return $stmt->fetch(PDO::FETCH_ASSOC);
-//     } catch (Exception $e) {
-//         $pdo->rollBack();
-//         error_log("Error starting new term: " . $e->getMessage());
-//         $_SESSION['toast_message'] = 'Error starting new term. Please check the error log for more details.';
-//         $_SESSION['toast_type'] = 'error';
-//         return false;
-//     }
-// }
+
 function startNewTerm($academic_year_id, $term_number, $start_date, $end_date) {
   global $pdo;
   
@@ -128,12 +104,7 @@ function startNewTerm($academic_year_id, $term_number, $start_date, $end_date) {
       $_SESSION['toast_type'] = 'success';
       
       // Retrieve and return new term details
-      $stmt = $pdo->prepare("SELECT t.id, t.term_number, ay.year_name 
-                             FROM terms t 
-                             JOIN academic_years ay ON t.academic_year_id = ay.id 
-                             WHERE t.id = ?");
-      $stmt->execute([$new_term_id]);
-      return $stmt->fetch(PDO::FETCH_ASSOC);
+      return getCurrentTermInfo();
       
   } catch (Exception $e) {
       $pdo->rollBack();
@@ -243,13 +214,14 @@ function getSchools() {
 
 function getAssignedThemes() {
     global $pdo;
-    $sql = "SELECT ay.year_name, sc.school_name, t.term_number, s.school_id, t.id as term_id, GROUP_CONCAT(st.theme_name SEPARATOR ', ') AS themes
+    $sql = "SELECT ay.year_name, sc.school_name, t.term_number, s.school_id, t.id as term_id, GROUP_CONCAT(st.theme_name ORDER BY s.id SEPARATOR ', ') AS themes
             FROM school_themes s
             JOIN sel_themes st ON s.theme_id = st.id
             JOIN terms t ON s.term_id = t.id
             JOIN academic_years ay ON t.academic_year_id = ay.id
             JOIN schools sc ON s.school_id = sc.id
-            GROUP BY ay.year_name, sc.school_name, t.term_number, s.school_id, t.id";
+            GROUP BY ay.year_name, sc.school_name, t.term_number, s.school_id, t.id
+            ORDER BY s.id";
     $stmt = $pdo->query($sql);
     return $stmt->fetchAll();
 }
@@ -272,6 +244,12 @@ function deleteAssignedThemes($school_id, $term_id) {
 
 function getCurrentTermInfo() {
     global $pdo;
-    $stmt = $pdo->query("SELECT t.term_number, ay.year_name FROM terms t JOIN academic_years ay ON t.academic_year_id = ay.id ORDER BY t.start_date DESC LIMIT 1");
+    $stmt = $pdo->query("SELECT t.id, t.term_number, ay.year_name 
+                         FROM terms t
+                         JOIN academic_years ay ON t.academic_year_id = ay.id
+                         ORDER BY t.start_date DESC
+                         LIMIT 1");
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
+
+

@@ -33,8 +33,6 @@ $stmt = $pdo->prepare("
 $stmt->execute([$student_id, $term_id]);
 $sel_themes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Calculate KEQ (assuming it's the average of all scores)
-$keq = array_sum(array_column($sel_themes, 'score')) / count($sel_themes);
 
 $calcAge = $student['dob'];
 $dob = new DateTime($calcAge);

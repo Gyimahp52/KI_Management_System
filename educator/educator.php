@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Educator's Dashboard</title>
-  <link rel="stylesheet" href="/css/educator.css" />
+  <link rel="stylesheet" href="assets/css/educator.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900&display=swap" />
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 </head>
@@ -23,7 +23,7 @@
             <a href="#" id="profile-btn" class="flex items-center px-4 py-2 text-sm font-medium text-[#141C24] hover:bg-[#E4E9F1] rounded-lg">Profile</a>
           </li>
           <li class="mb-4">
-            <a href="#" id="classes-btn" class="flex items-center px-4 py-2 text-sm font-medium text-[#141C24] hover:bg-[#E4E9F1] rounded-lg">Classes</a>
+            <a href="class.php" id="classes-btn" class="flex items-center px-4 py-2 text-sm font-medium text-[#141C24] hover:bg-[#E4E9F1] rounded-lg">Classes</a>
           </li>
           <li class="mb-4">
             <a href="#" id="photos-btn" class="flex items-center px-4 py-2 text-sm font-medium text-[#141C24] hover:bg-[#E4E9F1] rounded-lg">Photos</a>
@@ -165,6 +165,6 @@
     </div>
   </div>
 
-  <script src="/js/educator.js"></script>
+  <script src="assets/js/educator.js"></script>
 </body>
 </html>

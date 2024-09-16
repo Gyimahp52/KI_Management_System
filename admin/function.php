@@ -10,12 +10,32 @@ function createClass($school_id, $name) {
     return $stmt->execute([$school_id, $name]);
 }
 
+// function deleteStudent($student_id) {
+//     $pdo = Database::getConnection();
+//     $stmt = $pdo->prepare("DELETE FROM students WHERE student_id = ?");
+//     return $stmt->execute([$student_id]);
+// }
 function deleteStudent($student_id) {
     $pdo = Database::getConnection();
-    $stmt = $pdo->prepare("DELETE FROM students WHERE student_id = ?");
-    return $stmt->execute([$student_id]);
-}
+    try {
+        $pdo->beginTransaction();
 
+        // Delete from users table first (assuming you have a users table)
+        $stmt = $pdo->prepare("DELETE FROM users WHERE username = ?");
+        $stmt->execute([$student_id]);
+
+        // Then delete from students table
+        $stmt = $pdo->prepare("DELETE FROM students WHERE student_id = ?");
+        $stmt->execute([$student_id]);
+
+        $pdo->commit();
+        return true;
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        error_log("Error deleting student: " . $e->getMessage());
+        return false;
+    }
+}
 function updateSchool($school_id, $name) {
     $pdo = Database::getConnection();
     $stmt = $pdo->prepare("UPDATE schools SET school_name = ? WHERE id = ?");
@@ -69,16 +89,7 @@ function deleteClass($class_id) {
 }
 
 
-// function generateUniqueId($table, $column) {
-//     $pdo = Database::getConnection();
-//     $id = uniqid();
-//     $stmt = $pdo->prepare("SELECT COUNT(*) FROM $table WHERE $column = ?");
-//     $stmt->execute([$id]);
-//     if ($stmt->fetchColumn() > 0) {
-//         return generateUniqueId($table, $column);
-//     }
-//     return $id;
-// }
+
 
 function generateSchoolId($schoolName) {
     $prefix = strtoupper(substr($schoolName, 0, 3));
@@ -94,17 +105,17 @@ function generateStudentId($school_name) {
 }
 
 
-function createSchool($name, $region, $town, $educator, $logo) {
-    global $pdo;
+function createSchool($name, $region, $town, $logo) {
+    $pdo = Database::getConnection();
     $school_id = generateSchoolId($name);
-    $stmt = $pdo->prepare("INSERT INTO schools (id, school_name, region, town, educator, school_logo) VALUES (?, ?, ?, ?, ?, ?)");
-    return $stmt->execute([$school_id, $name, $region, $town, $educator, $logo]);
+    $stmt = $pdo->prepare("INSERT INTO schools (id, school_name, region, town, school_logo) VALUES (?, ?, ?, ?, ?)");
+    return $stmt->execute([$school_id, $name, $region, $town, $logo]);
 }
 
 
 
 function createStudent($school_id, $class_id, $name, $dob, $gender, $hand, $foot, $eye_sight, $medical_condition, $height, $weight, $parent_name, $parent_phone, $parent_whatsapp, $parent_email, $passport_picture, $password) {
-    global $pdo;
+    $pdo = Database::getConnection();
     
     // Get the school name
     $stmt = $pdo->prepare("SELECT school_name FROM schools WHERE id = ?");
@@ -142,13 +153,13 @@ function createStudent($school_id, $class_id, $name, $dob, $gender, $hand, $foot
         // Rollback transaction on error
         $pdo->rollBack();
         error_log("Error creating student: " . $e->getMessage());
-        return "Failed to create student: " . $e->getMessage();
+        return false;
     }
 }
 
 
 function updateStudent($studentId, $name, $dob, $gender, $hand, $foot, $eye_sight, $medical_condition, $height, $weight, $parent_name, $parent_phone, $parent_whatsapp, $parent_email) {
-    global $pdo;
+    $pdo = Database::getConnection();
     $stmt = $pdo->prepare("UPDATE students SET name = ?, dob = ?, gender = ?, hand = ?, foot = ?, eye_sight = ?, medical_condition = ?, height = ?, weight = ?, parent_name = ?, parent_phone = ?, parent_whatsapp = ?, parent_email = ? WHERE student_id = ?");
     return $stmt->execute([$name, $dob, $gender, $hand, $foot, $eye_sight, $medical_condition, $height, $weight, $parent_name, $parent_phone, $parent_whatsapp, $parent_email, $studentId]);
 }
@@ -156,7 +167,7 @@ function updateStudent($studentId, $name, $dob, $gender, $hand, $foot, $eye_sigh
 
 
 function getStudent($student_id) {
-    global $pdo;
+    $pdo = Database::getConnection();
     $stmt = $pdo->prepare("SELECT * FROM students WHERE student_id = ?");
     $stmt->execute([$student_id]);
     $student = $stmt->fetch(PDO::FETCH_ASSOC);

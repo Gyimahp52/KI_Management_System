@@ -9,16 +9,16 @@ require_once 'function.php';
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="assets/css/adminDashboard.css">
-    <link rel="stylesheet" href="assets/css/student.css">
+    <!-- <link rel="stylesheet" href="assets/css/student.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <title>Student page</title>
     <style>
-       .modal {
+    .modal {
     display: none;
     position: fixed;
-    z-index: 1;
+    z-index: 1055;
     left: 0;
     top: 0;
     width: 100%;
@@ -38,10 +38,23 @@ require_once 'function.php';
     /* overflow: scroll; */
 }
 
+.modal-content-edit {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    max-width: 50%;
+    bottom: 100px;
+    left: 50px;
+    z-index: 10;
+    /* overflow: scroll; */
+}
 .row {
     display: flex;
     flex-wrap: wrap;
     margin: -16px;
+    align-items: center;
+    align-content: center;
     
 }
 
@@ -135,6 +148,86 @@ tbody{
         border-radius: 4px;
     }
 
+    .modal-backdrop.show {
+    opacity: .5;
+}
+
+/* .modal-backdrop {
+    z-index: 1050;
+} */
+body.no-scroll {
+    overflow: hidden;
+}
+
+
+/* Modal overlay */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1000; /* High z-index to appear above everything */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+}
+
+/* Modal content */
+.modal-content {
+  background-color: white;
+  margin: 10% auto;
+  padding: 20px;
+  width: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+/* Close button */
+.close-btn {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Close button hover effect */
+.close-btn:hover {
+  color: black;
+}
+
+/* Save button */
+.save-btn {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.password-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-container input[type="password"],
+        .password-container input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .password-container ion-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+        .btn{
+            margin-top: 5px;
+            padding: 5px 20px;
+        }
     </style>
 </head>
 <body>
@@ -189,54 +282,57 @@ tbody{
     <div class="modal-content">
         <span class="close">&times;</span>
         <h2>Student Registration Form</h2>
-        <form id="studentForm" onsubmit="createStudent(event)">
+        <form id="studentForm" onsubmit="createStudent(event)" class="form-group">
             <!-- form fields -->
             <fieldset>
                 <legend>Personal Information</legend>
 
-                <input type="file" name="passport_picture" accept="image/*">
+                <input class="form-control" type="file" name="passport_picture" accept="image/*" >
                 <!-- <input type="text" name="username" placeholder="Username" required> -->
-                <input type="text" name="name" placeholder="Name" required> <br><br>
-                <input type="password" name="password" placeholder="Password" required><br><br>
-                <input type="date" name="dob" required>
-                <select name="gender" required>
+                <input class="form-control" type="text" name="name" placeholder="Name" required> 
+                <div class="password-container">
+        <input type="password" id="password" name="password" placeholder="Password" class="form-control" required>
+        <ion-icon id="togglePassword" name="eye-off-outline"></ion-icon>
+    </div>
+                <input class="form-control" type="date" name="dob" required>
+                <select class="form-control" name="gender" required>
                     <option value="">Select Gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                     <option value="Other">Other</option>
                 </select>
-                <select name="hand" >
+                <select class="form-control" name="hand" >
                     <option value="">Select Hand</option>
                     <option value="Right">Right</option>
                     <option value="Left">Left</option>
                     <option value="Ambidextrous">Ambidextrous</option>
                 </select>
-                <select name="foot" >
+                <select class="form-control" name="foot" >
                     <option value="">Select Foot</option>
                     <option value="Right">Right</option>
                     <option value="Left">Left</option>
                 </select>
-                <select name="eye_sight" >
+                <select class="form-control" name="eye_sight" >
                     <option value="">Select Eye Sight</option>
                     <option value="Normal">Normal</option>
                     <option value="Glasses">Glasses</option>
                     <option value="Contact Lenses">Contact Lenses</option>
                 </select><br>
-                <textarea name="medical_condition" placeholder="Not available" disabled></textarea><br>
-                <input type="number" name="height" placeholder="Height (cm)" required>
-                <input type="number" name="weight" placeholder="Weight (kg)" required>
+                <textarea class="form-control" name="medical_condition" placeholder="Not available" disabled></textarea><br>
+                <input class="form-control" type="number" name="weight" placeholder="Weight (kg)" >
+                <input class="form-control" type="number" name="height" placeholder="Height (cm)" >
 
             </fieldset>
             <fieldset>
                 <legend>Parent/Guardian</legend>
                 <div class="row">
                     <div class="col">
-                        <input type="text" name="parent_name" placeholder="Parent/Guardian Name" required>
-                        <input type="tel" name="parent_phone" placeholder="Phone Number" required>
+                        <input class="form-control" type="text" name="parent_name" placeholder="Parent/Guardian Name" required>
+                        <input class="form-control" type="tel" name="parent_phone" placeholder="Phone Number" required>
                     </div>
                     <div class="col">
-                        <input type="tel" name="parent_whatsapp" placeholder="WhatsApp Number">
-                        <input type="email" name="parent_email" placeholder="Email Address">
+                        <input class="form-control" type="tel" name="parent_whatsapp" placeholder="WhatsApp Number">
+                        <input class="form-control" type="email" name="parent_email" placeholder="Email Address">
                     </div>
                 </div>
             </fieldset>
@@ -244,7 +340,7 @@ tbody{
                 <legend>Others</legend>
                 <div class="row">
                     <div class="col">
-                    <select name="schoolId" onchange="loadClasses(this.value)" required class="form-control mb-2">
+                    <select class="form-control" name="schoolId" onchange="loadClasses(this.value)" required class="form-control mb-2">
             <option value="">Select School</option>
             <?php foreach (getSchools() as $school): ?>
                 <option value="<?= $school['id'] ?>"><?= $school['school_name'] ?></option>
@@ -252,7 +348,7 @@ tbody{
         </select>
                     </div>
                     <div class="col">
-                    <select name="classId" required class="form-control mb-2" disabled>
+                    <select class="form-control" name="classId" required class="form-control mb-2" disabled>
             <option value="">Select Class</option>
         </select>
                     </div>
@@ -260,36 +356,27 @@ tbody{
             </fieldset>
             <div class="row">
                 <div class="col">
-                    <button class="add-button" type="submit">Add</button>
+                    <button class="add-button btn btn-success" type="submit">Add</button>
                 </div>
                 <div class="col">
-                    <button class="cancel-button" type="button" onclick="closeModal()">Cancel</button>
+                    <button  class="cancel-button btn btn-danger" type="button" onclick="closeModal()">Cancel</button>
                 </div>
             </div>
         </form>
     </div>
 </div>
   <!-- EDIT MODAL -->
+<!-- Custom Modal Structure -->
 
-  <div class="modal fade" id="editStudentModal" tabindex="-1" role="dialog" aria-labelledby="editStudentModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editStudentModalLabel">Edit Student</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="editStudentForm" onsubmit="updateStudent(event)">
-                    <!-- Form fields will be dynamically populated -->
-                </form>
-            </div>
-        </div>
-    </div>
+<div id="customModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
+    <h2>Edit Student</h2>
+    <form id="editStudentForm"></form> <!-- Form dynamically populated -->
+  </div>
 </div>
-
-
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
@@ -302,39 +389,6 @@ tbody{
     }
     ?>
 
-    // function showTable(type, page = 1, schoolId = null, classId = null) {
-    //     $.get('ajax_handlers.php', { 
-    //         action: 'getTable', 
-    //         type: type, 
-    //         page: page,
-    //         schoolId: schoolId,
-    //         classId: classId
-    //     }, function(response) {
-    //         $('#tableContainer').html(response);
-    //     });
-    // }
-
-    // function filterStudents(event) {
-    //     event.preventDefault();
-    //     const schoolId = event.target.filterSchoolId.value;
-    //     const classId = event.target.filterClassId.value;
-    //     showTable('students', 1, schoolId, classId);
-    // }
-//     function filterStudents(event) {
-//     event.preventDefault();
-//     const schoolId = event.target.filterSchoolId.value;
-//     const classId = event.target.filterClassId.value;
-//     const searchTerm = $('#studentSearch').val(); // Assuming you've added a search input
-//     showTable('students', 1, schoolId, classId, searchTerm);
-// }
-
-// function filterStudents(event) {
-//     event.preventDefault();
-//     const schoolId = event.target.filterSchoolId.value;
-//     const classId = event.target.filterClassId.value;
-//     const searchTerm = $('#studentSearch').val();
-//     showTable('students', 1, schoolId, classId, searchTerm);
-// }
 function filterStudents(event) {
     event.preventDefault();
     const schoolId = $('select[name="filterSchoolId"]').val();
@@ -343,57 +397,75 @@ function filterStudents(event) {
     showTable('students', 1, schoolId, classId, searchTerm);
 }
     // Get the modal
-    var modal = document.getElementById("studentModal");
+    var modal2 = document.getElementById("studentModal");
 
     // Get the button that opens the modal
-    var btn = document.getElementById("addStudentBtn");
+    var btn2 = document.getElementById("addStudentBtn");
 
     // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
+    var span2 = document.getElementsByClassName("close")[0];
 
     // When the user clicks the button, open the modal 
-    btn.onclick = function() {
-        modal.style.display = "block";
+    btn2.onclick = function() {
+        modal2.style.display = "block";
     }
 
     // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
+    span2.onclick = function() {
         closeModal();
     }
 
     // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            closeModal();
-        }
-    }
+    // window.onclick = function(event) {
+    //     if (event.target == modal) {
+    //         closeModal();
+    //     }
+    // }
 
     function closeModal() {
-        modal.style.display = "none";
+        modal2.style.display = "none";
         document.getElementById("studentForm").reset();
     }
 
-   
+   //PASSWORD VISIBILTY
+   document.getElementById('togglePassword').addEventListener('click', function () {
+        const passwordField = document.getElementById('password');
+        const icon = this;
 
-    function createStudent(event) {
-        event.preventDefault();
-        var formData = new FormData(event.target);
-        formData.append('action', 'createStudent');
-        $.ajax({
-            url: 'ajax_handlers.php',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                alert(response);
-                if (response.includes("successfully")) {
-                    closeModal();
-                    showTable('students');
-                }
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            icon.setAttribute('name', 'eye-outline'); // Change icon to closed eye
+        } else {
+            passwordField.type = 'password';
+            icon.setAttribute('name', 'eye-off-outline'); // Change icon to open eye
+        }
+    });
+
+function createStudent(event) {
+    event.preventDefault();
+    var formData = new FormData(event.target);
+    formData.append('action', 'createStudent');
+    $.ajax({
+        url: 'ajax_handlers.php',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            if (response.success) {
+                toastr.success(response.message);
+                document.getElementById("studentForm").reset();
+                showTable('students');
+            } else {
+                toastr.error(response.message || "Failed to create student");
             }
-        });
-    }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error("AJAX Error:", textStatus, errorThrown);
+            toastr.error("An error occurred while processing your request: " + errorThrown);
+        }
+    });
+}
 
     function loadClasses(schoolId) {
         if (schoolId) {
@@ -409,94 +481,77 @@ function filterStudents(event) {
         }
     }
 
-    function deleteStudent(studentId) {
+
+
+function deleteStudent(studentId) {
     if (confirm("Are you sure you want to delete this student?")) {
-        $.post('ajax_handlers.php', { action: 'deleteStudent', studentId: studentId }, function(response) {
-            alert(response);
-            showTable('students');
+        $.ajax({
+            url: 'ajax_handlers.php',
+            type: 'POST',
+            data: { action: 'deleteStudent', studentId: studentId },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    toastr.success(response.message);
+                    // showTable('students');
+                } else {
+                    toastr.error(response.message || "Failed to delete student");
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error("AJAX Error:", textStatus, errorThrown);
+                toastr.error("An error occurred while deleting the student: " + errorThrown);
+            }
         });
     }
 }
 
 
+
 // function editStudent(studentId) {
 //     $.get('ajax_handlers.php', { action: 'getStudent', studentId: studentId }, function(response) {
-//         var student = JSON.parse(response);
-//         if (student.error) {
-//             alert(student.error);
+//         if (response.error) {
+//             alert(response.error);
 //             return;
 //         }
         
-//         // Populate the modal with student data
 //         $('#editStudentModal').modal('show');
 //         $('#editStudentForm').html(`
-//             <input type="hidden" name="studentId" value="${student.student_id}">
-//             <input type="text" name="name" value="${student.name}" required class="form-control mb-2">
-//             <input type="date" name="dob" value="${student.dob}" required class="form-control mb-2">
+//             <input type="hidden" name="studentId" value="${response.student_id}">
+//             <input type="text" name="name" value="${response.name}" required class="form-control mb-2">
+//             <input type="date" name="dob" value="${response.dob}" required class="form-control mb-2">
 //             <select name="gender" required class="form-control mb-2">
-//                 <option value="Male" ${student.gender === 'Male' ? 'selected' : ''}>Male</option>
-//                 <option value="Female" ${student.gender === 'Female' ? 'selected' : ''}>Female</option>
-//                 <option value="Other" ${student.gender === 'Other' ? 'selected' : ''}>Other</option>
+//                 <option value="Male" ${response.gender === 'Male' ? 'selected' : ''}>Male</option>
+//                 <option value="Female" ${response.gender === 'Female' ? 'selected' : ''}>Female</option>
+//                 <option value="Other" ${response.gender === 'Other' ? 'selected' : ''}>Other</option>
 //             </select>
 //             <select name="hand" required class="form-control mb-2">
-//                 <option value="Right" ${student.hand === 'Right' ? 'selected' : ''}>Right</option>
-//                 <option value="Left" ${student.hand === 'Left' ? 'selected' : ''}>Left</option>
-//                 <option value="Ambidextrous" ${student.hand === 'Ambidextrous' ? 'selected' : ''}>Ambidextrous</option>
+//                 <option value="Right" ${response.hand === 'Right' ? 'selected' : ''}>Right</option>
+//                 <option value="Left" ${response.hand === 'Left' ? 'selected' : ''}>Left</option>
+//                 <option value="Ambidextrous" ${response.hand === 'Ambidextrous' ? 'selected' : ''}>Ambidextrous</option>
 //             </select>
 //             <select name="foot" required class="form-control mb-2">
-//                 <option value="Right" ${student.foot === 'Right' ? 'selected' : ''}>Right</option>
-//                 <option value="Left" ${student.foot === 'Left' ? 'selected' : ''}>Left</option>
+//                 <option value="Right" ${response.foot === 'Right' ? 'selected' : ''}>Right</option>
+//                 <option value="Left" ${response.foot === 'Left' ? 'selected' : ''}>Left</option>
 //             </select>
-//             <input type="text" name="eye_sight" value="${student.eye_sight}" required class="form-control mb-2">
-//             <textarea name="medical_condition" class="form-control mb-2">${student.medical_condition}</textarea>
-//             <input type="number" name="height" value="${student.height}" required class="form-control mb-2">
-//             <input type="number" name="weight" value="${student.weight}" required class="form-control mb-2">
-//             <input type="text" name="parent_name" value="${student.parent_name}" required class="form-control mb-2">
-//             <input type="tel" name="parent_phone" value="${student.parent_phone}" required class="form-control mb-2">
-//             <input type="tel" name="parent_whatsapp" value="${student.parent_whatsapp}" class="form-control mb-2">
-//             <input type="email" name="parent_email" value="${student.parent_email}" class="form-control mb-2">
+//             <input type="text" name="eye_sight" value="${response.eye_sight}" required class="form-control mb-2">
+//             <textarea name="medical_condition" class="form-control mb-2">${response.medical_condition}</textarea>
+//             <input type="number" name="height" value="${response.height}" required class="form-control mb-2">
+//             <input type="number" name="weight" value="${response.weight}" required class="form-control mb-2">
+//             <input type="text" name="parent_name" value="${response.parent_name}" required class="form-control mb-2">
+//             <input type="tel" name="parent_phone" value="${response.parent_phone}" required class="form-control mb-2">
+//             <input type="tel" name="parent_whatsapp" value="${response.parent_whatsapp}" class="form-control mb-2">
+//             <input type="email" name="parent_email" value="${response.parent_email}" class="form-control mb-2">
 //             <button type="submit" class="btn btn-primary">Update Student</button>
 //         `);
 //     });
 // }
-function editStudent(studentId) {
-    $.get('ajax_handlers.php', { action: 'getStudent', studentId: studentId }, function(response) {
-        if (response.error) {
-            alert(response.error);
-            return;
-        }
-        
-        $('#editStudentModal').modal('show');
-        $('#editStudentForm').html(`
-            <input type="hidden" name="studentId" value="${response.student_id}">
-            <input type="text" name="name" value="${response.name}" required class="form-control mb-2">
-            <input type="date" name="dob" value="${response.dob}" required class="form-control mb-2">
-            <select name="gender" required class="form-control mb-2">
-                <option value="Male" ${response.gender === 'Male' ? 'selected' : ''}>Male</option>
-                <option value="Female" ${response.gender === 'Female' ? 'selected' : ''}>Female</option>
-                <option value="Other" ${response.gender === 'Other' ? 'selected' : ''}>Other</option>
-            </select>
-            <select name="hand" required class="form-control mb-2">
-                <option value="Right" ${response.hand === 'Right' ? 'selected' : ''}>Right</option>
-                <option value="Left" ${response.hand === 'Left' ? 'selected' : ''}>Left</option>
-                <option value="Ambidextrous" ${response.hand === 'Ambidextrous' ? 'selected' : ''}>Ambidextrous</option>
-            </select>
-            <select name="foot" required class="form-control mb-2">
-                <option value="Right" ${response.foot === 'Right' ? 'selected' : ''}>Right</option>
-                <option value="Left" ${response.foot === 'Left' ? 'selected' : ''}>Left</option>
-            </select>
-            <input type="text" name="eye_sight" value="${response.eye_sight}" required class="form-control mb-2">
-            <textarea name="medical_condition" class="form-control mb-2">${response.medical_condition}</textarea>
-            <input type="number" name="height" value="${response.height}" required class="form-control mb-2">
-            <input type="number" name="weight" value="${response.weight}" required class="form-control mb-2">
-            <input type="text" name="parent_name" value="${response.parent_name}" required class="form-control mb-2">
-            <input type="tel" name="parent_phone" value="${response.parent_phone}" required class="form-control mb-2">
-            <input type="tel" name="parent_whatsapp" value="${response.parent_whatsapp}" class="form-control mb-2">
-            <input type="email" name="parent_email" value="${response.parent_email}" class="form-control mb-2">
-            <button type="submit" class="btn btn-primary">Update Student</button>
-        `);
-    });
-}
+
+
+
+
+
+
 function updateStudent(event) {
     event.preventDefault();
     var formData = new FormData(event.target);
@@ -529,16 +584,6 @@ function updateClassSelect(schoolId) {
             }
 
 
-//         function searchStudents() {
-//     var searchTerm = $('#studentSearch').val();
-//     showTable('students', 1, currentSchoolId, currentClassId, searchTerm);
-// }
-// function searchStudents() {
-//     var searchTerm = $('#studentSearch').val();
-//     var schoolId = $('select[name="filterSchoolId"]').val();
-//     var classId = $('select[name="filterClassId"]').val();
-//     showTable('students', 1, schoolId, classId, searchTerm);
-// }
 
 function searchStudents() {
     var searchTerm = $('#studentSearch').val();
@@ -547,76 +592,7 @@ function searchStudents() {
     showTable('students', 1, schoolId, classId, searchTerm);
 }
 
-// function showTable(type, page = 1, schoolId = null, classId = null, search = null) {
-//     $.get('ajax_handlers.php', { 
-//         action: 'getTable', 
-//         type: type, 
-//         page: page,
-//         schoolId: schoolId,
-//         classId: classId,
-//         search: search
-//     }, function(response) {
-//         $('#tableContainer').html(response);
-//     });
-// }
 
-// function showTable(params) {
-//     $.get('ajax_handlers.php', { 
-//         action: 'getTable', 
-//         type: params.type, 
-//         page: params.page,
-//         schoolId: params.schoolId,
-//         classId: params.classId,
-//         search: params.search
-//     }, function(response) {
-//         $('#tableContainer').html(response);
-//     });
-// }
-
-// function showTable(type, page = 1, schoolId = null, classId = null, search = null) {
-//     // Log the parameters for debugging
-//     console.log('showTable parameters:', { type, page, schoolId, classId, search });
-
-//     // Ensure all parameters are defined
-//     const params = {
-//         action: 'getTable',
-//         type: type || 'students', // Default to 'students' if type is not provided
-//         page: page || 1,
-//         schoolId: schoolId || '',
-//         classId: classId || '',
-//         search: search || ''
-//     };
-
-//     // Log the final params object
-//     console.log('AJAX request params:', params);
-
-//     $.get('ajax_handlers.php', params, function(response) {
-//         $('#tableContainer').html(response);
-//     }).fail(function(jqXHR, textStatus, errorThrown) {
-//         console.error('AJAX request failed:', textStatus, errorThrown);
-//     });
-// }
-// function showTable(type, page = 1, schoolId = null, classId = null, search = null) {
-//     console.log('showTable parameters:', { type, page, schoolId, classId, search });
-
-//     const params = {
-//         action: 'getTable',
-//         type: type,
-//         page: page,
-//         schoolId: schoolId,
-//         classId: classId,
-//         search: search
-//     };
-
-//     // Remove null or undefined values
-//     Object.keys(params).forEach(key => params[key] == null && delete params[key]);
-
-//     $.get('ajax_handlers.php', params, function(response) {
-//         $('#tableContainer').html(response);
-//     }).fail(function(jqXHR, textStatus, errorThrown) {
-//         console.error('AJAX request failed:', textStatus, errorThrown);
-//     });
-// }
 function showTable(type, page = 1, schoolId = null, classId = null, search = null) {
     console.log('showTable parameters:', { type, page, schoolId, classId, search });
 
@@ -638,6 +614,105 @@ function showTable(type, page = 1, schoolId = null, classId = null, search = nul
         console.error('AJAX request failed:', textStatus, errorThrown);
     });
 }
+
+
+
+
+// FORM EDIT DIALOG
+
+
+// Get modal and elements
+var modal = document.getElementById('customModal');
+var closeModalBtn = document.getElementsByClassName('close-btn')[0];
+
+// Close modal when the close button is clicked
+closeModalBtn.onclick = function() {
+  modal.style.display = 'none';
+  document.body.classList.remove('no-scroll');
+};
+
+// Close modal when clicking outside the modal content
+// window.onclick = function(event) {
+//   if (event.target == modal) {
+//     modal.style.display = 'none';
+//     document.body.classList.remove('no-scroll');
+//   }
+// };
+
+
+// Function to edit student and populate the modal form
+function editStudent(studentId) {
+  $.get('ajax_handlers.php', { action: 'getStudent', studentId: studentId }, function(response) {
+    if (response.error) {
+      alert(response.error);
+      return;
+    }
+
+    // Populate the form inside the modal
+    var formHtml = `
+      <input type="hidden" name="studentId" value="${response.student_id}">
+      <input type="text" name="name" value="${response.name}" required class="form-control mb-2">
+      <input type="date" name="dob" value="${response.dob}" required class="form-control mb-2">
+      <select name="gender" required class="form-control mb-2">
+        <option value="Male" ${response.gender === 'Male' ? 'selected' : ''}>Male</option>
+        <option value="Female" ${response.gender === 'Female' ? 'selected' : ''}>Female</option>
+        <option value="Other" ${response.gender === 'Other' ? 'selected' : ''}>Other</option>
+      </select>
+      <select name="hand" required class="form-control mb-2">
+        <option value="Right" ${response.hand === 'Right' ? 'selected' : ''}>Right</option>
+        <option value="Left" ${response.hand === 'Left' ? 'selected' : ''}>Left</option>
+        <option value="Ambidextrous" ${response.hand === 'Ambidextrous' ? 'selected' : ''}>Ambidextrous</option>
+      </select>
+      <select name="foot" required class="form-control mb-2">
+        <option value="Right" ${response.foot === 'Right' ? 'selected' : ''}>Right</option>
+        <option value="Left" ${response.foot === 'Left' ? 'selected' : ''}>Left</option>
+      </select>
+      <input type="text" name="eye_sight" value="${response.eye_sight}" required class="form-control mb-2">
+      <textarea name="medical_condition" class="form-control mb-2" disabled>${response.medical_condition}</textarea>
+      <input type="number" name="height" value="${response.height}" required class="form-control mb-2">
+      <input type="number" name="weight" value="${response.weight}" required class="form-control mb-2">
+      <input type="text" name="parent_name" value="${response.parent_name}" required class="form-control mb-2">
+      <input type="tel" name="parent_phone" value="${response.parent_phone}" required class="form-control mb-2">
+      <input type="tel" name="parent_whatsapp" value="${response.parent_whatsapp}" class="form-control mb-2">
+      <input type="email" name="parent_email" value="${response.parent_email}" class="form-control mb-2">
+      <button type="button" class="save-btn">Update Student</button>
+    `;
+
+    // Set the HTML inside the form
+    document.getElementById('editStudentForm').innerHTML = formHtml;
+
+    // Display the modal
+    modal.style.display = 'block';
+    document.body.classList.add('no-scroll'); // Disable body scroll
+
+    // Add event listener for saving changes
+    document.querySelector('.save-btn').addEventListener('click', function() {
+      // Collect form data and add action for updating the student
+      var formData = $('#editStudentForm').serialize() + '&action=updateStudent';
+
+      // Submit data using AJAX
+      $.post('ajax_handlers.php', formData, function(saveResponse) {
+        if (saveResponse.success) {
+          // Update the student details on the page dynamically (optional)
+        //   updateStudentDetailsOnPage(saveResponse.updatedStudent);
+
+          // Alert success message
+          alert('Student updated successfully!');
+
+          // Close the modal
+          modal.style.display = 'none';
+          document.body.classList.remove('no-scroll');
+
+          // Optionally, reset the form (if needed)
+          document.getElementById('editStudentForm').reset();
+        } else {
+          alert('Error: ' + saveResponse.error);
+        }
+      });
+    });
+  });
+}
+
 </script>
 
 </body>

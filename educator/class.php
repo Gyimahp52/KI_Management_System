@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Galileo Design</title>
-    <link rel="stylesheet" href="/css/educator.css" />
+    <link rel="stylesheet" href="assets/css/educator.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900&display=swap" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   </head>
@@ -38,6 +38,6 @@
         </div>
       </div>
     </div>
-    <script src="/js/educator.js"></script>
+    <script src="assets/js/educator.js"></script>
   </body>
 </html>

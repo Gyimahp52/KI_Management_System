@@ -1,17 +1,23 @@
 <?php
 session_start();
 require 'includes/dbconnection.php'; 
-
+function sanitizeInput($input) {
+    return htmlspecialchars(strip_tags(trim($input)), ENT_QUOTES, 'UTF-8');
+}
 
 function login($username, $password) {
     $pdo = dbConnect();
-    $stmt = $pdo->prepare('SELECT id, password, role FROM users WHERE username = ?');
-    $stmt->execute([$username]);
+    $stmt = $pdo->prepare('SELECT id, email, password, role FROM users WHERE email = ?');
+    $stmt->execute([sanitizeInput($username)]);
     $user = $stmt->fetch();
 
     if ($user && password_verify($password, $user['password'])) {
-        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['user_email'] = $user['email'];  // Store email instead of id
         $_SESSION['role'] = $user['role'];
+        
+        // Set a session token for added security
+        $_SESSION['token'] = bin2hex(random_bytes(32));
+        
         return $user['role'];
     } else {
         return false;
@@ -33,10 +39,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     header('Location: admin/adminDashboard.php');
                     break;
                 case 'educator':
-                    header('Location: admin/educator/educatorDashboard.php');
+                    header('Location: educator/educator_dashboard.php');
                     break;
                 case 'student':
-                    header('Location: admin/studentDashboard.php');
+                    header('Location: student/student.php');
                     break;
                 default:
                     header('Location: index.php');
@@ -65,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="css/login.css"> 
     <script src="js/login.js" defer></script>
 </head>
-<body>
+<body style="background-image: url(images/web3.png) !important; background-repeat:no-repeat;  background-size: cover;">
     <!-- Login form -->
     <div class="login-container">
         <img src="images/ki_logo.png" alt="ki_logo">

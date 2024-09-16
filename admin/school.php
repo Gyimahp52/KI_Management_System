@@ -4,10 +4,10 @@ include 'includes/dbconnection.php';
 
 
 
-$sql1 ="SELECT * from educators";
-$query1 = $dbh->prepare($sql1);
-$query1->execute();
-$educators = $query1->fetchAll(PDO::FETCH_OBJ);
+// $sql1 ="SELECT * from educators";
+// $query1 = $dbh->prepare($sql1);
+// $query1->execute();
+// $educators = $query1->fetchAll(PDO::FETCH_OBJ);
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +15,7 @@ $educators = $query1->fetchAll(PDO::FETCH_OBJ);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>School Management System</title>
+    <title>Student Page</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/adminDashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -45,12 +45,12 @@ $educators = $query1->fetchAll(PDO::FETCH_OBJ);
             <input type="text" name="schoolName" placeholder="School Name" required class="form-control mb-2">
             <input type="text" name="region" placeholder="Region" required class="form-control mb-2">
             <input type="text" name="town" placeholder="Town" required class="form-control mb-2">
-            <select name="educator" required class="form-control mb-2">
+            <!-- <select name="educator" required class="form-control mb-2">
                 <option value="">Select Educator</option>
                 <?php foreach ($educators as $educator): ?>
                     <option value="<?= $educator->id ?>"><?= $educator->name ?></option>
                 <?php endforeach; ?>
-            </select>
+            </select> -->
             <input type="file" name="logo" class="form-control mb-2">
             <button type="submit" class="btn btn-success">Create School</button>
         </form>
@@ -80,24 +80,7 @@ $educators = $query1->fetchAll(PDO::FETCH_OBJ);
 </nav>
 </div>
 
-<!-- EDIT MODAL -->
-<div class="modal fade" id="editStudentModal" tabindex="-1" role="dialog" aria-labelledby="editStudentModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editStudentModalLabel">Edit Student</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="editStudentForm" onsubmit="updateStudent(event)">
-                    <!-- Form fields will be dynamically populated -->
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>

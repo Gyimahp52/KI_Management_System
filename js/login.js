@@ -1,7 +1,7 @@
 const images = [
 
-    '/images/web2.png',
-    '/images/web3.png'
+    'images/web2.png',
+    'images/web3.png'
 ];
 
 let currentIndex = 0;
@@ -11,7 +11,7 @@ function changeBackgroundImage() {
     currentIndex = (currentIndex + 1) % images.length;
 }
 
-setInterval(changeBackgroundImage, 6000); // Change image every 6 seconds
+setInterval(changeBackgroundImage, 5000); // Change image every 6 seconds
 
 window.onload = changeBackgroundImage; // Set initial background image
 
@@ -27,24 +27,24 @@ const processDocuments = () => {
     fetch('http://localhost:5000/process_docs', {
         method: 'POST',
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message) {
-            console.log(data.message);
-        } else {
-            console.error("Error processing documents.");
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                console.log(data.message);
+            } else {
+                console.error("Error processing documents.");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 };
 
 const createChatLi = (message, className) => {
     const chatLi = document.createElement("li");
     chatLi.classList.add("chat", `${className}`);
-    let chatContent = className === "outgoing" ? 
-        `<p></p>` : 
+    let chatContent = className === "outgoing" ?
+        `<p></p>` :
         `<img src="/images/ki_logo.png" alt="Company Logo" class="company-logo"><p></p>`;
     chatLi.innerHTML = chatContent;
     chatLi.querySelector("p").textContent = message;
@@ -59,20 +59,20 @@ const generateResponse = (chatElement, userMessage) => {
         },
         body: JSON.stringify({ message: userMessage })
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.error) {
-            chatElement.querySelector("p").textContent = "Error: " + data.error;
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                chatElement.querySelector("p").textContent = "Error: " + data.error;
+                chatElement.classList.add("error");
+            } else {
+                chatElement.querySelector("p").textContent = data.response;
+            }
+        })
+        .catch(() => {
+            chatElement.querySelector("p").textContent = "Hold on, system down.";
             chatElement.classList.add("error");
-        } else {
-            chatElement.querySelector("p").textContent = data.response;
-        }
-    })
-    .catch(() => {
-        chatElement.querySelector("p").textContent = "Hold on, system down.";
-        chatElement.classList.add("error");
-    })
-    .finally(() => chatbox.scrollTo(0, chatbox.scrollHeight));
+        })
+        .finally(() => chatbox.scrollTo(0, chatbox.scrollHeight));
 };
 
 const handleChat = () => {

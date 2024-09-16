@@ -4,12 +4,21 @@ include('includes/dbconnection.php');
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
-    $sql = "SELECT * FROM educators WHERE id = :id";
-    $query = $dbh->prepare($sql);
-    $query->bindParam(':id', $id, PDO::PARAM_INT);
-    $query->execute();
-    $educator = $query->fetch(PDO::FETCH_OBJ);
 
+// $sql = "SELECT e.*, s.school_name 
+//         FROM educators e
+//         JOIN schools s ON e.school_id = s.id";
+//     $query = $dbh->prepare($sql);
+//     $query->execute();
+//     $educator = $query->fetch(PDO::FETCH_OBJ);
+
+$sql = "SELECT e.*, s.school_name, u.username, u.password, u.role
+        FROM educators e
+        JOIN schools s ON e.school_id = s.id
+        JOIN users u ON e.email = u.email";  // Assuming educators' email matches users' username
+$query = $dbh->prepare($sql);
+$query->execute();
+$educator = $query->fetch(PDO::FETCH_OBJ);
     if (!$educator) {
         echo "<script>alert('Educator not found'); window.location.href='educators.php';</script>";
         exit;
@@ -49,7 +58,7 @@ if (isset($_GET['id'])) {
                     <p><strong>Email:</strong> <?php echo htmlspecialchars($educator->email); ?></p>
                     <p><strong>Date of Birth:</strong> <?php echo htmlspecialchars($educator->dob); ?></p>
                     <p><strong>Location:</strong> <?php echo htmlspecialchars($educator->location); ?></p>
-                    <p><strong>School:</strong> <?php echo htmlspecialchars($educator->school); ?></p>
+                    <p><strong>School:</strong> <?php echo htmlspecialchars($educator->school_name); ?></p>
                 </div>
             </div>
         </div>

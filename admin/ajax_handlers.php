@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     respondWithJson(['success' => false]);
                 }
             }
-            $result = createSchool($_POST['schoolName'], $_POST['region'], $_POST['town'], $_POST['educator'], $logo);
+            $result = createSchool($_POST['schoolName'], $_POST['region'], $_POST['town'], /*$_POST['educator'],*/ $logo);
             setFlashMessage($result ? 'success' : 'error', $result ? "School created successfully" : "Failed to create school");
             respondWithJson(['success' => $result]);
             break;
@@ -46,31 +46,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $target_file = $target_dir . $passport_picture;
                 if (!move_uploaded_file($_FILES["passport_picture"]["tmp_name"], $target_file)) {
                     setFlashMessage('error', "Failed to upload passport picture");
-                    respondWithJson(['success' => false]);
+                    respondWithJson(['success' => true]);
                 }
             }
-            $result = createStudent(
-                $_POST['schoolId'],
-                $_POST['classId'],
-                $_POST['name'],
-                $_POST['dob'],
-                $_POST['gender'],
-                $_POST['hand'],
-                $_POST['foot'],
-                $_POST['eye_sight'],
-                $_POST['medical_condition'],
-                $_POST['height'],
-                $_POST['weight'],
-                $_POST['parent_name'],
-                $_POST['parent_phone'],
-                $_POST['parent_whatsapp'],
-                $_POST['parent_email'],
-                $passport_picture,
-                $_POST['password']
-            );
-            setFlashMessage($result ? 'success' : 'error', $result ? "Student created successfully" : "Failed to create student");
-            respondWithJson(['success' => $result]);
-            break;
+            $medical_condition = isset($_POST['medical_condition']) ? $_POST['medical_condition'] : '';
+    $result = createStudent(
+        $_POST['schoolId'],
+        $_POST['classId'],
+        $_POST['name'],
+        $_POST['dob'],
+        $_POST['gender'],
+        $_POST['hand'],
+        $_POST['foot'],
+        $_POST['eye_sight'],
+        $medical_condition,  // Use the variable we just defined
+        $_POST['height'],
+        $_POST['weight'],
+        $_POST['parent_name'],
+        $_POST['parent_phone'],
+        $_POST['parent_whatsapp'],
+        $_POST['parent_email'],
+        $passport_picture,
+        $_POST['password']
+    );
+    if (is_string($result) && strpos($result, "successfully") !== false) {
+        respondWithJson(['success' => true, 'message' => $result]);
+    } else {
+        respondWithJson(['success' => false, 'message' => "Failed to create student"]);
+    }
+    break;
 
         case 'updateStudent':
             $result = updateStudent(
@@ -91,12 +95,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
             setFlashMessage($result ? 'success' : 'error', $result ? "Student updated successfully" : "Failed to update student");
             respondWithJson(['success' => $result]);
+           
             break;
+
+       
 
         case 'deleteStudent':
             $result = deleteStudent($_POST['studentId']);
-            setFlashMessage($result ? 'success' : 'error', $result ? "Student deleted successfully" : "Failed to delete student");
-            respondWithJson(['success' => $result]);
+            if ($result) {
+                respondWithJson(['success' => true, 'message' => "Student deleted successfully"]);
+            } else {
+                respondWithJson(['success' => false, 'message' => "Failed to delete student"]);
+            }
             break;
 
         case 'updateSchool':
@@ -146,7 +156,6 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                     <th>Name</th>
                                     <th>Region</th>
                                     <th>Town</th>
-                                    <th>Educator</th>
                                     <th>Logo</th>
                                     <th>Actions</th>
                                 </tr>
@@ -158,7 +167,6 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                 <td>{$school['school_name']}</td>
                                 <td>{$school['region']}</td>
                                 <td>{$school['town']}</td>
-                                <td>{$school['educator']}</td>
                                 <td><img src='uploads/{$school['school_logo']}' width='50'></td>
                                 <td>
                                     <button onclick='editSchool(\"{$school['id']}\")' class='btn btn-sm btn-primary'>Edit</button>
