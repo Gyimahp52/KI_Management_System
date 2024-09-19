@@ -1,45 +1,62 @@
 <?php
 session_start();
 require 'includes/dbconnection.php'; 
+
+// Function to sanitize input
 function sanitizeInput($input) {
     return htmlspecialchars(strip_tags(trim($input)), ENT_QUOTES, 'UTF-8');
 }
 
-function login($username, $password) {
+// Login function that handles both username for students and email for others
+function login($usernameOrEmail, $password) {
     $pdo = dbConnect();
-    $stmt = $pdo->prepare('SELECT id, email, password, role FROM users WHERE email = ?');
-    $stmt->execute([sanitizeInput($username)]);
+    
+    // Step 1: Check if the user exists as a student (username login) or as a non-student (email login)
+    $stmt = $pdo->prepare('SELECT id, email, password, role FROM users WHERE (role = "student" AND username = ?) OR (role != "student" AND email = ?)');
+    $stmt->execute([sanitizeInput($usernameOrEmail), sanitizeInput($usernameOrEmail)]);
     $user = $stmt->fetch();
 
+    // Step 2: Verify the password and manage session accordingly
     if ($user && password_verify($password, $user['password'])) {
-        $_SESSION['user_email'] = $user['email'];  // Store email instead of id
+        // Store session data
+        if ($user['role'] == 'student') {
+            $_SESSION['user_username'] = $usernameOrEmail; // Use username for students
+        } else {
+            $_SESSION['user_email'] = $user['email']; // Use email for others
+        }
         $_SESSION['role'] = $user['role'];
-        
+
         // Set a session token for added security
         $_SESSION['token'] = bin2hex(random_bytes(32));
-        
-        return $user['role'];
+
+        return $user['role']; // Return role for further processing
     } else {
-        return false;
+        return false; // Login failed
     }
 }
+
+// Initialize error variable
 $error = '';
 
+// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username']);
+    $usernameOrEmail = trim($_POST['username']);
     $password = trim($_POST['password']);
 
-    if (empty($username) || empty($password)) {
-        $error = 'Username and password are required.';
+    // Check if both username/email and password are provided
+    if (empty($usernameOrEmail) || empty($password)) {
+        $error = 'Username/Email and password are required.';
     } else {
-        $role = login($username, $password);
+        // Attempt to log in the user
+        $role = login($usernameOrEmail, $password);
         if ($role) {
+            // Redirect based on the user's role
             switch ($role) {
                 case 'admin':
                     header('Location: admin/adminDashboard.php');
                     break;
                 case 'educator':
-                    header('Location: educator/educator_dashboard.php');
+                    header('Location: educator/educator.php');
                     break;
                 case 'student':
                     header('Location: student/student.php');
@@ -55,6 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en" dir="ltr">

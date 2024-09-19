@@ -47,9 +47,7 @@ include 'includes/dbconnection.php';
             <input type="text" name="town" placeholder="Town" required class="form-control mb-2">
             <!-- <select name="educator" required class="form-control mb-2">
                 <option value="">Select Educator</option>
-                <?php foreach ($educators as $educator): ?>
-                    <option value="<?= $educator->id ?>"><?= $educator->name ?></option>
-                <?php endforeach; ?>
+  
             </select> -->
             <input type="file" name="logo" class="form-control mb-2">
             <button type="submit" class="btn btn-success">Create School</button>

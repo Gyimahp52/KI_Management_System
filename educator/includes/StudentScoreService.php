@@ -22,7 +22,8 @@ class StudentScoreService {
         return $stmt->fetchAll();
     }
 
-    public function getStudentsWithThemesAndScores($class_id, $searchQuery = '') {
+    public function getStudentsWithThemesAndScores($class_id, $searchQuery = '', $page = 1, $perPage = 10) {
+        $offset = ($page - 1) * $perPage;
         $sql = "
             SELECT s.student_id, s.name, 
                    st.id AS theme_id, st.theme_name,
@@ -38,15 +39,34 @@ class StudentScoreService {
             ) ss ON s.student_id = ss.student_id AND st.id = ss.theme_id AND ss.rn = 1
             WHERE s.class_id = ? AND (s.student_id LIKE ? OR s.name LIKE ?)
             ORDER BY s.student_id, st.id
+            LIMIT ? OFFSET ?
         ";
         $stmt = $this->pdo->prepare($sql);
         $searchParam = '%' . $searchQuery . '%';
-        // var_dump($class_id, $searchParam);
-
-        $stmt->execute([$class_id, $searchParam, $searchParam]);
+        $stmt->execute([$class_id, $searchParam, $searchParam, $perPage, $offset]);
         return $stmt->fetchAll(PDO::FETCH_GROUP);
     }
-
+    
+    public function getScore($student_id, $theme_id, $term_id) {
+        $sql = "SELECT score FROM student_scores WHERE student_id = ? AND theme_id = ? AND term_id = ? ORDER BY date_assessed DESC LIMIT 1";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$student_id, $theme_id, $term_id]);
+        return $stmt->fetchColumn() ?: '';
+    }
+    function getStudentCount($class_id, $term_id, $searchQuery = '') {
+        global $pdo;
+        $sql = "
+            SELECT COUNT(DISTINCT s.student_id) as count
+            FROM students s
+            JOIN student_scores ss ON s.student_id = ss.student_id
+            JOIN terms t ON ss.term_id = t.id
+            WHERE s.class_id = ? AND t.id = ? AND (s.student_id LIKE ? OR s.name LIKE ?)
+        ";
+        $stmt = $pdo->prepare($sql);
+        $searchParam = '%' . $searchQuery . '%';
+        $stmt->execute([$class_id, $term_id, $searchParam, $searchParam]);
+        return $stmt->fetchColumn();
+    }
     public function getCurrentTermId(): ?int {
         // Try to get the current active term first
         $stmt = $this->pdo->query("

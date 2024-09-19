@@ -1,3 +1,13 @@
+<?php 
+session_start();
+$educatorEmail = $_SESSION['user_email'];
+
+
+$testEd = $_SESSION['school_id'];
+echo $educatorEmail, $testEd;
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

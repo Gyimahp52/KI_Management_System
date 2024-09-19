@@ -1,24 +1,21 @@
-<?php
+<?php 
 session_start();
 include('includes/dbconnection.php');
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
-// $sql = "SELECT e.*, s.school_name 
-//         FROM educators e
-//         JOIN schools s ON e.school_id = s.id";
-//     $query = $dbh->prepare($sql);
-//     $query->execute();
-//     $educator = $query->fetch(PDO::FETCH_OBJ);
+    // Modify the SQL query to filter the educator based on the provided id
+    $sql = "SELECT e.*, s.school_name, u.email, u.password, u.role
+            FROM educators e
+            JOIN schools s ON e.school_id = s.id
+            JOIN users u ON e.email = u.email
+            WHERE e.id = :id";  // Filter by educator's id
+    $query = $dbh->prepare($sql);
+    $query->bindParam(':id', $id, PDO::PARAM_INT);  // Bind the id parameter
+    $query->execute();
+    $educator = $query->fetch(PDO::FETCH_OBJ);
 
-$sql = "SELECT e.*, s.school_name, u.username, u.password, u.role
-        FROM educators e
-        JOIN schools s ON e.school_id = s.id
-        JOIN users u ON e.email = u.email";  // Assuming educators' email matches users' username
-$query = $dbh->prepare($sql);
-$query->execute();
-$educator = $query->fetch(PDO::FETCH_OBJ);
     if (!$educator) {
         echo "<script>alert('Educator not found'); window.location.href='educators.php';</script>";
         exit;

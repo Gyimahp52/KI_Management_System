@@ -405,6 +405,7 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
                     <tr>
                         <th>Name</th>
                         <th>Phone Number</th>
+                        <th>Email</th>
                         <th>School</th>
                         <th>Action</th>
                     </tr>
@@ -415,6 +416,7 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
 <tr>
     <td><?php echo htmlspecialchars($educator->name); ?></td>
     <td><?php echo htmlspecialchars($educator->phone_number); ?></td>
+    <td><?php echo htmlspecialchars($educator->email); ?></td>
     <td><?php echo htmlspecialchars($educator->school_name); ?></td>
     <td>
         <a href="educator_profile.php?id=<?php echo $educator->id; ?>" class="btn btn-info btn-sm">View</a>

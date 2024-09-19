@@ -1,43 +1,57 @@
 <?php
-
 session_start();
 require_once 'includes/dbconnection.php';
 require_once 'includes/functions.php';
 require_once 'includes/StudentScoreService.php';
-$pdo = dbConnect();
-$studentScoreService = new StudentScoreService($pdo);
 
 if (!isset($_SESSION['user_email']) || $_SESSION['role'] !== 'educator') {
     exit('Unauthorized');
 }
 
+$pdo = dbConnect();
+$studentScoreService = new StudentScoreService($pdo);
+
 $classId = $_GET['class_id'] ?? null;
+$page = $_GET['page'] ?? 1;
+$searchQuery = $_GET['search'] ?? '';
+$perPage = 10;
+
 if (!$classId) {
     exit('No class specified');
 }
 
+$className = getClassName($classId);
+$currentTerm = $studentScoreService->getCurrentTermId();
+$students = getStudents($classId, $currentTerm, $searchQuery, $page, $perPage);
+$totalStudents = getStudentCount($classId, $currentTerm, $searchQuery);
+$totalPages = ceil($totalStudents / $perPage);
 
+// Fetch themes for the school
+$stmt = $pdo->prepare('SELECT school_id FROM classes WHERE class_id = ?');
+$stmt->execute([$classId]);
+$schoolId = $stmt->fetchColumn();
+$themes = getThemes($schoolId);
 
-
-
-// Fetch students for the class
-$searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
-$students = $studentScoreService->getStudentsWithThemesAndScores($classId, $searchQuery);
-
-foreach ($students as $student_id => $themes){
-    echo '<tr>';
-    echo '<td>' . htmlspecialchars($student_id) . '</td>';
-    echo '<td>' . htmlspecialchars($themes[0]['name']) . '</td>';
-    
-    foreach ($themes as $theme){
-        echo '<td>';
-        echo '<input type="number" name="scores[' . $student_id . '][' . $theme['theme_id'] . ']" min="2" max="9" step="1" class="form-control score-input" value="' . ($theme['score'] !== null ? htmlspecialchars(round($theme['score'])) : '') . '">';
-        
-        if ($theme['score'] !== null):
-            echo '<div class="previous-score">Last updated: ' . htmlspecialchars($theme['date_assessed']) . '</div>';
-        endif;
-
-        echo '</td>';
+$studentsHtml = '';
+foreach ($students as $student) {
+    $studentsHtml .= '<tr>';
+    $studentsHtml .= '<td class="p-4">' . htmlspecialchars($student['student_id']) . '</td>';
+    $studentsHtml .= '<td class="p-4">' . htmlspecialchars($student['name']) . '</td>';
+    foreach ($themes as $theme) {
+        $score = $studentScoreService->getScore($student['student_id'], $theme['id'], $currentTerm);
+        $studentsHtml .= '<td class="p-4"><input type="number" name="scores[' . $student['student_id'] . '][' . $theme['id'] . ']" min="2" max="9" step="1" value="' . htmlspecialchars($score) . '"></td>';
     }
-    echo '</tr>';
-    }
+    $studentsHtml .= '</tr>';
+}
+
+$pagination = '';
+for ($i = 1; $i <= $totalPages; $i++) {
+    $activeClass = ($i == $page) ? 'active' : '';
+    $pagination .= '<a href="#" class="pagination-link ' . $activeClass . '" data-page="' . $i . '">' . $i . '</a> ';
+}
+
+echo json_encode([
+    'className' => $className,
+    'studentsHtml' => $studentsHtml,
+    'pagination' => $pagination
+]);
