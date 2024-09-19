@@ -312,28 +312,28 @@ table {
     });
 
 // live search
-    document.addEventListener('DOMContentLoaded', function() {
-    var studentSearch = document.getElementById('student-search');
-    var studentsTable = document.getElementById('students-table');
+//     document.addEventListener('DOMContentLoaded', function() {
+//     var studentSearch = document.getElementById('student-search');
+//     var studentsTable = document.getElementById('students-table');
 
-    if (studentSearch && studentsTable) {
-        studentSearch.addEventListener('input', function() {
-            var searchQuery = this.value.toLowerCase();
-            var rows = studentsTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+//     if (studentSearch && studentsTable) {
+//         studentSearch.addEventListener('input', function() {
+//             var searchQuery = this.value.toLowerCase();
+//             var rows = studentsTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
 
-            for (var i = 0; i < rows.length; i++) {
-                var studentId = rows[i].cells[0].textContent.toLowerCase();
-                var studentName = rows[i].cells[1].textContent.toLowerCase();
+//             for (var i = 0; i < rows.length; i++) {
+//                 var studentId = rows[i].cells[0].textContent.toLowerCase();
+//                 var studentName = rows[i].cells[1].textContent.toLowerCase();
 
-                if (studentId.includes(searchQuery) || studentName.includes(searchQuery)) {
-                    rows[i].style.display = '';
-                } else {
-                    rows[i].style.display = 'none';
-                }
-            }
-        });
-    }
-});
+//                 if (studentId.includes(searchQuery) || studentName.includes(searchQuery)) {
+//                     rows[i].style.display = '';
+//                 } else {
+//                     rows[i].style.display = 'none';
+//                 }
+//             }
+//         });
+//     }
+// });
     </script>
 </body>
 </html>

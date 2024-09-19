@@ -9,12 +9,13 @@ function getStudents($class_id, $term_id, $searchQuery = '', $page = 1, $perPage
     $offset = ($page - 1) * $perPage;
     
     $sql = "
-        SELECT DISTINCT s.student_id, s.name, t.term_number, t.id as term_id, ay.year_name, ss.score
+        SELECT s.student_id, s.name, t.term_number, t.id as term_id, ay.year_name
         FROM students s
         LEFT JOIN student_scores ss ON s.student_id = ss.student_id AND ss.term_id = ?
         JOIN terms t ON t.id = ?
         JOIN academic_years ay ON t.academic_year_id = ay.id
         WHERE s.class_id = ? AND (s.student_id LIKE ? OR s.name LIKE ?)
+        GROUP BY s.student_id, s.name, t.term_number, t.id, ay.year_name
         ORDER BY s.name
         LIMIT ? OFFSET ?
     ";
@@ -27,20 +28,39 @@ function getStudents($class_id, $term_id, $searchQuery = '', $page = 1, $perPage
 }
 
 
+
+// function getStudentCount($class_id, $term_id, $searchQuery = '') {
+//     global $pdo;
+//     $sql = "
+//         SELECT COUNT(DISTINCT s.student_id) as count
+//         FROM students s
+//         JOIN student_scores ss ON s.student_id = ss.student_id
+//         JOIN terms t ON ss.term_id = t.id
+//         WHERE s.class_id = ? AND t.id = ? AND (s.student_id LIKE ? OR s.name LIKE ?)
+//     ";
+//     $stmt = $pdo->prepare($sql);
+//     $searchParam = '%' . $searchQuery . '%';
+//     $stmt->execute([$class_id, $term_id, $searchParam, $searchParam]);
+//     return $stmt->fetchColumn();
+// }
+
 function getStudentCount($class_id, $term_id, $searchQuery = '') {
     global $pdo;
+    
+    // Count the total number of distinct students in the class for the given term
     $sql = "
         SELECT COUNT(DISTINCT s.student_id) as count
         FROM students s
-        JOIN student_scores ss ON s.student_id = ss.student_id
-        JOIN terms t ON ss.term_id = t.id
-        WHERE s.class_id = ? AND t.id = ? AND (s.student_id LIKE ? OR s.name LIKE ?)
+        LEFT JOIN student_scores ss ON s.student_id = ss.student_id AND ss.term_id = ?
+        WHERE s.class_id = ? AND (s.student_id LIKE ? OR s.name LIKE ?)
     ";
+    
     $stmt = $pdo->prepare($sql);
     $searchParam = '%' . $searchQuery . '%';
-    $stmt->execute([$class_id, $term_id, $searchParam, $searchParam]);
+    $stmt->execute([$term_id, $class_id, $searchParam, $searchParam]);
     return $stmt->fetchColumn();
 }
+
 
 function getClassName($class_id) {
     global $pdo;
