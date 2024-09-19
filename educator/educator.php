@@ -229,23 +229,23 @@ table {
     $(document).ready(function() {
         var currentClassId = <?php echo $classId ?: 'null'; ?>;
 
-            // Attach a handler to the search form
-    $('#student-search').on('input', function() {
-        performSearch();
-    });
+        // Attach a handler to the search form
+        $('#student-search').on('input', function() {
+              performSearch();
+          });
 
         // Disable default form submission for 'Enter' key in the search bar
         $('#search-form').on('submit', function(e) {
-        e.preventDefault();
-        performSearch();
-    });
- 
+              e.preventDefault();
+              performSearch();
+          });
+      
         // Function to perform the search and update the student list dynamically
-        function performSearch() {
-        var searchQuery = $('#student-search').val();
-        var page = 1; // reset to first page for new search
-        loadStudents(currentClassId, page, searchQuery);
-    }
+              function performSearch() {
+              var searchQuery = $('#student-search').val();
+              var page = 1; // reset to first page for new search
+              loadStudents(currentClassId, page, searchQuery);
+          }
 
 
         $('.card').click(function() {
