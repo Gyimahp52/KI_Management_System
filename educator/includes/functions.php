@@ -7,21 +7,25 @@ function sanitizeInput($input) {
 function getStudents($class_id, $term_id, $searchQuery = '', $page = 1, $perPage = 10) {
     global $pdo;
     $offset = ($page - 1) * $perPage;
+    
     $sql = "
-        SELECT DISTINCT s.student_id, s.name, t.term_number, t.id as term_id, ay.year_name
+        SELECT DISTINCT s.student_id, s.name, t.term_number, t.id as term_id, ay.year_name, ss.score
         FROM students s
-        JOIN student_scores ss ON s.student_id = ss.student_id
-        JOIN terms t ON ss.term_id = t.id
+        LEFT JOIN student_scores ss ON s.student_id = ss.student_id AND ss.term_id = ?
+        JOIN terms t ON t.id = ?
         JOIN academic_years ay ON t.academic_year_id = ay.id
-        WHERE s.class_id = ? AND t.id = ? AND (s.student_id LIKE ? OR s.name LIKE ?)
+        WHERE s.class_id = ? AND (s.student_id LIKE ? OR s.name LIKE ?)
         ORDER BY s.name
         LIMIT ? OFFSET ?
     ";
+    
     $stmt = $pdo->prepare($sql);
     $searchParam = '%' . $searchQuery . '%';
-    $stmt->execute([$class_id, $term_id, $searchParam, $searchParam, $perPage, $offset]);
+    $stmt->execute([$term_id, $term_id, $class_id, $searchParam, $searchParam, $perPage, $offset]);
+    
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
 
 function getStudentCount($class_id, $term_id, $searchQuery = '') {
     global $pdo;
