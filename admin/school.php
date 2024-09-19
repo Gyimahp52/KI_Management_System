@@ -102,6 +102,7 @@ include 'includes/dbconnection.php';
     "showMethod": "fadeIn",
     "hideMethod": "fadeOut"
 };
+
 function showForm(formId) {
     const schoolForm = document.getElementById('schoolForm');
     const classForm = document.getElementById('classForm');

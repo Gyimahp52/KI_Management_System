@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
   const mainContent = document.getElementById('main-content');
-  const classList = document.getElementById('class-list');
-  const classDetails = document.getElementById('class-details');
+
   const notificationModal = document.getElementById('notification-modal');
   const notificationMessage = document.getElementById('notification-message');
   const closeNotification = document.getElementById('close-notification');
@@ -100,28 +99,28 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  function showClasses() {
-    classList.classList.remove('hidden');
-    classDetails.classList.add('hidden');
-  }
+  // function showClasses() {
+  //   classList.classList.remove('hidden');
+  //   classDetails.classList.add('hidden');
+  // }
 
-  function showClassDetails(className) {
-    document.getElementById('class-title').textContent = `Class ${className} - ${getGrade(className)}`;
-    classList.classList.add('hidden');
-    classDetails.classList.remove('hidden');
-  }
+  // function showClassDetails(className) {
+  //   document.getElementById('class-title').textContent = `Class ${className} - ${getGrade(className)}`;
+  //   classList.classList.add('hidden');
+  //   classDetails.classList.remove('hidden');
+  // // }
 
-  function getGrade(className) {
-    switch (className) {
-      case '1A':
-        return '1st Grade';
-      case '2A':
-        return '2nd Grade';
-      // Add more cases for other class names
-      default:
-        return '';
-    }
-  }
+  // function getGrade(className) {
+  //   switch (className) {
+  //     case '1A':
+  //       return '1st Grade';
+  //     case '2A':
+  //       return '2nd Grade';
+  //     // Add more cases for other class names
+  //     default:
+  //       return '';
+  //   }
+  // }
 
   function showProfile() {
     mainContent.innerHTML = `
@@ -160,6 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
     `;
 
     document.getElementById('change-password').addEventListener('click', showChangePassword);
+    document.getElementById()
   }
 
   function showChangePassword() {
@@ -216,148 +216,148 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('update-password-button').addEventListener('click', updatePassword);
   }
 
-  function updatePassword() {
-    const currentPassword = document.getElementById('current-password').value;
-    const newPassword = document.getElementById('new-password').value;
-    const confirmPassword = document.getElementById('confirm-password').value;
+  // function updatePassword() {
+  // //   const currentPassword = document.getElementById('current-password').value;
+  // //   const newPassword = document.getElementById('new-password').value;
+  // //   const confirmPassword = document.getElementById('confirm-password').value;
 
-    let valid = true;
+  // //   let valid = true;
 
-    // Clear previous errors
-    document.getElementById('current-password-error').textContent = '';
-    document.getElementById('new-password-error').textContent = '';
-    document.getElementById('confirm-password-error').textContent = '';
+  //   // Clear previous errors
+  //   document.getElementById('current-password-error').textContent = '';
+  //   document.getElementById('new-password-error').textContent = '';
+  //   document.getElementById('confirm-password-error').textContent = '';
 
-    // Validate current password
-    if (!currentPassword) {
-      document.getElementById('current-password-error').textContent = 'Current password is required.';
-      valid = false;
-    }
+  //   // Validate current password
+  //   if (!currentPassword) {
+  //     document.getElementById('current-password-error').textContent = 'Current password is required.';
+  //     valid = false;
+  //   }
 
-    // Validate new password
-    if (!newPassword) {
-      document.getElementById('new-password-error').textContent = 'New password is required.';
-      valid = false;
-    } else if (newPassword.length < 6) {
-      document.getElementById('new-password-error').textContent = 'New password must be at least 6 characters.';
-      valid = false;
-    }
+  //   // Validate new password
+  //   if (!newPassword) {
+  //     document.getElementById('new-password-error').textContent = 'New password is required.';
+  //     valid = false;
+  //   } else if (newPassword.length < 6) {
+  //     document.getElementById('new-password-error').textContent = 'New password must be at least 6 characters.';
+  //     valid = false;
+  //   }
 
-    // Validate confirm password
-    if (!confirmPassword) {
-      document.getElementById('confirm-password-error').textContent = 'Please confirm your new password.';
-      valid = false;
-    } else if (newPassword !== confirmPassword) {
-      document.getElementById('confirm-password-error').textContent = 'Passwords do not match.';
-      valid = false;
-    }
+  //   // Validate confirm password
+  //   if (!confirmPassword) {
+  //     document.getElementById('confirm-password-error').textContent = 'Please confirm your new password.';
+  //     valid = false;
+  //   } else if (newPassword !== confirmPassword) {
+  //     document.getElementById('confirm-password-error').textContent = 'Passwords do not match.';
+  //     valid = false;
+  //   }
 
-    if (valid) {
-      // Perform the password update operation here
-      alert('Password updated successfully!');
-      // Optionally, redirect or show a success message
-    }
-  }
+  //   if (valid) {
+  //     // Perform the password update operation here
+  //     alert('Password updated successfully!');
+  //     // Optionally, redirect or show a success message
+  //   }
+  // }
 
-  function showPhotos() {
-    mainContent.innerHTML = `
-      <div class="photos-page">
-        <h1 class="text-4xl font-bold text-[#141C24] mb-6">Photos</h1>
-        <div class="selectors mb-6">
-          <select id="class-selector" class="p-2 rounded-lg border border-gray-300">
-            <option>Choose...</option>
-            <option value="1A">1A</option>
-            <option value="2A">2A</option>
-            <!-- Add more class options as needed -->
-          </select>
-          <select id="student-selector" class="p-2 rounded-lg border border-gray-300">
-            <option>Choose...</option>
-          </select>
-        </div>
-        <div class="photos-grid" id="photos-grid">
-          <div class="photo-item">
-            <img src="https://cdn.usegalileo.ai/stability/9745ab4a-5458-4603-9998-dc8c9d3bf8a0.png" alt="Sample Photo" class="cursor-pointer" />
-            <button class="delete-btn">×</button>
-          </div>
-          <!-- Add more photo items here as needed -->
-        </div>
-        <button class="upload-btn mt-6 px-4 py-2 bg-[#E4E9F1] text-[#141C24] font-medium rounded-lg" id="upload-new-photo">Upload new photo</button>
-      </div>
-    `;
+  // function showPhotos() {
+  //   mainContent.innerHTML = `
+  //     <div class="photos-page">
+  //       <h1 class="text-4xl font-bold text-[#141C24] mb-6">Photos</h1>
+  //       <div class="selectors mb-6">
+  //         <select id="class-selector" class="p-2 rounded-lg border border-gray-300">
+  //           <option>Choose...</option>
+  //           <option value="1A">1A</option>
+  //           <option value="2A">2A</option>
+  //           <!-- Add more class options as needed -->
+  //         </select>
+  //         <select id="student-selector" class="p-2 rounded-lg border border-gray-300">
+  //           <option>Choose...</option>
+  //         </select>
+  //       </div>
+  //       <div class="photos-grid" id="photos-grid">
+  //         <div class="photo-item">
+  //           <img src="https://cdn.usegalileo.ai/stability/9745ab4a-5458-4603-9998-dc8c9d3bf8a0.png" alt="Sample Photo" class="cursor-pointer" />
+  //           <button class="delete-btn">×</button>
+  //         </div>
+  //         <!-- Add more photo items here as needed -->
+  //       </div>
+  //       <button class="upload-btn mt-6 px-4 py-2 bg-[#E4E9F1] text-[#141C24] font-medium rounded-lg" id="upload-new-photo">Upload new photo</button>
+  //     </div>
+  //   `;
 
-    const classSelector = document.getElementById('class-selector');
-    const studentSelector = document.getElementById('student-selector');
-    const photosGrid = document.getElementById('photos-grid');
-    const uploadNewPhoto = document.getElementById('upload-new-photo');
+  //   const classSelector = document.getElementById('class-selector');
+  //   const studentSelector = document.getElementById('student-selector');
+  //   const photosGrid = document.getElementById('photos-grid');
+  //   const uploadNewPhoto = document.getElementById('upload-new-photo');
 
-    classSelector.addEventListener('change', function () {
-      const selectedClass = classSelector.value;
-      if (selectedClass === '1A') {
-        studentSelector.innerHTML = `
-          <option>Choose...</option>
-          <option value="Alex">Alex</option>
-          <option value="Bella">Bella</option>
-          <!-- Add more students for class 1A as needed -->
-        `;
-      } else if (selectedClass === '2A') {
-        studentSelector.innerHTML = `
-          <option>Choose...</option>
-          <option value="Chris">Chris</option>
-          <option value="Diana">Diana</option>
-          <!-- Add more students for class 2A as needed -->
-        `;
-      } else {
-        studentSelector.innerHTML = '<option>Choose...</option>';
-      }
-    });
+  //   classSelector.addEventListener('change', function () {
+  //     const selectedClass = classSelector.value;
+  //     if (selectedClass === '1A') {
+  //       studentSelector.innerHTML = `
+  //         <option>Choose...</option>
+  //         <option value="Alex">Alex</option>
+  //         <option value="Bella">Bella</option>
+  //         <!-- Add more students for class 1A as needed -->
+  //       `;
+  //     } else if (selectedClass === '2A') {
+  //       studentSelector.innerHTML = `
+  //         <option>Choose...</option>
+  //         <option value="Chris">Chris</option>
+  //         <option value="Diana">Diana</option>
+  //         <!-- Add more students for class 2A as needed -->
+  //       `;
+  //     } else {
+  //       studentSelector.innerHTML = '<option>Choose...</option>';
+  //     }
+  //   });
 
-    uploadNewPhoto.addEventListener('click', () => {
-      uploadModal.classList.remove('hidden');
-    });
+  //   uploadNewPhoto.addEventListener('click', () => {
+  //     uploadModal.classList.remove('hidden');
+  //   });
 
-    cancelUpload.addEventListener('click', () => {
-      uploadModal.classList.add('hidden');
-    });
+  //   cancelUpload.addEventListener('click', () => {
+  //     uploadModal.classList.add('hidden');
+  //   });
 
-    uploadButton.addEventListener('click', () => {
-      const file = uploadInput.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (event) {
-          const img = document.createElement('img');
-          img.src = event.target.result;
-          img.alt = 'Uploaded Photo';
-          img.classList.add('cursor-pointer');
+  //   uploadButton.addEventListener('click', () => {
+  //     const file = uploadInput.files[0];
+  //     if (file) {
+  //       const reader = new FileReader();
+  //       reader.onload = function (event) {
+  //         const img = document.createElement('img');
+  //         img.src = event.target.result;
+  //         img.alt = 'Uploaded Photo';
+  //         img.classList.add('cursor-pointer');
 
-          const photoItem = document.createElement('div');
-          photoItem.classList.add('photo-item');
-          photoItem.appendChild(img);
+  //         const photoItem = document.createElement('div');
+  //         photoItem.classList.add('photo-item');
+  //         photoItem.appendChild(img);
 
-          const deleteButton = document.createElement('button');
-          deleteButton.textContent = '×';
-          deleteButton.addEventListener('click', () => {
-            photoItem.remove();
-          });
+  //         const deleteButton = document.createElement('button');
+  //         deleteButton.textContent = '×';
+  //         deleteButton.addEventListener('click', () => {
+  //           photoItem.remove();
+  //         });
 
-          img.addEventListener('click', () => {
-            previewImage.src = img.src;
-            previewModal.classList.remove('hidden');
-          });
+  //         img.addEventListener('click', () => {
+  //           previewImage.src = img.src;
+  //           previewModal.classList.remove('hidden');
+  //         });
 
-          photoItem.appendChild(deleteButton);
-          photosGrid.appendChild(photoItem);
+  //         photoItem.appendChild(deleteButton);
+  //         photosGrid.appendChild(photoItem);
 
-          uploadModal.classList.add('hidden');
-        };
-        reader.readAsDataURL(file);
-      }
-    });
+  //         uploadModal.classList.add('hidden');
+  //       };
+  //       reader.readAsDataURL(file);
+  //     }
+  //   });
 
-    closePreview.addEventListener('click', () => {
-      previewModal.classList.add('hidden');
-    });
-  }
+  //   closePreview.addEventListener('click', () => {
+  //     previewModal.classList.add('hidden');
+  //   });
+  // }
 
   // Initialize the class list view
-  showClasses();
+  // showClasses();
 });

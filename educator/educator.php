@@ -20,8 +20,13 @@ if (!isset($_SESSION['user_email']) || $_SESSION['role'] !== 'educator') {
 
 $educatorEmail = $_SESSION['user_email'];
 
-// Fetch educator's school_id
-$stmt = $pdo->prepare('SELECT e.school_id FROM educators e JOIN users u ON e.email = u.email WHERE u.email = ?');
+// // Fetch educator's school_id
+// $stmt = $pdo->prepare('SELECT e.school_id FROM educators e JOIN users u ON e.email = u.email WHERE u.email = ?');
+// $stmt->execute([$educatorEmail]);
+// $educator = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Fetch educator's school_id, profile_pic, name, and other details from the educators table
+$stmt = $pdo->prepare('SELECT school_id, profile_pic, name, gender, phone_number, emergency_contact, dob, location FROM educators WHERE email = ?');
 $stmt->execute([$educatorEmail]);
 $educator = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -66,8 +71,9 @@ $themes = getThemes($schoolId);
   <title>Educator's Dashboard</title>
   <link rel="stylesheet" href="assets/css/educator.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900&display=swap" />
+  <link rel="stylesheet" href="assets/css/custom.css">
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" /><script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
                 .pagination-link {
                 display: inline-block;
@@ -104,6 +110,8 @@ table {
 
     margin-right: 3rem !important;
 }
+
+
   </style>
 </head>
 <body class="bg-[#F8F9FB] font-sans">
@@ -112,7 +120,8 @@ table {
     <div class="sidebar w-64 bg-white p-4">
       <div class="flex flex-col items-center">
         <div class="profile-pic w-24 h-24 bg-cover bg-center rounded-full mb-4"></div>
-        <h1 class="text-xl font-bold text-[#141C24]">Prince Gyimah</h1>
+        <h1 class="text-xl font-bold text-[#141C24]"><?php echo htmlspecialchars($educator['name']); ?></h1>
+
         <p class="text-sm text-[#3F5374]">KI Coach</p>
       </div>
       <nav class="mt-8">
@@ -190,6 +199,74 @@ table {
     </div>
   </div>
 
+ <!-- Modal for Profile Form -->
+<div id="profile-form-modal" class="modal hidden">
+  <div class="modal-content">
+    <h2>Edit Profile</h2>
+    <form id="profile-form" enctype="multipart/form-data">
+      <!-- Profile Picture -->
+      <div class="form-group">
+        <label for="profile-pic">Profile Picture</label>
+        <input type="file" name="profile_pic" id="profile-pic">
+      </div>
+
+      <!-- Name (non-editable) -->
+      <div class="form-group">
+        <label for="name">Name (Not Editable)</label>
+        <input type="text" name="name" id="name" readonly>
+      </div>
+
+      <!-- Location -->
+      <div class="form-group">
+        <label for="location">Location</label>
+        <input type="text" name="location" id="location">
+      </div>
+
+      <!-- Phone Number -->
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="text" name="phone_number" id="phone">
+      </div>
+
+      <!-- Emergency Contact -->
+      <div class="form-group">
+        <label for="emergency">Emergency Contact</label>
+        <input type="text" name="emergency_contact" id="emergency">
+      </div>
+
+      <!-- Email (non-editable) -->
+      <div class="form-group">
+        <label for="email">Email (Not Editable)</label>
+        <input type="email" name="email" id="email" readonly>
+      </div>
+
+      <!-- Password Fields -->
+      <div class="form-group">
+        <label for="old-password">Old Password</label>
+        <input type="password" name="old_password" id="old-password">
+      </div>
+      <div class="form-group">
+        <label for="new-password">New Password</label>
+        <input type="password" name="new_password" id="new-password">
+      </div>
+      <div class="form-group">
+        <label for="confirm-password">Confirm Password</label>
+        <input type="password" name="confirm_password" id="confirm-password">
+      </div>
+
+      <!-- Submit and Cancel Buttons -->
+      <div class="form-actions">
+        <button type="button" id="cancel-profile" class="btn cancel">Cancel</button>
+        <button type="submit" class="btn submit">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+
+
   <!-- Notification Modal -->
   <div id="notification-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
     <div class="bg-white p-6 rounded-lg shadow-lg text-center">
@@ -229,12 +306,124 @@ table {
 
   <!-- <script src="assets/js/educator.js"></script> -->
 
-  
+  <!-- Toastr and Custom JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
   <script>
 
-    // document.getElementById('submit-scores-button').addEventListener('click', function(){
-    //     document.getElementById('score-form').submit();
-    // })
+toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": true,
+    "positionClass": "toast-top-right",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+};
+// $(document).ready(function() {
+//     // Show the profile form when the "Profile" button is clicked
+//     $('#profile-btn').click(function() {
+//         $.ajax({
+//             url: 'get_profile.php', // Endpoint to fetch educator's profile details
+//             method: 'GET',
+//             dataType: 'json',
+//             success: function(data) {
+//                 // Populate the form with the data from the server
+//                 $('#profile-pic').val(''); // Reset the profile pic input
+//                 $('#name').val(data.name);
+//                 $('#location').val(data.location);
+//                 $('#phone').val(data.phone_number);
+//                 $('#emergency').val(data.emergency_contact);
+//                 $('#email').val(data.email);
+//                 $('#profile-form-modal').removeClass('hidden');
+//             }
+//         });
+//     });
+
+//     // Handle form submission via AJAX
+//     $('#profile-form').submit(function(e) {
+//         e.preventDefault();
+
+//         var formData = new FormData(this); // Form data with file upload
+
+//         $.ajax({
+//             url: 'update_profile.php', // Endpoint for updating the profile
+//             method: 'POST',
+//             data: formData,
+//             contentType: false, // Required for file uploads
+//             processData: false,
+//             success: function(response) {
+//                 alert('Profile updated successfully!');
+//                 $('#profile-form-modal').addClass('hidden'); // Hide the modal after successful update
+//             }
+//         });
+//     });
+
+//     // Hide the modal when "Cancel" is clicked
+//     $('#cancel-profile').click(function() {
+//         $('#profile-form-modal').addClass('hidden');
+//     });
+// });
+
+
+$(document).ready(function() {
+    // Show the profile form when the "Profile" button is clicked
+    $('#profile-btn').click(function() {
+        $.ajax({
+            url: 'get_profile.php', // Fetch profile details
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                // Populate the form
+                $('#name').val(data.name);
+                $('#location').val(data.location);
+                $('#phone').val(data.phone_number);
+                $('#emergency').val(data.emergency_contact);
+                $('#email').val(data.email);
+
+                $('#profile-form-modal').show(); // Show modal
+            }
+        });
+    });
+
+    // Handle form submission via AJAX
+    $('#profile-form').submit(function(e) {
+        e.preventDefault();
+        
+        var formData = new FormData(this); // Form data including files
+
+        $.ajax({
+            url: 'update_profile.php', // Endpoint to handle profile update
+            method: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                toastr.success('Profile updated successfully!');
+                $('#profile-form-modal').hide(); // Hide modal
+            },
+            error: function() {
+                toastr.error('There was an error updating the profile.');
+            }
+        });
+    });
+
+    // Hide modal when "Cancel" is clicked
+    $('#cancel-profile').click(function() {
+        $('#profile-form-modal').hide();
+    });
+});
+
+
     $(document).ready(function() {
         var currentClassId = <?php echo $classId ?: 'null'; ?>;
 
