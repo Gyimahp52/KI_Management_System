@@ -25,6 +25,9 @@ $stmt = $pdo->prepare('SELECT e.school_id FROM educators e JOIN users u ON e.ema
 $stmt->execute([$educatorEmail]);
 $educator = $stmt->fetch(PDO::FETCH_ASSOC);
 
+print_r($educator);
+
+
 // $testEd = $_SESSION[$educator];
 
 $_SESSION['school_id'] = $educator['school_id'];
@@ -36,6 +39,8 @@ if (!$educator) {
 }
 
 $schoolId = $educator['school_id'];
+$educatorName = $educator['name'];
+echo $educatorName;
 $classId = isset($_GET['class_id']) ? intval($_GET['class_id']) : null;
 // $term_id = isset($_GET['term_id']) ? intval($_GET['term_id']) : null;
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
@@ -149,7 +154,7 @@ table {
       </div>
     </div>
         <!-- Add more classes here as needed -->
-      </div>
+    </div>
 
       <!-- Student Scores Table (hidden initially) -->
       <div id="student-scores" <?php echo $classId ? '' : 'style="display: none;"'; ?>>
@@ -226,9 +231,17 @@ table {
 
   
   <script>
+
+    // document.getElementById('submit-scores-button').addEventListener('click', function(){
+    //     document.getElementById('score-form').submit();
+    // })
     $(document).ready(function() {
         var currentClassId = <?php echo $classId ?: 'null'; ?>;
 
+        $('#submit-scores-button').click(function() {
+            $('#score-form').submit(); // Programmatically submit the form
+        });
+        
         // Attach a handler to the search form
         $('#student-search').on('input', function() {
               performSearch();
@@ -241,10 +254,10 @@ table {
           });
       
         // Function to perform the search and update the student list dynamically
-              function performSearch() {
-              var searchQuery = $('#student-search').val();
-              var page = 1; // reset to first page for new search
-              loadStudents(currentClassId, page, searchQuery);
+        function performSearch() {
+            var searchQuery = $('#student-search').val();
+            var page = 1; // reset to first page for new search
+            loadStudents(currentClassId, page, searchQuery);
           }
 
 
@@ -259,6 +272,7 @@ table {
             history.pushState(null, '', 'educator.php');
         });
 
+      
         $('#score-form').submit(function(e) {
             e.preventDefault();
             submitScores();
