@@ -158,10 +158,11 @@ table {
           <button class="px-4 py-2 bg-[#F4C753] text-[#141C24] font-bold rounded-lg" id="submit-scores-button">Submit Scores</button>
         </div>
         <h2 id="class-name" class="p-4"></h2>
-        <form method="GET" class="search-bar">
-                <input type="hidden" name="class_id" value="<?php echo $classId; ?>">
-                <input type="text" name="search" id="student-search" class="form-control search-input" placeholder="Search by ID or Name" value="<?php echo htmlspecialchars($searchQuery); ?>">
-            </form>
+        <form id="search-form" class="search-bar" onsubmit="return false;">
+            <input type="hidden" name="class_id" value="<?php echo $classId; ?>">
+            <input type="text" name="search" id="student-search" class="form-control search-input" placeholder="Search by ID or Name" value="<?php echo htmlspecialchars($searchQuery); ?>">
+        </form>
+
 
           <form id="score-form" action="">
         <table id="students-table" class=" bg-white rounded-lg shadow overflow-hidden">
@@ -228,6 +229,25 @@ table {
     $(document).ready(function() {
         var currentClassId = <?php echo $classId ?: 'null'; ?>;
 
+            // Attach a handler to the search form
+    $('#student-search').on('input', function() {
+        performSearch();
+    });
+
+        // Disable default form submission for 'Enter' key in the search bar
+        $('#search-form').on('submit', function(e) {
+        e.preventDefault();
+        performSearch();
+    });
+ 
+        // Function to perform the search and update the student list dynamically
+        function performSearch() {
+        var searchQuery = $('#student-search').val();
+        var page = 1; // reset to first page for new search
+        loadStudents(currentClassId, page, searchQuery);
+    }
+
+
         $('.card').click(function() {
             var classId = $(this).data('class-id');
             loadStudents(classId, 1);
@@ -244,28 +264,28 @@ table {
             submitScores();
         });
 
-        function loadStudents(classId, page) {
-            $.ajax({
-                url: 'get_students.php',
-                method: 'GET',
-                data: { 
-                    class_id: classId, 
-                    page: page,
-                    search: $('#student-search').val()
-                },
-                success: function(response) {
-                    var data = JSON.parse(response);
-                    $('#class-name').text(data.className);
-                    $('#student-list').html(data.studentsHtml);
-                    $('#pagination').html(data.pagination);
-                    $('#class-cards').hide();
-                    $('#student-scores').show();
-                    currentClassId = classId;
-                    history.pushState(null, '', 'educator.php?class_id=' + classId + '&page=' + page);
-                }
-            });
-        }
-
+    // Existing function to load students, but now we also pass search query
+    function loadStudents(classId, page, searchQuery = '') {
+        $.ajax({
+            url: 'get_students.php',
+            method: 'GET',
+            data: { 
+                class_id: classId, 
+                page: page,
+                search: searchQuery
+            },
+            success: function(response) {
+                var data = JSON.parse(response);
+                $('#class-name').text(data.className);
+                $('#student-list').html(data.studentsHtml);
+                $('#pagination').html(data.pagination);
+                $('#class-cards').hide();
+                $('#student-scores').show();
+                currentClassId = classId;
+                history.pushState(null, '', 'educator.php?class_id=' + classId + '&page=' + page + '&search=' + searchQuery);
+            }
+        });
+    }
         function submitScores() {
             var formData = $('#score-form').serialize();
             $.ajax({
