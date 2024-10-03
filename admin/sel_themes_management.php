@@ -1,6 +1,7 @@
 <?php
 //sel_management.php
-session_start();
+include('includes/auth.php');
+// session_start();
 require_once 'db_connction.php';
 require_once 'manage_sel_functions.php';
 

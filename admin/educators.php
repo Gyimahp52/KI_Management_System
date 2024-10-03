@@ -1,5 +1,7 @@
 <?php
-session_start();
+// session_start();
+include('includes/auth.php');
+
 include('includes/dbconnection.php');
 include 'function.php';
 
@@ -85,6 +87,152 @@ if (isset($_POST['edit'])) {
     }
 }
 
+// $form_submitted = false;
+// if (isset($_POST['submit'])) {
+//     $required_fields = ['name', 'phone', 'emergency', 'email', 'gender', 'dob', 'location', 'school', 'password'];
+//     $missing_fields = [];
+
+//     foreach ($required_fields as $field) {
+//         if (empty($_POST[$field])) {
+//             $missing_fields[] = $field;
+//         }
+//     }
+
+//     if (!empty($missing_fields)) {
+//         $_SESSION['toastr'] = ['type' => 'warning', 'message' => 'Missing fields: '.implode(', ', $missing_fields)];
+//         header("Location: educators.php");
+//         exit;
+//     } else {
+//         $name = sanitize_input($_POST['name']);
+//         $phone = sanitize_input($_POST['phone']);
+//         $emerg_phone = sanitize_input($_POST['emergency']);
+//         $email = sanitize_input($_POST['email']);
+//         $gender = sanitize_input($_POST['gender']);
+//         $dob = sanitize_input($_POST['dob']);
+//         $location = sanitize_input($_POST['location']);
+//         $school = sanitize_input($_POST['school']);
+//         $password = $_POST['password']; // Will be hashed later
+
+//         $profile_pic = ''; // Default empty value
+
+//         // Handle file upload
+//         if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] == 0) {
+//             $allowed = array("jpg" => "image/jpg", "jpeg" => "image/jpeg", "gif" => "image/gif", "png" => "image/png");
+//             $filename = $_FILES["profile_pic"]["name"];
+//             $filetype = $_FILES["profile_pic"]["type"];
+//             $filesize = $_FILES["profile_pic"]["size"];
+    
+//             // Verify file extension
+//             $ext = pathinfo($filename, PATHINFO_EXTENSION);
+//             if (!array_key_exists($ext, $allowed)) {
+//                 $_SESSION['toastr'] = ['type' => 'error', 'message' => 'Error: Please select a valid file format.'];
+//                 header("Location: educators.php");
+//                 exit;
+//             }
+    
+//             // Verify file size - 1MB maximum
+//             $maxsize = 1 * 1024 * 1024;
+//             if ($filesize > $maxsize) {
+//                 $_SESSION['toastr'] = ['type' => 'error', 'message' => 'Error: File size is larger than the allowed limit.'];
+//                 header("Location: educators.php");
+//                 exit;
+//             }
+    
+//             // Verify MYME type of the file
+//             if (in_array($filetype, $allowed)) {
+//                 // Check whether file exists before uploading it
+//                 if (file_exists("uploads/" . $filename)) {
+//                     $_SESSION['toastr'] = ['type' => 'warning', 'message' => $filename . " already exists."];
+//                 } else {
+//                     move_uploaded_file($_FILES["profile_pic"]["tmp_name"], "uploads/" . $filename);
+//                     $profile_pic = "uploads/" . $filename;
+//                 }
+//             } else {
+//                 $_SESSION['toastr'] = ['type' => 'error', 'message' => 'Error: There was a problem uploading your file. Please try again.'];
+//                 header("Location: educators.php");
+//                 exit;
+//             }
+//         }
+
+//         // Validate inputs
+//         if (!validate_name($name)) {
+//             $_SESSION['toastr'] = ['type' => 'error', 'message' => 'Invalid name format.'];
+//             header("Location: educators.php");
+//             exit;
+//         } elseif (!validate_phone($phone)) {
+//             $_SESSION['toastr'] = ['type' => 'error', 'message' => 'Invalid phone number format. Must be 10 digits.'];
+//             header("Location: educators.php");
+//             exit;
+//         } elseif (!validate_phone($emerg_phone)) {
+//             $_SESSION['toastr'] = ['type' => 'error', 'message' => 'Invalid emergency phone number format. Must be 10 digits.'];
+//             header("Location: educators.php");
+//             exit;
+//         } elseif (!validate_email($email)) {
+//             $_SESSION['toastr'] = ['type' => 'error', 'message' => 'Invalid email format.'];
+//             header("Location: educators.php");
+//             exit;
+//         } else {
+//             try {
+//                 // Check if the email or phone number already exists
+//                 $ret = "SELECT email FROM educators WHERE email = :email OR phone_number = :phone";
+//                 $query = $dbh->prepare($ret);
+//                 $query->bindParam(':phone', $phone, PDO::PARAM_STR);
+//                 $query->bindParam(':email', $email, PDO::PARAM_STR);
+//                 $query->execute();
+//                 $results = $query->fetchAll(PDO::FETCH_OBJ);
+
+//                 if ($query->rowCount() == 0) {
+//                     $dbh->beginTransaction();
+
+//                     // Hash the password
+//                     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+//                     // $username = strtolower(explode(' ', $name)[0]); // First word of the name
+
+//                     // Insert the new educator's details
+//                     $sql = "INSERT INTO educators(name, gender, phone_number, emergency_contact, email, dob, location, school_id, profile_pic) VALUES (:name, :gender, :phone, :emerg_phone, :email, :dob, :location, :school, :profile_pic)";
+//                     $query = $dbh->prepare($sql);
+
+//                     $query->bindParam(':name', $name, PDO::PARAM_STR);
+//                     $query->bindParam(':gender', $gender, PDO::PARAM_STR);
+//                     $query->bindParam(':phone', $phone, PDO::PARAM_STR);
+//                     $query->bindParam(':emerg_phone', $emerg_phone, PDO::PARAM_STR);
+//                     $query->bindParam(':email', $email, PDO::PARAM_STR);
+//                     $query->bindParam(':dob', $dob, PDO::PARAM_STR);
+//                     $query->bindParam(':location', $location, PDO::PARAM_STR);
+//                     $query->bindParam(':school', $school, PDO::PARAM_STR);
+//                     $query->bindParam(':profile_pic', $profile_pic, PDO::PARAM_STR);
+//                     $query->execute();
+
+//                     $educator_id = $dbh->lastInsertId();
+
+//                     // Insert into users table
+//                     $sql = "INSERT INTO users(email, password, role) VALUES (:email, :password, 'educator')";
+//                     $query = $dbh->prepare($sql);
+//                     $query->bindParam(':email', $email, PDO::PARAM_STR);
+//                     $query->bindParam(':password', $hashed_password, PDO::PARAM_STR);
+//                     $query->execute();
+
+//                     $dbh->commit();
+                    
+//                     $_SESSION['toastr'] = ['type' => 'success', 'message' => 'Educator detail has been added.'];
+//                     header("Location: educators.php");
+//                     exit;
+//                 } else {
+//                     $_SESSION['toastr'] = ['type' => 'warning', 'message' => 'Email or Mobile Number already exists. Please try again.'];
+//                     header("Location: educators.php");
+//                     exit;
+//                 }
+//             } catch (PDOException $e) {
+//                 $dbh->rollBack();
+//                 $_SESSION['toastr'] = ['type' => 'error', 'message' => 'Database error occurred: ' . $e->getMessage()];
+//                 // error_log($e->getMessage(), 3, '/var/tmp/my-errors.log');
+//                 header("Location: educators.php");
+//                 exit;
+//             }
+//         }
+//     }
+// }
+
 $form_submitted = false;
 if (isset($_POST['submit'])) {
     $required_fields = ['name', 'phone', 'emergency', 'email', 'gender', 'dob', 'location', 'school', 'password'];
@@ -111,8 +259,56 @@ if (isset($_POST['submit'])) {
         $school = sanitize_input($_POST['school']);
         $password = $_POST['password']; // Will be hashed later
 
+        $profile_pic = ''; // Default empty value
+
+        // Handle file upload
+        if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] == 0) {
+            $allowed = array("jpg" => "image/jpg", "jpeg" => "image/jpeg", "gif" => "image/gif", "png" => "image/png");
+            $filename = $_FILES["profile_pic"]["name"];
+            $filetype = $_FILES["profile_pic"]["type"];
+            $filesize = $_FILES["profile_pic"]["size"];
+    
+            // Verify file extension
+            $ext = pathinfo($filename, PATHINFO_EXTENSION);
+            if (!array_key_exists($ext, $allowed)) {
+                $_SESSION['toastr'] = ['type' => 'error', 'message' => 'Error: Please select a valid file format.'];
+                header("Location: educators.php");
+                exit;
+            }
+    
+            // Verify file size - 1MB maximum
+            $maxsize = 1 * 1024 * 1024;
+            if ($filesize > $maxsize) {
+                $_SESSION['toastr'] = ['type' => 'error', 'message' => 'Error: File size is larger than the allowed limit.'];
+                header("Location: educators.php");
+                exit;
+            }
+    
+            // Verify MIME type of the file
+            if (in_array($filetype, $allowed)) {
+                // Generate a unique filename to prevent overwriting
+                $new_filename = uniqid() . '.' . $ext;
+                $upload_path = "uploads/" . $new_filename;
+                
+                if (move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $upload_path)) {
+                    $profile_pic = $upload_path;
+                    error_log("File uploaded successfully: " . $profile_pic);
+                } else {
+                    error_log("Failed to move uploaded file. Error: " . error_get_last()['message']);
+                    $_SESSION['toastr'] = ['type' => 'error', 'message' => 'Error: Failed to save the uploaded file.'];
+                    header("Location: educators.php");
+                    exit;
+                }
+            } else {
+                $_SESSION['toastr'] = ['type' => 'error', 'message' => 'Error: There was a problem uploading your file. Please try again.'];
+                header("Location: educators.php");
+                exit;
+            }
+        }
+
         // Validate inputs
         if (!validate_name($name)) {
+            error_log("Invalid name format: " . $name);
             $_SESSION['toastr'] = ['type' => 'error', 'message' => 'Invalid name format.'];
             header("Location: educators.php");
             exit;
@@ -143,11 +339,11 @@ if (isset($_POST['submit'])) {
 
                     // Hash the password
                     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                    // $username = strtolower(explode(' ', $name)[0]); // First word of the name
 
                     // Insert the new educator's details
-                    $sql = "INSERT INTO educators(name, gender, phone_number, emergency_contact, email, dob, location, school_id) VALUES (:name, :gender, :phone, :emerg_phone, :email, :dob, :location, :school)";
+                    $sql = "INSERT INTO educators(name, gender, phone_number, emergency_contact, email, dob, location, school_id, profile_pic) VALUES (:name, :gender, :phone, :emerg_phone, :email, :dob, :location, :school, :profile_pic)";
                     $query = $dbh->prepare($sql);
+
                     $query->bindParam(':name', $name, PDO::PARAM_STR);
                     $query->bindParam(':gender', $gender, PDO::PARAM_STR);
                     $query->bindParam(':phone', $phone, PDO::PARAM_STR);
@@ -156,22 +352,30 @@ if (isset($_POST['submit'])) {
                     $query->bindParam(':dob', $dob, PDO::PARAM_STR);
                     $query->bindParam(':location', $location, PDO::PARAM_STR);
                     $query->bindParam(':school', $school, PDO::PARAM_STR);
-                    $query->execute();
-
-                    $educator_id = $dbh->lastInsertId();
-
-                    // Insert into users table
-                    $sql = "INSERT INTO users(email, password, role) VALUES (:email, :password, 'educator')";
-                    $query = $dbh->prepare($sql);
-                    $query->bindParam(':email', $email, PDO::PARAM_STR);
-                    $query->bindParam(':password', $hashed_password, PDO::PARAM_STR);
-                    $query->execute();
-
-                    $dbh->commit();
+                    $query->bindParam(':profile_pic', $profile_pic, PDO::PARAM_STR);
                     
-                    $_SESSION['toastr'] = ['type' => 'success', 'message' => 'Educator detail has been added.'];
-                    header("Location: educators.php");
-                    exit;
+                    error_log("Profile pic path before insert: " . $profile_pic);
+
+                    if ($query->execute()) {
+                        error_log("Educator inserted successfully with profile pic: " . $profile_pic);
+                        $educator_id = $dbh->lastInsertId();
+
+                        // Insert into users table
+                        $sql = "INSERT INTO users(email, password, role) VALUES (:email, :password, 'educator')";
+                        $query = $dbh->prepare($sql);
+                        $query->bindParam(':email', $email, PDO::PARAM_STR);
+                        $query->bindParam(':password', $hashed_password, PDO::PARAM_STR);
+                        $query->execute();
+
+                        $dbh->commit();
+                        
+                        $_SESSION['toastr'] = ['type' => 'success', 'message' => 'Educator detail has been added.'];
+                        header("Location: educators.php");
+                        exit;
+                    } else {
+                        error_log("Failed to insert educator. Error: " . implode(", ", $query->errorInfo()));
+                        throw new PDOException("Failed to insert educator.");
+                    }
                 } else {
                     $_SESSION['toastr'] = ['type' => 'warning', 'message' => 'Email or Mobile Number already exists. Please try again.'];
                     header("Location: educators.php");
@@ -180,14 +384,13 @@ if (isset($_POST['submit'])) {
             } catch (PDOException $e) {
                 $dbh->rollBack();
                 $_SESSION['toastr'] = ['type' => 'error', 'message' => 'Database error occurred: ' . $e->getMessage()];
-                // error_log($e->getMessage(), 3, '/var/tmp/my-errors.log');
+                error_log("Database error: " . $e->getMessage());
                 header("Location: educators.php");
                 exit;
             }
         }
     }
 }
-
 
 // Fetch data from the database
 // Pagination
@@ -323,6 +526,11 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
             <div class="form-container card p-4 d-none">
                 <h2>Educator's details</h2>
                 <form id="educatorForm" action="educators.php" method="post" enctype="multipart/form-data">
+                    <!-- Profile Picture -->
+                    <div class="form-group">
+                        <label for="profile-pic">Profile Picture</label>
+                        <input type="file" name="profile_pic" id="profile-pic" accept="image/*">
+                    </div>
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" id="name" name="name" placeholder="Enter your name" class="form-control" required >
@@ -408,6 +616,7 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
                         <th>Email</th>
                         <th>School</th>
                         <th>Action</th>
+                        <th>Profile Pic</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -418,6 +627,13 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
     <td><?php echo htmlspecialchars($educator->phone_number); ?></td>
     <td><?php echo htmlspecialchars($educator->email); ?></td>
     <td><?php echo htmlspecialchars($educator->school_name); ?></td>
+    <td>
+    <?php if (!empty($educator->profile_pic)): ?>
+        <img src="<?php echo htmlspecialchars($educator->profile_pic); ?>" alt="Profile Picture" style="width: 50px; height: auto;">
+    <?php else: ?>
+        No Picture
+    <?php endif; ?>
+    </td>
     <td>
         <a href="educator_profile.php?id=<?php echo $educator->id; ?>" class="btn btn-info btn-sm">View</a>
         <button class="btn btn-primary btn-sm edit-btn" data-id="<?php echo $educator->id; ?>">Edit</button>
@@ -553,19 +769,6 @@ $(document).ready(function() {
     });
 });
 
-// document.addEventListener('DOMContentLoaded', function() {
-//     const sortSchool = document.getElementById('sort_school');
-//     const sortOrder = document.getElementById('sort_order');
-//     const sortForm = sortSchool.closest('form');
-
-//     sortSchool.addEventListener('change', function() {
-//         sortForm.submit();
-//     });
-
-//     sortOrder.addEventListener('change', function() {
-//         sortForm.submit();
-//     });
-// });
 
 document.addEventListener('DOMContentLoaded', function() {
     const sortForm = document.querySelector('.sorting-controls form');

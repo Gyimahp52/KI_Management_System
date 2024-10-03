@@ -10,6 +10,11 @@ $stmt = $pdo->prepare('SELECT name, profile_pic, phone_number, emergency_contact
 $stmt->execute([$educatorEmail]);
 $educator = $stmt->fetch(PDO::FETCH_ASSOC);
 
+// Add the full path to the profile picture
+if (!empty($educator['profile_pic'])) {
+    $educator['profile_pic'] = 'admin/' . $educator['profile_pic'];
+}
+
 // Return the details as a JSON response
 echo json_encode($educator);
 ?>

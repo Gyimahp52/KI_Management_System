@@ -35,11 +35,11 @@ $themes = getThemes($schoolId);
 $studentsHtml = '';
 foreach ($students as $student) {
     $studentsHtml .= '<tr>';
-    $studentsHtml .= '<td class="p-4">' . htmlspecialchars($student['student_id']) . '</td>';
-    $studentsHtml .= '<td class="p-4">' . htmlspecialchars($student['name']) . '</td>';
+    $studentsHtml .= '<td>' . htmlspecialchars($student['student_id']) . '</td>';
+    $studentsHtml .= '<td>' . htmlspecialchars($student['name']) . '</td>';
     foreach ($themes as $theme) {
         $score = $studentScoreService->getScore($student['student_id'], $theme['id'], $currentTerm);
-        $studentsHtml .= '<td class="p-4"><input type="number" name="scores[' . $student['student_id'] . '][' . $theme['id'] . ']" min="2" max="9" step="1" value="' . htmlspecialchars($score) . '"></td>';
+        $studentsHtml .= '<td><input class="input-box" type="number" name="scores[' . $student['student_id'] . '][' . $theme['id'] . ']" min="2" max="9" step="1" value="' . htmlspecialchars($score) . '"></td>';
     }
     $studentsHtml .= '</tr>';
 }

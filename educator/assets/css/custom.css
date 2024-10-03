@@ -6,25 +6,32 @@
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
-  display: flex;
+  display: none; /* Hide the modal by default */
   justify-content: center;
   align-items: center;
-  z-index: 999;
+  z-index: 9999;
+}
+
+.modal.show {
+  display: flex; /* Show modal when the class 'show' is added */
 }
 
 .modal-content {
   background: white;
+  overflow-y: auto; /* Enable vertical scrolling */
   padding: 20px;
   border-radius: 10px;
   width: 400px;
   max-width: 100%;
+  max-height: 90vh; /* Limit height to viewport height minus some space for padding */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transform: translateX(-100%);
+  transition: transform 0.4s ease; /* Smooth transition for slide-in */
 }
 
-.modal h2 {
-  margin-bottom: 20px;
-  font-size: 24px;
-  color: #333;
+/* Slide-in from left animation */
+.modal-content.slide-in-left {
+  transform: translateX(0); /* Reset to initial position when shown */
 }
 
 /* Form Styles */

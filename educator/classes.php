@@ -25,7 +25,6 @@ if (!isset($_SESSION['user_email']) || $_SESSION['role'] !== 'educator') {
 
 $educatorEmail = $_SESSION['user_email'];
 
-
 // Fetch educator's school_id, profile_pic, name, and other details from the educators table
 $stmt = $pdo->prepare('SELECT school_id, profile_pic, name, gender, phone_number, emergency_contact, dob, location FROM educators WHERE email = ?');
 $stmt->execute([$educatorEmail]);
@@ -55,6 +54,7 @@ if ($school) {
     $educator['school_name'] = 'Unknown School';
 }
 
+
 $schoolId = $educator['school_id'];
 $educatorName = $educator['name'];
 $classId = isset($_GET['class_id']) ? intval($_GET['class_id']) : null;
@@ -70,193 +70,154 @@ if (isset($_SESSION['message'])) {
 
 $classes = $studentScoreService->getClasses($schoolId);
 $themes = getThemes($schoolId);
-print_r($educator)
+
+// Set the default timezone to Africa/Accra (Ghana)
+date_default_timezone_set('Africa/Accra');
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Educator's Dashboard</title>
-  <link rel="stylesheet" href="assets/css/educator.css" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900&display=swap" />
-  <link rel="stylesheet" href="assets/css/custom.css">
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <style>
-                .pagination-link {
-                display: inline-block;
-                padding: 5px 10px;
-                margin: 0 2px;
-                border: 1px solid #ddd;
-                color: #333;
-                text-decoration: none;
-            }
-
-            .pagination-link.active {
-                background-color: #007bff;
-                color: white;
-                border-color: #007bff;
-            }
-
-            #pagination {
-                margin-top: 20px;
-                text-align: center;
-                margin-bottom: 2rem;
-            }
-            .w-full {
-    width: 50% !important;
-}
-.p-4 {
-    padding: .5rem !important;
-}
-.cst-margn {
-    margin-bottom: 0.5rem !important;
-    margin-top: 3rem !important;
-}
-table {
-    text-align: center !important;
-
-    margin-right: 3rem !important;
-}
-
-.menu, ol, ul {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    align-items: center;
-    flex-direction: column;
-}
-
-.flex-col {
-    align-items: center;
-}
-
-.profile-img{
-  width: 20rem  !important;
-  height: 10rem !important;
-}
-
-.c-flex{
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-}
-
-.heading-1{
-  font-size: 1.7rem !important;
-  font-weight: 700 !important;
-}
-.heading-2{
-  font-size: 1.4rem !important;
-  font-weight: 500 !important;
-}
-.margin-top{
-  margin-top: 1rem;
-}
-.margin-top-2{
-  margin-top: 3.5rem;
-}
-.heading-3{
-  font-size: 1.2rem !important;
-  margin-top: 2.7rem !important;
-}
-    
-.c-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* adjust the number of columns */
-}
-
-.hver{
-  cursor: pointer;
-}
-  </style>
-</head>
-<body class="bg-[#F8F9FB] font-sans">
-  <div class="flex min-h-screen">
-    <!-- Sidebar -->
-    <div class="flex flex-col sidebar w-64 bg-white p-4">
-      <div class="c-flex items-center">
-      <div class="profile-img w-24 h-24 bg-cover bg-center rounded-full mb-4 cst-margn flex items-center justify-center">
-      <?php if (!empty($educator['profile_pic'])): ?>
-        <img src="<?php echo htmlspecialchars(BASE_URL . 'admin/' . $educator['profile_pic']); ?>" 
-             alt="Profile Picture" 
-             class="w-full h-full object-cover rounded-full"
-             >
-    <?php else: ?>
-        <img class="w-full h-full object-cover rounded-full" src="<?php echo htmlspecialchars(BASE_URL . 'educator/assets/images/placeholders/user.png'); ?>">
-    <?php endif; ?>
-</div>
-
-        <h1 class="heading-1 text-xl font-bold text-[#141C24]"><?php echo htmlspecialchars($educator['name']); ?></h1>
-
-        <p class="margin-top heading-2 text-sm text-[#3F5374]">KI Coach</p>
-      </div>
-      <nav class="mt-8">
-        <ul>
-          <li class="mb-4">
-            <a href="#" id="profile-btn" class="heading-3 flex items-center px-4 py-2 text-sm font-medium text-[#141C24] hover:bg-[#E4E9F1] rounded-lg">Profile</a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Classes</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/collection/components/icon/icon.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <link rel="stylesheet" href="assets/css/custom.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <class="dashboard">
+      <div class="sidebar" id="sidebar">
+        <div class="sidebar-content">
+        <div class="logo">
+          <img class="ki-logo" src="<?php echo htmlspecialchars(BASE_URL . 'educator/assets/images/ki-logo.png'); ?>" alt="">
+        </div>
+        <ul class="menu">
+          <li>
+            <a href="#">
+              <ion-icon
+                class="sidebar-icon"
+                name="speedometer-outline"
+              ></ion-icon>
+              <span class="menu-text">Dashboard</span>
+            </a>
           </li>
-          <li class="mb-4">
-            <a href="class.php" id="classes-btn" class="heading-3 flex items-center px-4 py-2 text-sm font-medium text-[#141C24] hover:bg-[#E4E9F1] rounded-lg">Classes</a>
+          <li>
+            <a href="#">
+              <ion-icon
+                class="sidebar-icon"
+                name="analytics-outline"
+              ></ion-icon>
+              <span class="menu-text">Classes</span>
+            </a>
           </li>
-          <li class="mb-4">
-            <a href="#" id="photos-btn" class="heading-3 flex items-center px-4 py-2 text-sm font-medium text-[#141C24] hover:bg-[#E4E9F1] rounded-lg">Photos</a>
+          <li>
+            <a href="#">
+              <ion-icon class="sidebar-icon" name="people-outline"></ion-icon>
+              <span class="menu-text">Gallery</span>
+            </a>
           </li>
         </ul>
-      </nav>
-      <button id="logout-btn" class="logout-btn w-full mt-8 py-2 bg-[#F4C753] text-[#141C24] text-sm font-bold rounded-lg">Logout</button>
-    </div>
+        <div class="profile-card">
+        <div class="profile-info">
+            <?php if (!empty($educator['profile_pic'])): ?>
+            <img
+            src="<?php echo htmlspecialchars(BASE_URL . 'admin/' . $educator['profile_pic']); ?>" 
+            alt="Profile Picture" 
+              class="profile-pic" width="20px"
+            />
+          <?php else: ?>
+          <img class="profile-pic" src="<?php echo htmlspecialchars(BASE_URL . 'educator/assets/images/placeholders/user.png'); ?>">
+          <?php endif; ?>
+            <div class="profile-text">
+              <h3 class="ed-name"><?php echo htmlspecialchars($educator['name']); ?></h3>
+              <span class="role">Instructor</span>
+            </div>
+          </div>
+          <button  class="logout-btn">
+            <ion-icon id="logout-btn" name="log-out-outline"></ion-icon>
+          </button>
+        </div>
+        </div>
+      </div>
 
-    <!-- Main content -->
-    <div class="p-2 flex" id="main-content">
-    
-    <div class="c-width" id="class-cards" <?php echo $classId ? 'style="display: none;"' : ''; ?>>
-      <h1 class="text-4xl font-bold text-[#141C24] mb-6">Classes</h1>
-      <a href="dashboard.php">dashboard</a>
-      <a href="classes.php">classes</a>
-      <!-- classes Card -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="class-list">
-          <?php foreach ($classes as $class): ?>
-            <div class="hver class-item flex items-center gap-4 bg-white p-4 rounded-lg shadow hover:bg-[#E4E9F1] card" data-class-id="<?= $class['class_id'] ?>">
-              <div class="p-3 bg-[#E4E9F1] rounded-lg flex-shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256">
-                  <path d="M240,208H224V96a16,16,0,0,0-16-16H144V32a16,16,0,0,0-24.88-13.32L39.12,72A16,16,0,0,0,32,85.34V208H16a8,8,0,0,0,0,16H240a8,8,0,0,0,0-16ZM208,96V208H144V96ZM48,85.34,128,32V208H48ZM112,112v16a8,8,0,0,1-16,0V112a8,8,0,1,1,16,0Zm-32,0v16a8,8,0,0,1-16,0V112a8,8,0,1,1,16,0Zm0,56v16a8,8,0,0,1-16,0V168a8,8,0,1,1,16,0Zm32,0v16a8,8,0,0,1-16,0V168a8,8,0,0,1,16,0Z"></path>
-                </svg>
-              </div>
-              <div class="min-w-0">
-                <p class="text-lg font-medium text-[#141C24] truncate"><?= htmlspecialchars($class['class_name']) ?></p>
-                <p class="text-sm text-[#3F5374]">Students: <?= htmlspecialchars($class['student_count']) ?></p>
+      <div class="content">
+        <header>
+          <button id="toggle-btn" class="toggle-btn">
+            <ion-icon
+              class="toggle-arrow"
+              name="arrow-back-circle-outline"
+            ></ion-icon>
+          </button>
+          <div class="search-container">
+            <input type="text" placeholder="Search" class="search-input" />
+            <button class="search-btn">
+              <ion-icon name="search-outline"></ion-icon>
+            </button>
+          </div>
+
+          <div id="profile-btn" class="settings">
+            <ion-icon class="settings-icon" name="settings-outline"></ion-icon>
+          </div>
+        </header>
+
+        <main class="main-area">
+
+          <div class="classes-parent">
+            <div class="main-header border main-area--header">
+              <!-- School Name -->
+              <div class="main-area--text">
+                <h2 class="school-name"><?php echo htmlspecialchars($educator['school_name']); ?></h2>
+                <h2 class="date"><?php echo date('F j, Y, g:i a');?></h2>
               </div>
             </div>
-          <?php endforeach; ?>
-      </div>
-      </div>
-        <!-- Add more classes here as needed -->
-      
+            <div class="main-area--content border">
 
+            <!-- Class Cards -->
+            <div id="class-cards" class="card-container"  <?php echo $classId ? 'style="display: none;"' : ''; ?>>
+              <?php foreach ($classes as $class): ?>
+                  <div class="card" data-class-id="<?= $class['class_id'] ?>"> 
+                      <div class="icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256" class="svg-icon">
+                              <path d="M240,208H224V96a16,16,0,0,0-16-16H144V32a16,16,0,0,0-24.88-13.32L39.12,72A16,16,0,0,0,32,85.34V208H16a8,8,0,0,0,0,16H240a8,8,0,0,0,0-16ZM208,96V208H144V96ZM48,85.34,128,32V208H48ZM112,112v16a8,8,0,0,1-16,0V112a8,8,0,1,1,16,0Zm-32,0v16a8,8,0,0,1-16,0V112a8,8,0,1,1,16,0Zm0,56v16a8,8,0,0,1-16,0V168a8,8,0,1,1,16,0Zm32,0v16a8,8,0,0,1-16,0V168a8,8,0,0,1,16,0Z"></path>
+                          </svg>
+                      </div>
+                      <div class="card-text">
+                          <h2 class="title"><?= htmlspecialchars($class['class_name']) ?></h2>
+                          <p class="subtitle"><?= htmlspecialchars($class['student_count']) ?></p>
+                      </div>
+                  </div>
+              <?php endforeach; ?>
+          </div>
+
+          <div class="hold">
+            
       <!-- Student Scores Table (hidden initially) -->
-      <div id="student-scores" <?php echo $classId ? '' : 'style="display: none;"'; ?>>
-        <div class="mb-4 margin-top-2">
-          <button class="mr-4 px-4 py-2 bg-[#E4E9F1] text-[#141C24] font-medium rounded-lg" id="back-button">Back</button>
-          <button class="px-4 py-2 bg-[#F4C753] text-[#141C24] font-bold rounded-lg" id="submit-scores-button">Submit Scores</button>
+      <div id="student-scores" class="student-scores-container" <?php echo $classId ? '' : 'style="display: none;"'; ?>>
+        <div class="main-nav--btn">
+          <button class="backbtn" id="back-button">Back</button>
+          <button class="backbtn success" id="submit-scores-button">Submit Scores</button>
         </div>
-        <h2 id="class-name" class="p-4"></h2>
+        <h2 id="class-name" class="class-name" style="padding-left: 1.2rem"></h2>
         <form id="search-form" class="search-bar" onsubmit="return false;">
             <input type="hidden" name="class_id" value="<?php echo $classId; ?>">
-            <input type="text" name="search" id="student-search" class="form-control search-input" placeholder="Search by ID or Name" value="<?php echo htmlspecialchars($searchQuery); ?>">
+            <input type="text" name="search" id="student-search" class="form-control std-search-input" placeholder="Search by ID or Name" value="<?php echo htmlspecialchars($searchQuery); ?>">
         </form>
 
 
-          <form id="score-form" action="">
-        <table id="students-table" class=" bg-white rounded-lg shadow overflow-hidden">
-          <thead class="bg-[#E4E9F1]">
+        <form id="score-form" action="">
+        <div class="table-container">
+        <table id="students-table" class="input-table">
+          <thead class="">
             <tr>
-              <th class="p-4 text-left">#</th>
-              <th class="p-4 text-left">Student Name</th>
+              <th class="">#</th>
+              <th class="">Student Name</th>
               <?php foreach ($themes as $theme): ?>
                    <th><?= htmlspecialchars($theme['theme_name']) ?></th>
               <?php endforeach; ?>
@@ -266,12 +227,17 @@ table {
                   <!-- Student rows will be dynamically added here -->
           </tbody>
         </table>
+        </div>
         <div id="pagination"></div>
         </form>
       </div>
+          </div>
+          </div>
+  
+        </div>
+        </main>
       </div>
-    </div>
-  </div>
+    
 
 
 <!-- Modal for Profile Form -->
@@ -338,61 +304,49 @@ table {
   </div>
 </div>
 
-
-
-
-  <!-- Notification Modal -->
-  <div id="notification-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-    <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-      <h2 class="text-2xl font-bold mb-4">KI Education</h2>
-      <p id="notification-message" class="mb-4">Please fill in all the scores.</p>
-      <button id="close-notification" class="px-4 py-2 bg-[#F4C753] text-[#141C24] font-bold rounded-lg">Close</button>
-    </div>
-  </div>
-
-
   <!-- Logout Confirmation Modal -->
-<div id="logout-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
-    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-        <div class="mt-3 text-center">
-            <h3 class="text-lg leading-6 font-medium text-gray-900">Logout Confirmation</h3>
-            <div class="mt-2 px-7 py-3">
-                <p class="text-sm text-gray-500">
+  <!-- <div id="logout-modal" class="hidden">
+    <div class="">
+        <div class="">
+            <h3 class="">Logout Confirmation</h3>
+            <div class="">
+                <p class="">
                     Are you sure you want to logout?
                 </p>
             </div>
-            <div class="items-center px-4 py-3">
-                <button id="confirm-logout" class="px-4 py-2 bg-red-500 text-white text-base font-medium rounded-md w-24 mr-2">
+            <div class="">
+                <button id="confirm-logout" class="">
                     Yes
                 </button>
-                <button id="cancel-logout" class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-24">
+                <button id="cancel-logout" class="">
                     No
                 </button>
             </div>
         </div>
     </div>
+</div> -->
+<!-- Logout Confirmation Modal -->
+<div id="logout-btn--cancel" class="logout-pop--modal hidden">
+    <div class="logout-modal--content">
+        <h3 class="logout-modal--title ">Logout Confirmation</h3>
+        <p>Are you sure you want to logout?</p>
+        <div class="logout-modal--buttons">
+            <button id="logout-btn--confirm" class="btn-confirm">Yes</button>
+            <button id="logout-btn--cancel" class="btn-cancel">No</button>
+        </div>
+    </div>
 </div>
 
-  <!-- Photo Upload Modal -->
-  <div id="upload-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-    <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-      <h2 class="text-2xl font-bold mb-4">Upload Photo</h2>
-      <input type="file" id="upload-input" accept="image/*" class="mb-4" />
-      <button id="upload-button" class="px-4 py-2 bg-[#F4C753] text-[#141C24] font-bold rounded-lg mr-4">Upload</button>
-      <button id="cancel-upload" class="px-4 py-2 bg-gray-300 text-[#141C24] font-bold rounded-lg">Cancel</button>
-    </div>
-  </div>
 
-  <!-- Image Preview Modal -->
-  <div id="preview-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-    <div class="bg-white p-6 rounded-lg shadow-lg text-center relative">
-      <img id="preview-image" src="" alt="Preview" class="mb-4 max-w-xs max-h-96" />
-      <button id="close-preview" class="absolute top-2 right-2 bg-[#F4C753] text-[#141C24] font-bold rounded-full w-8 h-8">×</button>
-    </div>
-  </div>
-
-  <!-- <script src="assets/js/educator.js"></script> -->
-
+    <!-- <script src="script.js"></script> -->
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
   <!-- Toastr and Custom JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
@@ -507,23 +461,22 @@ $('#profile-form').submit(function(e) {
           }
 
           // Logout button click handler
-          $('#logout-btn').click(function(e) {
-              e.preventDefault();
-              
-              // Show confirmation modal
-              $('#logout-modal').removeClass('hidden');
-          });
+    $('#logout-btn').click(function(e) {
+        e.preventDefault();
+        
+        // Show confirmation modal
+        $('#logout-btn--cancel').removeClass('hidden');
+    });
 
-          // Confirm logout
-          $('#confirm-logout').click(function() {
-              window.location.href = 'logout.php';
-          });
+    // Confirm logout
+    $('#logout-btn--confirm').click(function() {
+        window.location.href = 'logout.php';
+    });
 
-          // Cancel logout
-          $('#cancel-logout').click(function() {
-              $('#logout-modal').addClass('hidden');
-          });
-
+    // Cancel logout
+    $('#logout-btn--cancel .btn-cancel').click(function() {
+        $('#logout-btn--cancel').addClass('hidden');
+    });
 
         $('.card').click(function() {
             var classId = $(this).data('class-id');
@@ -533,7 +486,7 @@ $('#profile-form').submit(function(e) {
         $('#back-button').click(function() {
             $('#student-scores').hide();
             $('#class-cards').show();
-            history.pushState(null, '', 'educator.php');
+            history.pushState(null, '', 'classes.php');
         });
 
       
@@ -560,7 +513,7 @@ $('#profile-form').submit(function(e) {
                 $('#class-cards').hide();
                 $('#student-scores').show();
                 currentClassId = classId;
-                history.pushState(null, '', 'educator.php?class_id=' + classId + '&page=' + page + '&search=' + searchQuery);
+                history.pushState(null, '', 'classes.php?class_id=' + classId + '&page=' + page + '&search=' + searchQuery);
             }
         });
     }
@@ -571,7 +524,7 @@ $('#profile-form').submit(function(e) {
                 method: 'POST',
                 data: formData,
                 success: function(response) {
-                    alert('Scores submitted successfully');
+                    toastr.success('Scores submitted successfully');
                     loadStudents(currentClassId, 1);
                 }
             });
@@ -589,29 +542,35 @@ $('#profile-form').submit(function(e) {
         }
     });
 
-// live search
-//     document.addEventListener('DOMContentLoaded', function() {
-//     var studentSearch = document.getElementById('student-search');
-//     var studentsTable = document.getElementById('students-table');
 
-//     if (studentSearch && studentsTable) {
-//         studentSearch.addEventListener('input', function() {
-//             var searchQuery = this.value.toLowerCase();
-//             var rows = studentsTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+const sidebar = document.getElementById('sidebar');
+const toggleBtn = document.getElementById('toggle-btn');
+const content = document.querySelector('.content');
 
-//             for (var i = 0; i < rows.length; i++) {
-//                 var studentId = rows[i].cells[0].textContent.toLowerCase();
-//                 var studentName = rows[i].cells[1].textContent.toLowerCase();
-
-//                 if (studentId.includes(searchQuery) || studentName.includes(searchQuery)) {
-//                     rows[i].style.display = '';
-//                 } else {
-//                     rows[i].style.display = 'none';
-//                 }
-//             }
-//         });
-//     }
-// });
+toggleBtn.addEventListener('click', () => {
+  if (window.innerWidth <= 768) {
+    sidebar.classList.toggle('show');
+  } else {
+    sidebar.classList.toggle('collapsed');
+    
+    // Delay the margin adjustment slightly
+    setTimeout(() => {
+      content.style.marginLeft = sidebar.classList.contains('collapsed') 
+        ? 'calc(6.4rem + 20px)' 
+        : '270px';
+    }, 10); // Half of the transition time (300ms / 2)
+  }
+});
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 768) {
+    sidebar.classList.remove('show');
+    content.style.marginLeft = sidebar.classList.contains('collapsed') 
+      ? 'calc(6.4rem + 20px)' 
+      : '270px';
+  } else {
+    content.style.marginLeft = '0';
+  }
+});
     </script>
-</body>
+  </body>
 </html>

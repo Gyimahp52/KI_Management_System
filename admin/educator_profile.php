@@ -5,7 +5,7 @@ include('includes/dbconnection.php');
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
-    // Modify the SQL query to filter the educator based on the provided id
+    // SQL query to filter the educator based on the provided id
     $sql = "SELECT e.*, s.school_name, u.email, u.password, u.role
             FROM educators e
             JOIN schools s ON e.school_id = s.id

@@ -1,10 +1,10 @@
 <?php
 // combined_scores.php
+include('includes/auth.php');
 
 require_once 'db_connction.php';
 require_once 'StudentScoreService.php';
 require_once 'microservice_client.php';
-session_start(); // Start the session
 
 $studentScoreService = new StudentScoreService($pdo);
 $microserviceClient = new MicroserviceClient();

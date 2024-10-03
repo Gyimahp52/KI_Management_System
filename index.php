@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+// Display toastr message if it exists and then remove it
+$toastr_message = isset($_SESSION['login_toastr']) ? $_SESSION['login_toastr'] : null;
+unset($_SESSION['login_toastr']);
+
 require 'includes/dbconnection.php'; 
 
 // Function to sanitize input
@@ -20,23 +25,18 @@ function login($usernameOrEmail, $password) {
     if ($user && password_verify($password, $user['password'])) {
         // Store session data
         if ($user['role'] == 'student') {
-            $_SESSION['user_username'] = $usernameOrEmail; // Use username for students
+            $_SESSION['user_username'] = $usernameOrEmail;
         } else {
-            $_SESSION['user_email'] = $user['email']; // Use email for others
+            $_SESSION['user_email'] = $user['email'];
         }
         $_SESSION['role'] = $user['role'];
-
-        // Set a session token for added security
         $_SESSION['token'] = bin2hex(random_bytes(32));
 
-        return $user['role']; // Return role for further processing
+        return $user['role'];
     } else {
-        return false; // Login failed
+        return false;
     }
 }
-
-// Initialize error variable
-$error = '';
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -45,7 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Check if both username/email and password are provided
     if (empty($usernameOrEmail) || empty($password)) {
-        $error = 'Username/Email and password are required.';
+        $_SESSION['login_toastr'] = ['type' => 'error', 'message' => 'Username/Email and password are required.'];
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        exit();
     } else {
         // Attempt to log in the user
         $role = login($usernameOrEmail, $password);
@@ -56,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     header('Location: admin/adminDashboard.php');
                     break;
                 case 'educator':
-                    header('Location: educator/educator.php');
+                    header('Location: educator/classes.php');
                     break;
                 case 'student':
                     header('Location: student/student.php');
@@ -67,12 +69,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             exit();
         } else {
-            echo "<script>alert('Invalid Details');</script>";
+            $_SESSION['login_toastr'] = ['type' => 'error', 'message' => 'Invalid username or password.'];
+            header('Location: ' . $_SERVER['PHP_SELF']);
+            exit();
         }
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -82,18 +85,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Login</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
-    <!-- Google Fonts Link For Icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
-   
     <link rel="stylesheet" href="css/login.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
     <script src="js/login.js" defer></script>
 </head>
 <body style="background-image: url(images/web3.png) !important; background-repeat:no-repeat;  background-size: cover;">
     <!-- Login form -->
     <div class="login-container">
         <img src="images/ki_logo.png" alt="ki_logo">
-        <form action="index.php" id="loginForm" method="post">
+        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" id="loginForm" method="post">
             <h2>Login</h2>
             <div class="form-group">
                 <label for="username">Username:</label>
@@ -129,5 +132,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <span id="send-btn" class="material-symbols-rounded">send</span>
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Toastr options
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+
+            <?php if ($toastr_message): ?>
+                toastr[<?php echo json_encode($toastr_message['type']); ?>](
+                    <?php echo json_encode($toastr_message['message']); ?>
+                );
+            <?php endif; ?>
+        });
+    </script>
 </body>
 </html>

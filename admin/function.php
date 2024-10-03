@@ -217,8 +217,8 @@ function getClasses($school_id = null, $page = null, $perPage = null) {
 
 //MANAGE SEL THEMES
 
-// functions.php
-require_once 'db_connection.php';
+// // functions.php
+// require_once 'db_connection.php';
 
 function getSchools($page = 1, $perPage = 10) {
     $pdo = Database::getConnection();
@@ -321,4 +321,3 @@ function getClassesOptions($schoolId) {
     return $options;
 }
 
-// 

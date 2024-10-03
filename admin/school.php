@@ -1,6 +1,8 @@
 <?php
+include('includes/auth.php');
 include 'function.php';
 include 'includes/dbconnection.php';
+
 
 
 

@@ -1,19 +1,27 @@
 <?php
 // Start the session
-session_start();
+include('includes/auth.php');
+
 include('includes/dbconnection.php');
 $base_url = '/ki/KI_Management_System/';
-// Check if the user is logged in and has the role of 'admin'.
-// Redirect to login page if not.
-// if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-//     header('Location: login.html');
-//     exit;
-// }
-//  echo htmlspecialchars($photoUrl);
-//  echo htmlspecialchars($username); 
 
-// $username = $_SESSION['username']; // Assuming the username is stored in the session
-// $photoUrl = $_SESSION['photo_url']; // Assuming the photo URL is stored in the session
+// Fetch admin information
+function getAdminInfo($email, $dbh) {
+  // $pdo = dbConnect();
+  $stmt = $dbh->prepare('SELECT ui.* 
+                         FROM user_info ui 
+                         WHERE ui.email = ?');
+  $stmt->execute([$email]);
+  return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+$adminInfo = getAdminInfo($_SESSION['user_email'], $dbh);
+$welcome_message = isset($_SESSION['welcome_message']) ? $_SESSION['welcome_message'] : "Welcome, " . $adminInfo['name'];
+unset($_SESSION['welcome_message']);
+
+// $_SESSION['login_toastr'] = ['type' => 'success', 'message' => 'Login successful!'];
+
+
 
 
 ?>
@@ -38,9 +46,9 @@ $base_url = '/ki/KI_Management_System/';
 <div class="main-content">
 <?php include_once('includes/header.php');?>
 
+<h1 style="margin-top: 200px"> <?php echo $welcome_message?> </h1>
     <!--Cards-->
-    <div class="stats-grid">
-        
+    <div class="stats-grid" style="margin-top: 5vh">
         <div class="card">
             <a href="student.php">
              <div class="icon"><img src="assets/images/students.png" alt="schools"></div>
