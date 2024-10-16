@@ -10,11 +10,114 @@ function createClass($school_id, $name) {
     return $stmt->execute([$school_id, $name]);
 }
 
-// function deleteStudent($student_id) {
-//     $pdo = Database::getConnection();
-//     $stmt = $pdo->prepare("DELETE FROM students WHERE student_id = ?");
-//     return $stmt->execute([$student_id]);
-// }
+function createUser($userData) {
+    $pdo = Database::getConnection();
+    $pdo->beginTransaction();
+
+    try {
+        // Handle profile picture upload
+        $profile_pic = null;
+        if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] == 0) {
+            $upload_dir = 'uploads/';
+            $file_name = uniqid() . '_' . basename($_FILES['profile_pic']['name']);
+            $upload_path = $upload_dir . $file_name;
+            
+            if (!move_uploaded_file($_FILES['profile_pic']['tmp_name'], $upload_path)) {
+                throw new Exception("Failed to upload profile picture.");
+            }
+            $profile_pic = $upload_path;
+        }
+
+        // Insert into users table
+        $stmt = $pdo->prepare('INSERT INTO users (email, password, role) VALUES (?, ?, ?)');
+        $hashedPassword = password_hash($userData['password'], PASSWORD_DEFAULT);
+        $stmt->execute([$userData['email'], $hashedPassword, $userData['role']]);
+        
+        $userId = $pdo->lastInsertId();
+
+        // Insert into user_info table
+        $stmt = $pdo->prepare('INSERT INTO user_info (id, name, gender, phone_number, emergency_contact, email, dob, location, profile_pic) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        $stmt->execute([
+            $userId,
+            $userData['name'],
+            $userData['gender'],
+            $userData['phone_number'],
+            $userData['emergency_contact'],
+            $userData['email'],
+            $userData['dob'],
+            $userData['location'],
+            $profile_pic
+        ]);
+
+
+        $pdo->commit();
+        return ['success' => true, 'message' => 'User created successfully'];
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        return ['success' => false, 'message' => 'Error creating user: ' . $e->getMessage()];
+    }
+    //     $pdo->commit();
+    //     return true;
+    // } catch (Exception $e) {
+    //     $pdo->rollBack();
+    //     return false;
+    // }
+}
+function getUsers($page = 1, $limit = 10) {
+    $pdo = Database::getConnection();
+    $offset = ($page - 1) * $limit;
+
+    $stmt = $pdo->prepare("
+        SELECT u.id, u.email, u.role, u.username, u.last_activity, ui.name
+        FROM users u
+        LEFT JOIN user_info ui ON u.id = ui.id
+        ORDER BY u.id DESC
+        LIMIT :limit OFFSET :offset
+    ");
+    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Get total user count
+    $stmt = $pdo->query("SELECT COUNT(*) FROM users");
+    $total = $stmt->fetchColumn();
+
+    return [
+        'users' => $users,
+        'total' => $total,
+        'pages' => ceil($total / $limit)
+    ];
+}
+
+function updateUserRole($userId, $newRole) {
+    $pdo = Database::getConnection();
+    $stmt = $pdo->prepare("UPDATE users SET role = :role WHERE id = :id");
+    $stmt->execute([':role' => $newRole, ':id' => $userId]);
+    return $stmt->rowCount() > 0;
+}
+
+function deleteUser($userId) {
+    $pdo = Database::getConnection();
+    $pdo->beginTransaction();
+
+    try {
+        // Delete from user_info table
+        $stmt = $pdo->prepare('DELETE FROM user_info WHERE id = ?');
+        $stmt->execute([$userId]);
+
+        // Delete from users table
+        $stmt = $pdo->prepare('DELETE FROM users WHERE id = ?');
+        $stmt->execute([$userId]);
+
+        $pdo->commit();
+        return  true;
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        return  false;
+    }
+}
 function deleteStudent($student_id) {
     $pdo = Database::getConnection();
     try {
@@ -35,6 +138,17 @@ function deleteStudent($student_id) {
         error_log("Error deleting student: " . $e->getMessage());
         return false;
     }
+}
+
+function updateLastActivity() {
+    if (!isset($_SESSION['user_id'])) {
+        return false; // User is not logged in
+    }
+
+    $userId = $_SESSION['user_id'];
+    $pdo = Database::getConnection();
+    $stmt = $pdo->prepare("UPDATE users SET last_activity = CURRENT_TIMESTAMP WHERE id = :id");
+    return $stmt->execute([':id' => $userId]);
 }
 function updateSchool($school_id, $name) {
     $pdo = Database::getConnection();
@@ -78,7 +192,7 @@ function deleteSchool($school_id) {
 
 function updateClass($class_id, $name) {
     $pdo = Database::getConnection();
-    $stmt = $pdo->prepare("UPDATE classes SET name = ? WHERE class_id = ?");
+    $stmt = $pdo->prepare("UPDATE classes SET class_name = ? WHERE class_id = ?");
     return $stmt->execute([$name, $class_id]);
 }
 

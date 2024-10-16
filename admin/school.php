@@ -2,14 +2,13 @@
 include('includes/auth.php');
 include 'function.php';
 include 'includes/dbconnection.php';
+require_once 'db_connction.php';
+require_once 'StudentScoreService.php';
 
+$studentScoreService = new StudentScoreService($pdo);
 
+$schools = $studentScoreService->getSchools();
 
-
-// $sql1 ="SELECT * from educators";
-// $query1 = $dbh->prepare($sql1);
-// $query1->execute();
-// $educators = $query1->fetchAll(PDO::FETCH_OBJ);
 ?>
 
 <!DOCTYPE html>
@@ -21,6 +20,11 @@ include 'includes/dbconnection.php';
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/adminDashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<!-- favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png">
+    <link rel="manifest" href="assets/images/site.webmanifest">
 </head>
 <body>
 
@@ -47,10 +51,6 @@ include 'includes/dbconnection.php';
             <input type="text" name="schoolName" placeholder="School Name" required class="form-control mb-2">
             <input type="text" name="region" placeholder="Region" required class="form-control mb-2">
             <input type="text" name="town" placeholder="Town" required class="form-control mb-2">
-            <!-- <select name="educator" required class="form-control mb-2">
-                <option value="">Select Educator</option>
-  
-            </select> -->
             <input type="file" name="logo" class="form-control mb-2">
             <button type="submit" class="btn btn-success">Create School</button>
         </form>
@@ -62,7 +62,7 @@ include 'includes/dbconnection.php';
         <form onsubmit="createClass(event)">
             <select name="schoolId" required class="form-control mb-2">
                 <option value="">Select School</option>
-                <?php foreach (getSchools() as $school): ?>
+                <?php foreach ($schools as $school): ?>
                     <option value="<?= $school['id'] ?>"><?= $school['school_name'] ?></option>
                 <?php endforeach; ?>
             </select>
@@ -122,7 +122,7 @@ function showForm(formId) {
     tabs.forEach(tab => {
         tab.classList.remove('active');
     });
-    // document.querySelector(`.nav-link[onclick="showForm('${formId}')"]`).classList.add('active');
+   
     document.querySelector(`.nav-link[onclick="showForm('${formId}')"]`).classList.add('active');
 }
 
@@ -137,13 +137,16 @@ function createSchool(event) {
         processData: false,
         contentType: false,
         success: function(response) {
-            alert(response);
-            if (response.includes("successfully")) {
+            // alert(response);
+            if (response.success) {
+                toastr.success(response.message);
                 // Reset the form
                 $('#schoolForm form')[0].reset();
                 // Clear the file input
                 $('#schoolForm input[type="file"]').val('');
                 showTable('schools');
+            }else{
+                toastr.error(response.message || 'An error occured while creating school')
             }
         }
     });
@@ -154,41 +157,55 @@ function createClass(event) {
     const schoolId = event.target.schoolId.value;
     const className = event.target.className.value;
     $.post('ajax_handlers.php', { action: 'createClass', schoolId: schoolId, name: className }, function(response) {
-        alert(response);
-        if (response.includes("successfully")) {
-            // Reset the form
+        if(response.success){
+            toastr.success(response.message);
             $('#classForm form')[0].reset();
             showTable('classes');
+        }else{
+            toastr.error(response.message || 'failed to create class successfully')
         }
+
     });
 }
 
 function deleteSchool(schoolId) {
         if (confirm("Are you sure you want to delete this school?")) {
             $.post('ajax_handlers.php', { action: 'deleteSchool', schoolId: schoolId }, function(response) {
-                alert(response);
-                showTable('schools');
+                if(response.success){
+                    toastr.success(response.message);
+                    showTable('schools');
+                }else{
+                    toastr.error(saveResponse.message || 'An error occurred while deleting the school');
+                }
             });
         }
     }
-
+// TODO: add the form to populate
 function editSchool(schoolId) {
         const newName = prompt("Enter new school name:");
         if (newName) {
             $.post('ajax_handlers.php', { action: 'updateSchool', schoolId: schoolId, name: newName }, function(response) {
-                alert(response);
-                showTable('schools');
+                if(response.success){
+                    toastr.success(response.message);
+                   showTable('schools'); 
+                }else{
+                    toastr.error(saveResponse.message || 'An error occurred while updating school the school');  
+                }
+                
             });
         }
     }
 
-
-    function editClass(classId) {
+// FIXME: add the form to populate
+function editClass(classId) {
         const newName = prompt("Enter new class name:");
         if (newName) {
             $.post('ajax_handlers.php', { action: 'updateClass', classId: classId, name: newName }, function(response) {
-                alert(response);
-                showTable('classes');
+                if(response.success){
+                    showTable('classes');
+                }
+            
+                
             });
         }
     }
@@ -196,8 +213,13 @@ function editSchool(schoolId) {
     function deleteClass(classId) {
         if (confirm("Are you sure you want to delete this class?")) {
             $.post('ajax_handlers.php', { action: 'deleteClass', classId: classId }, function(response) {
-                alert(response);
-                showTable('classes');
+                if(response.success){
+                    toastr.success(response.message);
+                    showTable('classes');
+                }else{
+                    toastr.error(saveResponse.message || 'An error occurred while deleting the class');
+                }
+
             });
         }
     }

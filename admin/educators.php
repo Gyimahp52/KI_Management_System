@@ -474,6 +474,11 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
     <link rel="stylesheet" href="assets/css/adminDashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png">
+    <link rel="manifest" href="assets/images/site.webmanifest">
     <title>Information Collection Form</title>
     <style>
 
@@ -781,8 +786,10 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-   //PASSWORD VISIBILTY
-   document.getElementById('togglePassword').addEventListener('click', function () {
+passwordVisibility('togglePassword')
+
+function passwordVisibility(id){
+   document.getElementById(id).addEventListener('click', function () {
         const passwordField = document.getElementById('password');
         const icon = this;
 
@@ -793,7 +800,8 @@ document.addEventListener('DOMContentLoaded', function() {
             passwordField.type = 'password';
             icon.setAttribute('name', 'eye-off-outline'); // Change icon to open eye
         }
-    });
+    });  
+    }
     </script>
 </body>
 </html>

@@ -1,6 +1,12 @@
 <?php
 include('includes/auth.php');
+require_once 'db_connction.php';
 require_once 'function.php';
+require_once 'StudentScoreService.php';
+
+$studentScoreService = new StudentScoreService($pdo);
+
+$schools = $studentScoreService->getSchools();
 
 ?>
 
@@ -11,8 +17,13 @@ require_once 'function.php';
     <link rel="stylesheet" href="assets/css/adminDashboard.css">
     <!-- <link rel="stylesheet" href="assets/css/student.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png">
+    <link rel="manifest" href="assets/images/site.webmanifest">
     <title>Student page</title>
     <style>
     .modal {
@@ -228,6 +239,12 @@ body.no-scroll {
             margin-top: 5px;
             padding: 5px 20px;
         }
+
+        .scrollable-select {
+    max-height: 200px;  /* Adjust height based on how many options you want visible */
+    overflow-y: auto;   /* Enable vertical scroll */
+}
+
     </style>
 </head>
 <body>
@@ -251,9 +268,9 @@ body.no-scroll {
         <div id="filterForm" class="mb-4">
     <h2>Filter Students</h2>
     <form onsubmit="filterStudents(event)">
-        <select name="filterSchoolId" onchange="updateFilterClassSelect(this.value)" class="form-control mb-2">
+        <select name="filterSchoolId" onchange="updateFilterClassSelect(this.value)" class="form-control mb-2 scrollable-select">
             <option value="">All Schools</option>
-            <?php foreach (getSchools() as $school): ?>
+            <?php foreach ($schools as $school): ?>
                 <option value="<?= $school['id'] ?>"><?= $school['school_name'] ?></option>
             <?php endforeach; ?>
         </select>
@@ -288,67 +305,119 @@ body.no-scroll {
                 <legend>Personal Information</legend>
 
                 <input class="form-control" type="file" name="passport_picture" accept="image/*" >
-                <!-- <input type="text" name="username" placeholder="Username" required> -->
-                <input class="form-control" type="text" name="name" placeholder="Name" required> 
-                <div class="password-container">
-        <input type="password" id="password" name="password" placeholder="Password" class="form-control" required>
-        <ion-icon id="togglePassword" name="eye-off-outline"></ion-icon>
-    </div>
-                <input class="form-control" type="date" name="dob" required>
-                <select class="form-control" name="gender" required>
-                    <option value="">Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                </select>
-                <select class="form-control" name="hand" >
-                    <option value="">Select Hand</option>
-                    <option value="Right">Right</option>
-                    <option value="Left">Left</option>
-                    <option value="Ambidextrous">Ambidextrous</option>
-                </select>
-                <select class="form-control" name="foot" >
-                    <option value="">Select Foot</option>
-                    <option value="Right">Right</option>
-                    <option value="Left">Left</option>
-                </select>
-                <select class="form-control" name="eye_sight" >
-                    <option value="">Select Eye Sight</option>
-                    <option value="Normal">Normal</option>
-                    <option value="Glasses">Glasses</option>
-                    <option value="Contact Lenses">Contact Lenses</option>
-                </select><br>
-                <textarea class="form-control" name="medical_condition" placeholder="Not available" disabled></textarea><br>
-                <input class="form-control" type="number" name="weight" placeholder="Weight (kg)" >
-                <input class="form-control" type="number" name="height" placeholder="Height (cm)" >
+                
+            <div class="form-floating">
+                <input id="student-name" class="form-control" type="text" name="name" placeholder="Name" required>
+                <label for="student-name">Name</label>
+            </div>
+        <div class="password-container form-floating">
+            <input type="password" id="password" name="password" placeholder="Password" class="form-control" required>
+            <label for="password">Password</label>
+            <ion-icon id="togglePassword" name="eye-off-outline"></ion-icon>
+        </div>
+        <div class="form-floating">
+            <input id="std-dob" class="form-control" type="date" name="dob" >
+            <label for="std-dob">D-O-B</label>
+        </div>
+        
+        <div class="form-floating">            
+            <select id="gender" class="form-control" name="gender" >
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+            <label for="gender"></label>
+        </div>
 
-            </fieldset>
-            <fieldset>
-                <legend>Parent/Guardian</legend>
-                <div class="row">
-                    <div class="col">
-                        <input class="form-control" type="text" name="parent_name" placeholder="Parent/Guardian Name" required>
-                        <input class="form-control" type="tel" name="parent_phone" placeholder="Phone Number" required>
-                    </div>
-                    <div class="col">
-                        <input class="form-control" type="tel" name="parent_whatsapp" placeholder="WhatsApp Number">
-                        <input class="form-control" type="email" name="parent_email" placeholder="Email Address">
-                    </div>
+      
+        <div class="form-floating">                
+            <select id="hand" class="form-control" name="hand" >
+                <option value="">Select Hand</option>
+                <option value="Right">Right</option>
+                <option value="Left">Left</option>
+                <option value="Ambidextrous">Ambidextrous</option>
+            </select>
+            <label for="hand">Hand</label>
+        </div>
+        <div class="form-floating">                
+            <select id="foot" class="form-control" name="foot" >
+                <option value="">Select Foot</option>
+                <option value="Right">Right</option>
+                <option value="Left">Left</option>
+            </select>
+            <label for="foot"></label>
+        </div>
+        <div class="form-floating">                
+            <select id="eye-sight" class="form-control" name="eye_sight" >
+                <option value="">Select Eye Sight</option>
+                <option value="Normal">Normal</option>
+                <option value="Glasses">Glasses</option>
+                <option value="Contact Lenses">Contact Lenses</option>
+            </select>
+            <label for="eye-sight"></label>
+        </div>
+<br>
+        <div class="form-floating">
+            <label for="medical-condition">Medical Condition</label>
+            <textarea id="medical-condition" class="form-control" name="medical_condition" placeholder="Not available" disabled></textarea>
+        </div><br>
+        <div class="form-floating"> 
+            <input id="weight" class="form-control" type="number" name="weight" placeholder="Weight (kg)" >            
+            <label for="weight">Weight</label>           
+        </div>
+        <div class="form-floating">
+            <input id="height" class="form-control" type="number" name="height" placeholder="Height (cm)" >
+            <label for="height">Height</label>
+        </div>
+    </fieldset>
+    <fieldset>
+            <legend>Parent/Guardian</legend>
+            <div class="row">
+                <div class="col">
+                <div class="form-floating">
+                    <input id="parent-name" class="form-control" type="text" name="parent_name" placeholder="Parent/Guardian Name" >
+                    <label for="parent-name">Parent Name</label>
+                </div>
+
+                <div class="form-floating">
+                    <input id="phone-number" class="form-control" type="tel" name="parent_phone" placeholder="Phone Number" >
+                    <label for="phone-number">Phone Number</label>
+                </div>
+                        
+                        
+                </div>
+                <div class="col">
+                <div class="form-floating">
+                    <input id="whats-number" class="form-control" type="tel" name="parent_whatsapp" placeholder="WhatsApp Number">
+                    <label for="whats-number">WhatsApp Number</label>
+                </div>
+
+                <div class="form-floating">
+                    <input id="email" class="form-control" type="email" name="parent_email" placeholder="Email Address">
+                    <label for="email">Email</label>
+                </div>
+                        
+                        
+                </div>
                 </div>
             </fieldset>
             <fieldset>
                 <legend>Others</legend>
-                <div class="row">
-                    <div class="col">
-                    <select class="form-control" name="schoolId" onchange="loadClasses(this.value)" required class="form-control mb-2">
+    <div class="row">
+            <div class="col">
+
+        <select class="form-control" name="schoolId" onchange="loadClasses(this.value)" required class="form-control mb-2">
             <option value="">Select School</option>
-            <?php foreach (getSchools() as $school): ?>
+            <?php foreach ($schools as $school): ?>
                 <option value="<?= $school['id'] ?>"><?= $school['school_name'] ?></option>
             <?php endforeach; ?>
         </select>
-                    </div>
-                    <div class="col">
-                    <select class="form-control" name="classId" required class="form-control mb-2" disabled>
+    </div>
+
+
+            <div class="col">
+                <select class="form-control" name="classId" required class="form-control mb-2" disabled>
             <option value="">Select Class</option>
         </select>
                     </div>
@@ -378,7 +447,8 @@ body.no-scroll {
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
     <?php
@@ -507,51 +577,6 @@ function deleteStudent(studentId) {
 }
 
 
-
-// function editStudent(studentId) {
-//     $.get('ajax_handlers.php', { action: 'getStudent', studentId: studentId }, function(response) {
-//         if (response.error) {
-//             alert(response.error);
-//             return;
-//         }
-        
-//         $('#editStudentModal').modal('show');
-//         $('#editStudentForm').html(`
-//             <input type="hidden" name="studentId" value="${response.student_id}">
-//             <input type="text" name="name" value="${response.name}" required class="form-control mb-2">
-//             <input type="date" name="dob" value="${response.dob}" required class="form-control mb-2">
-//             <select name="gender" required class="form-control mb-2">
-//                 <option value="Male" ${response.gender === 'Male' ? 'selected' : ''}>Male</option>
-//                 <option value="Female" ${response.gender === 'Female' ? 'selected' : ''}>Female</option>
-//                 <option value="Other" ${response.gender === 'Other' ? 'selected' : ''}>Other</option>
-//             </select>
-//             <select name="hand" required class="form-control mb-2">
-//                 <option value="Right" ${response.hand === 'Right' ? 'selected' : ''}>Right</option>
-//                 <option value="Left" ${response.hand === 'Left' ? 'selected' : ''}>Left</option>
-//                 <option value="Ambidextrous" ${response.hand === 'Ambidextrous' ? 'selected' : ''}>Ambidextrous</option>
-//             </select>
-//             <select name="foot" required class="form-control mb-2">
-//                 <option value="Right" ${response.foot === 'Right' ? 'selected' : ''}>Right</option>
-//                 <option value="Left" ${response.foot === 'Left' ? 'selected' : ''}>Left</option>
-//             </select>
-//             <input type="text" name="eye_sight" value="${response.eye_sight}" required class="form-control mb-2">
-//             <textarea name="medical_condition" class="form-control mb-2">${response.medical_condition}</textarea>
-//             <input type="number" name="height" value="${response.height}" required class="form-control mb-2">
-//             <input type="number" name="weight" value="${response.weight}" required class="form-control mb-2">
-//             <input type="text" name="parent_name" value="${response.parent_name}" required class="form-control mb-2">
-//             <input type="tel" name="parent_phone" value="${response.parent_phone}" required class="form-control mb-2">
-//             <input type="tel" name="parent_whatsapp" value="${response.parent_whatsapp}" class="form-control mb-2">
-//             <input type="email" name="parent_email" value="${response.parent_email}" class="form-control mb-2">
-//             <button type="submit" class="btn btn-primary">Update Student</button>
-//         `);
-//     });
-// }
-
-
-
-
-
-
 function updateStudent(event) {
     event.preventDefault();
     var formData = new FormData(event.target);
@@ -650,31 +675,90 @@ function editStudent(studentId) {
 
     // Populate the form inside the modal
     var formHtml = `
-      <input type="hidden" name="studentId" value="${response.student_id}">
-      <input type="text" name="name" value="${response.name}" required class="form-control mb-2">
-      <input type="date" name="dob" value="${response.dob}" required class="form-control mb-2">
-      <select name="gender" required class="form-control mb-2">
-        <option value="Male" ${response.gender === 'Male' ? 'selected' : ''}>Male</option>
-        <option value="Female" ${response.gender === 'Female' ? 'selected' : ''}>Female</option>
-        <option value="Other" ${response.gender === 'Other' ? 'selected' : ''}>Other</option>
-      </select>
-      <select name="hand" required class="form-control mb-2">
-        <option value="Right" ${response.hand === 'Right' ? 'selected' : ''}>Right</option>
-        <option value="Left" ${response.hand === 'Left' ? 'selected' : ''}>Left</option>
-        <option value="Ambidextrous" ${response.hand === 'Ambidextrous' ? 'selected' : ''}>Ambidextrous</option>
-      </select>
-      <select name="foot" required class="form-control mb-2">
-        <option value="Right" ${response.foot === 'Right' ? 'selected' : ''}>Right</option>
-        <option value="Left" ${response.foot === 'Left' ? 'selected' : ''}>Left</option>
-      </select>
-      <input type="text" name="eye_sight" value="${response.eye_sight}" required class="form-control mb-2">
-      <textarea name="medical_condition" class="form-control mb-2" disabled>${response.medical_condition}</textarea>
-      <input type="number" name="height" value="${response.height}" required class="form-control mb-2">
-      <input type="number" name="weight" value="${response.weight}" required class="form-control mb-2">
-      <input type="text" name="parent_name" value="${response.parent_name}" required class="form-control mb-2">
-      <input type="tel" name="parent_phone" value="${response.parent_phone}" required class="form-control mb-2">
-      <input type="tel" name="parent_whatsapp" value="${response.parent_whatsapp}" class="form-control mb-2">
-      <input type="email" name="parent_email" value="${response.parent_email}" class="form-control mb-2">
+
+        <input type="hidden" name="studentId" value="${response.student_id}">
+
+    <div class="form-floating">
+        <input id="name" type="text" name="name" value="${response.name}" required class="form-control mb-2">
+        <label for"name"> Name </label>
+    </div>
+      
+
+    <div class="form-floating">
+        <input id="dob" type="date" name="dob" value="${response.dob}" required class="form-control mb-2">
+        <label for="dob">Date of Birth </label>
+    </div>
+
+      <div class="form-floating">
+
+
+<label for=""> </label>
+</div>
+      <div class="form-floating">
+  <select id="gender" name="gender" required class="form-control mb-2">
+    <option value="Male" ${response.gender === 'Male' ? 'selected' : ''}>Male</option>
+    <option value="Female" ${response.gender === 'Female' ? 'selected' : ''}>Female</option>
+    <option value="Other" ${response.gender === 'Other' ? 'selected' : ''}>Other</option>
+  </select>
+  <label for="gender">Gender</label>
+</div>
+
+<div class="form-floating">
+  <select id="hand" name="hand" required class="form-control mb-2">
+    <option value="Right" ${response.hand === 'Right' ? 'selected' : ''}>Right</option>
+    <option value="Left" ${response.hand === 'Left' ? 'selected' : ''}>Left</option>
+    <option value="Ambidextrous" ${response.hand === 'Ambidextrous' ? 'selected' : ''}>Ambidextrous</option>
+  </select>
+  <label for="hand">Dominant Hand</label>
+</div>
+
+<div class="form-floating">
+  <select id="foot" name="foot" required class="form-control mb-2">
+    <option value="Right" ${response.foot === 'Right' ? 'selected' : ''}>Right</option>
+    <option value="Left" ${response.foot === 'Left' ? 'selected' : ''}>Left</option>
+  </select>
+  <label for="foot">Dominant Foot</label>
+</div>
+
+<div class="form-floating">
+  <input id="eye_sight" type="text" name="eye_sight" value="${response.eye_sight}" required class="form-control mb-2">
+  <label for="eye_sight">Eye Sight</label>
+</div>
+
+<div class="form-floating">
+  <textarea id="medical_condition" name="medical_condition" class="form-control mb-2" disabled>${response.medical_condition}</textarea>
+  <label for="medical_condition">Medical Condition</label>
+</div>
+
+<div class="form-floating">
+  <input id="height" type="number" name="height" value="${response.height}" required class="form-control mb-2">
+  <label for="height">Height</label>
+</div>
+
+<div class="form-floating">
+  <input id="weight" type="number" name="weight" value="${response.weight}" required class="form-control mb-2">
+  <label for="weight">Weight</label>
+</div>
+
+<div class="form-floating">
+  <input id="parent_name" type="text" name="parent_name" value="${response.parent_name}" required class="form-control mb-2">
+  <label for="parent_name">Parent Name</label>
+</div>
+
+<div class="form-floating">
+  <input id="parent_phone" type="tel" name="parent_phone" value="${response.parent_phone}" required class="form-control mb-2">
+  <label for="parent_phone">Parent Phone</label>
+</div>
+
+<div class="form-floating">
+  <input id="parent_whatsapp" type="tel" name="parent_whatsapp" value="${response.parent_whatsapp}" class="form-control mb-2">
+  <label for="parent_whatsapp">Parent WhatsApp</label>
+</div>
+
+<div class="form-floating">
+  <input id="parent_email" type="email" name="parent_email" value="${response.parent_email}" class="form-control mb-2">
+  <label for="parent_email">Parent Email</label>
+</div>
       <button type="button" class="save-btn">Update Student</button>
     `;
 
@@ -685,33 +769,78 @@ function editStudent(studentId) {
     modal.style.display = 'block';
     document.body.classList.add('no-scroll'); // Disable body scroll
 
-    // Add event listener for saving changes
+    // Modify the save button event listener
     document.querySelector('.save-btn').addEventListener('click', function() {
-      // Collect form data and add action for updating the student
       var formData = $('#editStudentForm').serialize() + '&action=updateStudent';
 
-      // Submit data using AJAX
-      $.post('ajax_handlers.php', formData, function(saveResponse) {
-        if (saveResponse.success) {
-          // Update the student details on the page dynamically (optional)
-        //   updateStudentDetailsOnPage(saveResponse.updatedStudent);
-
-          // Alert success message
-          alert('Student updated successfully!');
-
-          // Close the modal
-          modal.style.display = 'none';
-          document.body.classList.remove('no-scroll');
-
-          // Optionally, reset the form (if needed)
-          document.getElementById('editStudentForm').reset();
-        } else {
-          alert('Error: ' + saveResponse.error);
+      $.ajax({
+        url: 'ajax_handlers.php',
+        type: 'POST',
+        data: formData,
+        dataType: 'json', // Explicitly expect JSON response
+        success: function(saveResponse) {
+          if (saveResponse.success) {
+            toastr.success(saveResponse.message);
+            modal.style.display = 'none';
+            document.body.classList.remove('no-scroll');
+            document.getElementById('editStudentForm').reset();
+            showTable('students'); // Refresh the table
+          } else {
+            toastr.error(saveResponse.message || 'An error occurred while updating the student');
+          }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          toastr.error('An error occurred: ' + textStatus);
+          console.error('AJAX Error:', textStatus, errorThrown);
         }
       });
     });
   });
 }
+
+
+
+
+
+// function editStudent(studentId) {
+//   $.get('ajax_handlers.php', { action: 'getStudent', studentId: studentId }, function(response) {
+//     if (response.error) {
+//       toastr.error(response.error);
+//       return;
+//     }
+
+//     // ... (rest of the form population code remains the same)
+
+//     // Modify the save button event listener
+//     document.querySelector('.save-btn').addEventListener('click', function() {
+//       var formData = $('#editStudentForm').serialize() + '&action=updateStudent';
+
+//       $.ajax({
+//         url: 'ajax_handlers.php',
+//         type: 'POST',
+//         data: formData,
+//         dataType: 'json', // Explicitly expect JSON response
+//         success: function(saveResponse) {
+//           if (saveResponse.success) {
+//             toastr.success(saveResponse.message);
+//             modal.style.display = 'none';
+//             document.body.classList.remove('no-scroll');
+//             document.getElementById('editStudentForm').reset();
+//             showTable('students'); // Refresh the table
+//           } else {
+//             toastr.error(saveResponse.message || 'An error occurred while updating the student');
+//           }
+//         },
+//         error: function(jqXHR, textStatus, errorThrown) {
+//           toastr.error('An error occurred: ' + textStatus);
+//           console.error('AJAX Error:', textStatus, errorThrown);
+//         }
+//       });
+//     });
+//   });
+// }
+
+
 
 </script>
 

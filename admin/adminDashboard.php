@@ -35,6 +35,10 @@ unset($_SESSION['welcome_message']);
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png">
+    <link rel="manifest" href="assets/images/site.webmanifest">
         <title>Admin Dashboard</title>
     </head>
 <body>
@@ -117,7 +121,7 @@ unset($_SESSION['welcome_message']);
 
 
         <div class="card">
-            <a href="sel.php">
+            <a href="sel_themes_management.php">
             <div class="icon"><img src="assets/images/sel_themes.png" alt=""></div>
             <span><b>SEL Themes</b></span>
             </a>
@@ -125,10 +129,8 @@ unset($_SESSION['welcome_message']);
 
 
         <div class="card">
-            <a href="report.php">
+            <a href="combined_sel_page.php">
              <div class="icon"><img src="assets/images/reports.png" alt=""></div>
-            
-            
              <span><b>Report</b></span>
             </a>
         </div>

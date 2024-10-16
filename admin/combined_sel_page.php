@@ -147,6 +147,11 @@ $view = isset($_GET['view']) ? $_GET['view'] : 'enter'; // Default view is 'ente
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.css" integrity="sha512-oe8OpYjBaDWPt2VmSFR+qYOdnTjeV9QPLJUeqZyprDEQvQLJ9C5PCFclxwNuvb/GQgQngdCXzKSFltuHD3eCxA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="assets/css/adminDashboard.css">
     <link rel="stylesheet" href="styles.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png">
+    <link rel="manifest" href="assets/images/site.webmanifest">
     <style>
         .score-input {
             width: 60px;
@@ -338,7 +343,7 @@ $view = isset($_GET['view']) ? $_GET['view'] : 'enter'; // Default view is 'ente
                                         <td><?php echo htmlspecialchars($themes[0]['name']); ?></td>
                                         <?php foreach ($themes as $theme): ?>
                                             <td>
-                                                <input type="number" name="scores[<?php echo $student_id; ?>][<?php echo $theme['theme_id']; ?>]" min="2" max="9" step="1" class="form-control score-input" value="<?php echo $theme['score'] !== null ? htmlspecialchars(round($theme['score'])) : ''; ?>">
+                                                <input type="number" name="scores[<?php echo $student_id; ?>][<?php echo $theme['theme_id']; ?>]" max="9" step="1" class="form-control score-input" value="<?php echo $theme['score'] !== null ? htmlspecialchars(round($theme['score'])) : ''; ?>">
                                                 <?php if ($theme['score'] !== null): ?>
                                                     <div class="previous-score">
                                                         Last updated: <?php echo htmlspecialchars($theme['date_assessed']); ?>
@@ -357,7 +362,7 @@ $view = isset($_GET['view']) ? $_GET['view'] : 'enter'; // Default view is 'ente
         </div>
 
         <div id="view-scores-view" style="display: none;">
-        <form method="GET">
+    <form method="GET">
     <div class="row g-3 align-items-center">
         <div class="col-auto">
             <select class="form-select" name="view_school_id" id="view_school_id">

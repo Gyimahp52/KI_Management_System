@@ -18,8 +18,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     switch ($_POST['action']) {
         case 'createClass':
             $result = createClass($_POST['schoolId'], $_POST['name']);
-            setFlashMessage($result ? 'success' : 'error', $result ? "Class created successfully" : "Failed to create class");
-            respondWithJson(['success' => $result]);
+            
+            if ($result) {
+                respondWithJson(['success' => true, 'message' => "Class created successfully"]);
+            } else {
+                respondWithJson(['success' => false, 'message' => "Failed to create Class"]);
+            }
             break;
         
         case 'createSchool':
@@ -33,9 +37,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     respondWithJson(['success' => false]);
                 }
             }
-            $result = createSchool($_POST['schoolName'], $_POST['region'], $_POST['town'], /*$_POST['educator'],*/ $logo);
-            setFlashMessage($result ? 'success' : 'error', $result ? "School created successfully" : "Failed to create school");
-            respondWithJson(['success' => $result]);
+            $result = createSchool($_POST['schoolName'], $_POST['region'], $_POST['town'], $logo);
+
+            if ($result) {
+                respondWithJson(['success' => true, 'message' => "School created successfully"]);
+            } else {
+                respondWithJson(['success' => false, 'message' => "Failed to create school"]);
+            }
             break;
 
         case 'createStudent':
@@ -50,24 +58,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             $medical_condition = isset($_POST['medical_condition']) ? $_POST['medical_condition'] : '';
-    $result = createStudent(
-        $_POST['schoolId'],
-        $_POST['classId'],
-        $_POST['name'],
-        $_POST['dob'],
-        $_POST['gender'],
-        $_POST['hand'],
-        $_POST['foot'],
-        $_POST['eye_sight'],
-        $medical_condition,  // Use the variable we just defined
-        $_POST['height'],
-        $_POST['weight'],
-        $_POST['parent_name'],
-        $_POST['parent_phone'],
-        $_POST['parent_whatsapp'],
-        $_POST['parent_email'],
-        $passport_picture,
-        $_POST['password']
+                $result = createStudent(
+                    $_POST['schoolId'],
+                    $_POST['classId'],
+                    $_POST['name'],
+                    $_POST['dob'],
+                    $_POST['gender'],
+                    $_POST['hand'],
+                    $_POST['foot'],
+                    $_POST['eye_sight'],
+                    $medical_condition,  
+                    $_POST['height'],
+                    $_POST['weight'],
+                    $_POST['parent_name'],
+                    $_POST['parent_phone'],
+                    $_POST['parent_whatsapp'],
+                    $_POST['parent_email'],
+                    $passport_picture,
+                    $_POST['password']
     );
     if (is_string($result) && strpos($result, "successfully") !== false) {
         respondWithJson(['success' => true, 'message' => $result]);
@@ -76,7 +84,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     break;
 
-        case 'updateStudent':
+    case 'updateStudent':
+        try {
+
+            // Set medical_condition to empty string if not provided
+            $medical_condition = isset($_POST['medical_condition']) ? $_POST['medical_condition'] : ''; 
+
             $result = updateStudent(
                 $_POST['studentId'],
                 $_POST['name'],
@@ -85,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_POST['hand'],
                 $_POST['foot'],
                 $_POST['eye_sight'],
-                $_POST['medical_condition'],
+                $medical_condition,
                 $_POST['height'],
                 $_POST['weight'],
                 $_POST['parent_name'],
@@ -93,12 +106,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_POST['parent_whatsapp'],
                 $_POST['parent_email']
             );
-            setFlashMessage($result ? 'success' : 'error', $result ? "Student updated successfully" : "Failed to update student");
-            respondWithJson(['success' => $result]);
-           
-            break;
-
-       
+            
+            respondWithJson([
+                'success' => (bool)$result,
+                'message' => $result ? "Student updated successfully" : "Failed to update student"
+            ]);
+        } catch (Exception $e) {
+            respondWithJson([
+                'success' => false,
+                'message' => "An error occurred: " . $e->getMessage()
+            ]);
+        }
+        break;
 
         case 'deleteStudent':
             $result = deleteStudent($_POST['studentId']);
@@ -111,8 +130,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         case 'updateSchool':
             $result = updateSchool($_POST['schoolId'], $_POST['name']);
-            setFlashMessage($result ? 'success' : 'error', $result ? "School updated successfully" : "Failed to update school");
-            respondWithJson(['success' => $result]);
+            if($result){
+                respondWithJson(['success' => true, 'message' => "School upadted successfully"]);
+            }else{
+                respondWithJson(['success' => false, 'message' => "Failed to update school"]);
+            }
             break;
 
         case 'deleteSchool':
@@ -123,15 +145,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         case 'updateClass':
             $result = updateClass($_POST['classId'], $_POST['name']);
-            setFlashMessage($result ? 'success' : 'error', $result ? "Class updated successfully" : "Failed to update class");
-            respondWithJson(['success' => $result]);
+            $message = $result ? "Class updated successfully" : "Failed to update Class";
+            respondWithJson(['success' => $result, 'message' => $message]);
             break;
 
         case 'deleteClass':
             $result = deleteClass($_POST['classId']);
-            setFlashMessage($result ? 'success' : 'error', $result ? "Class deleted successfully" : "Failed to delete class");
-            respondWithJson(['success' => $result]);
+            $message = $result ? "Class deleted successfully" : "Failed to delete Class";
+            respondWithJson(['success' => $result, 'message' => $message]);
             break;
+        case 'createUser':
+            $userData = [
+                'email' => $_POST['email'] ?? '',
+                'password' => $_POST['password'] ?? '',
+                'role' => $_POST['role'] ?? '',
+                'name' => $_POST['name'] ?? '',
+                'gender' => $_POST['gender'] ?? '',
+                'phone_number' => $_POST['phone_number'] ?? '',
+                'emergency_contact' => $_POST['emergency_contact'] ?? '',
+                'dob' => $_POST['dob'] ?? '',
+                'location' => $_POST['location'] ?? '',
+                // 'profile_pic' => $_POST['profile_pic'] ?? ''
+            ];
+            $result = createUser($userData);
+            respondWithJson($result);
+            // $message = $result ? "User Created successfully" : "Failed to Create User";
+            // respondWithJson(['success' => $result, 'message' => $message]);
+            break;
+
+            case 'updateRole':
+                $userId = intval($_POST['userId'] ?? 0);
+                $newRole = $_POST['newRole'] ?? '';
+                $result = updateUserRole($userId, $newRole);
+                respondWithJson(['success' => $result]);
+                break;
+
+            case 'deleteUser':
+                $userId = $_POST['userId'] ?? 0;
+                $result = deleteUser($userId);
+                $message = $result ? "User Deleted successfully" : "Failed to Delete User";
+                respondWithJson(['success' => $result, 'message' => $message]);
+            break;
+            case 'updateLastActivity':
+                $result = updateLastActivity();
+                respondWithJson(['success' => $result]);
+                break;
     }
 }
 elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -272,6 +330,12 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
             } else {
                 respondWithJson(['error' => 'Student not found']);
             }
+            break;
+
+        case 'getUsers':
+            $page = intval($_GET['page'] ?? 1);
+            $result = getUsers($page);
+            respondWithJson($result);
             break;
     }
 }

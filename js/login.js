@@ -1,5 +1,5 @@
 const images = [
-
+    'images/MISoverlay.webp',
     'images/web2.png',
     'images/web3.png'
 ];

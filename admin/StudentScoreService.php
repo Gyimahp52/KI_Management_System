@@ -74,6 +74,54 @@ class StudentScoreService {
   }
 
 
+    // public function saveScores($scores, $current_term_id) {
+    //     $this->pdo->beginTransaction();
+    //     try {
+    //         $check_stmt = $this->pdo->prepare("
+    //             SELECT id, score FROM student_scores 
+    //             WHERE student_id = ? AND theme_id = ? AND term_id = ?
+    //         ");
+            
+    //         $update_stmt = $this->pdo->prepare("
+    //             UPDATE student_scores 
+    //             SET score = ?, date_assessed = ?
+    //             WHERE id = ?
+    //         ");
+            
+    //         $insert_stmt = $this->pdo->prepare("
+    //             INSERT INTO student_scores (student_id, theme_id, score, date_assessed, term_id)
+    //             VALUES (?, ?, ?, ?, ?)
+    //         ");
+            
+    //         $date_assessed = date('Y-m-d');
+            
+    //         foreach ($scores as $student_id => $theme_scores) {
+    //             foreach ($theme_scores as $theme_id => $score) {
+    //                 if ($score !== '' && ctype_digit($score) && $score >= 2 && $score <= 9) {
+    //                     $check_stmt->execute([$student_id, $theme_id, $current_term_id]);
+    //                     $existing_score = $check_stmt->fetch(PDO::FETCH_ASSOC);
+                        
+    //                     if ($existing_score) {
+    //                         if ($existing_score['score'] != $score) {
+    //                             $update_stmt->execute([$score, $date_assessed, $existing_score['id']]);
+    //                         }
+    //                     } else {
+    //                         $insert_stmt->execute([$student_id, $theme_id, $score, $date_assessed, $current_term_id]);
+    //                     }
+    //                 }
+    //             }
+    //         }
+
+    //         $this->pdo->commit();
+    //         return true;
+    //     } catch (Exception $e) {
+    //         $this->pdo->rollBack();
+    //         throw $e;
+    //     }
+    // }
+
+
+
     public function saveScores($scores, $current_term_id) {
         $this->pdo->beginTransaction();
         try {
@@ -93,14 +141,25 @@ class StudentScoreService {
                 VALUES (?, ?, ?, ?, ?)
             ");
             
+            $delete_stmt = $this->pdo->prepare("
+                DELETE FROM student_scores
+                WHERE id = ?
+            ");
+            
             $date_assessed = date('Y-m-d');
             
             foreach ($scores as $student_id => $theme_scores) {
                 foreach ($theme_scores as $theme_id => $score) {
-                    if ($score !== '' && ctype_digit($score) && $score >= 2 && $score <= 9) {
-                        $check_stmt->execute([$student_id, $theme_id, $current_term_id]);
-                        $existing_score = $check_stmt->fetch(PDO::FETCH_ASSOC);
-                        
+                    $check_stmt->execute([$student_id, $theme_id, $current_term_id]);
+                    $existing_score = $check_stmt->fetch(PDO::FETCH_ASSOC);
+                    
+                    if ($score === '') {
+                        // If the score is empty and there's an existing record, delete it
+                        if ($existing_score) {
+                            $delete_stmt->execute([$existing_score['id']]);
+                        }
+                    } elseif (is_numeric($score) && $score >= 2 && $score <= 9) {
+                        $score = (int)$score; // Ensure it's an integer
                         if ($existing_score) {
                             if ($existing_score['score'] != $score) {
                                 $update_stmt->execute([$score, $date_assessed, $existing_score['id']]);
@@ -109,9 +168,10 @@ class StudentScoreService {
                             $insert_stmt->execute([$student_id, $theme_id, $score, $date_assessed, $current_term_id]);
                         }
                     }
+                    // If the score is not empty but invalid, we simply ignore it
                 }
             }
-
+    
             $this->pdo->commit();
             return true;
         } catch (Exception $e) {
