@@ -343,7 +343,7 @@ $view = isset($_GET['view']) ? $_GET['view'] : 'enter'; // Default view is 'ente
                                         <td><?php echo htmlspecialchars($themes[0]['name']); ?></td>
                                         <?php foreach ($themes as $theme): ?>
                                             <td>
-                                                <input type="number" name="scores[<?php echo $student_id; ?>][<?php echo $theme['theme_id']; ?>]" max="9" step="1" class="form-control score-input" value="<?php echo $theme['score'] !== null ? htmlspecialchars(round($theme['score'])) : ''; ?>">
+                                                <input type="number" name="scores[<?php echo $student_id; ?>][<?php echo $theme['theme_id']; ?>]" max="9" step="1" class="form-control score-input validate-score" value="<?php echo $theme['score'] !== null ? htmlspecialchars(round($theme['score'])) : ''; ?>">
                                                 <?php if ($theme['score'] !== null): ?>
                                                     <div class="previous-score">
                                                         Last updated: <?php echo htmlspecialchars($theme['date_assessed']); ?>
@@ -724,6 +724,61 @@ document.getElementById('view_school_id').addEventListener('change', function() 
 document.getElementById('view_class_id').addEventListener('change', function() {
     document.getElementById('academic_year_id').value = '';
     document.getElementById('term_id').innerHTML = '<option value="">Select Term</option>';
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const scoreInputs = document.querySelectorAll('.validate-score');
+    
+    scoreInputs.forEach(input => {
+        input.addEventListener('input', validateScore);
+        input.addEventListener('change', validateScore);
+    });
+
+    function validateScore(event) {
+        const input = event.target;
+        const value = input.value.trim();
+        
+        // Remove any existing error message
+        const existingError = input.nextElementSibling;
+        if (existingError && existingError.classList.contains('error-message')) {
+            existingError.remove();
+        }
+        
+        // Check if the value is empty (null) or between 2 and 9
+        if (value === '' || (value >= 2 && value <= 9)) {
+            input.style.borderColor = '';
+            input.style.backgroundColor = '';
+        } else {
+            input.style.borderColor = 'red';
+            input.style.backgroundColor = '#ffeeee';
+            
+            // Add error message
+            const errorSpan = document.createElement('span');
+            errorSpan.textContent = 'Score must be between 2 and 9 or left empty.';
+            errorSpan.style.color = 'red';
+            errorSpan.style.fontSize = '0.8em';
+            errorSpan.classList.add('error-message');
+            input.parentNode.insertBefore(errorSpan, input.nextSibling);
+        }
+    }
+
+    // Validate all scores before form submission
+    document.querySelector('form').addEventListener('submit', function(event) {
+        let hasError = false;
+        scoreInputs.forEach(input => {
+            const value = input.value.trim();
+            if (value !== '' && (value < 2 || value > 9)) {
+                hasError = true;
+                input.style.borderColor = 'red';
+                input.style.backgroundColor = '#ffeeee';
+            }
+        });
+
+        if (hasError) {
+            event.preventDefault();
+            alert('Please correct the highlighted scores before submitting.');
+        }
+    });
 });
 
 </script>
