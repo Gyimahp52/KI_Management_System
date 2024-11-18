@@ -3,6 +3,47 @@
 //funtion.php
 require_once 'db_connection.php';
 
+
+
+function assignSchoolsToEducator($educatorId, $schoolIds) {
+    $pdo = Database::getConnection();
+
+    // Begin a transaction
+    $pdo->beginTransaction();
+
+    try {
+        // Remove existing schools
+        $stmt = $pdo->prepare("DELETE FROM educator_schools WHERE educator_id = ?");
+        $stmt->execute([$educatorId]);
+
+        // Insert new assignments
+        $stmt = $pdo->prepare("INSERT INTO educator_schools (educator_id, school_id) VALUES (?, ?)");
+        foreach ($schoolIds as $schoolId) {
+            $stmt->execute([$educatorId, $schoolId]);
+        }
+
+        // Commit transaction
+        $pdo->commit();
+        return true;
+    } catch (Exception $e) {
+        // Rollback transaction on error
+        $pdo->rollBack();
+        error_log("Error assigning schools: " . $e->getMessage());
+        return false;
+    }
+}
+function getSchoolsByEducator($educatorId) {
+    $pdo = Database::getConnection();
+    $stmt = $pdo->prepare("
+        SELECT s.* 
+        FROM schools s
+        JOIN educator_schools es ON s.id = es.school_id
+        WHERE es.educator_id = ?
+    ");
+    $stmt->execute([$educatorId]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function createClass($school_id, $name) {
     $pdo = Database::getConnection();
     // $class_id = generateUniqueId('classes', 'class_id');

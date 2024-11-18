@@ -62,20 +62,24 @@ if (isset($_POST['delete'])) {
     }
 }
 
+
 if (isset($_POST['edit'])) {
     $id = $_POST['id'];
     $name = sanitize_input($_POST['edit_name']);
     $phone = sanitize_input($_POST['edit_phone']);
-    $school = sanitize_input($_POST['edit_school']);
+    $schoolIds = $_POST['school_ids']; // Array of school IDs
 
     try {
-        $sql = "UPDATE educators SET name = :name, phone_number = :phone, school_id = :school WHERE id = :id";
+        // Update educator information
+        $sql = "UPDATE educators SET name = :name, phone_number = :phone WHERE id = :id";
         $query = $dbh->prepare($sql);
         $query->bindParam(':name', $name, PDO::PARAM_STR);
         $query->bindParam(':phone', $phone, PDO::PARAM_STR);
-        $query->bindParam(':school', $school, PDO::PARAM_STR);
         $query->bindParam(':id', $id, PDO::PARAM_INT);
         $query->execute();
+
+        // Assign schools
+        assignSchoolsToEducator($id, $schoolIds);
 
         $_SESSION['toastr'] = ['type' => 'success', 'message' => 'Educator updated successfully.'];
         header("Location: educators.php");
@@ -319,6 +323,15 @@ $query->execute();
 $educators = $query->fetchAll(PDO::FETCH_OBJ);
 
 
+foreach ($educators as $educator) {
+    $assignedSchools = getSchoolsByEducator($educator->id);
+
+    $assignedSchoolIds = array_map(fn($school) => $school['id'], $assignedSchools);
+}
+
+
+// var_dump($educators)
+
 ?> 
 
 <!DOCTYPE html>
@@ -333,7 +346,9 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
     <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="manifest" href="assets/images/site.webmanifest">
+ 
     <title>Information Collection Form</title>
     <style>
 
@@ -369,7 +384,7 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
     
     <!-- Main content space -->
     <div class="main-content">
-        <?php include_once('includes/header.php'); ?>
+        <!-- <?php include_once('includes/header.php'); ?> -->
         
         <div class="container mt-5">
             <!-- Add new educator button -->
@@ -505,7 +520,6 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
 </tr>
 
 <!-- Edit Modal -->
-<!-- Edit Modal -->
 <div class="modal fade" id="editModal<?php echo $educator->id; ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?php echo $educator->id; ?>" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -527,19 +541,18 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
                         <input type="tel" class="form-control" id="edit_phone<?php echo $educator->id; ?>" name="edit_phone" value="<?php echo htmlspecialchars($educator->phone_number); ?>" required>
                     </div>
                     <div class="form-group">
-                        <label for="edit_schools<?php echo $educator->id; ?>">Schools</label>
-                        <select name="edit_schools[]" id="edit_schools<?php echo $educator->id; ?>" class="form-control select2" multiple required>
-                            <?php 
-                            // Get currently assigned schools
-                            $assigned_schools = getEducatorSchools($educator->id);
-                            foreach (getSchoolsWP() as $school): 
-                                $selected = in_array($school['id'], array_column($assigned_schools, 'school_id')) ? 'selected' : '';
-                            ?>
-                                <option value="<?php echo htmlspecialchars($school['id']); ?>" <?php echo $selected; ?>>
-                                    <?php echo htmlspecialchars($school['school_name']); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
+
+                        
+                        <label for="edit_school<?php echo $educator->id; ?>">School</label>
+                        <select id="school-select" name="school_ids[]" multiple>
+    <!-- Populate options dynamically -->
+    <?php foreach ($schools as $school): ?>
+        <option value="<?= $school['id']; ?>" <?= in_array($school['id'], $assignedSchoolIds) ? 'selected' : ''; ?>>
+            <?= $school['school_name']; ?>
+        </option>
+    <?php endforeach; ?>
+</select>
+
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -550,6 +563,7 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
         </div>
     </div>
 </div>
+
 
 
 <!-- Delete Modal -->
@@ -603,6 +617,7 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
     <script src="assets/js/educators.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script>
 
 <?php if (isset($_SESSION['toastr'])): ?>
@@ -631,6 +646,14 @@ $(document).ready(function() {
     $('.edit-btn').click(function() {
         var id = $(this).data('id');
         $('#editModal' + id).modal('show');
+    });
+
+
+});
+$(document).ready(function () {
+    $('#school-select').select2({
+        placeholder: "Select schools",
+        allowClear: true
     });
 });
 
