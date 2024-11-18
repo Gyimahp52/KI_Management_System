@@ -344,6 +344,13 @@ function getSchools($page = 1, $perPage = 10) {
     return $stmt->fetchAll();
 }
 
+function getSchoolsWP() {
+    $pdo = Database::getConnection();
+    $stmt = $pdo->prepare("SELECT * FROM schools");
+    $stmt->execute();
+    return $stmt->fetchAll();
+}
+
 
 function getStudents($schoolId = null, $classId = null, $page = 1, $perPage = 10, $search = null) {
     $pdo = Database::getConnection();

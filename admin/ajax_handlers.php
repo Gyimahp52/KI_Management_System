@@ -238,8 +238,6 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     break;
 
                 case 'students':
-                   
-                    
                         $students = getStudents($schoolId, $classId, $page, $perPage, $search);
                         $total = getTotal('students', $schoolId, $classId, $search);
                     $totalPages = ceil($total / $perPage);
@@ -276,9 +274,15 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
                               </tr>";
                     }
                     $html .= "</tbody></table>";
-                    // $html .= generatePagination($page, $totalPages, 'students', $schoolId, $classId);
                     $html .= generatePagination($page, $totalPages, $_GET['type'], $schoolId, $classId, $search);
-                    echo $html;
+                    // Create an array to hold the response data
+                    $response = [
+                        'html' => $html,
+                        'total' => $total,
+                    ];
+                    
+                    // Return the response as a JSON object
+                    echo json_encode($response);
                     break;
 
                 case 'classes':

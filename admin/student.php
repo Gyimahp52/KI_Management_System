@@ -2,11 +2,6 @@
 include('includes/auth.php');
 require_once 'db_connction.php';
 require_once 'function.php';
-require_once 'StudentScoreService.php';
-
-$studentScoreService = new StudentScoreService($pdo);
-
-$schools = $studentScoreService->getSchools();
 
 ?>
 
@@ -270,7 +265,7 @@ body.no-scroll {
     <form onsubmit="filterStudents(event)">
         <select name="filterSchoolId" onchange="updateFilterClassSelect(this.value)" class="form-control mb-2 scrollable-select">
             <option value="">All Schools</option>
-            <?php foreach ($schools as $school): ?>
+            <?php foreach (getSchoolsWP()as $school): ?>
                 <option value="<?= $school['id'] ?>"><?= $school['school_name'] ?></option>
             <?php endforeach; ?>
         </select>
@@ -280,6 +275,8 @@ body.no-scroll {
         <input type="text" id="studentSearch" placeholder="Search students..." class="form-control mb-2">
         <button type="submit" class="btn btn-primary">Filter</button>
     </form>
+    <div id="totalCount">Total Students: 0</div>
+
 </div>
         <div id="tableContainer"></div>
             <nav>
@@ -409,7 +406,7 @@ body.no-scroll {
 
         <select class="form-control" name="schoolId" onchange="loadClasses(this.value)" required class="form-control mb-2">
             <option value="">Select School</option>
-            <?php foreach ($schools as $school): ?>
+            <?php foreach (getSchoolsWP() as $school): ?>
                 <option value="<?= $school['id'] ?>"><?= $school['school_name'] ?></option>
             <?php endforeach; ?>
         </select>
@@ -619,7 +616,7 @@ function searchStudents() {
 
 
 function showTable(type, page = 1, schoolId = null, classId = null, search = null) {
-    console.log('showTable parameters:', { type, page, schoolId, classId, search });
+    // console.log('showTable parameters:', { type, page, schoolId, classId, search });
 
     const params = {
         action: 'getTable',
@@ -634,7 +631,10 @@ function showTable(type, page = 1, schoolId = null, classId = null, search = nul
     Object.keys(params).forEach(key => params[key] == null && delete params[key]);
 
     $.get('ajax_handlers.php', params, function(response) {
-        $('#tableContainer').html(response);
+        console.log(response);
+        var data = JSON.parse(response);
+        $('#tableContainer').html(data.html);
+        $('#totalCount').text(`Total Students: ${data.total}`);
     }).fail(function(jqXHR, textStatus, errorThrown) {
         console.error('AJAX request failed:', textStatus, errorThrown);
     });

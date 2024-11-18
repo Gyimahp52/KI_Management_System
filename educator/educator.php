@@ -15,6 +15,7 @@ $pdo = dbConnect();
 $studentScoreService = new StudentScoreService($pdo);
 
 
+
 $message = '';
 $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
 // Check if the user is logged in and is an educator

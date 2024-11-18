@@ -2,13 +2,6 @@
 include('includes/auth.php');
 include 'function.php';
 include 'includes/dbconnection.php';
-require_once 'db_connction.php';
-require_once 'StudentScoreService.php';
-
-$studentScoreService = new StudentScoreService($pdo);
-
-$schools = $studentScoreService->getSchools();
-
 ?>
 
 <!DOCTYPE html>
@@ -62,7 +55,7 @@ $schools = $studentScoreService->getSchools();
         <form onsubmit="createClass(event)">
             <select name="schoolId" required class="form-control mb-2">
                 <option value="">Select School</option>
-                <?php foreach ($schools as $school): ?>
+                <?php foreach (getSchoolsWP() as $school): ?>
                     <option value="<?= $school['id'] ?>"><?= $school['school_name'] ?></option>
                 <?php endforeach; ?>
             </select>
