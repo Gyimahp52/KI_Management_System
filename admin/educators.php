@@ -503,6 +503,8 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
         </form>
     </td>
 </tr>
+
+<!-- Edit Modal -->
 <!-- Edit Modal -->
 <div class="modal fade" id="editModal<?php echo $educator->id; ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?php echo $educator->id; ?>" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -525,13 +527,17 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
                         <input type="tel" class="form-control" id="edit_phone<?php echo $educator->id; ?>" name="edit_phone" value="<?php echo htmlspecialchars($educator->phone_number); ?>" required>
                     </div>
                     <div class="form-group">
-
-                        
-                        <label for="edit_school<?php echo $educator->id; ?>">School</label>
-                        <select name="edit_school" id="edit_school<?php echo $educator->id; ?>" class="form-control mb-2">
-                            <option value="">Select School</option>
-                            <?php foreach (getSchoolsWP() as $school): ?>
-                                <option value="<?php echo htmlspecialchars($school['id']); ?>" <?php if ($school['id'] == $educator->school_id) echo 'selected';?>> <?= $school['school_name'] ?></option>
+                        <label for="edit_schools<?php echo $educator->id; ?>">Schools</label>
+                        <select name="edit_schools[]" id="edit_schools<?php echo $educator->id; ?>" class="form-control select2" multiple required>
+                            <?php 
+                            // Get currently assigned schools
+                            $assigned_schools = getEducatorSchools($educator->id);
+                            foreach (getSchoolsWP() as $school): 
+                                $selected = in_array($school['id'], array_column($assigned_schools, 'school_id')) ? 'selected' : '';
+                            ?>
+                                <option value="<?php echo htmlspecialchars($school['id']); ?>" <?php echo $selected; ?>>
+                                    <?php echo htmlspecialchars($school['school_name']); ?>
+                                </option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -544,7 +550,6 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
         </div>
     </div>
 </div>
-
 
 
 <!-- Delete Modal -->
