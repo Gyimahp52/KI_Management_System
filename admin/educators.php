@@ -323,12 +323,6 @@ $query->execute();
 $educators = $query->fetchAll(PDO::FETCH_OBJ);
 
 
-foreach ($educators as $educator) {
-    $assignedSchools = getSchoolsByEducator($educator->id);
-
-    $assignedSchoolIds = array_map(fn($school) => $school['id'], $assignedSchools);
-}
-
 
 // var_dump($educators)
 
@@ -347,6 +341,7 @@ foreach ($educators as $educator) {
     <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    
     <link rel="manifest" href="assets/images/site.webmanifest">
  
     <title>Information Collection Form</title>
@@ -501,7 +496,20 @@ foreach ($educators as $educator) {
     <td><?php echo htmlspecialchars($educator->name); ?></td>
     <td><?php echo htmlspecialchars($educator->phone_number); ?></td>
     <td><?php echo htmlspecialchars($educator->email); ?></td>
-    <td><?php echo htmlspecialchars($educator->school_name); ?></td>
+    <td>
+    <?php 
+    // Fetch assigned schools for this educator
+    $assignedSchools = getSchoolsByEducator($educator->id);
+    if (!empty($assignedSchools)) {
+        $schoolNames = array_map(function($school) {
+            return htmlspecialchars($school['school_name']);
+        }, $assignedSchools);
+        echo implode(', ', $schoolNames);
+    } else {
+        echo 'No schools assigned';
+    }
+    ?>
+    </td>
     <td>
     <?php if (!empty($educator->profile_pic)): ?>
         <img src="<?php echo htmlspecialchars($educator->profile_pic); ?>" alt="Profile Picture" style="width: 50px; height: auto;">
@@ -520,7 +528,7 @@ foreach ($educators as $educator) {
 </tr>
 
 <!-- Edit Modal -->
-<div class="modal fade" id="editModal<?php echo $educator->id; ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?php echo $educator->id; ?>" aria-hidden="true">
+ <div class="modal fade" id="editModal<?php echo $educator->id; ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?php echo $educator->id; ?>" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -541,19 +549,30 @@ foreach ($educators as $educator) {
                         <input type="tel" class="form-control" id="edit_phone<?php echo $educator->id; ?>" name="edit_phone" value="<?php echo htmlspecialchars($educator->phone_number); ?>" required>
                     </div>
                     <div class="form-group">
-
+                    <label for="school-select-<?php echo htmlspecialchars($educator->id); ?>">Schools</label>
+                    <select id="school-select-<?php echo htmlspecialchars($educator->id); ?>" 
+                            name="school_ids[]" 
+                            class="form-control select2" 
+                            multiple>
+                        <?php
+                        // Fetch assigned schools for this educator
+                        $allSchools = getSchoolsWP(); // Assuming this function fetches all schools
+        
+                        // Fetch assigned schools for this educator
+                        $assignedSchools = getSchoolsByEducator($educator->id);
+                        $assignedSchoolIds = array_map(fn($school) => $school['id'], $assignedSchools);
+                
+                        foreach ($allSchools as $school) {
+                            $isSelected = in_array($school['id'], $assignedSchoolIds) ? 'selected' : '';
+                            ?>
+                            <option value="<?php echo htmlspecialchars($school['id']); ?>" <?php echo $isSelected; ?>>
+                                <?php echo htmlspecialchars($school['school_name']); ?>
+                            </option>
+                        <?php }
                         
-                        <label for="edit_school<?php echo $educator->id; ?>">School</label>
-                        <select id="school-select" name="school_ids[]" multiple>
-    <!-- Populate options dynamically -->
-    <?php foreach ($schools as $school): ?>
-        <option value="<?= $school['id']; ?>" <?= in_array($school['id'], $assignedSchoolIds) ? 'selected' : ''; ?>>
-            <?= $school['school_name']; ?>
-        </option>
-    <?php endforeach; ?>
-</select>
+                        ?>
+                    </select>
 
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -563,6 +582,7 @@ foreach ($educators as $educator) {
         </div>
     </div>
 </div>
+
 
 
 
@@ -618,6 +638,8 @@ foreach ($educators as $educator) {
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+  
+
     <script>
 
 <?php if (isset($_SESSION['toastr'])): ?>
@@ -648,14 +670,17 @@ $(document).ready(function() {
         $('#editModal' + id).modal('show');
     });
 
+    // using seslect2 
+    <?php foreach ($educators as $educator): ?>
+        $('#school-select-<?php echo $educator->id; ?>').select2({
+            placeholder: "Select schools",
+            allowClear: true,
+            theme: "classic"
+        });
+    <?php endforeach; ?>
 
 });
-$(document).ready(function () {
-    $('#school-select').select2({
-        placeholder: "Select schools",
-        allowClear: true
-    });
-});
+
 
 
 document.addEventListener('DOMContentLoaded', function() {
