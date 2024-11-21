@@ -223,10 +223,7 @@ date_default_timezone_set('Africa/Accra');
           </div>
 
 
-
-
-
-    <div class="hold">  
+          <div class="hold">  
       <!-- Student Scores Table (hidden initially) -->
       <div id="student-scores" class="student-scores-container" <?php echo $classId ? '' : 'style="display: none;"'; ?>>
         <div class="main-nav--btn">
@@ -405,7 +402,6 @@ toastr.options = {
   $('#school_id').on('change', function () {
             const schoolId = $(this).val();
             if (schoolId) {
-              console.log(schoolId);
                 $.ajax({
                     url: 'fetch_classes.php',
                     type: 'GET',
@@ -419,7 +415,7 @@ toastr.options = {
                 });
             }
         });
-
+// GET PROFILEDATA
 $('#profile-btn').click(function() {
     $.ajax({
         url: 'get_profile.php',
@@ -543,7 +539,7 @@ $('#profile-form').submit(function(e) {
             submitScores();
         });
 
-    // Existing function to load students, but now we also pass search query
+    // Existing function to load students, with search query
     function loadStudents(classId, page, searchQuery = '') {
         $.ajax({
             url: 'get_students.php',
