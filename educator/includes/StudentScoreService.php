@@ -13,11 +13,24 @@ class StudentScoreService {
         return $stmt->fetchAll();
     }
 
+    public function getSchoolsForEducator($educatorEmail) {
+        $stmt = $this->pdo->prepare('
+            SELECT s.id, s.school_name 
+            FROM schools s
+            JOIN educator_schools es ON s.id = es.school_id
+            JOIN educators e ON e.id = es.educator_id
+            WHERE e.email = ?
+        ');
+        $stmt->execute([$educatorEmail]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
     public function getClasses($school_id) {
-        $stmt = $this->pdo->prepare(" SELECT c.class_id, c.class_name, COUNT(s.student_id) as student_count    FROM classes c
-                                                LEFT JOIN students s ON c.class_id = s.class_id
-                                                WHERE c.school_id = ?
-                                                GROUP BY c.class_id, c.class_name");
+        $stmt = $this->pdo->prepare(" 
+                SELECT c.class_id, c.class_name, COUNT(s.student_id) as student_count FROM classes c
+                LEFT JOIN students s ON c.class_id = s.class_id
+                WHERE c.school_id = ?
+                GROUP BY c.class_id, c.class_name");
         $stmt->execute([$school_id]);
         return $stmt->fetchAll();
     }

@@ -6,9 +6,7 @@ require_once 'includes/functions.php';
 require_once 'includes/StudentScoreService.php';
 require_once 'includes/base_url.php';
 
-// Dynamically get the base URL
 
-// 
 
 $pdo = dbConnect();
 
@@ -25,11 +23,12 @@ if (!isset($_SESSION['user_email']) || $_SESSION['role'] !== 'educator') {
 
 $educatorEmail = $_SESSION['user_email'];
 
-// Fetch educator's school_id, profile_pic, name, and other details from the educators table
-$stmt = $pdo->prepare('SELECT school_id, profile_pic, name, gender, phone_number, emergency_contact, dob, location FROM educators WHERE email = ?');
+// Fetch educator's profile details
+$stmt = $pdo->prepare('SELECT id, profile_pic, name, gender, phone_number, emergency_contact, dob, location FROM educators WHERE email = ?');
 $stmt->execute([$educatorEmail]);
 $educator = $stmt->fetch(PDO::FETCH_ASSOC);
 
+var_dump($educator);
 // Check for Educator
 if (!$educator) {
     // Redirect to an error page if the educator is not found
@@ -37,25 +36,40 @@ if (!$educator) {
     exit();
 }
 
-// Store the school_id in the session
-$_SESSION['school_id'] = $educator['school_id'];
+$educatorId = $educator['id'];
 
-// Fetch the school name from the schools table using the school_id
-$schoolId = $educator['school_id'];
-$stmtSchool = $pdo->prepare('SELECT school_name FROM schools WHERE id = ?');
-$stmtSchool->execute([$schoolId]);
-$school = $stmtSchool->fetch(PDO::FETCH_ASSOC);
+// Fetch all schools assigned to the educator
+$stmtSchools = $pdo->prepare('
+    SELECT s.id, s.school_name 
+    FROM schools s 
+    INNER JOIN educator_schools es ON es.school_id = s.id 
+    WHERE es.educator_id = ?
+');
+$stmtSchools->execute([$educatorId]);
+$schools = $stmtSchools->fetchAll(PDO::FETCH_ASSOC);
+var_dump($schools);
 
-if ($school) {
-    // Add the school_name to the educator array
-    $educator['school_name'] = $school['school_name'];
-} else {
-    // Handle the case where the school is not found
-    $educator['school_name'] = 'Unknown School';
+if (!$schools) {
+    $message = 'No schools assigned to you.';
+    $schools = [];
 }
 
+// // Fetch the school name from the schools table using the school_id
+// $schoolId = $educator['school_id'];
+// $stmtSchool = $pdo->prepare('SELECT school_name FROM schools WHERE id = ?');
+// $stmtSchool->execute([$schoolId]);
+// $school = $stmtSchool->fetch(PDO::FETCH_ASSOC);
 
-$schoolId = $educator['school_id'];
+// if ($school) {
+//     // Add the school_name to the educator array
+//     $educator['school_name'] = $school['school_name'];
+// } else {
+//     // Handle the case where the school is not found
+//     $educator['school_name'] = 'Unknown School';
+// }
+
+
+// $schoolId = $educator['school_id'];
 $educatorName = $educator['name'];
 $classId = isset($_GET['class_id']) ? intval($_GET['class_id']) : null;
 // $term_id = isset($_GET['term_id']) ? intval($_GET['term_id']) : null;
@@ -67,8 +81,8 @@ if (isset($_SESSION['message'])) {
 }
 
 
-
-$classes = $studentScoreService->getClasses($schoolId);
+TODO:
+// $classes = $studentScoreService->getClasses($schoolId);
 $themes = getThemes($schoolId);
 
 // Set the default timezone to Africa/Accra (Ghana)
@@ -93,6 +107,7 @@ date_default_timezone_set('Africa/Accra');
   </head>
   <body>
     <class="dashboard">
+      <!-- SIDE BAR -->
       <div class="sidebar" id="sidebar">
         <div class="sidebar-content">
         <div class="logo">
@@ -147,7 +162,9 @@ date_default_timezone_set('Africa/Accra');
         </div>
       </div>
 
+     <!-- MAIN-CONTENT -->
       <div class="content">
+         <!-- MAIN NAV -->
         <header>
           <button id="toggle-btn" class="toggle-btn">
             <ion-icon
@@ -166,38 +183,50 @@ date_default_timezone_set('Africa/Accra');
             <ion-icon class="settings-icon" name="settings-outline"></ion-icon>
           </div>
         </header>
-
+<!-- MAIN-DASHBOARD -->
         <main class="main-area">
 
           <div class="classes-parent">
             <div class="main-header border main-area--header">
               <!-- School Name -->
               <div class="main-area--text">
-                <h2 class="school-name"><?php echo htmlspecialchars($educator['school_name']); ?></h2>
+                
+              <?php 
+                  // Extract school names and convert to a pipe-separated string
+                  $schoolNames = array_map(function($school) {
+                    return $school['school_name'];
+                  }, $schools);
+
+                  $schoolNamesString = implode('| ', $schoolNames);
+                 ?>
+                
+                <h2 class="school-name"><?php echo htmlspecialchars($schoolNamesString); ?></h2>
                 <h2 class="date"><?php echo date('F j, Y, g:i a');?></h2>
               </div>
             </div>
             <div class="main-area--content border">
 
-            <!-- Class Cards -->
-            <div id="class-cards" class="card-container"  <?php echo $classId ? 'style="display: none;"' : ''; ?>>
-              <?php foreach ($classes as $class): ?>
-                  <div class="card" data-class-id="<?= $class['class_id'] ?>"> 
-                      <div class="icon">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256" class="svg-icon">
-                              <path d="M240,208H224V96a16,16,0,0,0-16-16H144V32a16,16,0,0,0-24.88-13.32L39.12,72A16,16,0,0,0,32,85.34V208H16a8,8,0,0,0,0,16H240a8,8,0,0,0,0-16ZM208,96V208H144V96ZM48,85.34,128,32V208H48ZM112,112v16a8,8,0,0,1-16,0V112a8,8,0,1,1,16,0Zm-32,0v16a8,8,0,0,1-16,0V112a8,8,0,1,1,16,0Zm0,56v16a8,8,0,0,1-16,0V168a8,8,0,1,1,16,0Zm32,0v16a8,8,0,0,1-16,0V168a8,8,0,0,1,16,0Z"></path>
-                          </svg>
-                      </div>
-                      <div class="card-text">
-                          <h2 class="title"><?= htmlspecialchars($class['class_name']) ?></h2>
-                          <p class="subtitle"><?= htmlspecialchars($class['student_count']) ?></p>
-                      </div>
-                  </div>
-              <?php endforeach; ?>
+            <h2>Assigned Schools</h2>
+            <form id="schoolForm">
+                <label for="school_id">Select a School:</label>
+                <select name="school_id" id="school_id">
+                    <option value="" disabled selected>Select a School</option>
+                    <?php foreach ($schools as $school): ?>
+                        <option value="<?= $school['id']; ?>"><?= htmlspecialchars($school['school_name']); ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </form>
+
+          <h3>Classes</h3>
+          <div id="classesContainer">
+              <p>Select a school to see classes.</p>
           </div>
 
-          <div class="hold">
-            
+
+
+
+
+    <div class="hold">  
       <!-- Student Scores Table (hidden initially) -->
       <div id="student-scores" class="student-scores-container" <?php echo $classId ? '' : 'style="display: none;"'; ?>>
         <div class="main-nav--btn">
@@ -371,6 +400,25 @@ toastr.options = {
     "hideMethod": "fadeOut"
 };
 
+
+  // AJAX request to fetch classes when a school is selected
+  $('#school_id').on('change', function () {
+            const schoolId = $(this).val();
+            if (schoolId) {
+              console.log(schoolId);
+                $.ajax({
+                    url: 'fetch_classes.php',
+                    type: 'GET',
+                    data: { school_id: schoolId },
+                    success: function (response) {
+                        $('#classesContainer').html(response);
+                    },
+                    error: function () {
+                        $('#classesContainer').html('<p>Failed to fetch classes. Please try again.</p>');
+                    }
+                });
+            }
+        });
 
 $('#profile-btn').click(function() {
     $.ajax({
