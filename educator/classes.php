@@ -87,7 +87,39 @@ date_default_timezone_set('Africa/Accra');
     <link rel="stylesheet" href="assets/css/custom.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-      
+      /* Add this to your existing CSS file */
+.spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Optional: Disable interactions while loading */
+.loading-disabled {
+    pointer-events: none;
+    opacity: 0.6;
+}
     </style>
   </s>
   <body>
@@ -319,6 +351,9 @@ date_default_timezone_set('Africa/Accra');
     </div>
 </div>
 
+<div id="loading-spinner" class="spinner-overlay" style="display: none;">
+    <div class="spinner"></div>
+</div>
 
     <!-- <script src="script.js"></script> -->
     <script
@@ -503,6 +538,19 @@ $(document).on('click', '.card', function() {
 // Modify the existing loadStudents function in your JavaScript
 function loadStudents(classId, page, searchQuery = '') {
   // console.log('Loading students for class:', classId); 
+      // Show spinner
+      function showSpinner() {
+        $('#loading-spinner').show();
+        $('#student-scores').addClass('loading-disabled');
+    }
+
+    // Hide spinner
+    function hideSpinner() {
+        $('#loading-spinner').hide();
+        $('#student-scores').removeClass('loading-disabled');
+    }
+        // Show spinner immediately
+        showSpinner();
     $.ajax({
         url: 'get_students.php',
         method: 'GET',
@@ -535,6 +583,9 @@ function loadStudents(classId, page, searchQuery = '') {
         },        
         error: function(xhr, status, error) {
             console.error('Error loading students:', error); // Error logging
+        },        complete: function() {
+            // Always hide spinner, whether success or failure
+            hideSpinner();
         }
     });
 }
