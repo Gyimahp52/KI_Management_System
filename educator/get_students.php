@@ -20,17 +20,26 @@ if (!$classId) {
     exit('No class specified');
 }
 
+// Fetch school ID for the class to get themes
+$stmt = $pdo->prepare('SELECT school_id FROM classes WHERE class_id = ?');
+$stmt->execute([$classId]);
+$schoolId = $stmt->fetchColumn();
+
+// Get themes for the school
+$themes = getThemes($schoolId);
+
 $className = getClassName($classId);
 $currentTerm = $studentScoreService->getCurrentTermId();
 $students = getStudents($classId, $currentTerm, $searchQuery, $page, $perPage);
 $totalStudents = getStudentCount($classId, $currentTerm, $searchQuery);
 $totalPages = ceil($totalStudents / $perPage);
 
-// Fetch themes for the school
-$stmt = $pdo->prepare('SELECT school_id FROM classes WHERE class_id = ?');
-$stmt->execute([$classId]);
-$schoolId = $stmt->fetchColumn();
-$themes = getThemes($schoolId);
+// Generate table header with themes
+$theaderHtml = '<thead class=""><tr><th class="">#</th><th class="">Student Name</th>';
+foreach ($themes as $theme) {
+    $theaderHtml .= '<th>' . htmlspecialchars($theme['theme_name']) . '</th>';
+}
+$theaderHtml .= '</tr></thead>';
 
 $studentsHtml = '';
 foreach ($students as $student) {
@@ -52,6 +61,7 @@ for ($i = 1; $i <= $totalPages; $i++) {
 
 echo json_encode([
     'className' => $className,
+    'theaderHtml' => $theaderHtml,
     'studentsHtml' => $studentsHtml,
     'pagination' => $pagination
 ]);

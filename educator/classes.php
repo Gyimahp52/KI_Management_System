@@ -28,7 +28,7 @@ $stmt = $pdo->prepare('SELECT id, profile_pic, name, gender, phone_number, emerg
 $stmt->execute([$educatorEmail]);
 $educator = $stmt->fetch(PDO::FETCH_ASSOC);
 
-var_dump($educator);
+// var_dump($educator);
 // Check for Educator
 if (!$educator) {
     // Redirect to an error page if the educator is not found
@@ -47,29 +47,14 @@ $stmtSchools = $pdo->prepare('
 ');
 $stmtSchools->execute([$educatorId]);
 $schools = $stmtSchools->fetchAll(PDO::FETCH_ASSOC);
-var_dump($schools);
+// var_dump($schools);
 
 if (!$schools) {
     $message = 'No schools assigned to you.';
     $schools = [];
 }
 
-// // Fetch the school name from the schools table using the school_id
-// $schoolId = $educator['school_id'];
-// $stmtSchool = $pdo->prepare('SELECT school_name FROM schools WHERE id = ?');
-// $stmtSchool->execute([$schoolId]);
-// $school = $stmtSchool->fetch(PDO::FETCH_ASSOC);
 
-// if ($school) {
-//     // Add the school_name to the educator array
-//     $educator['school_name'] = $school['school_name'];
-// } else {
-//     // Handle the case where the school is not found
-//     $educator['school_name'] = 'Unknown School';
-// }
-
-
-// $schoolId = $educator['school_id'];
 $educatorName = $educator['name'];
 $classId = isset($_GET['class_id']) ? intval($_GET['class_id']) : null;
 // $term_id = isset($_GET['term_id']) ? intval($_GET['term_id']) : null;
@@ -81,9 +66,6 @@ if (isset($_SESSION['message'])) {
 }
 
 
-TODO:
-// $classes = $studentScoreService->getClasses($schoolId);
-$themes = getThemes($schoolId);
 
 // Set the default timezone to Africa/Accra (Ghana)
 date_default_timezone_set('Africa/Accra');
@@ -92,7 +74,7 @@ date_default_timezone_set('Africa/Accra');
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+  <s>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Classes</title>
@@ -104,7 +86,10 @@ date_default_timezone_set('Africa/Accra');
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     <link rel="stylesheet" href="assets/css/custom.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  </head>
+    <style>
+      
+    </style>
+  </s>
   <body>
     <class="dashboard">
       <!-- SIDE BAR -->
@@ -240,15 +225,6 @@ date_default_timezone_set('Africa/Accra');
         <form id="score-form" action="">
         <div class="table-container">
         <table id="students-table" class="input-table">
-          <thead class="">
-            <tr>
-              <th class="">#</th>
-              <th class="">Student Name</th>
-              <?php foreach ($themes as $theme): ?>
-                   <th><?= htmlspecialchars($theme['theme_name']) ?></th>
-              <?php endforeach; ?>
-            </tr>
-          </thead>
           <tbody id="student-list">
                   <!-- Student rows will be dynamically added here -->
           </tbody>
@@ -330,27 +306,7 @@ date_default_timezone_set('Africa/Accra');
   </div>
 </div>
 
-  <!-- Logout Confirmation Modal -->
-  <!-- <div id="logout-modal" class="hidden">
-    <div class="">
-        <div class="">
-            <h3 class="">Logout Confirmation</h3>
-            <div class="">
-                <p class="">
-                    Are you sure you want to logout?
-                </p>
-            </div>
-            <div class="">
-                <button id="confirm-logout" class="">
-                    Yes
-                </button>
-                <button id="cancel-logout" class="">
-                    No
-                </button>
-            </div>
-        </div>
-    </div>
-</div> -->
+
 <!-- Logout Confirmation Modal -->
 <div id="logout-btn--cancel" class="logout-pop--modal hidden">
     <div class="logout-modal--content">
@@ -522,10 +478,14 @@ $('#profile-form').submit(function(e) {
         $('#logout-btn--cancel').addClass('hidden');
     });
 
-        $('.card').click(function() {
-            var classId = $(this).data('class-id');
-            loadStudents(classId, 1);
-        });
+
+        
+//event delegation to handle dynamically loaded cards
+$(document).on('click', '.card', function() {
+    var classId = $(this).data('class-id');
+    // console.log('Class ID clicked:', classId); // Add debugging log
+    loadStudents(classId, 1);
+});
 
         $('#back-button').click(function() {
             $('#student-scores').hide();
@@ -538,29 +498,46 @@ $('#profile-form').submit(function(e) {
             e.preventDefault();
             submitScores();
         });
+        
 
-    // Existing function to load students, with search query
-    function loadStudents(classId, page, searchQuery = '') {
-        $.ajax({
-            url: 'get_students.php',
-            method: 'GET',
-            data: { 
-                class_id: classId, 
-                page: page,
-                search: searchQuery
-            },
-            success: function(response) {
-                var data = JSON.parse(response);
-                $('#class-name').text(data.className);
-                $('#student-list').html(data.studentsHtml);
-                $('#pagination').html(data.pagination);
-                $('#class-cards').hide();
-                $('#student-scores').show();
-                currentClassId = classId;
-                history.pushState(null, '', 'classes.php?class_id=' + classId + '&page=' + page + '&search=' + searchQuery);
-            }
-        });
-    }
+// Modify the existing loadStudents function in your JavaScript
+function loadStudents(classId, page, searchQuery = '') {
+  // console.log('Loading students for class:', classId); 
+    $.ajax({
+        url: 'get_students.php',
+        method: 'GET',
+        data: { 
+            class_id: classId, 
+            page: page,
+            search: searchQuery
+        },
+        success: function(response) {
+          // console.log('Server response:', response); 
+            var data = JSON.parse(response);
+            $('#class-name').text(data.className);
+            // Clear existing table header and body
+            $('#students-table thead').remove();
+            $('#student-list').empty();
+            
+            // Add new table header
+            $('#students-table').prepend(data.theaderHtml);
+            
+            // Add student rows
+            $('#student-list').html(data.studentsHtml);
+            $('#pagination').html(data.pagination);
+            
+            $('#class-cards').hide();
+            $('#student-scores').show();
+            currentClassId = classId;
+            
+            // Update URL
+            history.pushState(null, '', 'classes.php?class_id=' + classId + '&page=' + page + '&search=' + searchQuery);
+        },        
+        error: function(xhr, status, error) {
+            console.error('Error loading students:', error); // Error logging
+        }
+    });
+}
         function submitScores() {
             var formData = $('#score-form').serialize();
             $.ajax({
