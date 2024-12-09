@@ -3,14 +3,12 @@
 session_start();
 require_once 'includes/dbconnection.php';
 require_once 'includes/functions.php';
-require_once 'includes/StudentScoreService.php';
 
 if (!isset($_SESSION['user_email']) || $_SESSION['role'] !== 'school_head') {
     exit('Unauthorized');
 }
 
 $pdo = dbConnect();
-$studentScoreService = new StudentScoreService($pdo);
 
 $classId = $_GET['class_id'] ?? null;
 $page = $_GET['page'] ?? 1;
@@ -21,36 +19,73 @@ if (!$classId) {
     exit('No class specified');
 }
 
-// Fetch school ID for the class to get themes
-$stmt = $pdo->prepare('SELECT school_id FROM classes WHERE class_id = ?');
-$stmt->execute([$classId]);
-$schoolId = $stmt->fetchColumn();
-
-// Get themes for the school
-$themes = getThemes($schoolId);
-
 $className = getClassName($classId);
-$currentTerm = $studentScoreService->getCurrentTermId();
-$students = getStudents($classId, $currentTerm, $searchQuery, $page, $perPage);
-$totalStudents = getStudentCount($classId, $currentTerm, $searchQuery);
+
+// Modified query to get only student information
+function getStudents($classId, $searchQuery, $page, $perPage) {
+    global $pdo;
+    $offset = ($page - 1) * $perPage;
+    
+    $query = "SELECT student_id, name 
+              FROM students 
+              WHERE class_id = :class_id";
+    
+    if (!empty($searchQuery)) {
+        $query .= " AND name LIKE :search";
+    }
+    
+    $query .= " ORDER BY name 
+                LIMIT :limit OFFSET :offset";
+    
+    $stmt = $pdo->prepare($query);
+    $stmt->bindValue(':class_id', $classId, PDO::PARAM_INT);
+    
+    if (!empty($searchQuery)) {
+        $stmt->bindValue(':search', "%$searchQuery%", PDO::PARAM_STR);
+    }
+    
+    $stmt->bindValue(':limit', $perPage, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $stmt->execute();
+    
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getStudentCount($classId, $searchQuery) {
+    global $pdo;
+    
+    $query = "SELECT COUNT(*) 
+              FROM students 
+              WHERE class_id = :class_id";
+    
+    if (!empty($searchQuery)) {
+        $query .= " AND name LIKE :search";
+    }
+    
+    $stmt = $pdo->prepare($query);
+    $stmt->bindValue(':class_id', $classId, PDO::PARAM_INT);
+    
+    if (!empty($searchQuery)) {
+        $stmt->bindValue(':search', "%$searchQuery%", PDO::PARAM_STR);
+    }
+    
+    $stmt->execute();
+    return $stmt->fetchColumn();
+}
+
+$students = getStudents($classId, $searchQuery, $page, $perPage);
+$totalStudents = getStudentCount($classId, $searchQuery);
 $totalPages = ceil($totalStudents / $perPage);
 
-// Generate table header with themes
-$theaderHtml = '<thead class=""><tr><th class="">#</th><th class="">Student Name</th>';
-foreach ($themes as $theme) {
-    $theaderHtml .= '<th>' . htmlspecialchars($theme['theme_name']) . '</th>';
-}
-$theaderHtml .= '</tr></thead>';
+// Simplified table header
+$theaderHtml = '<thead><tr><th>#</th><th>Student Name</th></tr></thead>';
 
+// Simplified student rows
 $studentsHtml = '';
 foreach ($students as $student) {
     $studentsHtml .= '<tr>';
     $studentsHtml .= '<td>' . htmlspecialchars($student['student_id']) . '</td>';
     $studentsHtml .= '<td>' . htmlspecialchars($student['name']) . '</td>';
-    foreach ($themes as $theme) {
-        $score = $studentScoreService->getScore($student['student_id'], $theme['id'], $currentTerm);
-        $studentsHtml .= '<td><input class="input-box" type="number" name="scores[' . $student['student_id'] . '][' . $theme['id'] . ']" min="2" max="9" step="1" value="' . htmlspecialchars($score) . '"></td>';
-    }
     $studentsHtml .= '</tr>';
 }
 
@@ -66,3 +101,4 @@ echo json_encode([
     'studentsHtml' => $studentsHtml,
     'pagination' => $pagination
 ]);
+?>
