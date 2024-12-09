@@ -35,9 +35,16 @@ $sel_themes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 $calcAge = $student['dob'];
-$dob = new DateTime($calcAge);
+$dob = new DateTime($calcAge);;
 $today = new DateTime('now');  
-$age = $today->diff($dob)->y;  
+if($dob->format('Y-m-d\TH:i:s.v') < 0 || $dob->format('Y-m-d\TH:i:s.v') == null){
+    $age = null;
+  
+}else{
+    $age = $today->diff($dob)->y; 
+}
+
+
 
 ?>
 

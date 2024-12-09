@@ -74,7 +74,7 @@ date_default_timezone_set('Africa/Accra');
 
 <!DOCTYPE html>
 <html lang="en">
-  <s>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Classes</title>
@@ -87,41 +87,40 @@ date_default_timezone_set('Africa/Accra');
     <link rel="stylesheet" href="assets/css/custom.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-      /* Add this to your existing CSS file */
-.spinner-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
+          .spinner-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
 
-.spinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #3498db;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
-/* Optional: Disable interactions while loading */
-.loading-disabled {
-    pointer-events: none;
-    opacity: 0.6;
-}
+        /* Optional: Disable interactions while loading */
+        .loading-disabled {
+            pointer-events: none;
+            opacity: 0.6;
+        }
     </style>
-  </s>
+  </head>
   <body>
     <class="dashboard">
       <!-- SIDE BAR -->
@@ -240,7 +239,7 @@ date_default_timezone_set('Africa/Accra');
           </div>
 
 
-          <div class="hold">  
+    <div class="hold">  
       <!-- Student Scores Table (hidden initially) -->
       <div id="student-scores" class="student-scores-container" <?php echo $classId ? '' : 'style="display: none;"'; ?>>
         <div class="main-nav--btn">
@@ -265,7 +264,7 @@ date_default_timezone_set('Africa/Accra');
         <div id="pagination"></div>
         </form>
       </div>
-          </div>
+    </div>
           </div>
   
         </div>

@@ -38,6 +38,8 @@ function login($usernameOrEmail, $password) {
     }
 }
 
+
+
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usernameOrEmail = trim($_POST['username']);
@@ -62,6 +64,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     break;
                 case 'student':
                     header('Location: student/index.php');
+                    break;
+                case 'school_head':
+                    header('Location: school_head/school_head.php');
                     break;
                 default:
                     header('Location: index.php');

@@ -8,7 +8,6 @@ require_once 'includes/base_url.php';
 
 // Dynamically get the base URL
 
-// 
 
 $pdo = dbConnect();
 
@@ -20,7 +19,7 @@ $message = '';
 $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
 // Check if the user is logged in and is an educator
 if (!isset($_SESSION['user_email']) || $_SESSION['role'] !== 'educator') {
-    header('Location: index.php');
+    header('Location: ../index.php');
     exit();
 }
 
