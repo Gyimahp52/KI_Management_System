@@ -1415,7 +1415,7 @@ function loadStudents(classId, page, searchQuery = '') {
             currentClassId = classId;
             
             // Update URL
-            history.pushState(null, '', 'students.php?class_id=' + classId + '&page=' + page + '&search=' + searchQuery);
+            history.pushState(null, '', 'reports.php?class_id=' + classId + '&page=' + page + '&search=' + searchQuery);
         },        
         error: function(xhr, status, error) {
             console.error('Error loading students:', error);
@@ -1425,30 +1425,31 @@ function loadStudents(classId, page, searchQuery = '') {
         }
     });
 }
-        function submitScores() {
-            var formData = $('#score-form').serialize();
-            $.ajax({
-                url: 'submit_scores.php',
-                method: 'POST',
-                data: formData,
-                success: function(response) {
-                    toastr.success('Scores submitted successfully');
-                    loadStudents(currentClassId, 1);
+        
+function submitScores() {
+    var formData = $('#score-form').serialize();
+    $.ajax({
+        url: 'submit_scores.php',
+        method: 'POST',
+        data: formData,
+        success: function(response) {
+        toastr.success('Scores submitted successfully');
+        loadStudents(currentClassId, 1);
                 }
             });
         }
 
-        $(document).on('click', '.pagination-link', function(e) {
-            e.preventDefault();
-            var page = $(this).data('page');
-            loadStudents(currentClassId, page);
-        });
+$(document).on('click', '.pagination-link', function(e) {
+e.preventDefault();
+var page = $(this).data('page');
+loadStudents(currentClassId, page);
+});
 
         // Load students if class_id is set in URL
-        if (currentClassId) {
-            loadStudents(currentClassId, <?php echo $page; ?>);
-        }
-    });
+if (currentClassId) {
+loadStudents(currentClassId, <?php echo $page; ?>);
+}
+});
 
 
 const sidebar = document.getElementById('sidebar');

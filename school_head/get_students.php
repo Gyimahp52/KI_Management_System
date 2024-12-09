@@ -4,8 +4,19 @@ session_start();
 require_once 'includes/dbconnection.php';
 require_once 'includes/functions.php';
 
+// Function to send JSON response
+function sendJsonResponse($data, $success = true) {
+    header('Content-Type: application/json');
+    echo json_encode([
+        'success' => $success,
+        'data' => $data
+    ]);
+    exit;
+}
+
+// Check authentication
 if (!isset($_SESSION['user_email']) || $_SESSION['role'] !== 'school_head') {
-    exit('Unauthorized');
+    sendJsonResponse(['message' => 'Unauthorized'], false);
 }
 
 $pdo = dbConnect();
@@ -14,91 +25,54 @@ $classId = $_GET['class_id'] ?? null;
 $page = $_GET['page'] ?? 1;
 $searchQuery = $_GET['search'] ?? '';
 $perPage = 10;
+// $currentTerm = getCurrentTerm(); // You'll need to implement this function
 
 if (!$classId) {
-    exit('No class specified');
+    sendJsonResponse(['message' => 'No class specified'], false);
 }
 
-$className = getClassName($classId);
+try {
+    // Get the data
+    $students = getStudents($classId, $currentTerm, $searchQuery, $page, $perPage);
+    $totalStudents = getStudentCount($classId, $currentTerm, $searchQuery);
+    $totalPages = ceil($totalStudents / $perPage);
+    $className = getClassName($classId);
 
-// Modified query to get only student information
-function getStudents($classId, $searchQuery, $page, $perPage) {
-    global $pdo;
-    $offset = ($page - 1) * $perPage;
-    
-    $query = "SELECT student_id, name 
-              FROM students 
-              WHERE class_id = :class_id";
-    
-    if (!empty($searchQuery)) {
-        $query .= " AND name LIKE :search";
+    // Create table header
+    $theaderHtml = '<thead>
+        <tr>
+            <th>#</th>
+            <th>Student Name</th>
+            <th>Academic Year</th>
+            <th>Term</th>
+        </tr>
+    </thead>';
+
+    // Create student rows
+    $studentsHtml = '';
+    foreach ($students as $student) {
+        $studentsHtml .= '<tr>';
+        $studentsHtml .= '<td>' . htmlspecialchars($student['student_id']) . '</td>';
+        $studentsHtml .= '<td>' . htmlspecialchars($student['name']) . '</td>';
+        $studentsHtml .= '<td>' . htmlspecialchars($student['year_name']) . '</td>';
+        $studentsHtml .= '<td>' . htmlspecialchars($student['term_number']) . '</td>';
+        $studentsHtml .= '</tr>';
     }
-    
-    $query .= " ORDER BY name 
-                LIMIT :limit OFFSET :offset";
-    
-    $stmt = $pdo->prepare($query);
-    $stmt->bindValue(':class_id', $classId, PDO::PARAM_INT);
-    
-    if (!empty($searchQuery)) {
-        $stmt->bindValue(':search', "%$searchQuery%", PDO::PARAM_STR);
+
+    // Create pagination
+    $pagination = '';
+    for ($i = 1; $i <= $totalPages; $i++) {
+        $activeClass = ($i == $page) ? 'active' : '';
+        $pagination .= '<a href="#" class="pagination-link ' . $activeClass . '" data-page="' . $i . '">' . $i . '</a> ';
     }
-    
-    $stmt->bindValue(':limit', $perPage, PDO::PARAM_INT);
-    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-    $stmt->execute();
-    
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    sendJsonResponse([
+        'className' => $className,
+        'theaderHtml' => $theaderHtml,
+        'studentsHtml' => $studentsHtml,
+        'pagination' => $pagination
+    ]);
+
+} catch (Exception $e) {
+    sendJsonResponse(['message' => 'An error occurred: ' . $e->getMessage()], false);
 }
-
-function getStudentCount($classId, $searchQuery) {
-    global $pdo;
-    
-    $query = "SELECT COUNT(*) 
-              FROM students 
-              WHERE class_id = :class_id";
-    
-    if (!empty($searchQuery)) {
-        $query .= " AND name LIKE :search";
-    }
-    
-    $stmt = $pdo->prepare($query);
-    $stmt->bindValue(':class_id', $classId, PDO::PARAM_INT);
-    
-    if (!empty($searchQuery)) {
-        $stmt->bindValue(':search', "%$searchQuery%", PDO::PARAM_STR);
-    }
-    
-    $stmt->execute();
-    return $stmt->fetchColumn();
-}
-
-$students = getStudents($classId, $searchQuery, $page, $perPage);
-$totalStudents = getStudentCount($classId, $searchQuery);
-$totalPages = ceil($totalStudents / $perPage);
-
-// Simplified table header
-$theaderHtml = '<thead><tr><th>#</th><th>Student Name</th></tr></thead>';
-
-// Simplified student rows
-$studentsHtml = '';
-foreach ($students as $student) {
-    $studentsHtml .= '<tr>';
-    $studentsHtml .= '<td>' . htmlspecialchars($student['student_id']) . '</td>';
-    $studentsHtml .= '<td>' . htmlspecialchars($student['name']) . '</td>';
-    $studentsHtml .= '</tr>';
-}
-
-$pagination = '';
-for ($i = 1; $i <= $totalPages; $i++) {
-    $activeClass = ($i == $page) ? 'active' : '';
-    $pagination .= '<a href="#" class="pagination-link ' . $activeClass . '" data-page="' . $i . '">' . $i . '</a> ';
-}
-
-echo json_encode([
-    'className' => $className,
-    'theaderHtml' => $theaderHtml,
-    'studentsHtml' => $studentsHtml,
-    'pagination' => $pagination
-]);
-?>

@@ -28,22 +28,6 @@ function getStudents($class_id, $term_id, $searchQuery = '', $page = 1, $perPage
 }
 
 
-
-// function getStudentCount($class_id, $term_id, $searchQuery = '') {
-//     global $pdo;
-//     $sql = "
-//         SELECT COUNT(DISTINCT s.student_id) as count
-//         FROM students s
-//         JOIN student_scores ss ON s.student_id = ss.student_id
-//         JOIN terms t ON ss.term_id = t.id
-//         WHERE s.class_id = ? AND t.id = ? AND (s.student_id LIKE ? OR s.name LIKE ?)
-//     ";
-//     $stmt = $pdo->prepare($sql);
-//     $searchParam = '%' . $searchQuery . '%';
-//     $stmt->execute([$class_id, $term_id, $searchParam, $searchParam]);
-//     return $stmt->fetchColumn();
-// }
-
 function getStudentCount($class_id, $term_id, $searchQuery = '') {
     global $pdo;
     
