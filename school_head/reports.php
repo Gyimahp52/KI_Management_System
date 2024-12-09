@@ -1376,20 +1376,17 @@ $(document).on('click', '.card', function() {
 
 // Modify the existing loadStudents function in your JavaScript
 function loadStudents(classId, page, searchQuery = '') {
-  // console.log('Loading students for class:', classId); 
-      // Show spinner
-      function showSpinner() {
+    function showSpinner() {
         $('#loading-spinner').show();
-        $('#student-scores').addClass('loading-disabled');
+        $('#student-list-container').addClass('loading-disabled');
     }
 
-    // Hide spinner
     function hideSpinner() {
         $('#loading-spinner').hide();
-        $('#student-scores').removeClass('loading-disabled');
+        $('#student-list-container').removeClass('loading-disabled');
     }
-        // Show spinner immediately
-        showSpinner();
+
+    showSpinner();
     $.ajax({
         url: 'get_students.php',
         method: 'GET',
@@ -1399,9 +1396,9 @@ function loadStudents(classId, page, searchQuery = '') {
             search: searchQuery
         },
         success: function(response) {
-          console.log('Server response:', response); 
             var data = JSON.parse(response);
             $('#class-name').text(data.className);
+            
             // Clear existing table header and body
             $('#students-table thead').remove();
             $('#student-list').empty();
@@ -1414,16 +1411,16 @@ function loadStudents(classId, page, searchQuery = '') {
             $('#pagination').html(data.pagination);
             
             $('#class-cards').hide();
-            $('#student-scores').show();
+            $('#student-list-container').show();
             currentClassId = classId;
             
             // Update URL
-            history.pushState(null, '', 'reports.php?class_id=' + classId + '&page=' + page + '&search=' + searchQuery);
+            history.pushState(null, '', 'students.php?class_id=' + classId + '&page=' + page + '&search=' + searchQuery);
         },        
         error: function(xhr, status, error) {
-            console.error('Error loading students:', error); // Error logging
-        },        complete: function() {
-            // Always hide spinner, whether success or failure
+            console.error('Error loading students:', error);
+        },
+        complete: function() {
             hideSpinner();
         }
     });
