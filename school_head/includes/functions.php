@@ -4,46 +4,46 @@ function sanitizeInput($input) {
 }
 
 
-function getStudents($class_id, $term_id, $searchQuery = '', $page = 1, $perPage = 10) {
-    global $pdo;
-    $offset = ($page - 1) * $perPage;
+// function getStudents($class_id, $term_id, $searchQuery = '', $page = 1, $perPage = 10) {
+//     global $pdo;
+//     $offset = ($page - 1) * $perPage;
     
-    $sql = "
-        SELECT s.student_id, s.name, t.term_number, t.id as term_id, ay.year_name
-        FROM students s
-        LEFT JOIN student_scores ss ON s.student_id = ss.student_id AND ss.term_id = ?
-        JOIN terms t ON t.id = ?
-        JOIN academic_years ay ON t.academic_year_id = ay.id
-        WHERE s.class_id = ? AND (s.student_id LIKE ? OR s.name LIKE ?)
-        GROUP BY s.student_id, s.name, t.term_number, t.id, ay.year_name
-        ORDER BY s.name
-        LIMIT ? OFFSET ?
-    ";
+//     $sql = "
+//         SELECT s.student_id, s.name, t.term_number, t.id as term_id, ay.year_name
+//         FROM students s
+//         LEFT JOIN student_scores ss ON s.student_id = ss.student_id AND ss.term_id = ?
+//         JOIN terms t ON t.id = ?
+//         JOIN academic_years ay ON t.academic_year_id = ay.id
+//         WHERE s.class_id = ? AND (s.student_id LIKE ? OR s.name LIKE ?)
+//         GROUP BY s.student_id, s.name, t.term_number, t.id, ay.year_name
+//         ORDER BY s.name
+//         LIMIT ? OFFSET ?
+//     ";
     
-    $stmt = $pdo->prepare($sql);
-    $searchParam = '%' . $searchQuery . '%';
-    $stmt->execute([$term_id, $term_id, $class_id, $searchParam, $searchParam, $perPage, $offset]);
+//     $stmt = $pdo->prepare($sql);
+//     $searchParam = '%' . $searchQuery . '%';
+//     $stmt->execute([$term_id, $term_id, $class_id, $searchParam, $searchParam, $perPage, $offset]);
     
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+//     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+// }
 
 
-function getStudentCount($class_id, $term_id, $searchQuery = '') {
-    global $pdo;
+// function getStudentCount($class_id, $term_id, $searchQuery = '') {
+//     global $pdo;
     
-    // Count the total number of distinct students in the class for the given term
-    $sql = "
-        SELECT COUNT(DISTINCT s.student_id) as count
-        FROM students s
-        LEFT JOIN student_scores ss ON s.student_id = ss.student_id AND ss.term_id = ?
-        WHERE s.class_id = ? AND (s.student_id LIKE ? OR s.name LIKE ?)
-    ";
+//     // Count the total number of distinct students in the class for the given term
+//     $sql = "
+//         SELECT COUNT(DISTINCT s.student_id) as count
+//         FROM students s
+//         LEFT JOIN student_scores ss ON s.student_id = ss.student_id AND ss.term_id = ?
+//         WHERE s.class_id = ? AND (s.student_id LIKE ? OR s.name LIKE ?)
+//     ";
     
-    $stmt = $pdo->prepare($sql);
-    $searchParam = '%' . $searchQuery . '%';
-    $stmt->execute([$term_id, $class_id, $searchParam, $searchParam]);
-    return $stmt->fetchColumn();
-}
+//     $stmt = $pdo->prepare($sql);
+//     $searchParam = '%' . $searchQuery . '%';
+//     $stmt->execute([$term_id, $class_id, $searchParam, $searchParam]);
+//     return $stmt->fetchColumn();
+// }
 
 
 function getClassName($class_id) {
@@ -68,10 +68,7 @@ function getThemes($school_id) {
 }
 
 function getCurrentTerm($pdo) {
-    // Get the current date
-    $currentDate = date('Y-m-d');
-
-    // Comprehensive query to find current term
+    // Get the latest term based on the most recent end date
     $sql = "
         SELECT 
             t.id AS term_id, 
@@ -82,15 +79,12 @@ function getCurrentTerm($pdo) {
             ay.year_name
         FROM terms t
         JOIN academic_years ay ON t.academic_year_id = ay.id
-        WHERE 
-            t.start_date <= :current_date 
-            AND t.end_date >= :current_date
+        ORDER BY t.end_date DESC
         LIMIT 1
     ";
 
     try {
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':current_date', $currentDate);
         $stmt->execute();
 
         return $stmt->fetch(PDO::FETCH_ASSOC);

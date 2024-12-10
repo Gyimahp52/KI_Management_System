@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once 'includes/db_connection.php';
-require_once 'includes/term_helper.php';
+
+require_once 'includes/dbconnection.php';
 require_once 'includes/functions.php';
 
 // Authentication check
@@ -19,9 +19,6 @@ function sendJsonResponse($data, $success = true) {
     exit;
 }
 
-function sanitizeInput($input) {
-    return htmlspecialchars(strip_tags(trim($input)));
-}
 
 function getStudents($pdo, $class_id, $term_id, $searchQuery = '', $page = 1, $perPage = 10) {
     $offset = ($page - 1) * $perPage;
@@ -113,7 +110,8 @@ try {
         'students' => $students,
         'total_pages' => $totalPages,
         'current_page' => $page,
-        'total_students' => $totalStudents
+        'total_students' => $totalStudents,
+        'termId' => $termId
     ];
 
     sendJsonResponse($response);

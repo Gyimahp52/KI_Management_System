@@ -133,9 +133,13 @@ date_default_timezone_set('Africa/Accra');
 
     <style>
 
-        .card:hover{
+        .card-body:hover{
             cursor: pointer;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .card {
+
+            margin: 0.8rem !important; 
         }
 
         .spinner-overlay {
@@ -170,6 +174,61 @@ date_default_timezone_set('Africa/Accra');
             pointer-events: none;
             opacity: 0.6;
         }
+
+        #pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+          }
+
+          .page-btn {
+              margin: 0 5px;
+              padding: 5px 10px;
+          }
+
+          .page-btn.active {
+              background-color: #007bff;
+              color: white;
+          }
+
+
+          .student-report-container {
+              font-family: Arial, sans-serif;
+              max-width: 800px;
+              margin: 0 auto;
+              padding: 20px;
+          }
+
+          .report-header {
+              text-align: center;
+              margin-bottom: 20px;
+              border-bottom: 2px solid #f0f0f0;
+          }
+
+          .sel-themes-table {
+              width: 100%;
+              border-collapse: collapse;
+          }
+
+          .sel-themes-table th, 
+          .sel-themes-table td {
+              border: 1px solid #ddd;
+              padding: 8px;
+              text-align: left;
+          }
+
+          .info-grid {
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+              gap: 10px;
+          }
+
+          .report-footer {
+              margin-top: 20px;
+              text-align: center;
+              font-size: 0.8em;
+              color: #777;
+          }
     </style>
 </head>
 
@@ -346,19 +405,13 @@ date_default_timezone_set('Africa/Accra');
         </div>
       </nav>
       <!-- End Navbar -->
-      <div class="container-fluid py-4">
+    <div class="container-fluid py-4">
 
         <!-- classes CARD -->
         <div class="row mt-4">
           <div class="col-lg-7 mb-lg-0 mb-4" >
           <div class="card z-index-2" style="max-height: 400px; overflow: hidden; ">
-            <div class="card-header pb-0 pt-3 bg-transparent">
-                <h6 class="text-capitalize">Student Overall Progress</h6>
-                <p class="text-sm mb-0">
-                <i class="fa fa-arrow-up text-success"></i>
-                <span class="font-weight-bold">4% more</span> in 2023
-                </p>
-            </div>
+
             <div class="card-body p-3" style="overflow-y: auto;">
                 <div class="chart">
                 <h2>Assigned Schools</h2>
@@ -380,156 +433,85 @@ date_default_timezone_set('Africa/Accra');
             </div>
         </div>
 
-        <div class="hold">  
-      <!-- Student Scores Table (hidden initially) -->
-      <div id="student-scores" class="student-scores-container" <?php echo $classId ? '' : 'style="display: none;"'; ?>>
-        <div class="main-nav--btn">
-          <button class="backbtn" id="back-button">Back</button>
-          <button class="backbtn success" id="submit-scores-button">Submit Scores</button>
-        </div>
-        <h2 id="class-name" class="class-name" style="padding-left: 1.2rem"></h2>
-        <form id="search-form" class="search-bar" onsubmit="return false;">
-            <input type="hidden" name="class_id" value="<?php echo $classId; ?>">
-            <input type="text" name="search" id="student-search" class="form-control std-search-input" placeholder="Search by ID or Name" value="<?php echo htmlspecialchars($searchQuery); ?>">
-        </form>
+      <!-- SELECT CLASS CARD -->
+      <div class="row mt-4">
+          <div class="row">
+            <!-- STUDENT LIST TABLE -->
+              <div class="col-12">
+                <div class="card mb-4">
+                  <div class="card-header pb-0">
+                  <h6 class="mb-2">View this term Score</h6>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                  
+  
+                </div>
+              </div>
+            </div>
+              
+          </div>
+          </div>
 
-
-        <form id="score-form" action="">
-        <div class="table-container">
-        <table id="students-table" class="input-table">
-          <tbody id="student-list">
-                  <!-- Student rows will be dynamically added here -->
-          </tbody>
-        </table>
+      <div class="hold">  
+        <!-- Student Scores Table (hidden initially) -->
+        <div id="student-scores" class="student-scores-container" <?php echo $classId ? '' : 'style="display: none;"'; ?>>
+          <div class="main-nav--btn">
+            <button class="backbtn" id="back-button">Back</button>
+            <button class="backbtn success" id="submit-scores-button">Submit Scores</button>
+          </div>
+          <h2 id="class-name" class="class-name" style="padding-left: 1.2rem"></h2>
+          <form id="search-form" class="search-bar" onsubmit="return false;">
+              <input type="hidden" name="class_id" value="<?php echo $classId; ?>">
+              <input type="text" name="search" id="student-search" class="form-control std-search-input" placeholder="Search by ID or Name" value="<?php echo htmlspecialchars($searchQuery); ?>">
+          </form>
         </div>
-        <div id="pagination"></div>
-        </form>
       </div>
     </div>
 
-        </div>
-
-          <div class="col-lg-5">
-            <div class="card card-carousel overflow-hidden h-100 p-0" style="display: none">
-              <div
-                id="carouselExampleCaptions"
-                class="carousel slide h-100"
-                data-bs-ride="carousel"
-              >
-                <div class="carousel-inner border-radius-lg h-100">
-                  <div
-                    class="carousel-item h-100 active"
-                    style="
-                      background-image: url('./assets/img/student1.jpg');
-                      background-size: cover;"
-                  >
-                    <div
-                      class="carousel-caption d-none d-md-block bottom-0 text-start start-0 ms-5"
-                    >
-                      <div
-                        class="icon icon-shape icon-sm bg-white text-center border-radius-md mb-3"
-                      >
-                        <i
-                          class="ni ni-camera-compact text-dark opacity-10"
-                        ></i>
-                      </div>
-                      <h5 class="text-white mb-1"></h5>
-                      <p>
-                        There’s nothing I really wanted to do in life that I
-                        wasn’t able to get good at.
-                      </p>
-                    </div>
-                  </div>
-                  <div
-                    class="carousel-item h-100"
-                    style="
-                      background-image: url('./assets/img/student2.jpg');
-                      background-size: cover;
-                    "
-                  >
-                    <div
-                      class="carousel-caption d-none d-md-block bottom-0 text-start start-0 ms-5"
-                    >
-                      <div
-                        class="icon icon-shape icon-sm bg-white text-center border-radius-md mb-3"
-                      >
-                        <i class="ni ni-bulb-61 text-dark opacity-10"></i>
-                      </div>
-                      <h5 class="text-white mb-1">
-                        <!-- Faster way to create web pages -->
-                      </h5>
-                      <p>
-                        <!-- That’s my skill. I’m not really specifically talented at
-                        anything except for the ability to learn. -->
-                      </p>
-                    </div>
-                  </div>
-                  <div
-                    class="carousel-item h-100"
-                    style="
-                      background-image: url('./assets/img/student3.jpg');
-                      background-size: cover;
-                    "
-                  >
-                    <div
-                      class="carousel-caption d-none d-md-block bottom-0 text-start start-0 ms-5"
-                    >
-                      <div
-                        class="icon icon-shape icon-sm bg-white text-center border-radius-md mb-3"
-                      >
-                        <i class="ni ni-trophy text-dark opacity-10"></i>
-                      </div>
-                      <h5 class="text-white mb-1">
-                        <!-- Share with us your design tips! -->
-                      </h5>
-                      <p>
-                        <!-- Don’t be afraid to be wrong because you can’t learn
-                        anything from a compliment. -->
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <button
-                  class="carousel-control-prev w-5 me-3"
-                  type="button"
-                  data-bs-target="#carouselExampleCaptions"
-                  data-bs-slide="prev"
-                >
-                  <span
-                    class="carousel-control-prev-icon"
-                    aria-hidden="true"
-                  ></span>
-                  <span class="visually-hidden">Previous</span>
-                </button>
-                <button
-                  class="carousel-control-next w-5 me-3"
-                  type="button"
-                  data-bs-target="#carouselExampleCaptions"
-                  data-bs-slide="next"
-                >
-                  <span
-                    class="carousel-control-next-icon"
-                    aria-hidden="true"
-                  ></span>
-                  <span class="visually-hidden">Next</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+          
         <div class="row mt-4">
-          <div class="col-lg-7 mb-lg-0 mb-4">
-            <div class="card">
-              <div class="card-header pb-0 p-3">
-                <div class="d-flex justify-content-between">
+          <div class="row">
+            <!-- STUDENT LIST TABLE -->
+              <div class="col-12">
+                <div class="card mb-4">
+                  <div class="card-header pb-0">
                   <h6 class="mb-2">View this term Score</h6>
                 </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                  <div class="table-responsive p-0">
+                     <form id="score-form" action="">
+                    <!-- <div class="table-container">
+                    <table id="student-table" class="input-table">
+                      <tbody id="student-list">
+                              Student rows will be dynamically added here
+                      </tbody>
+                    </table>
+                    </div>
+                     -->
+
+                    <table id="students-table" class="input-table table align-items-center mb-0">
+                      <thead>
+                          <tr>
+                              <th class="text-uppercase align-middle text-center text-secondary text-xxs font-weight-bolder opacity-9">#</th>
+                              <th class="text-uppercase align-middle text-center text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Student ID</th>
+                              <th class="text-center align-middle text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+                              <th class="text-center align-middle text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Class</th>
+                              <th class="text-center align-middle text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Actions</th>
+                          </tr>
+                      </thead>
+                      <tbody id="student-list">
+                          <!-- Students will be dynamically added here -->
+                      </tbody>
+                    </table>
+                    </form>
+                  </div>
+                </div>
+                 
+                <div id="pagination"></div>
               </div>
-              
             </div>
+              
           </div>
-          <div class="col-lg-5">
-            
           </div>
         </div>
        
@@ -651,100 +633,7 @@ date_default_timezone_set('Africa/Accra');
     <script src="./assets/js/plugins/perfect-scrollbar.min.js"></script>
     <script src="./assets/js/plugins/smooth-scrollbar.min.js"></script>
     <script src="./assets/js/plugins/chartjs.min.js"></script>
-    <script>
-      var ctx1 = document.getElementById("chart-line").getContext("2d");
 
-      var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
-
-      gradientStroke1.addColorStop(1, "rgba(94, 114, 228, 0.2)");
-      gradientStroke1.addColorStop(0.2, "rgba(94, 114, 228, 0.0)");
-      gradientStroke1.addColorStop(0, "rgba(94, 114, 228, 0)");
-      new Chart(ctx1, {
-        type: "line",
-        data: {
-          labels: [
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ],
-          datasets: [
-            {
-              label: "Mobile apps",
-              tension: 0.4,
-              borderWidth: 0,
-              pointRadius: 0,
-              borderColor: "#5e72e4",
-              backgroundColor: gradientStroke1,
-              borderWidth: 3,
-              fill: true,
-              data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-              maxBarThickness: 6,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              display: false,
-            },
-          },
-          interaction: {
-            intersect: false,
-            mode: "index",
-          },
-          scales: {
-            y: {
-              grid: {
-                drawBorder: false,
-                display: true,
-                drawOnChartArea: true,
-                drawTicks: false,
-                borderDash: [5, 5],
-              },
-              ticks: {
-                display: true,
-                padding: 10,
-                color: "#fbfbfb",
-                font: {
-                  size: 11,
-                  family: "Open Sans",
-                  style: "normal",
-                  lineHeight: 2,
-                },
-              },
-            },
-            x: {
-              grid: {
-                drawBorder: false,
-                display: false,
-                drawOnChartArea: false,
-                drawTicks: false,
-                borderDash: [5, 5],
-              },
-              ticks: {
-                display: true,
-                color: "#ccc",
-                padding: 20,
-                font: {
-                  size: 11,
-                  family: "Open Sans",
-                  style: "normal",
-                  lineHeight: 2,
-                },
-              },
-            },
-          },
-        },
-      });
-    </script>
     <script>
       var win = navigator.platform.indexOf("Win") > -1;
       if (win && document.querySelector("#sidenav-scrollbar")) {
@@ -1016,50 +905,159 @@ $(document).ready(function() {
 
     // Function to load students for a class
     function loadStudents(classId, page = 1, searchQuery = '') {
-        $.ajax({
-            url: 'get_students.php', // New endpoint to fetch students
-            method: 'GET',
-            data: { 
-                class_id: classId, 
-                page: page, 
-                search: searchQuery 
-            },
-            dataType: 'json',
-            success: function(response) {
-                var studentList = $('#student-list');
-                studentList.empty();
+    console.log('Loading students with params:', {
+        classId: classId, 
+        page: page, 
+        searchQuery: searchQuery
+    });
 
-                if (response.students.length === 0) {
-                    studentList.append('<tr><td colspan="5">No students found.</td></tr>');
-                    return;
+    $.ajax({
+        url: 'get_students.php',
+        method: 'GET',
+        data: { 
+            class_id: classId, 
+            page: page, 
+            search: searchQuery 
+        },
+        dataType: 'json',
+        success: function(response) {
+            console.log('Full response:', response);
+            if (response.success) {
+                if (response.data.students && response.data.students.length > 0) {
+                    renderStudentTable(response.data.students, response.data.termId);
+                    renderPagination(response.data.total_pages, response.data.current_page);
+                } else {
+                    $('#student-list tbody').html('<tr><td colspan="6">No students found</td></tr>');
+                    console.log('No students in response');
                 }
-
-                // Populate student table
-                response.students.forEach(function(student) {
-                    var studentRow = $(`
-                        <tr>
-                            <td>${student.student_id}</td>
-                            <td>${student.name}</td>
-                            <td>
-                                <button class="btn btn-sm btn-info view-report" 
-                                    data-student-id="${student.student_id}" 
-                                    data-term-id="${response.current_term_id}">
-                                    View Report
-                                </button>
-                            </td>
-                        </tr>
-                    `);
-                    studentList.append(studentRow);
-                });
-
-                // Handle pagination
-                renderPagination(response.total_pages, page);
-            },
-            error: function() {
-                toastr.error('Failed to load students');
+            } else {
+                toastr.error(response.data.message);
+                console.error('Failed to load students:', response.data.message);
             }
+        },
+        error: function(xhr, status, error) {
+            toastr.error('Failed to load students');
+            console.error('AJAX error:', status, error);
+            console.error('Response:', xhr.responseText);
+        }
+    });
+}
+
+// Modify the class card click event to ensure classId is passed correctly
+$(document).on('click', '.class-card', function() {
+    var classId = $(this).data('class-id');
+    console.log('Selected class ID:', classId);
+    loadStudents(classId);
+});
+
+function renderPagination(totalPages, currentPage) {
+    // Clear existing pagination
+    $('#pagination').empty();
+
+    // Only render pagination if there are multiple pages
+    if (totalPages > 1) {
+        // Previous button
+        if (currentPage > 1) {
+            $('#pagination').append(
+                `<button class="page-btn" data-page="${currentPage - 1}">Previous</button>`
+            );
+        }
+
+        // Page numbers
+        for (let i = 1; i <= totalPages; i++) {
+            $('#pagination').append(
+                `<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">
+                    ${i}
+                 </button>`
+            );
+        }
+
+        // Next button
+        if (currentPage < totalPages) {
+            $('#pagination').append(
+                `<button class="page-btn" data-page="${currentPage + 1}">Next</button>`
+            );
+        }
+
+        // Add click event to pagination buttons
+        $('.page-btn').on('click', function() {
+            const page = $(this).data('page');
+            
+            // Try multiple ways to get the class ID
+            const classId = 
+                $('.class-card.active').data('class-id') || // If class card is marked active
+                $('input[name="class_id"]').val() ||        // From hidden input
+                $('#class-select').val();                   // From class select dropdown
+
+            console.log('Pagination click - Class ID:', classId);
+            
+            const searchQuery = $('#student-search').val() || ''; // Get search query
+            
+            if (!classId) {
+                toastr.error('Please select a class first');
+                return;
+            }
+
+            loadStudents(classId, page, searchQuery);
         });
     }
+}
+
+// Modify class card selection to mark active state
+$(document).on('click', '.class-card', function() {
+    // Remove active state from all class cards
+    $('.class-card').removeClass('active');
+    
+    // Add active state to clicked card
+    $(this).addClass('active');
+    
+    var classId = $(this).data('class-id');
+    console.log('Selected class ID:', classId);
+    loadStudents(classId);
+});
+
+
+function renderStudentTable(students, termId) {
+    const tableBody = $('#student-list');
+    tableBody.empty();
+
+    // Debug logging
+    console.log('Rendering students:', students);
+
+    if (students.length === 0) {
+        tableBody.html('<tr><td colspan="6" class="text-center">No students found</td></tr>');
+        return;
+    }
+
+    // Add termId to each student
+    const updatedStudents = students.map(student => ({
+        ...student,        // Spread existing properties
+        termId: termId,    // Add termId
+    }));
+
+    // Render table rows
+    updatedStudents.forEach((student, index) => {
+        const row = `
+            <tr>
+                <td class="align-middle text-center text-sm">${index + 1}</td>
+                <td class="align-middle text-center text-sm">${student.student_id || 'N/A'}</td>
+                <td class="align-middle text-center text-sm">${student.name || 'Unknown'}</td>
+                <td class="align-middle text-center text-sm">${student.class_name || 'N/A'}</td>
+                <td class="align-middle text-center text-sm">
+                    <button class="view-report" 
+                        data-student-id="${student.student_id}" 
+                        data-term-id="${student.termId}" style="background-color:none; border: none">
+                        <span class="badge badge-sm bg-gradient-success">View Report</span>
+                        
+                    </button>
+                </td>
+            </tr>
+        `;
+        tableBody.append(row);
+    });
+    console.log('Table rows added:', tableBody.find('tr').length);
+}
+
 
     // Function to view student report
     function viewStudentReport(studentId, termId) {
@@ -1072,6 +1070,7 @@ $(document).ready(function() {
             },
             success: function(reportHtml) {
                 // Create modal dynamically
+                console.log(reportHtml);
                 var modal = $(`
                     <div class="modal fade" id="studentReportModal" tabindex="-1">
                         <div class="modal-dialog modal-lg modal-fullscreen">
@@ -1110,8 +1109,10 @@ $(document).ready(function() {
     });
 
     $(document).on('click', '.view-report', function() {
-        var studentId = $(this).data('student-id');
-        var termId = $(this).data('term-id');
+        var studentId = $(this).data('data-student-id');
+        console.log(studentId);
+        var termId = $(this).data('data-term-id');
+        console.log(termId);
         viewStudentReport(studentId, termId);
     });
 
