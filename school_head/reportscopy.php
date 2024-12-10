@@ -131,9 +131,11 @@ date_default_timezone_set('Africa/Accra');
       rel="stylesheet"
     />
 
+    <link rel="stylesheet" href="https://unpkg.com/transition-style">
+
     <style>
 
-        .card-body:hover{
+        .class-card:hover{
             cursor: pointer;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
@@ -291,7 +293,7 @@ date_default_timezone_set('Africa/Accra');
                   class="ni ni-credit-card text-success text-sm opacity-10"
                 ></i>
               </div>
-              <span class="nav-link-text ms-1">Payment</span>
+              <span class="nav-link-text ms-1">Reports2</span>
             </a>
           </li>
 
@@ -410,9 +412,15 @@ date_default_timezone_set('Africa/Accra');
         <!-- classes CARD -->
         <div class="row mt-4">
           <div class="col-lg-7 mb-lg-0 mb-4" >
-          <div class="card z-index-2" style="max-height: 400px; overflow: hidden; ">
-
-            <div class="card-body p-3" style="overflow-y: auto;">
+          <div transition-style="in:wipe:bottom-right" id="class-cards"  class="card  z-index-2" style="max-height: 400px; overflow: hidden; ">
+            <div class="card-header pb-0 pt-3 bg-transparent">
+                <h6 class="text-capitalize">Student Overall Progress</h6>
+                <p class="text-sm mb-0">
+                <i class="fa fa-arrow-up text-success"></i>
+                <span class="font-weight-bold">4% more</span> in 2023
+                </p>
+            </div>
+            <div transition-style="in:diamond:center" class="card-body p-3" style="overflow-y: auto;">
                 <div class="chart">
                 <h2>Assigned Schools</h2>
                 <form id="schoolForm">
@@ -432,39 +440,9 @@ date_default_timezone_set('Africa/Accra');
                 </div>
             </div>
         </div>
-
-      <!-- SELECT CLASS CARD -->
-      <div class="row mt-4">
-          <div class="row">
-            <!-- STUDENT LIST TABLE -->
-              <div class="col-12">
-                <div class="card mb-4">
-                  <div class="card-header pb-0">
-                  <h6 class="mb-2">View this term Score</h6>
-                </div>
-                <div class="card-body px-0 pt-0 pb-2">
-                  
-  
-                </div>
-              </div>
-            </div>
-              
-          </div>
-          </div>
+      </div>
 
       <div class="hold">  
-        <!-- Student Scores Table (hidden initially) -->
-        <div id="student-scores" class="student-scores-container" <?php echo $classId ? '' : 'style="display: none;"'; ?>>
-          <div class="main-nav--btn">
-            <button class="backbtn" id="back-button">Back</button>
-            <button class="backbtn success" id="submit-scores-button">Submit Scores</button>
-          </div>
-          <h2 id="class-name" class="class-name" style="padding-left: 1.2rem"></h2>
-          <form id="search-form" class="search-bar" onsubmit="return false;">
-              <input type="hidden" name="class_id" value="<?php echo $classId; ?>">
-              <input type="text" name="search" id="student-search" class="form-control std-search-input" placeholder="Search by ID or Name" value="<?php echo htmlspecialchars($searchQuery); ?>">
-          </form>
-        </div>
       </div>
     </div>
 
@@ -472,22 +450,20 @@ date_default_timezone_set('Africa/Accra');
         <div class="row mt-4">
           <div class="row">
             <!-- STUDENT LIST TABLE -->
-              <div class="col-12">
+              <div transition-style="in:diamond:center" id="student-table" class="col-12 " style="display: none;" >
                 <div class="card mb-4">
-                  <div class="card-header pb-0">
+                  <div class="d-flex justify-content-between card-header pb-0">
+                  <button class="backbtn" id="back-button">Back</button>
                   <h6 class="mb-2">View this term Score</h6>
+                  <h2 id="class-name" class="class-name" style="padding-left: 1.2rem" style="display: none"></h2>
+                  <form id="search-form" class="search-bar" onsubmit="return false;">
+                      <input type="hidden" name="class_id" value="<?php echo $classId; ?>" style="display:none">
+                      <input type="text" name="search" id="student-search" class="form-control std-search-input" placeholder="Search by ID or Name" value="<?php echo htmlspecialchars($searchQuery); ?>">
+                  </form>
                 </div>
                 <div class="card-body px-0 pt-0 pb-2">
                   <div class="table-responsive p-0">
                      <form id="score-form" action="">
-                    <!-- <div class="table-container">
-                    <table id="student-table" class="input-table">
-                      <tbody id="student-list">
-                              Student rows will be dynamically added here
-                      </tbody>
-                    </table>
-                    </div>
-                     -->
 
                     <table id="students-table" class="input-table table align-items-center mb-0">
                       <thead>
@@ -772,23 +748,23 @@ $('#cancel-profile').click(function() {
 //             $('#score-form').submit(); // Programmatically submit the form
 //         });
         
-//         // Attach a handler to the search form
-//         $('#student-search').on('input', function() {
-//               performSearch();
-//           });
+        // // Attach a handler to the search form
+        // $('#student-search').on('input', function() {
+        //       performSearch();
+        //   });
 
-//         // Disable default form submission for 'Enter' key in the search bar
-//         $('#search-form').on('submit', function(e) {
-//               e.preventDefault();
-//               performSearch();
-//           });
+        // // Disable default form submission for 'Enter' key in the search bar
+        // $('#search-form').on('submit', function(e) {
+        //       e.preventDefault();
+        //       performSearch();
+        //   });
       
-//         // Function to perform the search and update the student list dynamically
-//         function performSearch() {
-//             var searchQuery = $('#student-search').val();
-//             var page = 1; // reset to first page for new search
-//             loadStudents(currentClassId, page, searchQuery);
-//           }
+        // // Function to perform the search and update the student list dynamically
+        // function performSearch() {
+        //     var searchQuery = $('#student-search').val();
+        //     var page = 1; // reset to first page for new search
+        //     loadStudents(currentClassId, page, searchQuery);
+        //   }
 
 //           // Logout button click handler
 //     $('#logout-btn').click(function(e) {
@@ -817,11 +793,11 @@ $('#cancel-profile').click(function() {
 //     loadStudents(classId, 1);
 // });
 
-//         $('#back-button').click(function() {
-//             $('#student-scores').hide();
-//             $('#class-cards').show();
-//             history.pushState(null, '', 'reports.php');
-//         });
+        // $('#back-button').click(function() {
+        //     $('#student-scores').hide();
+        //     $('#class-cards').show();
+        //     history.pushState(null, '', 'reports.php');
+        // });
 
       
 //         $('#score-form').submit(function(e) {
@@ -887,7 +863,7 @@ $(document).ready(function() {
 
                 classes.forEach(function(cls) {
                     var classCard = $(`
-                        <div class="card class-card" data-class-id="${cls.class_id}">
+                        <div transition-style="in:wipe:down" class="card class-card" data-class-id="${cls.class_id}">
                             <div class="card-body">
                                 <h5 class="card-title">${cls.class_name}</h5>
                                 <p class="card-text">Students: ${cls.student_count}</p>
@@ -924,6 +900,8 @@ $(document).ready(function() {
             console.log('Full response:', response);
             if (response.success) {
                 if (response.data.students && response.data.students.length > 0) {
+                    $('#class-cards').hide();
+                    $('#student-table').show();
                     renderStudentTable(response.data.students, response.data.termId);
                     renderPagination(response.data.total_pages, response.data.current_page);
                 } else {
@@ -949,6 +927,12 @@ $(document).on('click', '.class-card', function() {
     console.log('Selected class ID:', classId);
     loadStudents(classId);
 });
+
+$('#back-button').click(function() {
+            $('#student-table').hide();
+            $('#class-cards').show();
+            history.pushState(null, '', 'reportscopy.php');
+        });
 
 function renderPagination(totalPages, currentPage) {
     // Clear existing pagination
@@ -1049,7 +1033,9 @@ function renderStudentTable(students, termId) {
                         data-term-id="${student.termId}" style="background-color:none; border: none">
                         <span class="badge badge-sm bg-gradient-success">View Report</span>
                         
-                    </button>
+                        </button>
+                        <a href="view_report.php?student_id="${student.student_id}" &term_id="${student.termId}" style="background-color:none; border: none">
+                        <span class="badge badge-sm bg-gradient-success">View Report</span></a>
                 </td>
             </tr>
         `;
@@ -1108,13 +1094,31 @@ function renderStudentTable(students, termId) {
         loadStudents(classId);
     });
 
-    $(document).on('click', '.view-report', function() {
-        var studentId = $(this).data('data-student-id');
-        console.log(studentId);
-        var termId = $(this).data('data-term-id');
-        console.log(termId);
-        viewStudentReport(studentId, termId);
+    // $(document).on('click', '.view-report', function() {
+    //     var studentId = $(this).data('data-student-id');
+    //     console.log(studentId);
+    //     var termId = $(this).data('data-term-id');
+    //     console.log(termId);
+    //     viewStudentReport(studentId, termId);
+    // });
+
+      // Attach a handler to the search form
+    $('#student-search').on('input', function() {
+        performSearch();
     });
+
+  // Disable default form submission for 'Enter' key in the search bar
+    $('#search-form').on('submit', function(e) {
+        e.preventDefault();
+        performSearch();
+    });
+
+  // Function to perform the search and update the student list dynamically
+    function performSearch() {
+      var searchQuery = $('#student-search').val();
+      var page = 1; // reset to first page for new search
+      loadStudents(classId, page, searchQuery);
+    }
 
     // Initial load of schools
     loadSchools();
