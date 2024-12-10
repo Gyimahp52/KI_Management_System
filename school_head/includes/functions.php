@@ -66,3 +66,51 @@ function getThemes($school_id) {
     $stmt->execute([$school_id]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+function getCurrentTerm($pdo) {
+    // Get the current date
+    $currentDate = date('Y-m-d');
+
+    // Comprehensive query to find current term
+    $sql = "
+        SELECT 
+            t.id AS term_id, 
+            t.term_number, 
+            t.start_date, 
+            t.end_date,
+            ay.id AS academic_year_id,
+            ay.year_name
+        FROM terms t
+        JOIN academic_years ay ON t.academic_year_id = ay.id
+        WHERE 
+            t.start_date <= :current_date 
+            AND t.end_date >= :current_date
+        LIMIT 1
+    ";
+
+    try {
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':current_date', $currentDate);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Error finding current term: " . $e->getMessage());
+        return null;
+    }
+}
+
+function validateTermSelection($pdo, $requestedTermId = null) {
+    // If no term specified, get current term
+    if ($requestedTermId === null) {
+        $currentTerm = getCurrentTerm($pdo);
+        return $currentTerm ? $currentTerm['term_id'] : null;
+    }
+
+    // Validate requested term exists
+    $sql = "SELECT id FROM terms WHERE id = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$requestedTermId]);
+    
+    return $stmt->fetchColumn() ?: null;
+}

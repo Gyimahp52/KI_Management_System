@@ -1017,7 +1017,7 @@ $(document).ready(function() {
     // Function to load students for a class
     function loadStudents(classId, page = 1, searchQuery = '') {
         $.ajax({
-            url: 'fetch_students.php', // New endpoint to fetch students
+            url: 'get_students.php', // New endpoint to fetch students
             method: 'GET',
             data: { 
                 class_id: classId, 
