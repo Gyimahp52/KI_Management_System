@@ -224,7 +224,7 @@ date_default_timezone_set('Africa/Accra');
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="reportscopy.php">
+            <a class="nav-link" href="#">
               <div
                 class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center"
               >
@@ -795,22 +795,22 @@ toastr.options = {
 
 
 // AJAX request to fetch classes when a school is selected
-$('#school_id').on('change', function () {
-            const schoolId = $(this).val();
-            if (schoolId) {
-                $.ajax({
-                    url: 'fetch_classes.php',
-                    type: 'GET',
-                    data: { school_id: schoolId },
-                    success: function (response) {
-                        $('#classesContainer').html(response);
-                    },
-                    error: function () {
-                        $('#classesContainer').html('<p>Failed to fetch classes. Please try again.</p>');
-                    }
-                });
-            }
-        });
+// $('#school_id').on('change', function () {
+//             const schoolId = $(this).val();
+//             if (schoolId) {
+//                 $.ajax({
+//                     url: 'fetch_classes.php',
+//                     type: 'GET',
+//                     data: { school_id: schoolId },
+//                     success: function (response) {
+//                         $('#classesContainer').html(response);
+//                     },
+//                     error: function () {
+//                         $('#classesContainer').html('<p>Failed to fetch classes. Please try again.</p>');
+//                     }
+//                 });
+//             }
+//         });
 
 // GET PROFILEDATA
 $('#profile-btn').click(function() {
@@ -867,91 +867,256 @@ $('#profile-form').submit(function(e) {
     });
 });
 
-    // Hide modal when "Cancel" is clicked
-    $('#cancel-profile').click(function() {
+// Hide modal when "Cancel" is clicked
+$('#cancel-profile').click(function() {
         $('#profile-form-modal').removeClass('show'); // Hide modal
         $('.modal-content').removeClass('slide-in-left'); // Remove slide-in class
-    });
-
-
-
-
-    $(document).ready(function() {
-        var currentClassId = <?php echo $classId ?: 'null'; ?>;
-
-        $('#submit-scores-button').click(function() {
-            $('#score-form').submit(); // Programmatically submit the form
-        });
-        
-        // Attach a handler to the search form
-        $('#student-search').on('input', function() {
-              performSearch();
-          });
-
-        // Disable default form submission for 'Enter' key in the search bar
-        $('#search-form').on('submit', function(e) {
-              e.preventDefault();
-              performSearch();
-          });
-      
-        // Function to perform the search and update the student list dynamically
-        function performSearch() {
-            var searchQuery = $('#student-search').val();
-            var page = 1; // reset to first page for new search
-            loadStudents(currentClassId, page, searchQuery);
-          }
-
-          // Logout button click handler
-    $('#logout-btn').click(function(e) {
-        e.preventDefault();
-        
-        // Show confirmation modal
-        $('#logout-btn--cancel').removeClass('hidden');
-    });
-
-    // Confirm logout
-    $('#logout-btn--confirm').click(function() {
-        window.location.href = 'logout.php';
-    });
-
-    // Cancel logout
-    $('#logout-btn--cancel .btn-cancel').click(function() {
-        $('#logout-btn--cancel').addClass('hidden');
-    });
-
-
-        
-//event delegation to handle dynamically loaded cards
-$(document).on('click', '.card', function() {
-    var classId = $(this).data('class-id');
-    // console.log('Class ID clicked:', classId); // Add debugging log
-    loadStudents(classId, 1);
 });
 
-        $('#back-button').click(function() {
-            $('#student-scores').hide();
-            $('#class-cards').show();
-            history.pushState(null, '', 'reports.php');
-        });
+
+
+
+//     $(document).ready(function() {
+//         var currentClassId = <?php echo $classId ?: 'null'; ?>;
+
+//         $('#submit-scores-button').click(function() {
+//             $('#score-form').submit(); // Programmatically submit the form
+//         });
+        
+//         // Attach a handler to the search form
+//         $('#student-search').on('input', function() {
+//               performSearch();
+//           });
+
+//         // Disable default form submission for 'Enter' key in the search bar
+//         $('#search-form').on('submit', function(e) {
+//               e.preventDefault();
+//               performSearch();
+//           });
+      
+//         // Function to perform the search and update the student list dynamically
+//         function performSearch() {
+//             var searchQuery = $('#student-search').val();
+//             var page = 1; // reset to first page for new search
+//             loadStudents(currentClassId, page, searchQuery);
+//           }
+
+//           // Logout button click handler
+//     $('#logout-btn').click(function(e) {
+//         e.preventDefault();
+        
+//         // Show confirmation modal
+//         $('#logout-btn--cancel').removeClass('hidden');
+//     });
+
+//     // Confirm logout
+//     $('#logout-btn--confirm').click(function() {
+//         window.location.href = 'logout.php';
+//     });
+
+//     // Cancel logout
+//     $('#logout-btn--cancel .btn-cancel').click(function() {
+//         $('#logout-btn--cancel').addClass('hidden');
+//     });
+
+
+        
+// //event delegation to handle dynamically loaded cards
+// $(document).on('click', '.card', function() {
+//     var classId = $(this).data('class-id');
+//     // console.log('Class ID clicked:', classId); // Add debugging log
+//     loadStudents(classId, 1);
+// });
+
+//         $('#back-button').click(function() {
+//             $('#student-scores').hide();
+//             $('#class-cards').show();
+//             history.pushState(null, '', 'reports.php');
+//         });
 
       
-        $('#score-form').submit(function(e) {
-            e.preventDefault();
-            submitScores();
-        });
+//         $('#score-form').submit(function(e) {
+//             e.preventDefault();
+//             submitScores();
+//         });
         
 
 
-$(document).on('click', '.pagination-link', function(e) {
-e.preventDefault();
-var page = $(this).data('page');
-loadStudents(currentClassId, page);
-});
+// $(document).on('click', '.pagination-link', function(e) {
+// e.preventDefault();
+// var page = $(this).data('page');
+// loadStudents(currentClassId, page);
+// });
 
-        // Load students if class_id is set in URL
-if (currentClassId) {
-loadStudents(currentClassId, <?php echo $page; ?>);
-}
+//         // Load students if class_id is set in URL
+// if (currentClassId) {
+// loadStudents(currentClassId, <?php echo $page; ?>);
+// }
+// });
+
+
+
+// In your main dashboard JavaScript (likely in reportscopy.php)
+$(document).ready(function() {
+    // Function to fetch and populate schools
+    function loadSchools() {
+        $.ajax({
+            url: 'fetch_schools.php', // New endpoint to fetch assigned schools
+            method: 'GET',
+            dataType: 'json',
+            success: function(schools) {
+                var schoolSelect = $('#school_id');
+                schoolSelect.empty();
+                schoolSelect.append('<option value="" disabled selected>Select a School</option>');
+                schools.forEach(function(school) {
+                    schoolSelect.append(
+                        `<option value="${school.id}">${school.school_name}</option>`
+                    );
+                });
+            },
+            error: function() {
+                toastr.error('Failed to load schools');
+            }
+        });
+    }
+
+    // Function to fetch classes for a selected school
+    function loadClasses(schoolId) {
+        $.ajax({
+            url: 'fetch_classes.php',
+            method: 'GET',
+            data: { school_id: schoolId },
+            dataType: 'json',
+            success: function(classes) {
+                var classesContainer = $('#classesContainer');
+                classesContainer.empty();
+                
+                if (classes.length === 0) {
+                    classesContainer.html('<p>No classes found for this school.</p>');
+                    return;
+                }
+
+                classes.forEach(function(cls) {
+                    var classCard = $(`
+                        <div class="card class-card" data-class-id="${cls.class_id}">
+                            <div class="card-body">
+                                <h5 class="card-title">${cls.class_name}</h5>
+                                <p class="card-text">Students: ${cls.student_count}</p>
+                            </div>
+                        </div>
+                    `);
+                    classesContainer.append(classCard);
+                });
+            },
+            error: function() {
+                toastr.error('Failed to load classes');
+            }
+        });
+    }
+
+    // Function to load students for a class
+    function loadStudents(classId, page = 1, searchQuery = '') {
+        $.ajax({
+            url: 'fetch_students.php', // New endpoint to fetch students
+            method: 'GET',
+            data: { 
+                class_id: classId, 
+                page: page, 
+                search: searchQuery 
+            },
+            dataType: 'json',
+            success: function(response) {
+                var studentList = $('#student-list');
+                studentList.empty();
+
+                if (response.students.length === 0) {
+                    studentList.append('<tr><td colspan="5">No students found.</td></tr>');
+                    return;
+                }
+
+                // Populate student table
+                response.students.forEach(function(student) {
+                    var studentRow = $(`
+                        <tr>
+                            <td>${student.student_id}</td>
+                            <td>${student.name}</td>
+                            <td>
+                                <button class="btn btn-sm btn-info view-report" 
+                                    data-student-id="${student.student_id}" 
+                                    data-term-id="${response.current_term_id}">
+                                    View Report
+                                </button>
+                            </td>
+                        </tr>
+                    `);
+                    studentList.append(studentRow);
+                });
+
+                // Handle pagination
+                renderPagination(response.total_pages, page);
+            },
+            error: function() {
+                toastr.error('Failed to load students');
+            }
+        });
+    }
+
+    // Function to view student report
+    function viewStudentReport(studentId, termId) {
+        $.ajax({
+            url: 'view_report.php',
+            method: 'GET',
+            data: {
+                student_id: studentId,
+                term_id: termId
+            },
+            success: function(reportHtml) {
+                // Create modal dynamically
+                var modal = $(`
+                    <div class="modal fade" id="studentReportModal" tabindex="-1">
+                        <div class="modal-dialog modal-lg modal-fullscreen">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Student Progress Report</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    ${reportHtml}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `);
+                
+                $('body').append(modal);
+                var reportModal = new bootstrap.Modal(document.getElementById('studentReportModal'));
+                reportModal.show();
+            },
+            error: function() {
+                toastr.error('Failed to load student report');
+            }
+        });
+    }
+
+    // Event Listeners
+    $('#school_id').on('change', function() {
+        var schoolId = $(this).val();
+        loadClasses(schoolId);
+    });
+
+    $(document).on('click', '.class-card', function() {
+        var classId = $(this).data('class-id');
+        loadStudents(classId);
+    });
+
+    $(document).on('click', '.view-report', function() {
+        var studentId = $(this).data('student-id');
+        var termId = $(this).data('term-id');
+        viewStudentReport(studentId, termId);
+    });
+
+    // Initial load of schools
+    loadSchools();
 });
 
 
@@ -983,6 +1148,65 @@ window.addEventListener('resize', () => {
     content.style.marginLeft = '0';
   }
 });
+
+
+// $(document).on('click', '.class-card', function() {
+//     const classId = $(this).data('class-id');
+//     const className = $(this).data('class-name');
+    
+//     // AJAX call to fetch students for the selected class
+//     $.ajax({
+//         url: 'fetch_class_students.php',
+//         method: 'GET',
+//         data: { 
+//             class_id: classId,
+//             class_name: className
+//         },
+//         success: function(response) {
+//             // Show student list or generate report options
+//             $('#students-container').html(response);
+            
+//             // Attach click event to view report button
+//             $('.view-report-btn').on('click', function() {
+//                 const studentId = $(this).data('student-id');
+//                 const termId = $(this).data('term-id');
+                
+//                 // Open report in a modal
+//                 openStudentReport(studentId, termId);
+//             });
+//         },
+//         error: function() {
+//             toastr.error('Failed to fetch students');
+//         }
+//     });
+// });
+
+// function openStudentReport(studentId, termId) {
+//     $.ajax({
+//         url: 'view_report.php',
+//         method: 'GET',
+//         data: {
+//             student_id: studentId,
+//             term_id: termId
+//         },
+//         success: function(reportHtml) {
+//             // Create a modal to display the report
+//             const modal = $('<div class="modal fade" id="studentReportModal" tabindex="-1">');
+//             const modalDialog = $('<div class="modal-dialog modal-lg">');
+//             const modalContent = $('<div class="modal-content">');
+            
+//             modalContent.html(reportHtml);
+//             modalDialog.append(modalContent);
+//             modal.append(modalDialog);
+            
+//             $('body').append(modal);
+//             $('#studentReportModal').modal('show');
+//         },
+//         error: function() {
+//             toastr.error('Failed to load student report');
+//         }
+//     });
+// }
     </script>
   </body>
 </html>

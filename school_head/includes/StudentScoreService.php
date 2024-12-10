@@ -35,6 +35,19 @@ class StudentScoreService {
         return $stmt->fetchAll();
     }
 
+    public function getStudentsForClass($class_id, $term_id) {
+        $sql = "
+            SELECT DISTINCT s.student_id, s.name
+            FROM students s
+            LEFT JOIN student_scores ss ON s.student_id = ss.student_id
+            WHERE s.class_id = ? AND ss.term_id = ?
+            ORDER BY s.name
+        ";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$class_id, $term_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function getStudentsWithThemesAndScores($class_id, $searchQuery = '', $page = 1, $perPage = 10) {
         $offset = ($page - 1) * $perPage;
         $sql = "
