@@ -846,7 +846,7 @@ $(document).ready(function() {
     }
 
     // Function to fetch classes for a selected school
-    function loadClasses(schoolId) {
+  function loadClasses(schoolId) {
         $.ajax({
             url: 'fetch_classes.php',
             method: 'GET',
@@ -880,7 +880,7 @@ $(document).ready(function() {
     }
 
     // Function to load students for a class
-    function loadStudents(classId, page = 1, searchQuery = '') {
+  function loadStudents(classId, page = 1, searchQuery = '') {
     console.log('Loading students with params:', {
         classId: classId, 
         page: page, 
@@ -904,6 +904,7 @@ $(document).ready(function() {
                     $('#student-table').show();
                     renderStudentTable(response.data.students, response.data.termId);
                     renderPagination(response.data.total_pages, response.data.current_page);
+
                 } else {
                     $('#student-list tbody').html('<tr><td colspan="6">No students found</td></tr>');
                     console.log('No students in response');
@@ -1028,13 +1029,7 @@ function renderStudentTable(students, termId) {
                 <td class="align-middle text-center text-sm">${student.name || 'Unknown'}</td>
                 <td class="align-middle text-center text-sm">${student.class_name || 'N/A'}</td>
                 <td class="align-middle text-center text-sm">
-                    <button class="view-report" 
-                        data-student-id="${student.student_id}" 
-                        data-term-id="${student.termId}" style="background-color:none; border: none">
-                        <span class="badge badge-sm bg-gradient-success">View Report</span>
-                        
-                        </button>
-                        <a href="view_report.php?student_id="${student.student_id}" &term_id="${student.termId}" style="background-color:none; border: none">
+                        <a href="view_report.php?student_id=${student.student_id}&term_id=${student.termId}" style="background-color:none; border: none">
                         <span class="badge badge-sm bg-gradient-success">View Report</span></a>
                 </td>
             </tr>

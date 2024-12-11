@@ -1,7 +1,7 @@
 <?php
 // view_report.php
 
-require_once 'includes/dbconnection.php';
+require_once 'includes/db_connction.php';
 
 // Check if student_id and term_id are provided
 if (!isset($_GET['student_id']) || !isset($_GET['term_id'])) {
@@ -230,6 +230,11 @@ if($dob->format('Y-m-d\TH:i:s.v') < 0 || $dob->format('Y-m-d\TH:i:s.v') == null)
     var studentData = <?php echo json_encode($sel_themes); ?>;
     var studentName = <?php echo json_encode($student['name']); ?>;
     var schoolName = <?php echo json_encode($student['school_name']); ?>;
+
+    function closeReport() {
+        window.history.back();
+}
+
 </script>
 </body>
 </html>
