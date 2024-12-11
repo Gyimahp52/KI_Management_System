@@ -766,23 +766,23 @@ $('#cancel-profile').click(function() {
         //     loadStudents(currentClassId, page, searchQuery);
         //   }
 
-//           // Logout button click handler
-//     $('#logout-btn').click(function(e) {
-//         e.preventDefault();
+   // Logout button click handler
+    $('#logout-btn').click(function(e) {
+        e.preventDefault();
         
-//         // Show confirmation modal
-//         $('#logout-btn--cancel').removeClass('hidden');
-//     });
+        // Show confirmation modal
+        $('#logout-btn--cancel').removeClass('hidden');
+    });
 
-//     // Confirm logout
-//     $('#logout-btn--confirm').click(function() {
-//         window.location.href = 'logout.php';
-//     });
+    // Confirm logout
+    $('#logout-btn--confirm').click(function() {
+        window.location.href = 'logout.php';
+    });
 
-//     // Cancel logout
-//     $('#logout-btn--cancel .btn-cancel').click(function() {
-//         $('#logout-btn--cancel').addClass('hidden');
-//     });
+    // Cancel logout
+    $('#logout-btn--cancel .btn-cancel').click(function() {
+        $('#logout-btn--cancel').addClass('hidden');
+    });
 
 
         
@@ -880,13 +880,27 @@ $(document).ready(function() {
     }
 
     // Function to load students for a class
-  function loadStudents(classId, page = 1, searchQuery = '') {
+ function loadStudents(classId, page = 1, searchQuery = '') {
     console.log('Loading students with params:', {
         classId: classId, 
         page: page, 
         searchQuery: searchQuery
     });
 
+    // Update the browser's history state
+    const urlParams = new URLSearchParams({ 
+        class_id: classId, 
+        page: page, 
+        search: searchQuery 
+    });
+    const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+    history.pushState(
+        { classId, page, searchQuery },  // State object
+        '',                             // Title (optional)
+        newUrl                          // Updated URL
+    );
+
+    // Perform AJAX request
     $.ajax({
         url: 'get_students.php',
         method: 'GET',
