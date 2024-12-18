@@ -254,7 +254,7 @@ function generateSchoolId($schoolName) {
 
 
 function generateStudentId($school_name) {
-    $prefix = strtoupper(substr($school_name, 0, 2)); // Extract the first two letters and convert to uppercase
+    $prefix = strtoupper(substr($school_name, 0, 3)); // Extract the first two letters and convert to uppercase
     $random_numbers = substr(str_shuffle('0123456789'), 0, 5); // Generate a string of 5 random numbers
     return $prefix . $random_numbers; // Concatenate the prefix and random numbers
 }

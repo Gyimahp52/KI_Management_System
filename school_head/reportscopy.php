@@ -231,6 +231,70 @@ date_default_timezone_set('Africa/Accra');
               font-size: 0.8em;
               color: #777;
           }
+
+          ion-icon {
+            font-size: 100px;
+          }
+
+          .logout-pop--modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+          }
+          .hidden {
+            display: none;
+          }
+          .logout-modal--content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            width: 300px;
+          }
+
+          .logout-modal--title {
+            margin-bottom: 1rem;
+          }
+
+          .logout-modal--buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+          }
+
+          .btn-confirm {
+            background-color: #007bff;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+          }
+
+          .btn-confirm:hover {
+            background-color: #0056b3;
+          }
+
+          .btn-cancel {
+            background-color: #ac1838;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+          }
+
+          .btn-cancel:hover {
+            background-color: #b41121c6;
+          }
+
     </style>
 </head>
 
@@ -305,16 +369,15 @@ date_default_timezone_set('Africa/Accra');
             </h6>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./pages/profile.html">
+            <div class="nav-link">
               <div
-                class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center"
+                class="icon icon-shape icon-md border-radius-md text-center me-2 d-flex align-items-center justify-content-center"
               >
-                <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
+              <ion-icon name="power-outline"></ion-icon>
               </div>
-              <span class="nav-link-text ms-1">Profile</span>
-            </a>
+              <button id="logout-btn" class="logout-btn btn btn-danger btn-sm mt-3">Logout</button>
+            </div>
           </li>
-
         </ul>
       </div>
      
@@ -603,6 +666,30 @@ date_default_timezone_set('Africa/Accra');
         </div>
       </div>
     </div>
+
+      <!-- Logout Confirmation Modal -->
+<div id="logout-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
+    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="mt-3 text-center">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Logout Confirmation</h3>
+            <div class="mt-2 px-7 py-3">
+                <p class="text-sm text-gray-500">
+                    Are you sure you want to logout?
+                </p>
+            </div>
+            <div class="items-center px-4 py-3">
+                <button id="confirm-logout" class="px-4 py-2 bg-red-500 text-white text-base font-medium rounded-md w-24 mr-2">
+                    Yes
+                </button>
+                <button id="cancel-logout" class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-24">
+                    No
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
     <!--   Core JS Files   -->
     <script src="./assets/js/core/popper.min.js"></script>
     <script src="./assets/js/core/bootstrap.min.js"></script>
@@ -766,23 +853,23 @@ $('#cancel-profile').click(function() {
         //     loadStudents(currentClassId, page, searchQuery);
         //   }
 
-   // Logout button click handler
-    $('#logout-btn').click(function(e) {
-        e.preventDefault();
+  //  // Logout button click handler
+  //   $('#logout-btn').click(function(e) {
+  //       e.preventDefault();
         
-        // Show confirmation modal
-        $('#logout-btn--cancel').removeClass('hidden');
-    });
+  //       // Show confirmation modal
+  //       $('#logout-btn--cancel').removeClass('hidden');
+  //   });
 
-    // Confirm logout
-    $('#logout-btn--confirm').click(function() {
-        window.location.href = 'logout.php';
-    });
+  //   // Confirm logout
+  //   $('#logout-btn--confirm').click(function() {
+  //       window.location.href = 'logout.php';
+  //   });
 
-    // Cancel logout
-    $('#logout-btn--cancel .btn-cancel').click(function() {
-        $('#logout-btn--cancel').addClass('hidden');
-    });
+  //   // Cancel logout
+  //   $('#logout-btn--cancel .btn-cancel').click(function() {
+  //       $('#logout-btn--cancel').addClass('hidden');
+  //   });
 
 
         
@@ -948,6 +1035,25 @@ $('#back-button').click(function() {
             $('#class-cards').show();
             history.pushState(null, '', 'reportscopy.php');
         });
+
+   // Logout button click handler
+   $('#logout-btn').click(function(e) {
+        e.preventDefault();
+        
+        // Show confirmation modal
+        $('#logout-btn--cancel').removeClass('hidden');
+    });
+
+    // Confirm logout
+    $('#logout-btn--confirm').click(function() {
+        window.location.href = 'logout.php';
+    });
+
+    // Cancel logout
+    $('#logout-btn--cancel .btn-cancel').click(function() {
+        $('#logout-btn--cancel').addClass('hidden');
+    });
+
 
 function renderPagination(totalPages, currentPage) {
     // Clear existing pagination

@@ -99,7 +99,12 @@ date_default_timezone_set('Africa/Accra');
     <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png">
     <link rel="manifest" href="assets/img/site.webmanifest">
     <title>Reports Dashboard</title>
+
     <!--     Fonts and icons     -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/collection/components/icon/icon.min.css"
+      rel="stylesheet"
+    />
     <link
       href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
       rel="stylesheet"
@@ -108,6 +113,13 @@ date_default_timezone_set('Africa/Accra');
     <link href="./assets/css/nucleo-icons.css" rel="stylesheet" />
     <link href="./assets/css/nucleo-svg.css" rel="stylesheet" />
     <!-- Font Awesome Icons -->
+     <!-- ION ICONS -->
+     <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/collection/components/icon/icon.min.css"
+      rel="stylesheet"
+    />
+    <!-- TOAST R -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     <script
       src="https://kit.fontawesome.com/42d5adcbca.js"
       crossorigin="anonymous"
@@ -119,6 +131,9 @@ date_default_timezone_set('Africa/Accra');
       href="./assets/css/argon-dashboard.css?v=2.0.4"
       rel="stylesheet"
     />
+
+    <link rel="stylesheet" href="https://unpkg.com/transition-style">
+
   </head>
 
   <body class="g-sidenav-show bg-gray-100">
@@ -171,18 +186,7 @@ date_default_timezone_set('Africa/Accra');
               <span class="nav-link-text ms-1">Reports</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <div
-                class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center"
-              >
-                <i
-                  class="ni ni-credit-card text-success text-sm opacity-10"
-                ></i>
-              </div>
-              <span class="nav-link-text ms-1">Payment</span>
-            </a>
-          </li>
+
           <!-- <li class="nav-item">
             <a class="nav-link" href="./pages/virtual-reality.html">
               <div
@@ -207,18 +211,18 @@ date_default_timezone_set('Africa/Accra');
             <h6
               class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6"
             >
-              Account pages
+              Settings
             </h6>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./pages/profile.html">
+            <div class="nav-link">
               <div
-                class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center"
+                class="icon icon-shape icon-md border-radius-md text-center me-2 d-flex align-items-center justify-content-center"
               >
-                <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
+              <ion-icon name="power-outline"></ion-icon>
               </div>
-              <span class="nav-link-text ms-1">Profile</span>
-            </a>
+              <button id="logout-btn" class="logout-btn btn btn-danger btn-sm mt-3">Logout</button>
+            </div>
           </li>
           <!-- <li class="nav-item">
             <a class="nav-link" href="./pages/sign-in.html">
@@ -715,7 +719,7 @@ date_default_timezone_set('Africa/Accra');
             <div class="card">
               <div class="card-header pb-0 p-3">
                 <div class="d-flex justify-content-between">
-                  <h6 class="mb-2">View this term Score</h6>
+                  <h6 class="mb-2">View this term report</h6>
                 </div>
               </div>
               <!-- <div class="table-responsive">
@@ -1155,13 +1159,62 @@ date_default_timezone_set('Africa/Accra');
         </div>
       </div>
     </div>
+
+    <!-- Logout Confirmation Modal (Bootstrap) -->
+<div class="modal fade" id="logout-modal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="logoutModalLabel">Logout Confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to logout?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+        <button type="button" id="confirm-logout" class="btn btn-danger">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
     <!--   Core JS Files   -->
     <script src="./assets/js/core/popper.min.js"></script>
     <script src="./assets/js/core/bootstrap.min.js"></script>
     <script src="./assets/js/plugins/perfect-scrollbar.min.js"></script>
     <script src="./assets/js/plugins/smooth-scrollbar.min.js"></script>
     <script src="./assets/js/plugins/chartjs.min.js"></script>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
+    <!-- JQUERY -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Toastr and Custom JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
+
+$(document).ready(function() {
+    // Show confirmation modal when logout button is clicked
+    $('#logout-btn').click(function(e) {
+        e.preventDefault();
+        // Show the Bootstrap modal
+        $('#logout-modal').modal('show');
+    });
+
+    // Confirm logout action
+    $('#confirm-logout').click(function() {
+        // Redirect to logout page (or perform AJAX logout)
+        window.location.href = 'logout.php';
+    });
+
+    // No action needed for cancel, Bootstrap handles it via the "data-bs-dismiss" attribute
+});
+
       var ctx1 = document.getElementById("chart-line").getContext("2d");
 
       var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);

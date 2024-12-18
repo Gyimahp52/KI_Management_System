@@ -1,6 +1,6 @@
 <?php
 // view_report.php
-
+session_start();
 require_once 'includes/db_connction.php';
 
 // Check if student_id and term_id are provided

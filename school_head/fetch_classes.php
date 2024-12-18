@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once 'includes/dbconnection.php';
 require_once 'includes/StudentScoreService.php';
 

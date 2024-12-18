@@ -131,11 +131,17 @@ date_default_timezone_set('Africa/Accra');
       rel="stylesheet"
     />
 
+    <link rel="stylesheet" href="https://unpkg.com/transition-style">
+
     <style>
 
-        .card:hover{
+        .class-card:hover{
             cursor: pointer;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .card {
+
+            margin: 0.8rem !important; 
         }
 
         .spinner-overlay {
@@ -170,6 +176,122 @@ date_default_timezone_set('Africa/Accra');
             pointer-events: none;
             opacity: 0.6;
         }
+
+        #pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            margin-bottom: 1.2rem;
+          }
+          .page-btn {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 0 5px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ffffff;
+    background-color: #007bff; /* Bootstrap primary color */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.page-btn:hover {
+    background-color: #0f63f5; /* Darker primary color on hover */
+    transform: scale(1.05); /* Slight zoom effect */
+}
+
+.page-btn.active {
+    background-color: #0056b3; /* Active button color */
+    color: #ffffff; /* Keep the text white */
+    pointer-events: none; /* Disable click */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for emphasis */
+}
+
+.page-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Focus ring for accessibility */
+}
+
+.page-btn:disabled {
+    background-color: #e0e0e0; /* Disabled button color */
+    color: #888888;
+    cursor: not-allowed;
+}
+
+
+
+          .page-btn {
+              margin: 0 5px;
+              padding: 5px 10px;
+          }
+
+          .page-btn.active {
+              background-color: #0f2ef5;
+              color: white;
+          }
+
+
+          .student-report-container {
+              font-family: Arial, sans-serif;
+              max-width: 800px;
+              margin: 0 auto;
+              padding: 20px;
+          }
+
+          .report-header {
+              text-align: center;
+              margin-bottom: 20px;
+              border-bottom: 2px solid #f0f0f0;
+          }
+
+          .sel-themes-table {
+              width: 100%;
+              border-collapse: collapse;
+          }
+
+          .sel-themes-table th, 
+          .sel-themes-table td {
+              border: 1px solid #ddd;
+              padding: 8px;
+              text-align: left;
+          }
+
+          .info-grid {
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+              gap: 10px;
+          }
+
+          .report-footer {
+              margin-top: 20px;
+              text-align: center;
+              font-size: 0.8em;
+              color: #777;
+          }
+
+          ion-icon {
+            font-size: 100px;
+          }
+
+
+          /* #logout-modal {
+              display: none; 
+              opacity: 0;
+              transition: opacity 0.3s ease;
+          } */
+
+          /* #logout-modal:not(.hidden) {
+              display: block;
+              opacity: 1;
+          } */
+
+          .sidenav {
+ 
+    z-index: 10; 
+}
+
     </style>
 </head>
 
@@ -202,7 +324,7 @@ date_default_timezone_set('Africa/Accra');
       <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" href="#">
+            <a class="nav-link active" href="school_head.php">
               <div
                 class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center"
               >
@@ -223,8 +345,8 @@ date_default_timezone_set('Africa/Accra');
               <span class="nav-link-text ms-1">Reports</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="reportscopy.php">
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="#">
               <div
                 class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center"
               >
@@ -232,28 +354,27 @@ date_default_timezone_set('Africa/Accra');
                   class="ni ni-credit-card text-success text-sm opacity-10"
                 ></i>
               </div>
-              <span class="nav-link-text ms-1">Payment</span>
+              <span class="nav-link-text ms-1">Reports2</span>
             </a>
-          </li>
+          </li> -->
 
           <li class="nav-item mt-3">
             <h6
               class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6"
             >
-              Account pages
+              Settings
             </h6>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./pages/profile.html">
+            <div class="nav-link">
               <div
-                class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center"
+                class="icon icon-shape icon-md border-radius-md text-center me-2 d-flex align-items-center justify-content-center"
               >
-                <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
+              <ion-icon name="power-outline"></ion-icon>
               </div>
-              <span class="nav-link-text ms-1">Profile</span>
-            </a>
+              <button id="logout-btn" class="logout-btn btn btn-danger btn-sm mt-3">Logout</button>
+            </div>
           </li>
-
         </ul>
       </div>
      
@@ -346,12 +467,12 @@ date_default_timezone_set('Africa/Accra');
         </div>
       </nav>
       <!-- End Navbar -->
-      <div class="container-fluid py-4">
+    <div class="container-fluid py-4">
 
         <!-- classes CARD -->
         <div class="row mt-4">
           <div class="col-lg-7 mb-lg-0 mb-4" >
-          <div class="card z-index-2" style="max-height: 400px; overflow: hidden; ">
+          <div transition-style="in:wipe:bottom-right" id="class-cards"  class="card  z-index-2" style="max-height: 400px; overflow: hidden; ">
             <div class="card-header pb-0 pt-3 bg-transparent">
                 <h6 class="text-capitalize">Student Overall Progress</h6>
                 <p class="text-sm mb-0">
@@ -359,7 +480,7 @@ date_default_timezone_set('Africa/Accra');
                 <span class="font-weight-bold">4% more</span> in 2023
                 </p>
             </div>
-            <div class="card-body p-3" style="overflow-y: auto;">
+            <div transition-style="in:diamond:center" class="card-body p-3" style="overflow-y: auto;">
                 <div class="chart">
                 <h2>Assigned Schools</h2>
                 <form id="schoolForm">
@@ -379,157 +500,54 @@ date_default_timezone_set('Africa/Accra');
                 </div>
             </div>
         </div>
+      </div>
 
-        <div class="hold">  
-      <!-- Student Scores Table (hidden initially) -->
-      <div id="student-scores" class="student-scores-container" <?php echo $classId ? '' : 'style="display: none;"'; ?>>
-        <div class="main-nav--btn">
-          <button class="backbtn" id="back-button">Back</button>
-          <button class="backbtn success" id="submit-scores-button">Submit Scores</button>
-        </div>
-        <h2 id="class-name" class="class-name" style="padding-left: 1.2rem"></h2>
-        <form id="search-form" class="search-bar" onsubmit="return false;">
-            <input type="hidden" name="class_id" value="<?php echo $classId; ?>">
-            <input type="text" name="search" id="student-search" class="form-control std-search-input" placeholder="Search by ID or Name" value="<?php echo htmlspecialchars($searchQuery); ?>">
-        </form>
-
-
-        <form id="score-form" action="">
-        <div class="table-container">
-        <table id="students-table" class="input-table">
-          <tbody id="student-list">
-                  <!-- Student rows will be dynamically added here -->
-          </tbody>
-        </table>
-        </div>
-        <div id="pagination"></div>
-        </form>
+      <div class="hold">  
       </div>
     </div>
 
-        </div>
-
-          <div class="col-lg-5">
-            <div class="card card-carousel overflow-hidden h-100 p-0" style="display: none">
-              <div
-                id="carouselExampleCaptions"
-                class="carousel slide h-100"
-                data-bs-ride="carousel"
-              >
-                <div class="carousel-inner border-radius-lg h-100">
-                  <div
-                    class="carousel-item h-100 active"
-                    style="
-                      background-image: url('./assets/img/student1.jpg');
-                      background-size: cover;"
-                  >
-                    <div
-                      class="carousel-caption d-none d-md-block bottom-0 text-start start-0 ms-5"
-                    >
-                      <div
-                        class="icon icon-shape icon-sm bg-white text-center border-radius-md mb-3"
-                      >
-                        <i
-                          class="ni ni-camera-compact text-dark opacity-10"
-                        ></i>
-                      </div>
-                      <h5 class="text-white mb-1"></h5>
-                      <p>
-                        There’s nothing I really wanted to do in life that I
-                        wasn’t able to get good at.
-                      </p>
-                    </div>
-                  </div>
-                  <div
-                    class="carousel-item h-100"
-                    style="
-                      background-image: url('./assets/img/student2.jpg');
-                      background-size: cover;
-                    "
-                  >
-                    <div
-                      class="carousel-caption d-none d-md-block bottom-0 text-start start-0 ms-5"
-                    >
-                      <div
-                        class="icon icon-shape icon-sm bg-white text-center border-radius-md mb-3"
-                      >
-                        <i class="ni ni-bulb-61 text-dark opacity-10"></i>
-                      </div>
-                      <h5 class="text-white mb-1">
-                        <!-- Faster way to create web pages -->
-                      </h5>
-                      <p>
-                        <!-- That’s my skill. I’m not really specifically talented at
-                        anything except for the ability to learn. -->
-                      </p>
-                    </div>
-                  </div>
-                  <div
-                    class="carousel-item h-100"
-                    style="
-                      background-image: url('./assets/img/student3.jpg');
-                      background-size: cover;
-                    "
-                  >
-                    <div
-                      class="carousel-caption d-none d-md-block bottom-0 text-start start-0 ms-5"
-                    >
-                      <div
-                        class="icon icon-shape icon-sm bg-white text-center border-radius-md mb-3"
-                      >
-                        <i class="ni ni-trophy text-dark opacity-10"></i>
-                      </div>
-                      <h5 class="text-white mb-1">
-                        <!-- Share with us your design tips! -->
-                      </h5>
-                      <p>
-                        <!-- Don’t be afraid to be wrong because you can’t learn
-                        anything from a compliment. -->
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <button
-                  class="carousel-control-prev w-5 me-3"
-                  type="button"
-                  data-bs-target="#carouselExampleCaptions"
-                  data-bs-slide="prev"
-                >
-                  <span
-                    class="carousel-control-prev-icon"
-                    aria-hidden="true"
-                  ></span>
-                  <span class="visually-hidden">Previous</span>
-                </button>
-                <button
-                  class="carousel-control-next w-5 me-3"
-                  type="button"
-                  data-bs-target="#carouselExampleCaptions"
-                  data-bs-slide="next"
-                >
-                  <span
-                    class="carousel-control-next-icon"
-                    aria-hidden="true"
-                  ></span>
-                  <span class="visually-hidden">Next</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+          
         <div class="row mt-4">
-          <div class="col-lg-7 mb-lg-0 mb-4">
-            <div class="card">
-              <div class="card-header pb-0 p-3">
-                <div class="d-flex justify-content-between">
+          <div class="row">
+            <!-- STUDENT LIST TABLE -->
+              <div transition-style="in:diamond:center" id="student-table" class="col-12 " style="display: none;" >
+                <div class="card mb-4">
+                  <div class="d-flex justify-content-between card-header pb-0">
+                  <button class="backbtn btn btn-secondary btn-sm" id="back-button">Back</button>
                   <h6 class="mb-2">View this term Score</h6>
+                  <h2 id="class-name" class="class-name" style="padding-left: 1.2rem" style="display: none"></h2>
+                  <form id="search-form" class="search-bar" onsubmit="return false;">
+                      <input type="hidden" name="class_id" value="<?php echo $classId; ?>" style="display:none">
+                      <input type="text" name="search" id="student-search" class="form-control std-search-input" placeholder="Search by ID or Name" value="<?php echo htmlspecialchars($searchQuery); ?>">
+                  </form>
                 </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                  <div class="table-responsive p-0">
+                     <form id="score-form" action="">
+
+                    <table id="students-table" class="input-table table align-items-center mb-0">
+                      <thead>
+                          <tr>
+                              <th class="text-uppercase align-middle text-center text-secondary text-xxs font-weight-bolder opacity-9">#</th>
+                              <th class="text-uppercase align-middle text-center text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Student ID</th>
+                              <th class="text-center align-middle text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+                              <th class="text-center align-middle text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Class</th>
+                              <th class="text-center align-middle text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Actions</th>
+                          </tr>
+                      </thead>
+                      <tbody id="student-list">
+                          <!-- Students will be dynamically added here -->
+                      </tbody>
+                    </table>
+                    </form>
+                  </div>
+                </div>
+                 
+                <div id="pagination"></div>
               </div>
-              
             </div>
+              
           </div>
-          <div class="col-lg-5">
-            
           </div>
         </div>
        
@@ -645,106 +663,34 @@ date_default_timezone_set('Africa/Accra');
         </div>
       </div>
     </div>
+
+<!-- Logout Confirmation Modal (Bootstrap) -->
+<div class="modal fade" id="logout-modal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="logoutModalLabel">Logout Confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to logout?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+        <button type="button" id="confirm-logout" class="btn btn-danger">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
     <!--   Core JS Files   -->
     <script src="./assets/js/core/popper.min.js"></script>
     <script src="./assets/js/core/bootstrap.min.js"></script>
     <script src="./assets/js/plugins/perfect-scrollbar.min.js"></script>
     <script src="./assets/js/plugins/smooth-scrollbar.min.js"></script>
     <script src="./assets/js/plugins/chartjs.min.js"></script>
-    <script>
-      var ctx1 = document.getElementById("chart-line").getContext("2d");
 
-      var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
-
-      gradientStroke1.addColorStop(1, "rgba(94, 114, 228, 0.2)");
-      gradientStroke1.addColorStop(0.2, "rgba(94, 114, 228, 0.0)");
-      gradientStroke1.addColorStop(0, "rgba(94, 114, 228, 0)");
-      new Chart(ctx1, {
-        type: "line",
-        data: {
-          labels: [
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ],
-          datasets: [
-            {
-              label: "Mobile apps",
-              tension: 0.4,
-              borderWidth: 0,
-              pointRadius: 0,
-              borderColor: "#5e72e4",
-              backgroundColor: gradientStroke1,
-              borderWidth: 3,
-              fill: true,
-              data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-              maxBarThickness: 6,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              display: false,
-            },
-          },
-          interaction: {
-            intersect: false,
-            mode: "index",
-          },
-          scales: {
-            y: {
-              grid: {
-                drawBorder: false,
-                display: true,
-                drawOnChartArea: true,
-                drawTicks: false,
-                borderDash: [5, 5],
-              },
-              ticks: {
-                display: true,
-                padding: 10,
-                color: "#fbfbfb",
-                font: {
-                  size: 11,
-                  family: "Open Sans",
-                  style: "normal",
-                  lineHeight: 2,
-                },
-              },
-            },
-            x: {
-              grid: {
-                drawBorder: false,
-                display: false,
-                drawOnChartArea: false,
-                drawTicks: false,
-                borderDash: [5, 5],
-              },
-              ticks: {
-                display: true,
-                color: "#ccc",
-                padding: 20,
-                font: {
-                  size: 11,
-                  family: "Open Sans",
-                  style: "normal",
-                  lineHeight: 2,
-                },
-              },
-            },
-          },
-        },
-      });
-    </script>
     <script>
       var win = navigator.platform.indexOf("Win") > -1;
       if (win && document.querySelector("#sidenav-scrollbar")) {
@@ -794,23 +740,7 @@ toastr.options = {
 };
 
 
-// AJAX request to fetch classes when a school is selected
-$('#school_id').on('change', function () {
-            const schoolId = $(this).val();
-            if (schoolId) {
-                $.ajax({
-                    url: 'fetch_classes.php',
-                    type: 'GET',
-                    data: { school_id: schoolId },
-                    success: function (response) {
-                        $('#classesContainer').html(response);
-                    },
-                    error: function () {
-                        $('#classesContainer').html('<p>Failed to fetch classes. Please try again.</p>');
-                    }
-                });
-            }
-        });
+
 
 // GET PROFILEDATA
 $('#profile-btn').click(function() {
@@ -867,91 +797,510 @@ $('#profile-form').submit(function(e) {
     });
 });
 
-    // Hide modal when "Cancel" is clicked
-    $('#cancel-profile').click(function() {
+// Hide modal when "Cancel" is clicked
+$('#cancel-profile').click(function() {
         $('#profile-form-modal').removeClass('show'); // Hide modal
         $('.modal-content').removeClass('slide-in-left'); // Remove slide-in class
-    });
-
-
-
-
-    $(document).ready(function() {
-        var currentClassId = <?php echo $classId ?: 'null'; ?>;
-
-        $('#submit-scores-button').click(function() {
-            $('#score-form').submit(); // Programmatically submit the form
-        });
-        
-        // Attach a handler to the search form
-        $('#student-search').on('input', function() {
-              performSearch();
-          });
-
-        // Disable default form submission for 'Enter' key in the search bar
-        $('#search-form').on('submit', function(e) {
-              e.preventDefault();
-              performSearch();
-          });
-      
-        // Function to perform the search and update the student list dynamically
-        function performSearch() {
-            var searchQuery = $('#student-search').val();
-            var page = 1; // reset to first page for new search
-            loadStudents(currentClassId, page, searchQuery);
-          }
-
-          // Logout button click handler
-    $('#logout-btn').click(function(e) {
-        e.preventDefault();
-        
-        // Show confirmation modal
-        $('#logout-btn--cancel').removeClass('hidden');
-    });
-
-    // Confirm logout
-    $('#logout-btn--confirm').click(function() {
-        window.location.href = 'logout.php';
-    });
-
-    // Cancel logout
-    $('#logout-btn--cancel .btn-cancel').click(function() {
-        $('#logout-btn--cancel').addClass('hidden');
-    });
-
-
-        
-//event delegation to handle dynamically loaded cards
-$(document).on('click', '.card', function() {
-    var classId = $(this).data('class-id');
-    // console.log('Class ID clicked:', classId); // Add debugging log
-    loadStudents(classId, 1);
 });
 
-        $('#back-button').click(function() {
-            $('#student-scores').hide();
+
+
+
+
+
+
+// In your main dashboard JavaScript (likely in reportscopy.php)
+$(document).ready(function() {
+    // Function to fetch and populate schools
+    function loadSchools() {
+        $.ajax({
+            url: 'fetch_schools.php', // New endpoint to fetch assigned schools
+            method: 'GET',
+            dataType: 'json',
+            success: function(schools) {
+                var schoolSelect = $('#school_id');
+                schoolSelect.empty();
+                schoolSelect.append('<option value="" disabled selected>Select a School</option>');
+                schools.forEach(function(school) {
+                    schoolSelect.append(
+                        `<option value="${school.id}">${school.school_name}</option>`
+                    );
+                });
+            },
+            error: function() {
+                toastr.error('Failed to load schools');
+            }
+        });
+    }
+
+    // Function to fetch classes for a selected school
+  function loadClasses(schoolId) {
+        $.ajax({
+            url: 'fetch_classes.php',
+            method: 'GET',
+            data: { school_id: schoolId },
+            dataType: 'json',
+            success: function(classes) {
+                var classesContainer = $('#classesContainer');
+                classesContainer.empty();
+                
+                if (classes.length === 0) {
+                    classesContainer.html('<p>No classes found for this school.</p>');
+                    return;
+                }
+
+                classes.forEach(function(cls) {
+                    var classCard = $(`
+                        <div transition-style="in:wipe:down" class="card class-card" data-class-id="${cls.class_id}">
+                            <div class="card-body">
+                                <h5 class="card-title">${cls.class_name}</h5>
+                                <p class="card-text">Students: ${cls.student_count}</p>
+                            </div>
+                        </div>
+                    `);
+                    classesContainer.append(classCard);
+                });
+            },
+            error: function() {
+                toastr.error('Failed to load classes');
+            }
+        });
+    }
+
+    // Function to load students for a class
+//  function loadStudents(classId, page = 1, searchQuery = '') {
+//     console.log('Loading students with params:', {
+//         classId: classId, 
+//         page: page, 
+//         searchQuery: searchQuery
+//     });
+
+//     // Update the browser's history state
+//     const urlParams = new URLSearchParams({ 
+//         class_id: classId, 
+//         page: page, 
+//         search: searchQuery 
+//     });
+//     const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+//     history.pushState(
+//         { classId, page, searchQuery },  
+//         '',                             
+//         newUrl                          
+//     );
+
+//     // Perform AJAX request
+//     $.ajax({
+//         url: 'get_students.php',
+//         method: 'GET',
+//         data: { 
+//             class_id: classId, 
+//             page: page, 
+//             search: searchQuery 
+//         },
+//         dataType: 'json',
+//         success: function(response) {
+//             console.log('Full response:', response);
+//             if (response.success) {
+//                 if (response.data.students && response.data.students.length > 0) {
+//                     $('#class-cards').hide();
+//                     $('#student-table').show();
+//                     renderStudentTable(response.data.students, response.data.termId);
+//                     renderPagination(response.data.total_pages, response.data.current_page);
+
+//                 } else {
+//                     $('#student-list tbody').html('<tr><td colspan="6">No students found</td></tr>');
+//                     console.log('No students in response');
+//                 }
+//             } else {
+//                 toastr.error(response.data.message);
+//                 console.error('Failed to load students:', response.data.message);
+//             }
+//         },
+//         error: function(xhr, status, error) {
+//             toastr.error('Failed to load students');
+//             console.error('AJAX error:', status, error);
+//             console.error('Response:', xhr.responseText);
+//         }
+//     });
+// }
+
+// Modify the class card click event to ensure classId is passed correctly
+$(document).on('click', '.class-card', function() {
+    var classId = $(this).data('class-id');
+    console.log('Selected class ID:', classId);
+    loadStudents(classId);
+});
+
+$('#back-button').click(function() {
+            $('#student-table').hide();
             $('#class-cards').show();
             history.pushState(null, '', 'reports.php');
         });
 
-      
-        $('#score-form').submit(function(e) {
-            e.preventDefault();
-            submitScores();
+   // Logout button click handler
+    // Show confirmation modal when logout button is clicked
+    $('#logout-btn').click(function(e) {
+        e.preventDefault();
+        // Show the Bootstrap modal
+        $('#logout-modal').modal('show');
+    });
+
+    // Confirm logout action
+    $('#confirm-logout').click(function() {
+        // Redirect to logout page (or perform AJAX logout)
+        window.location.href = 'logout.php';
+    });
+
+
+function renderPagination(totalPages, currentPage) {
+    // Clear existing pagination
+    $('#pagination').empty();
+
+    // Only render pagination if there are multiple pages
+    if (totalPages > 1) {
+        // Previous button
+        if (currentPage > 1) {
+            $('#pagination').append(
+                `<button class="page-btn" data-page="${currentPage - 1}">Previous</button>`
+            );
+        }
+
+        // Page numbers
+        for (let i = 1; i <= totalPages; i++) {
+            $('#pagination').append(
+                `<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">
+                    ${i}
+                 </button>`
+            );
+        }
+
+        // Next button
+        if (currentPage < totalPages) {
+            $('#pagination').append(
+                `<button class="page-btn" data-page="${currentPage + 1}">Next</button>`
+            );
+        }
+
+        // Add click event to pagination buttons
+        $('.page-btn').on('click', function() {
+            const page = $(this).data('page');
+            
+            // Try multiple ways to get the class ID
+            const classId = 
+                $('.class-card.active').data('class-id') || // If class card is marked active
+                $('input[name="class_id"]').val() ||        // From hidden input
+                $('#class-select').val();                   // From class select dropdown
+
+            console.log('Pagination click - Class ID:', classId);
+            
+            const searchQuery = $('#student-search').val() || ''; // Get search query
+            
+            if (!classId) {
+                toastr.error('Please select a class first');
+                return;
+            }
+
+            loadStudents(classId, page, searchQuery);
         });
-        
+    }
+}
 
-
-$(document).on('click', '.pagination-link', function(e) {
-e.preventDefault();
-var page = $(this).data('page');
-loadStudents(currentClassId, page);
+// Modify class card selection to mark active state
+$(document).on('click', '.class-card', function() {
+    // Remove active state from all class cards
+    $('.class-card').removeClass('active');
+    
+    // Add active state to clicked card
+    $(this).addClass('active');
+    
+    var classId = $(this).data('class-id');
+    console.log('Selected class ID:', classId);
+    loadStudents(classId);
 });
 
-        // Load students if class_id is set in URL
-if (currentClassId) {
-loadStudents(currentClassId, <?php echo $page; ?>);
+
+function renderStudentTable(students, termId) {
+    const tableBody = $('#student-list');
+    tableBody.empty();
+
+    // Debug logging
+    console.log('Rendering students:', students);
+
+    if (students.length === 0) {
+        tableBody.html('<tr><td colspan="6" class="text-center">No students found</td></tr>');
+        return;
+    }
+
+    // Add termId to each student
+    const updatedStudents = students.map(student => ({
+        ...student,        // Spread existing properties
+        termId: termId,    // Add termId
+    }));
+
+    // Render table rows
+    updatedStudents.forEach((student, index) => {
+        const row = `
+            <tr>
+                <td class="align-middle text-center text-sm">${index + 1}</td>
+                <td class="align-middle text-center text-sm">${student.student_id || 'N/A'}</td>
+                <td class="align-middle text-center text-sm">${student.name || 'Unknown'}</td>
+                <td class="align-middle text-center text-sm">${student.class_name || 'N/A'}</td>
+                <td class="align-middle text-center text-sm">
+                        <a href="view_report.php?student_id=${student.student_id}&term_id=${student.termId}" style="background-color:none; border: none" target="_blank">
+                        <span class="badge badge-sm bg-gradient-success">View Report</span></a>
+                </td>
+            </tr>
+        `;
+        tableBody.append(row);
+    });
+    console.log('Table rows added:', tableBody.find('tr').length);
 }
+
+
+    // Function to view student report
+    function viewStudentReport(studentId, termId) {
+        $.ajax({
+            url: 'download_report_pdf',
+            method: 'GET',
+            data: {
+                student_id: studentId,
+                term_id: termId
+            },
+            success: function(reportHtml) {
+                // Create modal dynamically
+                console.log(reportHtml);
+                var modal = $(`
+                    <div class="modal fade" id="studentReportModal" tabindex="-1">
+                        <div class="modal-dialog modal-lg modal-fullscreen">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Student Progress Report</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    ${reportHtml}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `);
+                
+                $('body').append(modal);
+                var reportModal = new bootstrap.Modal(document.getElementById('studentReportModal'));
+                reportModal.show();
+            },
+            error: function() {
+                toastr.error('Failed to load student report');
+            }
+        });
+    }
+
+    // Event Listeners
+    $('#school_id').on('change', function() {
+        var schoolId = $(this).val();
+        loadClasses(schoolId);
+    });
+
+    $(document).on('click', '.class-card', function() {
+        var classId = $(this).data('class-id');
+        loadStudents(classId);
+    });
+
+  //     // Attach a handler to the search form
+  //   $('#student-search').on('input', function() {
+  //       performSearch();
+  //   });
+
+  // // Disable default form submission for 'Enter' key in the search bar
+  //   $('#search-form').on('submit', function(e) {
+  //       e.preventDefault();
+  //       performSearch();
+  //   });
+
+  // // Function to perform the search and update the student list dynamically
+  //   function performSearch() {
+  //     var searchQuery = $('#student-search').val();
+  //     var page = 1; // reset to first page for new search
+  //     loadStudents(classId, page, searchQuery);
+  //   }
+
+  let currentClassId = null;
+    let currentPage = 1;
+
+    // Function to perform the search and update the student list dynamically
+    function performSearch() {
+        const searchQuery = $('#student-search').val().trim();
+        
+        // Ensure a class is selected before searching
+        if (!currentClassId) {
+            toastr.warning('Please select a class first');
+            return;
+        }
+
+        // Reset to first page when performing a new search
+        currentPage = 1;
+
+        // Load students with search parameters
+        loadStudents(currentClassId, currentPage, searchQuery);
+    }
+
+    // Debounce function to prevent excessive API calls
+    function debounce(func, delay) {
+        let timeoutId;
+        return function() {
+            const context = this;
+            const args = arguments;
+            
+            clearTimeout(timeoutId);
+            
+            timeoutId = setTimeout(() => {
+                func.apply(context, args);
+            }, delay);
+        };
+    }
+
+    // Attach debounced search handler
+    $('#student-search').on('input', debounce(function() {
+        performSearch();
+    }, 300)); // 300ms delay
+
+    // Prevent default form submission
+    $('#search-form').on('submit', function(e) {
+        e.preventDefault();
+        performSearch();
+    });
+
+    // Modify class card click to update currentClassId
+    $(document).on('click', '.class-card', function() {
+        currentClassId = $(this).data('class-id');
+        console.log('Selected class ID:', currentClassId);
+        
+        // Clear previous search
+        $('#student-search').val('');
+        
+        loadStudents(currentClassId);
+    });
+
+    // Modify loadStudents function to handle search more robustly
+    function loadStudents(classId, page = 1, searchQuery = '') {
+        console.log('Loading students with params:', {
+            classId: classId, 
+            page: page, 
+            searchQuery: searchQuery
+        });
+
+        // Update current tracking variables
+        currentClassId = classId;
+        currentPage = page;
+
+        // Update URL for better browser history and sharing
+        const urlParams = new URLSearchParams({ 
+            class_id: classId, 
+            page: page, 
+            search: searchQuery 
+        });
+        const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+        history.pushState({ classId, page, searchQuery }, '', newUrl);
+
+        // AJAX request to fetch students
+        $.ajax({
+            url: 'get_students.php',
+            method: 'GET',
+            data: { 
+                class_id: classId, 
+                page: page, 
+                search: searchQuery 
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    if (response.data.students && response.data.students.length > 0) {
+                        $('#class-cards').hide();
+                        $('#student-table').show();
+                        
+                        // Render students and pagination
+                        renderStudentTable(response.data.students, response.data.termId);
+                        renderPagination(
+                            response.data.total_pages, 
+                            response.data.current_page, 
+                            currentClassId, 
+                            searchQuery
+                        );
+
+                        // Show/hide "No results" message
+                        $('#no-results').toggle(response.data.students.length === 0);
+                    } else {
+                        // No students found
+                        $('#student-list tbody').html(`
+                            <tr>
+                                <td colspan="6" class="text-center">
+                                    <div id="no-results" class="alert alert-info">
+                                        No students found matching "${searchQuery}"
+                                    </div>
+                                </td>
+                            </tr>
+                        `);
+                    }
+                } else {
+                    toastr.error(response.data.message || 'Failed to load students');
+                }
+            },
+            error: function(xhr, status, error) {
+                toastr.error('Failed to load students');
+                console.error('AJAX error:', status, error);
+            }
+        });
+    }
+
+    // Modify renderPagination to pass additional context
+    function renderPagination(totalPages, currentPage, classId, searchQuery) {
+        const $pagination = $('#pagination');
+        $pagination.empty();
+
+        if (totalPages > 1) {
+            // Previous button
+            if (currentPage > 1) {
+                $pagination.append(
+                    `<button class="page-btn" data-page="${currentPage - 1}">Previous</button>`
+                );
+            }
+
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                $pagination.append(
+                    `<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">
+                        ${i}
+                     </button>`
+                );
+            }
+
+            // Next button
+            if (currentPage < totalPages) {
+                $pagination.append(
+                    `<button class="page-btn" data-page="${currentPage + 1}">Next</button>`
+                );
+            }
+
+            // Pagination click handler
+            $('.page-btn').on('click', function() {
+                const page = $(this).data('page');
+                
+                // Use tracked variables if not explicitly passed
+                const pageClassId = classId || currentClassId;
+                const pageSearchQuery = searchQuery || $('#student-search').val() || '';
+
+                if (!pageClassId) {
+                    toastr.error('Please select a class first');
+                    return;
+                }
+
+                loadStudents(pageClassId, page, pageSearchQuery);
+            });
+        }
+    }
+
+    // Initial load of schools
+    loadSchools();
 });
 
 
@@ -983,6 +1332,8 @@ window.addEventListener('resize', () => {
     content.style.marginLeft = '0';
   }
 });
+
+
     </script>
   </body>
 </html>
