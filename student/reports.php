@@ -14,13 +14,17 @@
 -->
 
 <?php
-//educator_dashboard
+//student_dashboard
 session_start();
 require_once 'includes/dbconnection.php';
 require_once 'includes/functions.php';
 require_once 'includes/StudentScoreService.php';
 require_once 'includes/base_url.php';
+require_once 'includes/graph_svg.php';
 
+
+// Set the default timezone to Africa/Accra (Ghana)
+date_default_timezone_set('Africa/Accra');
 
 $pdo = dbConnect();
 
@@ -29,49 +33,37 @@ $studentScoreService = new StudentScoreService($pdo);
 
 $message = '';
 $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
-// Check if the user is logged in and is an educator
-if (!isset($_SESSION['user_email']) || $_SESSION['role'] !== 'school_head') {
+// Check if the user is logged in and is an student
+if (!isset($_SESSION['user_username']) || $_SESSION['role'] !== 'student') {
     header('Location: ../index.php');
     exit();
 }
 
-$educatorEmail = $_SESSION['user_email'];
+$student_id = $_SESSION['user_username'];
+// var_dump($student_id);
 
-// Fetch educator's profile details
-$stmt = $pdo->prepare('SELECT id, profile_pic, name, gender, phone_number, emergency_contact, dob, location FROM educators WHERE email = ?');
-$stmt->execute([$educatorEmail]);
-$educator = $stmt->fetch(PDO::FETCH_ASSOC);
+// Fetch students's profile details
+$stmt = $pdo->prepare(" SELECT s.*, c.class_name, sc.school_name FROM students s
+    JOIN classes c ON s.class_id = c.class_id
+    JOIN schools sc ON c.school_id = sc.id
+    WHERE s.student_id = ? ");
+$stmt->execute([$student_id]);
+$student = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// var_dump($educator);
-// Check for Educator
-if (!$educator) {
-    // Redirect to an error page if the educator is not found
+
+// print_r($student);
+
+// Check for student
+if (!$student) {
+TODO: // add 404 Redirect to an error page if the student is not found 
     header('Location: error.php');
     exit();
 }
 
-$educatorId = $educator['id'];
-
-// Fetch all schools assigned to the educator
-$stmtSchools = $pdo->prepare('
-    SELECT s.id, s.school_name 
-    FROM schools s 
-    INNER JOIN educator_schools es ON es.school_id = s.id 
-    WHERE es.educator_id = ?
-');
-$stmtSchools->execute([$educatorId]);
-$schools = $stmtSchools->fetchAll(PDO::FETCH_ASSOC);
-// var_dump($schools);
-
-if (!$schools) {
-    $message = 'No schools assigned to you.';
-    $schools = [];
-}
 
 
-$educatorName = $educator['name'];
-$classId = isset($_GET['class_id']) ? intval($_GET['class_id']) : null;
-// $term_id = isset($_GET['term_id']) ? intval($_GET['term_id']) : null;
+// $classId = isset($_GET['class_id']) ? intval($_GET['class_id']) : null;
+
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 
 if (isset($_SESSION['message'])) {
@@ -80,8 +72,31 @@ if (isset($_SESSION['message'])) {
 }
 
 
-// Set the default timezone to Africa/Accra (Ghana)
-date_default_timezone_set('Africa/Accra');
+//REPORT DATA
+$Term = getCurrentTerm($pdo);
+$term_id = $Term['term_id'];
+
+// Fetch assigned SEL themes and scores
+$stmt = $pdo->prepare("
+    SELECT st.theme_name, st.competency, st.character_strength, ss.score
+    FROM sel_themes st
+    JOIN student_scores ss ON st.id = ss.theme_id
+    WHERE ss.student_id = ? AND ss.term_id = ?
+");
+$stmt->execute([$student_id, $term_id]);
+$sel_themes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+$calcAge = $student['dob'];
+$dob = new DateTime($calcAge);;
+$today = new DateTime('now');  
+if($dob->format('Y-m-d\TH:i:s.v') < 0 || $dob->format('Y-m-d\TH:i:s.v') == null){
+    $age = null;
+  
+}else{
+    $age = $today->diff($dob)->y; 
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -130,6 +145,8 @@ date_default_timezone_set('Africa/Accra');
       href="./assets/css/argon-dashboard.css?v=2.0.4"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="assets/css/view_report.css">
+    <!-- <link rel="stylesheet" href="assets/css/adminDashboard.css"> -->
 
     <link rel="stylesheet" href="https://unpkg.com/transition-style">
 
@@ -324,7 +341,7 @@ date_default_timezone_set('Africa/Accra');
       <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" href="school_head.php">
+            <a class="nav-link active" href="index.php">
               <div
                 class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center"
               >
@@ -366,6 +383,9 @@ date_default_timezone_set('Africa/Accra');
             </h6>
           </li>
           <li class="nav-item">
+            <div class="nav-link">
+              <a href="#" id="profile-btn">profile</a>
+            </div>
             <div class="nav-link">
               <div
                 class="icon icon-shape icon-md border-radius-md text-center me-2 d-flex align-items-center justify-content-center"
@@ -470,34 +490,165 @@ date_default_timezone_set('Africa/Accra');
     <div class="container-fluid py-4">
 
         <!-- classes CARD -->
-        <div class="row mt-4">
-          <div class="col-lg-7 mb-lg-0 mb-4" >
-          <div transition-style="in:wipe:bottom-right" id="class-cards"  class="card  z-index-2" style="max-height: 400px; overflow: hidden; ">
-            <div class="card-header pb-0 pt-3 bg-transparent">
-                <h6 class="text-capitalize">Student Overall Progress</h6>
-                <p class="text-sm mb-0">
-                <i class="fa fa-arrow-up text-success"></i>
-                <span class="font-weight-bold">4% more</span> in 2023
-                </p>
-            </div>
-            <div transition-style="in:diamond:center" class="card-body p-3" style="overflow-y: auto;">
-                <div class="chart">
-                <h2>Assigned Schools</h2>
-                <form id="schoolForm">
-                    <label for="school_id">Select a School:</label>
-                    <select name="school_id" id="school_id">
-                    <option value="" disabled selected>Select a School</option>
-                    <?php foreach ($schools as $school): ?>
-                        <option value="<?= $school['id']; ?>"><?= htmlspecialchars($school['school_name']); ?></option>
-                    <?php endforeach; ?>
-                    </select>
-                </form>
+        <div class="row mt-">
+          <div class="col-lg-9 mb-lg-0 mb-4" >
+          <div transition-style="in:wipe:bottom-right" id="class-cards"  class="card  z-index-2" style="max-height: 45rem; overflow: hidden; ">
 
-                <h3>Classes</h3>
-                <div id="classesContainer">
-                    <p>Select a school to see classes.</p>
+            <div transition-style="in:diamond:center" class="card-body p-3" style="overflow-y: auto;">
+              <div class="chart">
+                <!-- <div class="report-btn">
+                  <h2>View This Term's Report</h2>
+                  <button>Click Here</button>
+                </div> -->
+
+                <div class="report-view" >
+                  
+                <div id="report-view" class="">
+                  <h4>Report for <?php echo htmlspecialchars($Term['term_number']) ;?>st Term <?php echo htmlspecialchars($Term['year_name']) ;?> Academic Year</h4>
+                  <div class="report-container ">
+                      <!-- <button class="close-btn" onclick="closeReport()"><strong>X</strong></button> -->
+                      <div id="report-content">
+                        <!-- Page 1 -->
+                        <div id="report-page-1" class="page-1">
+                            <h1 style="font-size: 2rem"><u>KIE STUDENT PROGRESS REPORT</u></h1>
+                            <p style="text-align: left;">Kinesthetic Intelligence Education personal progress report for <strong><span id="student-name"><?php echo htmlspecialchars($student['name']); ?></span></strong> at <strong><span id="student-school"><?php echo htmlspecialchars($student['school_name']); ?></span></strong>. The Kinesthetic Intelligence Education (KIE) student personal progress report provides a comprehensive assessment of each student’s development over the 12-week program, which focused on one Social Emotional Learning (SEL) theme per week. These themes were designed to enhance students’ overall Emotional Intelligence. The report evaluates each student’s marginal improvements in mastering these skills, offering valuable insights into their growth and areas for further development. This progress assessment aims to encourage continuous learning and promote personal growth in alignment with Open Mind Africa’s mission to develop well-rounded, emotionally intelligent individuals.</p>
+                            <div class="flex-column">
+                              <div><h2>Personal Information</h2></div>
+                              <div class="d-flex flex-row">
+                              <div class="left-side">              
+                                    <p><strong>Name:</strong> <span id="student-name-info"><?php echo htmlspecialchars($student['name']); ?></span></p>
+                                    <p><strong>Age:</strong> <?php echo htmlspecialchars($age ?? 'N/A'); ?> YEARS</p>
+                                    <p><strong>School:</strong> <span id="student-school-info"><?php echo htmlspecialchars($student['school_name']); ?></span></p>
+                                    <p><strong>Class:</strong> <span id="student-class-info"><?php echo htmlspecialchars($student['class_name']); ?></span></p>
+                                    <p><strong>Height:</strong> <?php echo htmlspecialchars($student['height'] ?? 'N/A'); ?> cm</p>
+                                    <p><strong>Weight:</strong> <?php echo htmlspecialchars($student['weight'] ?? 'N/A'); ?> kg</p>
+                              </div>
+                              <div class="right-side">
+                                  <p><strong>Foot:</strong> <?php echo htmlspecialchars($student['foot'] ?? 'N/A'); ?> </p>
+                                  <p><strong>Hand:</strong> <?php echo htmlspecialchars($student['hand'] ?? 'N/A'); ?></p>
+                                  <p><strong>Eyesight:</strong> <?php echo htmlspecialchars($student['eye_sight'] ?? 'N/A'); ?></p>
+                                  <p><strong>Heart Rate:</strong> <?php echo htmlspecialchars($student['heart_rate'] ?? 'N/A'); ?></p>
+                                  <p><strong>Medical Condition:</strong> <?php echo htmlspecialchars($student['medical_condition'] ?? 'N/A'); ?></p>
+                              </div>
+                            </div>
+                            </div>
+                            </div>
+                            <section class="data-tables">
+                              <h2>1. Student KEQ Field Data</h2>
+                              <table>
+                                  <tr>
+                                    <th>Metrics</th>
+                                    <?php foreach ($sel_themes as $theme): ?>
+                                    <th><?php echo htmlspecialchars($theme['theme_name'] ?? 'N/A'); ?></th>
+                                    <?php endforeach; ?>
+                                  </tr>
+                                  <tr>
+                                    <td>KEQ</td>
+                                    <?php foreach ($sel_themes as $theme): ?>
+                                    <td><?php echo htmlspecialchars($theme['score']); ?></td>
+                                    <?php endforeach; ?>
+                                  </tr>
+                              </table>
+                            </section>
+                            <div class="graph-descriptio">
+                              <h3>GRAPH DESCRIPTION</h3>
+                              <ul>
+                                  <li>Each student starts from the green base line of 50% and work their way up.</li>
+                                  <li>The blue area represents the marginal percentage improvement this term.</li>
+                                  <li>The yellow area represents the target they are working towards over a period.</li>
+                                  <li>Students are expected to have a termly marginal improvement over a period.</li>
+                              </ul>
+                            </div>
+                            
+                            <!-- Placeholder for KEQ Bar Chart -->
+                           <div class=""><?php echo generateKEQBarChart($sel_themes, $student['name']); ?></div> 
+                        </div>
+                        <!-- Page 2 -->
+                        <div id="report-page-2" class="page-2">
+                            <h3>RESULTS ANALYSIS</h3>
+                            <ul>
+                              <li><strong>Strength Recognition:</strong> Keep an eye on 8% - 10% marginal improvement. This is one of your ward's strengths. Be aware of this skill especially in challenging situations at home. We will keep working on it.</li>
+                              <li><strong>Skill Development:</strong> Next keep an eye on 5% - 7% marginal improvement. Your ward has some ability in this skill but with more practice we could get better.</li>
+                              <li><strong>Developmental Focus:</strong> Now look at 2% - 4% marginal improvement. This skill will take your ward more time to develop and strengthen. The K.I coach will focus more attention to help your ward to develop this skill.</li>
+                            </ul>
+                            <h2>Social Emotional Learning Competencies (SEL)</h2>
+                            <table>
+                              <tr>
+                                  <th>Metrics</th>
+                                  <?php foreach ($sel_themes as $theme): ?>
+                                  <th><?php echo htmlspecialchars($theme['theme_name'] ?? 'N/A'); ?></th>
+                                  <?php endforeach; ?>
+                              </tr>
+                              <tr>
+                                  <td>KEQ</td>
+                                  <?php foreach ($sel_themes as $theme): ?>
+                                  <td><?php echo htmlspecialchars($theme['score']); ?></td>
+                                  <?php endforeach; ?>
+                              </tr>
+                              <tr>
+                                  <td>SEL</td>
+                                  <?php foreach ($sel_themes as $theme): ?>
+                                  <td><?php echo htmlspecialchars($theme['competency']); ?></td>
+                                  <?php endforeach; ?>
+                              </tr>
+                            </table>
+                            <!-- Placeholder for SEL Pie Chart -->
+                            <?php echo generateSELPieChart($sel_themes, $student['name']); ?>
+                            <h3>RESULTS ANALYSIS</h3>
+                            <ul>
+                              <li><strong>Thematic Exposure:</strong> Each term students explore a minimum of two character development themes related to the five SEL competencies.</li>
+                              <li><strong>Metric Evaluation:</strong> Internal metrics assess their performance on each competency with a maximum achievable score of 20% for each totaling 100%.</li>
+                              <li><strong>Focus on Improvement:</strong> The emphasis is on fostering continuous marginal improvement each term rather than solely achieving high scores.</li>
+                              <li><strong>Understanding Scores:</strong> An SEL score above 15 indicates robust emotional intelligence while a score below 10 signals opportunities for ongoing improvement.</li>
+                            </ul>
+                        </div>
+                        <!-- Page 3 -->
+                        <div id="report-page-3">
+                            <h2>Character Strengths (CS)</h2>
+                            <table>
+                              <tr>
+                                  <th>Metrics</th>
+                                  <?php foreach ($sel_themes as $theme): ?>
+                                  <th><?php echo htmlspecialchars($theme['theme_name'] ?? 'N/A'); ?></th>
+                                  <?php endforeach; ?>
+                              </tr>
+                              <tr>
+                                  <td>KEQ</td>
+                                  <?php foreach ($sel_themes as $theme): ?>
+                                  <td><?php echo htmlspecialchars($theme['score']); ?></td>
+                                  <?php endforeach; ?>
+                              </tr>
+                              <tr>
+                                  <td>SEL</td>
+                                  <?php foreach ($sel_themes as $theme): ?>
+                                  <td><?php echo htmlspecialchars($theme['character_strength']); ?></td>
+                                  <?php endforeach; ?>
+                              </tr>
+                            </table>
+                            <!-- Placeholder for CS Bar Chart -->          
+                            <?php echo generateCharacterStrengthsBarChart($sel_themes, $student['name']); ?>
+                            <h3>RESULTS ANALYSIS</h3>
+                            <ul>
+                              <li>Your child is actively developing their character strengths of Will Heart and Mind aiming for a maximum score of 10 points in each category over time.</li>
+                              <li>Achieving a score between 8 - 10 signifies high strength in the respective area. Encourage your child to keep honing these strengths as they play a vital role in academic success and overall personal development.</li>
+                              <li>Scores falling within 5 - 7 indicate a medium level of strength. Your child possesses some ability in these areas and with consistent effort and practice they can further enhance their capabilities.</li>
+                              <li>A score of 2 – 4 is positive feedback. The K.I coach will provide additional attention to support your child in developing these character strengths more fully. Your engagement and encouragement are crucial during this developmental process.</li>
+                            </ul>
+                            <footer>
+                              <p><strong>Joseph A. Adams</strong> <br><strong>Founder, K.I. Education LLC</strong></p>
+                              <div class="contact-info">
+                                  <p class="link"><strong>hi@kiedu.net</strong></p>
+                                  <p class="ki_number">054 396 1150</p>
+                                  <p class="ki_link"><strong>www.kiedu.net</strong></p>
+                              </div>
+                            </footer>
+                        </div>
+                  </div>
+                  </div>
                 </div>
+
                 </div>
+              </div>
             </div>
         </div>
       </div>
@@ -683,6 +834,69 @@ date_default_timezone_set('Africa/Accra');
   </div>
 </div>
 
+<!-- Modal for Profile Form -->
+<div id="profile-form-modal" class="modal hidden">
+  <div class="modal-content slide-in-left">
+    <h2>Edit Profile</h2>
+    <form id="profile-form" enctype="multipart/form-data">
+      <!-- Profile Picture -->
+      <div class="form-group">
+        <label for="profile-pic">Profile Picture</label>
+        <input type="file" name="profile_pic" id="profile-pic">
+      </div>
+
+      <!-- Name (non-editable) -->
+      <div class="form-group">
+        <label for="name">Name (Not Editable)</label>
+        <input type="text" name="name" id="name" readonly>
+      </div>
+
+      <!-- Location -->
+      <div class="form-group">
+        <label for="location">Location</label>
+        <input type="text" name="location" id="location">
+      </div>
+
+      <!-- Phone Number -->
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="text" name="phone_number" id="phone">
+      </div>
+
+      <!-- Emergency Contact -->
+      <div class="form-group">
+        <label for="emergency">Emergency Contact</label>
+        <input type="text" name="emergency_contact" id="emergency">
+      </div>
+
+      <!-- Email (non-editable) -->
+      <div class="form-group">
+        <label for="email">Email (Not Editable)</label>
+        <input type="email" name="email" id="email" readonly>
+      </div>
+
+      <!-- Password Fields -->
+      <div class="form-group">
+        <label for="old-password">Old Password</label>
+        <input type="password" name="old_password" id="old-password">
+      </div>
+      <div class="form-group">
+        <label for="new-password">New Password</label>
+        <input type="password" name="new_password" id="new-password">
+      </div>
+      <div class="form-group">
+        <label for="confirm-password">Confirm Password</label>
+        <input type="password" name="confirm_password" id="confirm-password">
+      </div>
+
+      <!-- Submit and Cancel Buttons -->
+      <div class="form-actions">
+        <button type="button" id="cancel-profile" class="btn cancel">Cancel</button>
+        <button type="submit" class="btn submit">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
 
     <!--   Core JS Files   -->
     <script src="./assets/js/core/popper.min.js"></script>
@@ -744,6 +958,7 @@ toastr.options = {
 
 // GET PROFILEDATA
 $('#profile-btn').click(function() {
+console.log('profile clicked')
     $.ajax({
         url: 'get_profile.php',
         method: 'GET',
@@ -809,133 +1024,8 @@ $('#cancel-profile').click(function() {
 
 
 
-// In your main dashboard JavaScript (likely in reportscopy.php)
+
 $(document).ready(function() {
-    // Function to fetch and populate schools
-    function loadSchools() {
-        $.ajax({
-            url: 'fetch_schools.php', // New endpoint to fetch assigned schools
-            method: 'GET',
-            dataType: 'json',
-            success: function(schools) {
-                var schoolSelect = $('#school_id');
-                schoolSelect.empty();
-                schoolSelect.append('<option value="" disabled selected>Select a School</option>');
-                schools.forEach(function(school) {
-                    schoolSelect.append(
-                        `<option value="${school.id}">${school.school_name}</option>`
-                    );
-                });
-            },
-            error: function() {
-                toastr.error('Failed to load schools');
-            }
-        });
-    }
-
-    // Function to fetch classes for a selected school
-  function loadClasses(schoolId) {
-        $.ajax({
-            url: 'fetch_classes.php',
-            method: 'GET',
-            data: { school_id: schoolId },
-            dataType: 'json',
-            success: function(classes) {
-                var classesContainer = $('#classesContainer');
-                classesContainer.empty();
-                
-                if (classes.length === 0) {
-                    classesContainer.html('<p>No classes found for this school.</p>');
-                    return;
-                }
-
-                classes.forEach(function(cls) {
-                    var classCard = $(`
-                        <div transition-style="in:wipe:down" class="card class-card" data-class-id="${cls.class_id}">
-                            <div class="card-body">
-                                <h5 class="card-title">${cls.class_name}</h5>
-                                <p class="card-text">Students: ${cls.student_count}</p>
-                            </div>
-                        </div>
-                    `);
-                    classesContainer.append(classCard);
-                });
-            },
-            error: function() {
-                toastr.error('Failed to load classes');
-            }
-        });
-    }
-
-    // Function to load students for a class
-//  function loadStudents(classId, page = 1, searchQuery = '') {
-//     console.log('Loading students with params:', {
-//         classId: classId, 
-//         page: page, 
-//         searchQuery: searchQuery
-//     });
-
-//     // Update the browser's history state
-//     const urlParams = new URLSearchParams({ 
-//         class_id: classId, 
-//         page: page, 
-//         search: searchQuery 
-//     });
-//     const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
-//     history.pushState(
-//         { classId, page, searchQuery },  
-//         '',                             
-//         newUrl                          
-//     );
-
-//     // Perform AJAX request
-//     $.ajax({
-//         url: 'get_students.php',
-//         method: 'GET',
-//         data: { 
-//             class_id: classId, 
-//             page: page, 
-//             search: searchQuery 
-//         },
-//         dataType: 'json',
-//         success: function(response) {
-//             console.log('Full response:', response);
-//             if (response.success) {
-//                 if (response.data.students && response.data.students.length > 0) {
-//                     $('#class-cards').hide();
-//                     $('#student-table').show();
-//                     renderStudentTable(response.data.students, response.data.termId);
-//                     renderPagination(response.data.total_pages, response.data.current_page);
-
-//                 } else {
-//                     $('#student-list tbody').html('<tr><td colspan="6">No students found</td></tr>');
-//                     console.log('No students in response');
-//                 }
-//             } else {
-//                 toastr.error(response.data.message);
-//                 console.error('Failed to load students:', response.data.message);
-//             }
-//         },
-//         error: function(xhr, status, error) {
-//             toastr.error('Failed to load students');
-//             console.error('AJAX error:', status, error);
-//             console.error('Response:', xhr.responseText);
-//         }
-//     });
-// }
-
-// Modify the class card click event to ensure classId is passed correctly
-$(document).on('click', '.class-card', function() {
-    var classId = $(this).data('class-id');
-    console.log('Selected class ID:', classId);
-    loadStudents(classId);
-});
-
-$('#back-button').click(function() {
-            $('#student-table').hide();
-            $('#class-cards').show();
-            history.pushState(null, '', 'reports.php');
-        });
 
    // Logout button click handler
     // Show confirmation modal when logout button is clicked
@@ -950,357 +1040,6 @@ $('#back-button').click(function() {
         // Redirect to logout page (or perform AJAX logout)
         window.location.href = 'logout.php';
     });
-
-
-function renderPagination(totalPages, currentPage) {
-    // Clear existing pagination
-    $('#pagination').empty();
-
-    // Only render pagination if there are multiple pages
-    if (totalPages > 1) {
-        // Previous button
-        if (currentPage > 1) {
-            $('#pagination').append(
-                `<button class="page-btn" data-page="${currentPage - 1}">Previous</button>`
-            );
-        }
-
-        // Page numbers
-        for (let i = 1; i <= totalPages; i++) {
-            $('#pagination').append(
-                `<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">
-                    ${i}
-                 </button>`
-            );
-        }
-
-        // Next button
-        if (currentPage < totalPages) {
-            $('#pagination').append(
-                `<button class="page-btn" data-page="${currentPage + 1}">Next</button>`
-            );
-        }
-
-        // Add click event to pagination buttons
-        $('.page-btn').on('click', function() {
-            const page = $(this).data('page');
-            
-            // Try multiple ways to get the class ID
-            const classId = 
-                $('.class-card.active').data('class-id') || // If class card is marked active
-                $('input[name="class_id"]').val() ||        // From hidden input
-                $('#class-select').val();                   // From class select dropdown
-
-            console.log('Pagination click - Class ID:', classId);
-            
-            const searchQuery = $('#student-search').val() || ''; // Get search query
-            
-            if (!classId) {
-                toastr.error('Please select a class first');
-                return;
-            }
-
-            loadStudents(classId, page, searchQuery);
-        });
-    }
-}
-
-// Modify class card selection to mark active state
-$(document).on('click', '.class-card', function() {
-    // Remove active state from all class cards
-    $('.class-card').removeClass('active');
-    
-    // Add active state to clicked card
-    $(this).addClass('active');
-    
-    var classId = $(this).data('class-id');
-    console.log('Selected class ID:', classId);
-    loadStudents(classId);
-});
-
-
-function renderStudentTable(students, termId) {
-    const tableBody = $('#student-list');
-    tableBody.empty();
-
-    // Debug logging
-    console.log('Rendering students:', students);
-
-    if (students.length === 0) {
-        tableBody.html('<tr><td colspan="6" class="text-center">No students found</td></tr>');
-        return;
-    }
-
-    // Add termId to each student
-    const updatedStudents = students.map(student => ({
-        ...student,        // Spread existing properties
-        termId: termId,    // Add termId
-    }));
-
-    // Render table rows
-    updatedStudents.forEach((student, index) => {
-        const row = `
-            <tr>
-                <td class="align-middle text-center text-sm">${index + 1}</td>
-                <td class="align-middle text-center text-sm">${student.student_id || 'N/A'}</td>
-                <td class="align-middle text-center text-sm">${student.name || 'Unknown'}</td>
-                <td class="align-middle text-center text-sm">${student.class_name || 'N/A'}</td>
-                <td class="align-middle text-center text-sm">
-                        <a href="view_report.php?student_id=${student.student_id}&term_id=${student.termId}" style="background-color:none; border: none" target="_blank">
-                        <span class="badge badge-sm bg-gradient-success">View Report</span></a>
-                </td>
-            </tr>
-        `;
-        tableBody.append(row);
-    });
-    console.log('Table rows added:', tableBody.find('tr').length);
-}
-
-
-    // Function to view student report
-    function viewStudentReport(studentId, termId) {
-        $.ajax({
-            url: 'download_report_pdf',
-            method: 'GET',
-            data: {
-                student_id: studentId,
-                term_id: termId
-            },
-            success: function(reportHtml) {
-                // Create modal dynamically
-                console.log(reportHtml);
-                var modal = $(`
-                    <div class="modal fade" id="studentReportModal" tabindex="-1">
-                        <div class="modal-dialog modal-lg modal-fullscreen">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Student Progress Report</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                </div>
-                                <div class="modal-body">
-                                    ${reportHtml}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `);
-                
-                $('body').append(modal);
-                var reportModal = new bootstrap.Modal(document.getElementById('studentReportModal'));
-                reportModal.show();
-            },
-            error: function() {
-                toastr.error('Failed to load student report');
-            }
-        });
-    }
-
-    // Event Listeners
-    $('#school_id').on('change', function() {
-        var schoolId = $(this).val();
-        loadClasses(schoolId);
-    });
-
-    $(document).on('click', '.class-card', function() {
-        var classId = $(this).data('class-id');
-        loadStudents(classId);
-    });
-
-  //     // Attach a handler to the search form
-  //   $('#student-search').on('input', function() {
-  //       performSearch();
-  //   });
-
-  // // Disable default form submission for 'Enter' key in the search bar
-  //   $('#search-form').on('submit', function(e) {
-  //       e.preventDefault();
-  //       performSearch();
-  //   });
-
-  // // Function to perform the search and update the student list dynamically
-  //   function performSearch() {
-  //     var searchQuery = $('#student-search').val();
-  //     var page = 1; // reset to first page for new search
-  //     loadStudents(classId, page, searchQuery);
-  //   }
-
-  let currentClassId = null;
-    let currentPage = 1;
-
-    // Function to perform the search and update the student list dynamically
-    function performSearch() {
-        const searchQuery = $('#student-search').val().trim();
-        
-        // Ensure a class is selected before searching
-        if (!currentClassId) {
-            toastr.warning('Please select a class first');
-            return;
-        }
-
-        // Reset to first page when performing a new search
-        currentPage = 1;
-
-        // Load students with search parameters
-        loadStudents(currentClassId, currentPage, searchQuery);
-    }
-
-    // Debounce function to prevent excessive API calls
-    function debounce(func, delay) {
-        let timeoutId;
-        return function() {
-            const context = this;
-            const args = arguments;
-            
-            clearTimeout(timeoutId);
-            
-            timeoutId = setTimeout(() => {
-                func.apply(context, args);
-            }, delay);
-        };
-    }
-
-    // Attach debounced search handler
-    $('#student-search').on('input', debounce(function() {
-        performSearch();
-    }, 300)); // 300ms delay
-
-    // Prevent default form submission
-    $('#search-form').on('submit', function(e) {
-        e.preventDefault();
-        performSearch();
-    });
-
-    // Modify class card click to update currentClassId
-    $(document).on('click', '.class-card', function() {
-        currentClassId = $(this).data('class-id');
-        console.log('Selected class ID:', currentClassId);
-        
-        // Clear previous search
-        $('#student-search').val('');
-        
-        loadStudents(currentClassId);
-    });
-
-    // Modify loadStudents function to handle search more robustly
-    function loadStudents(classId, page = 1, searchQuery = '') {
-        console.log('Loading students with params:', {
-            classId: classId, 
-            page: page, 
-            searchQuery: searchQuery
-        });
-
-        // Update current tracking variables
-        currentClassId = classId;
-        currentPage = page;
-
-        // Update URL for better browser history and sharing
-        const urlParams = new URLSearchParams({ 
-            class_id: classId, 
-            page: page, 
-            search: searchQuery 
-        });
-        const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
-        history.pushState({ classId, page, searchQuery }, '', newUrl);
-
-        // AJAX request to fetch students
-        $.ajax({
-            url: 'get_students.php',
-            method: 'GET',
-            data: { 
-                class_id: classId, 
-                page: page, 
-                search: searchQuery 
-            },
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    if (response.data.students && response.data.students.length > 0) {
-                        $('#class-cards').hide();
-                        $('#student-table').show();
-                        
-                        // Render students and pagination
-                        renderStudentTable(response.data.students, response.data.termId);
-                        renderPagination(
-                            response.data.total_pages, 
-                            response.data.current_page, 
-                            currentClassId, 
-                            searchQuery
-                        );
-
-                        // Show/hide "No results" message
-                        $('#no-results').toggle(response.data.students.length === 0);
-                    } else {
-                        // No students found
-                        $('#student-list tbody').html(`
-                            <tr>
-                                <td colspan="6" class="text-center">
-                                    <div id="no-results" class="alert alert-info">
-                                        No students found matching "${searchQuery}"
-                                    </div>
-                                </td>
-                            </tr>
-                        `);
-                    }
-                } else {
-                    toastr.error(response.data.message || 'Failed to load students');
-                }
-            },
-            error: function(xhr, status, error) {
-                toastr.error('Failed to load students');
-                console.error('AJAX error:', status, error);
-            }
-        });
-    }
-
-    // Modify renderPagination to pass additional context
-    function renderPagination(totalPages, currentPage, classId, searchQuery) {
-        const $pagination = $('#pagination');
-        $pagination.empty();
-
-        if (totalPages > 1) {
-            // Previous button
-            if (currentPage > 1) {
-                $pagination.append(
-                    `<button class="page-btn" data-page="${currentPage - 1}">Previous</button>`
-                );
-            }
-
-            // Page numbers
-            for (let i = 1; i <= totalPages; i++) {
-                $pagination.append(
-                    `<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">
-                        ${i}
-                     </button>`
-                );
-            }
-
-            // Next button
-            if (currentPage < totalPages) {
-                $pagination.append(
-                    `<button class="page-btn" data-page="${currentPage + 1}">Next</button>`
-                );
-            }
-
-            // Pagination click handler
-            $('.page-btn').on('click', function() {
-                const page = $(this).data('page');
-                
-                // Use tracked variables if not explicitly passed
-                const pageClassId = classId || currentClassId;
-                const pageSearchQuery = searchQuery || $('#student-search').val() || '';
-
-                if (!pageClassId) {
-                    toastr.error('Please select a class first');
-                    return;
-                }
-
-                loadStudents(pageClassId, page, pageSearchQuery);
-            });
-        }
-    }
-
-    // Initial load of schools
-    loadSchools();
 });
 
 

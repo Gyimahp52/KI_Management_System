@@ -252,7 +252,7 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                     <th>School</th>
                                     <th>Class</th>
                                     <th>Parent Name</th>
-                                    <th>Parent Phone</th>
+                                    <th>Parent whatsapp</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -266,7 +266,7 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                 <td>{$student['school_name']}</td>
                                 <td>{$student['class_name']}</td>
                                 <td>{$student['parent_name']}</td>
-                                <td>{$student['parent_phone']}</td>
+                                <td>{$student['parent_whatsapp']}</td>
                                 <td>
                                     <button onclick='editStudent(\"{$student['student_id']}\")' class='btn btn-sm btn-primary'>Edit</button>
                                     <button onclick='deleteStudent(\"{$student['student_id']}\")' class='btn btn-sm btn-danger'>Delete</button>

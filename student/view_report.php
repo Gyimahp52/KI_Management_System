@@ -1,7 +1,7 @@
 <?php
 // view_report.php
-
-require_once 'db_connction.php';
+session_start();
+require_once 'includes/db_connction.php';
 
 // Check if student_id and term_id are provided
 if (!isset($_GET['student_id']) || !isset($_GET['term_id'])) {
@@ -62,50 +62,12 @@ if($dob->format('Y-m-d\TH:i:s.v') < 0 || $dob->format('Y-m-d\TH:i:s.v') == null)
     <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png">
     <link rel="manifest" href="assets/images/site.webmanifest">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
     <style>
         body { display: block; }
         ul { padding: 0; margin: 0; line-height: 1.5em; }
         li { padding: 0.2em; margin: 10px; }
-
-        .table-wrapper {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: auto;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch; /* for smoother scrolling on iOS */
-}
-
-
-/* .table-wrapper {
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-} */
-
-/* Style the scrollbar */ 
-.table-wrapper::-webkit-scrollbar {
-    height: 8px;
-}
-
-.table-wrapper::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-.table-wrapper::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 4px;
-}
-
-.table-wrapper::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-ul{
-    margin-left: 2rem;
-}
-.report-container{
-    padding: 3rem;
-}
     </style>
 </head>
 <body>
@@ -117,7 +79,7 @@ ul{
         <!-- Page 1 -->
         <div id="report-page-1">
             <h1><u>KIE STUDENT PROGRESS REPORT</u></h1>
-            <p>Kinesthetic Intelligence Education personal progress report for <strong><span id="student-name"><?php echo htmlspecialchars($student['name']); ?></span></strong> at <span id="student-school"><?php echo htmlspecialchars($student['school_name']); ?></span>. The Kinesthetic Intelligence Education (KIE) student personal progress report provides a comprehensive assessment of each student’s development over the 12-week program, which focused on one Social Emotional Learning (SEL) theme per week. These themes were designed to enhance students’ overall Emotional Intelligence. The report evaluates each student’s marginal improvements in mastering these skills, offering valuable insights into their growth and areas for further development. This progress assessment aims to encourage continuous learning and promote personal growth in alignment with Open Mind Africa’s mission to develop well-rounded, emotionally intelligent individuals.</p>
+            <p>Kinesthetic Intelligence Education personal progress report for <strong><span id="student-name"><?php echo htmlspecialchars($student['name']); ?></span></strong> at <span id="student-school"><?php echo htmlspecialchars($student['school_name']); ?></span>. This term we practiced eleven soft skills for character development. The focus is not on the marks we emphasize on marginal improvement over time and creating cognizance of these strengths for students.</p>
             
             <div class="container">
                 <div class="left-side">
@@ -140,22 +102,20 @@ ul{
             </div>
             <section class="data-tables">
     <h2>1. Student KEQ Field Data</h2>
-    <div class="table-wrapper">
-        <table>
-            <tr>
-                <th>Metrics</th>
-                <?php foreach ($sel_themes as $theme): ?>
-                    <th><?php echo htmlspecialchars($theme['theme_name'] ?? 'N/A'); ?></th>
-                <?php endforeach; ?>
-            </tr>
-            <tr>
-                <td>KEQ</td>
-                <?php foreach ($sel_themes as $theme): ?>
-                    <td><?php echo htmlspecialchars($theme['score']); ?></td>
-                <?php endforeach; ?>
-            </tr>
-        </table>
-    </div>
+    <table>
+        <tr>
+            <th>Metrics</th>
+            <?php foreach ($sel_themes as $theme): ?>
+                <th><?php echo htmlspecialchars($theme['theme_name'] ?? 'N/A'); ?></th>
+            <?php endforeach; ?>
+        </tr>
+        <tr>
+            <td>KEQ</td>
+            <?php foreach ($sel_themes as $theme): ?>
+                <td><?php echo htmlspecialchars($theme['score']); ?></td>
+            <?php endforeach; ?>
+        </tr>
+    </table>
 </section>
             <div class="graph-description">
                 <h3>GRAPH DESCRIPTION</h3>
@@ -181,29 +141,27 @@ ul{
             </ul>
 
             <h2>Social Emotional Learning Competencies (SEL)</h2>
-            <div class="table-wrapper">
-                <table>
-                <tr>
-                <th>Metrics</th>
-                <?php foreach ($sel_themes as $theme): ?>
-                    <th><?php echo htmlspecialchars($theme['theme_name'] ?? 'N/A'); ?></th>
-                <?php endforeach; ?>
-            </tr>
+            <table>
             <tr>
-                <td>KEQ</td>
-                <?php foreach ($sel_themes as $theme): ?>
-                    <td><?php echo htmlspecialchars($theme['score']); ?></td>
-                <?php endforeach; ?>
-            </tr>
-                <tr>
-                <td>SEL</td>
-                <?php foreach ($sel_themes as $theme): ?>
-                    <td><?php echo htmlspecialchars($theme['competency']); ?></td>
-                <?php endforeach; ?>
-            </tr>   
-            
-                </table>
-            </div>
+            <th>Metrics</th>
+            <?php foreach ($sel_themes as $theme): ?>
+                <th><?php echo htmlspecialchars($theme['theme_name'] ?? 'N/A'); ?></th>
+            <?php endforeach; ?>
+        </tr>
+        <tr>
+            <td>KEQ</td>
+            <?php foreach ($sel_themes as $theme): ?>
+                <td><?php echo htmlspecialchars($theme['score']); ?></td>
+            <?php endforeach; ?>
+        </tr>
+              <tr>
+            <td>SEL</td>
+            <?php foreach ($sel_themes as $theme): ?>
+                <td><?php echo htmlspecialchars($theme['competency']); ?></td>
+            <?php endforeach; ?>
+        </tr>   
+        
+            </table>
             <!-- Placeholder for SEL Pie Chart -->
             <canvas id="selPieChart"></canvas>
 
@@ -219,7 +177,6 @@ ul{
         <!-- Page 3 -->
         <div id="report-page-3">
             <h2>Character Strengths (CS)</h2>
-        <div class="table-wrapper">
             <table>
                 <tr>
                     <th>Metrics</th>
@@ -240,7 +197,6 @@ ul{
             <?php endforeach; ?>
         </tr> 
             </table>
-        </div>
             <!-- Placeholder for CS Bar Chart -->
             <canvas id="csBarChart"></canvas>
 
@@ -274,6 +230,11 @@ ul{
     var studentData = <?php echo json_encode($sel_themes); ?>;
     var studentName = <?php echo json_encode($student['name']); ?>;
     var schoolName = <?php echo json_encode($student['school_name']); ?>;
+
+    function closeReport() {
+        window.history.back();
+}
+
 </script>
 </body>
 </html>

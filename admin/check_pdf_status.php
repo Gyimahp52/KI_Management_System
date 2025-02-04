@@ -1,18 +1,5 @@
 <?php
 
-// // check_pdf_status.php
-// require_once 'microservice_client.php';
-
-// $student_id = filter_input(INPUT_GET, 'student_id', FILTER_SANITIZE_STRING);
-// $term_id = filter_input(INPUT_GET, 'term_id', FILTER_VALIDATE_INT);
-
-// $microserviceClient = new MicroserviceClient();
-// $status = $microserviceClient->checkPdfStatus($student_id, $term_id);
-
-// // Log the status
-// error_log("PDF status for student $student_id, term $term_id: $status");
-
-// echo json_encode(['status' => $status]);
 
 // check_pdf_status.php
 require_once 'microservice_client.php';

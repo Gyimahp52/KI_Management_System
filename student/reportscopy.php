@@ -180,47 +180,8 @@ date_default_timezone_set('Africa/Accra');
         #pagination {
             display: flex;
             justify-content: center;
-            margin-top: 1rem;
-            margin-bottom: 1.2rem;
+            margin-top: 20px;
           }
-          .page-btn {
-    display: inline-block;
-    padding: 8px 12px;
-    margin: 0 5px;
-    font-size: 14px;
-    font-weight: 500;
-    color: #ffffff;
-    background-color: #007bff; /* Bootstrap primary color */
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.page-btn:hover {
-    background-color: #0f63f5; /* Darker primary color on hover */
-    transform: scale(1.05); /* Slight zoom effect */
-}
-
-.page-btn.active {
-    background-color: #0056b3; /* Active button color */
-    color: #ffffff; /* Keep the text white */
-    pointer-events: none; /* Disable click */
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for emphasis */
-}
-
-.page-btn:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Focus ring for accessibility */
-}
-
-.page-btn:disabled {
-    background-color: #e0e0e0; /* Disabled button color */
-    color: #888888;
-    cursor: not-allowed;
-}
-
-
 
           .page-btn {
               margin: 0 5px;
@@ -228,7 +189,7 @@ date_default_timezone_set('Africa/Accra');
           }
 
           .page-btn.active {
-              background-color: #0f2ef5;
+              background-color: #007bff;
               color: white;
           }
 
@@ -275,22 +236,64 @@ date_default_timezone_set('Africa/Accra');
             font-size: 100px;
           }
 
+          .logout-pop--modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+          }
+          .hidden {
+            display: none;
+          }
+          .logout-modal--content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            width: 300px;
+          }
 
-          /* #logout-modal {
-              display: none; 
-              opacity: 0;
-              transition: opacity 0.3s ease;
-          } */
+          .logout-modal--title {
+            margin-bottom: 1rem;
+          }
 
-          /* #logout-modal:not(.hidden) {
-              display: block;
-              opacity: 1;
-          } */
+          .logout-modal--buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+          }
 
-          .sidenav {
- 
-    z-index: 10; 
-}
+          .btn-confirm {
+            background-color: #007bff;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+          }
+
+          .btn-confirm:hover {
+            background-color: #0056b3;
+          }
+
+          .btn-cancel {
+            background-color: #ac1838;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+          }
+
+          .btn-cancel:hover {
+            background-color: #b41121c6;
+          }
 
     </style>
 </head>
@@ -324,7 +327,7 @@ date_default_timezone_set('Africa/Accra');
       <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" href="school_head.php">
+            <a class="nav-link active" href="#">
               <div
                 class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center"
               >
@@ -345,7 +348,7 @@ date_default_timezone_set('Africa/Accra');
               <span class="nav-link-text ms-1">Reports</span>
             </a>
           </li>
-          <!-- <li class="nav-item">
+          <li class="nav-item">
             <a class="nav-link" href="#">
               <div
                 class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center"
@@ -356,13 +359,13 @@ date_default_timezone_set('Africa/Accra');
               </div>
               <span class="nav-link-text ms-1">Reports2</span>
             </a>
-          </li> -->
+          </li>
 
           <li class="nav-item mt-3">
             <h6
               class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6"
             >
-              Settings
+              Account pages
             </h6>
           </li>
           <li class="nav-item">
@@ -513,7 +516,7 @@ date_default_timezone_set('Africa/Accra');
               <div transition-style="in:diamond:center" id="student-table" class="col-12 " style="display: none;" >
                 <div class="card mb-4">
                   <div class="d-flex justify-content-between card-header pb-0">
-                  <button class="backbtn btn btn-secondary btn-sm" id="back-button">Back</button>
+                  <button class="backbtn" id="back-button">Back</button>
                   <h6 class="mb-2">View this term Score</h6>
                   <h2 id="class-name" class="class-name" style="padding-left: 1.2rem" style="display: none"></h2>
                   <form id="search-form" class="search-bar" onsubmit="return false;">
@@ -664,23 +667,26 @@ date_default_timezone_set('Africa/Accra');
       </div>
     </div>
 
-<!-- Logout Confirmation Modal (Bootstrap) -->
-<div class="modal fade" id="logout-modal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="logoutModalLabel">Logout Confirmation</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to logout?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-        <button type="button" id="confirm-logout" class="btn btn-danger">Yes</button>
-      </div>
+      <!-- Logout Confirmation Modal -->
+<div id="logout-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
+    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="mt-3 text-center">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Logout Confirmation</h3>
+            <div class="mt-2 px-7 py-3">
+                <p class="text-sm text-gray-500">
+                    Are you sure you want to logout?
+                </p>
+            </div>
+            <div class="items-center px-4 py-3">
+                <button id="confirm-logout" class="px-4 py-2 bg-red-500 text-white text-base font-medium rounded-md w-24 mr-2">
+                    Yes
+                </button>
+                <button id="cancel-logout" class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-24">
+                    No
+                </button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 
@@ -740,7 +746,23 @@ toastr.options = {
 };
 
 
-
+// AJAX request to fetch classes when a school is selected
+// $('#school_id').on('change', function () {
+//             const schoolId = $(this).val();
+//             if (schoolId) {
+//                 $.ajax({
+//                     url: 'fetch_classes.php',
+//                     type: 'GET',
+//                     data: { school_id: schoolId },
+//                     success: function (response) {
+//                         $('#classesContainer').html(response);
+//                     },
+//                     error: function () {
+//                         $('#classesContainer').html('<p>Failed to fetch classes. Please try again.</p>');
+//                     }
+//                 });
+//             }
+//         });
 
 // GET PROFILEDATA
 $('#profile-btn').click(function() {
@@ -806,6 +828,83 @@ $('#cancel-profile').click(function() {
 
 
 
+//     $(document).ready(function() {
+//         var currentClassId = <?php echo $classId ?: 'null'; ?>;
+
+//         $('#submit-scores-button').click(function() {
+//             $('#score-form').submit(); // Programmatically submit the form
+//         });
+        
+        // // Attach a handler to the search form
+        // $('#student-search').on('input', function() {
+        //       performSearch();
+        //   });
+
+        // // Disable default form submission for 'Enter' key in the search bar
+        // $('#search-form').on('submit', function(e) {
+        //       e.preventDefault();
+        //       performSearch();
+        //   });
+      
+        // // Function to perform the search and update the student list dynamically
+        // function performSearch() {
+        //     var searchQuery = $('#student-search').val();
+        //     var page = 1; // reset to first page for new search
+        //     loadStudents(currentClassId, page, searchQuery);
+        //   }
+
+  //  // Logout button click handler
+  //   $('#logout-btn').click(function(e) {
+  //       e.preventDefault();
+        
+  //       // Show confirmation modal
+  //       $('#logout-btn--cancel').removeClass('hidden');
+  //   });
+
+  //   // Confirm logout
+  //   $('#logout-btn--confirm').click(function() {
+  //       window.location.href = 'logout.php';
+  //   });
+
+  //   // Cancel logout
+  //   $('#logout-btn--cancel .btn-cancel').click(function() {
+  //       $('#logout-btn--cancel').addClass('hidden');
+  //   });
+
+
+        
+// //event delegation to handle dynamically loaded cards
+// $(document).on('click', '.card', function() {
+//     var classId = $(this).data('class-id');
+//     // console.log('Class ID clicked:', classId); // Add debugging log
+//     loadStudents(classId, 1);
+// });
+
+        // $('#back-button').click(function() {
+        //     $('#student-scores').hide();
+        //     $('#class-cards').show();
+        //     history.pushState(null, '', 'reports.php');
+        // });
+
+      
+//         $('#score-form').submit(function(e) {
+//             e.preventDefault();
+//             submitScores();
+//         });
+        
+
+
+// $(document).on('click', '.pagination-link', function(e) {
+// e.preventDefault();
+// var page = $(this).data('page');
+// loadStudents(currentClassId, page);
+// });
+
+//         // Load students if class_id is set in URL
+// if (currentClassId) {
+// loadStudents(currentClassId, <?php echo $page; ?>);
+// }
+// });
 
 
 
@@ -868,61 +967,61 @@ $(document).ready(function() {
     }
 
     // Function to load students for a class
-//  function loadStudents(classId, page = 1, searchQuery = '') {
-//     console.log('Loading students with params:', {
-//         classId: classId, 
-//         page: page, 
-//         searchQuery: searchQuery
-//     });
+ function loadStudents(classId, page = 1, searchQuery = '') {
+    console.log('Loading students with params:', {
+        classId: classId, 
+        page: page, 
+        searchQuery: searchQuery
+    });
 
-//     // Update the browser's history state
-//     const urlParams = new URLSearchParams({ 
-//         class_id: classId, 
-//         page: page, 
-//         search: searchQuery 
-//     });
-//     const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
-//     history.pushState(
-//         { classId, page, searchQuery },  
-//         '',                             
-//         newUrl                          
-//     );
+    // Update the browser's history state
+    const urlParams = new URLSearchParams({ 
+        class_id: classId, 
+        page: page, 
+        search: searchQuery 
+    });
+    const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+    history.pushState(
+        { classId, page, searchQuery },  // State object
+        '',                             // Title (optional)
+        newUrl                          // Updated URL
+    );
 
-//     // Perform AJAX request
-//     $.ajax({
-//         url: 'get_students.php',
-//         method: 'GET',
-//         data: { 
-//             class_id: classId, 
-//             page: page, 
-//             search: searchQuery 
-//         },
-//         dataType: 'json',
-//         success: function(response) {
-//             console.log('Full response:', response);
-//             if (response.success) {
-//                 if (response.data.students && response.data.students.length > 0) {
-//                     $('#class-cards').hide();
-//                     $('#student-table').show();
-//                     renderStudentTable(response.data.students, response.data.termId);
-//                     renderPagination(response.data.total_pages, response.data.current_page);
+    // Perform AJAX request
+    $.ajax({
+        url: 'get_students.php',
+        method: 'GET',
+        data: { 
+            class_id: classId, 
+            page: page, 
+            search: searchQuery 
+        },
+        dataType: 'json',
+        success: function(response) {
+            console.log('Full response:', response);
+            if (response.success) {
+                if (response.data.students && response.data.students.length > 0) {
+                    $('#class-cards').hide();
+                    $('#student-table').show();
+                    renderStudentTable(response.data.students, response.data.termId);
+                    renderPagination(response.data.total_pages, response.data.current_page);
 
-//                 } else {
-//                     $('#student-list tbody').html('<tr><td colspan="6">No students found</td></tr>');
-//                     console.log('No students in response');
-//                 }
-//             } else {
-//                 toastr.error(response.data.message);
-//                 console.error('Failed to load students:', response.data.message);
-//             }
-//         },
-//         error: function(xhr, status, error) {
-//             toastr.error('Failed to load students');
-//             console.error('AJAX error:', status, error);
-//             console.error('Response:', xhr.responseText);
-//         }
-//     });
-// }
+                } else {
+                    $('#student-list tbody').html('<tr><td colspan="6">No students found</td></tr>');
+                    console.log('No students in response');
+                }
+            } else {
+                toastr.error(response.data.message);
+                console.error('Failed to load students:', response.data.message);
+            }
+        },
+        error: function(xhr, status, error) {
+            toastr.error('Failed to load students');
+            console.error('AJAX error:', status, error);
+            console.error('Response:', xhr.responseText);
+        }
+    });
+}
 
 // Modify the class card click event to ensure classId is passed correctly
 $(document).on('click', '.class-card', function() {
@@ -934,21 +1033,25 @@ $(document).on('click', '.class-card', function() {
 $('#back-button').click(function() {
             $('#student-table').hide();
             $('#class-cards').show();
-            history.pushState(null, '', 'reports.php');
+            history.pushState(null, '', 'reportscopy.php');
         });
 
    // Logout button click handler
-    // Show confirmation modal when logout button is clicked
-    $('#logout-btn').click(function(e) {
+   $('#logout-btn').click(function(e) {
         e.preventDefault();
-        // Show the Bootstrap modal
-        $('#logout-modal').modal('show');
+        
+        // Show confirmation modal
+        $('#logout-btn--cancel').removeClass('hidden');
     });
 
-    // Confirm logout action
-    $('#confirm-logout').click(function() {
-        // Redirect to logout page (or perform AJAX logout)
+    // Confirm logout
+    $('#logout-btn--confirm').click(function() {
         window.location.href = 'logout.php';
+    });
+
+    // Cancel logout
+    $('#logout-btn--cancel .btn-cancel').click(function() {
+        $('#logout-btn--cancel').addClass('hidden');
     });
 
 
@@ -1046,7 +1149,7 @@ function renderStudentTable(students, termId) {
                 <td class="align-middle text-center text-sm">${student.name || 'Unknown'}</td>
                 <td class="align-middle text-center text-sm">${student.class_name || 'N/A'}</td>
                 <td class="align-middle text-center text-sm">
-                        <a href="view_report.php?student_id=${student.student_id}&term_id=${student.termId}" style="background-color:none; border: none" target="_blank">
+                        <a href="view_report.php?student_id=${student.student_id}&term_id=${student.termId}" style="background-color:none; border: none">
                         <span class="badge badge-sm bg-gradient-success">View Report</span></a>
                 </td>
             </tr>
@@ -1060,7 +1163,7 @@ function renderStudentTable(students, termId) {
     // Function to view student report
     function viewStudentReport(studentId, termId) {
         $.ajax({
-            url: 'download_report_pdf',
+            url: 'view_report.php',
             method: 'GET',
             data: {
                 student_id: studentId,
@@ -1106,197 +1209,30 @@ function renderStudentTable(students, termId) {
         loadStudents(classId);
     });
 
-  //     // Attach a handler to the search form
-  //   $('#student-search').on('input', function() {
-  //       performSearch();
-  //   });
+    // $(document).on('click', '.view-report', function() {
+    //     var studentId = $(this).data('data-student-id');
+    //     console.log(studentId);
+    //     var termId = $(this).data('data-term-id');
+    //     console.log(termId);
+    //     viewStudentReport(studentId, termId);
+    // });
 
-  // // Disable default form submission for 'Enter' key in the search bar
-  //   $('#search-form').on('submit', function(e) {
-  //       e.preventDefault();
-  //       performSearch();
-  //   });
-
-  // // Function to perform the search and update the student list dynamically
-  //   function performSearch() {
-  //     var searchQuery = $('#student-search').val();
-  //     var page = 1; // reset to first page for new search
-  //     loadStudents(classId, page, searchQuery);
-  //   }
-
-  let currentClassId = null;
-    let currentPage = 1;
-
-    // Function to perform the search and update the student list dynamically
-    function performSearch() {
-        const searchQuery = $('#student-search').val().trim();
-        
-        // Ensure a class is selected before searching
-        if (!currentClassId) {
-            toastr.warning('Please select a class first');
-            return;
-        }
-
-        // Reset to first page when performing a new search
-        currentPage = 1;
-
-        // Load students with search parameters
-        loadStudents(currentClassId, currentPage, searchQuery);
-    }
-
-    // Debounce function to prevent excessive API calls
-    function debounce(func, delay) {
-        let timeoutId;
-        return function() {
-            const context = this;
-            const args = arguments;
-            
-            clearTimeout(timeoutId);
-            
-            timeoutId = setTimeout(() => {
-                func.apply(context, args);
-            }, delay);
-        };
-    }
-
-    // Attach debounced search handler
-    $('#student-search').on('input', debounce(function() {
+      // Attach a handler to the search form
+    $('#student-search').on('input', function() {
         performSearch();
-    }, 300)); // 300ms delay
+    });
 
-    // Prevent default form submission
+  // Disable default form submission for 'Enter' key in the search bar
     $('#search-form').on('submit', function(e) {
         e.preventDefault();
         performSearch();
     });
 
-    // Modify class card click to update currentClassId
-    $(document).on('click', '.class-card', function() {
-        currentClassId = $(this).data('class-id');
-        console.log('Selected class ID:', currentClassId);
-        
-        // Clear previous search
-        $('#student-search').val('');
-        
-        loadStudents(currentClassId);
-    });
-
-    // Modify loadStudents function to handle search more robustly
-    function loadStudents(classId, page = 1, searchQuery = '') {
-        console.log('Loading students with params:', {
-            classId: classId, 
-            page: page, 
-            searchQuery: searchQuery
-        });
-
-        // Update current tracking variables
-        currentClassId = classId;
-        currentPage = page;
-
-        // Update URL for better browser history and sharing
-        const urlParams = new URLSearchParams({ 
-            class_id: classId, 
-            page: page, 
-            search: searchQuery 
-        });
-        const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
-        history.pushState({ classId, page, searchQuery }, '', newUrl);
-
-        // AJAX request to fetch students
-        $.ajax({
-            url: 'get_students.php',
-            method: 'GET',
-            data: { 
-                class_id: classId, 
-                page: page, 
-                search: searchQuery 
-            },
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    if (response.data.students && response.data.students.length > 0) {
-                        $('#class-cards').hide();
-                        $('#student-table').show();
-                        
-                        // Render students and pagination
-                        renderStudentTable(response.data.students, response.data.termId);
-                        renderPagination(
-                            response.data.total_pages, 
-                            response.data.current_page, 
-                            currentClassId, 
-                            searchQuery
-                        );
-
-                        // Show/hide "No results" message
-                        $('#no-results').toggle(response.data.students.length === 0);
-                    } else {
-                        // No students found
-                        $('#student-list tbody').html(`
-                            <tr>
-                                <td colspan="6" class="text-center">
-                                    <div id="no-results" class="alert alert-info">
-                                        No students found matching "${searchQuery}"
-                                    </div>
-                                </td>
-                            </tr>
-                        `);
-                    }
-                } else {
-                    toastr.error(response.data.message || 'Failed to load students');
-                }
-            },
-            error: function(xhr, status, error) {
-                toastr.error('Failed to load students');
-                console.error('AJAX error:', status, error);
-            }
-        });
-    }
-
-    // Modify renderPagination to pass additional context
-    function renderPagination(totalPages, currentPage, classId, searchQuery) {
-        const $pagination = $('#pagination');
-        $pagination.empty();
-
-        if (totalPages > 1) {
-            // Previous button
-            if (currentPage > 1) {
-                $pagination.append(
-                    `<button class="page-btn" data-page="${currentPage - 1}">Previous</button>`
-                );
-            }
-
-            // Page numbers
-            for (let i = 1; i <= totalPages; i++) {
-                $pagination.append(
-                    `<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">
-                        ${i}
-                     </button>`
-                );
-            }
-
-            // Next button
-            if (currentPage < totalPages) {
-                $pagination.append(
-                    `<button class="page-btn" data-page="${currentPage + 1}">Next</button>`
-                );
-            }
-
-            // Pagination click handler
-            $('.page-btn').on('click', function() {
-                const page = $(this).data('page');
-                
-                // Use tracked variables if not explicitly passed
-                const pageClassId = classId || currentClassId;
-                const pageSearchQuery = searchQuery || $('#student-search').val() || '';
-
-                if (!pageClassId) {
-                    toastr.error('Please select a class first');
-                    return;
-                }
-
-                loadStudents(pageClassId, page, pageSearchQuery);
-            });
-        }
+  // Function to perform the search and update the student list dynamically
+    function performSearch() {
+      var searchQuery = $('#student-search').val();
+      var page = 1; // reset to first page for new search
+      loadStudents(classId, page, searchQuery);
     }
 
     // Initial load of schools
@@ -1334,6 +1270,63 @@ window.addEventListener('resize', () => {
 });
 
 
+// $(document).on('click', '.class-card', function() {
+//     const classId = $(this).data('class-id');
+//     const className = $(this).data('class-name');
+    
+//     // AJAX call to fetch students for the selected class
+//     $.ajax({
+//         url: 'fetch_class_students.php',
+//         method: 'GET',
+//         data: { 
+//             class_id: classId,
+//             class_name: className
+//         },
+//         success: function(response) {
+//             // Show student list or generate report options
+//             $('#students-container').html(response);
+            
+//             // Attach click event to view report button
+//             $('.view-report-btn').on('click', function() {
+//                 const studentId = $(this).data('student-id');
+//                 const termId = $(this).data('term-id');
+                
+//                 // Open report in a modal
+//                 openStudentReport(studentId, termId);
+//             });
+//         },
+//         error: function() {
+//             toastr.error('Failed to fetch students');
+//         }
+//     });
+// });
+
+// function openStudentReport(studentId, termId) {
+//     $.ajax({
+//         url: 'view_report.php',
+//         method: 'GET',
+//         data: {
+//             student_id: studentId,
+//             term_id: termId
+//         },
+//         success: function(reportHtml) {
+//             // Create a modal to display the report
+//             const modal = $('<div class="modal fade" id="studentReportModal" tabindex="-1">');
+//             const modalDialog = $('<div class="modal-dialog modal-lg">');
+//             const modalContent = $('<div class="modal-content">');
+            
+//             modalContent.html(reportHtml);
+//             modalDialog.append(modalContent);
+//             modal.append(modalDialog);
+            
+//             $('body').append(modal);
+//             $('#studentReportModal').modal('show');
+//         },
+//         error: function() {
+//             toastr.error('Failed to load student report');
+//         }
+//     });
+// }
     </script>
   </body>
 </html>

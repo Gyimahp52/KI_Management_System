@@ -12,6 +12,7 @@ $pdo = dbConnect();
 $studentScoreService = new StudentScoreService($pdo);
 
 $classId = $_GET['class_id'] ?? null;
+//$classId = 168;
 $page = $_GET['page'] ?? 1;
 $searchQuery = $_GET['search'] ?? '';
 $perPage = 10;
@@ -26,7 +27,21 @@ $stmt->execute([$classId]);
 $schoolId = $stmt->fetchColumn();
 
 // Get themes for the school
-$themes = getThemes($schoolId);
+$class_id = $classId;
+$theme_sql = "
+        SELECT st.id AS theme_id, st.theme_name, sct.order
+        FROM school_themes sct
+        JOIN sel_themes st ON sct.theme_id = st.id
+        JOIN classes c ON sct.school_id = c.school_id
+        WHERE c.class_id = ?
+        ORDER BY sct.order
+    ";
+$theme_stmt = $pdo->prepare($theme_sql);
+$theme_stmt->execute([$class_id]);
+$themes = $theme_stmt->fetchAll(PDO::FETCH_ASSOC);
+//echo "<pre>";
+//print_r($themes);
+//echo "</pre>";
 
 $className = getClassName($classId);
 $currentTerm = $studentScoreService->getCurrentTermId();
@@ -47,8 +62,8 @@ foreach ($students as $student) {
     $studentsHtml .= '<td>' . htmlspecialchars($student['student_id']) . '</td>';
     $studentsHtml .= '<td>' . htmlspecialchars($student['name']) . '</td>';
     foreach ($themes as $theme) {
-        $score = $studentScoreService->getScore($student['student_id'], $theme['id'], $currentTerm);
-        $studentsHtml .= '<td><input class="input-box" type="number" name="scores[' . $student['student_id'] . '][' . $theme['id'] . ']" min="2" max="9" step="1" value="' . htmlspecialchars($score) . '"></td>';
+        $score = $studentScoreService->getScore($student['student_id'], $theme['theme_id'], $currentTerm);
+        $studentsHtml .= '<td><input class="input-box" type="number" name="scores[' . $student['student_id'] . '][' . $theme['theme_id'] . ']" min="2" max="9" step="1" value="' . htmlspecialchars($score) . '"></td>';
     }
     $studentsHtml .= '</tr>';
 }

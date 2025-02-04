@@ -140,6 +140,12 @@ unset($_SESSION['welcome_message']);
               <span><b>Settings</b></span>
             </a>
         </div>
+        <div class="card">
+            <a href="view_historical_score.php">
+              <div class="icon"><img src="assets/images/settings.png" alt=""></div>
+              <span><b>view historical scores</b></span>
+            </a>
+        </div>
 
        
     

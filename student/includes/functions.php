@@ -56,12 +56,11 @@ function getClassName($class_id) {
 function getThemes($school_id) {
     global $pdo;
     $sql = "
-        SELECT st.id AS theme_id, st.theme_name, sct.order
-        FROM school_themes sct
-        JOIN sel_themes st ON sct.theme_id = st.id
-        JOIN classes c ON sct.school_id = c.school_id
-        WHERE c.class_id = ?
-        ORDER BY sct.order
+        SELECT st.id, st.theme_name
+        FROM sel_themes st
+        JOIN school_themes sct ON st.id = sct.theme_id
+        WHERE sct.school_id = ?
+        ORDER BY st.id
     ";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$school_id]);

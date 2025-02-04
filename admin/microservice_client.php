@@ -3,7 +3,7 @@
 // microservice_client.php
 class MicroserviceClient
 {
-    private $baseUrl = 'http://localhost:3000'; // Assuming the microservice runs on localhost:3000
+    private $baseUrl = 'http://localhost:3000'; // microservice runs on localhost:3000
 
     public function generatePdf($studentId, $termId, $studentName)
     {

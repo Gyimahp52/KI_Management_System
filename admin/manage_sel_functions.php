@@ -115,35 +115,45 @@ function startNewTerm($academic_year_id, $term_number, $start_date, $end_date) {
   }
 }
 
-function assignThemesToSchool($school_id, $theme_ids) {
+
+function assignThemesToSchool($school_id, $theme_ids, $theme_order) {
     global $pdo;
-    
+
     try {
         $pdo->beginTransaction();
 
+        // Get the current term ID
         $stmt = $pdo->query("SELECT id FROM terms ORDER BY start_date DESC LIMIT 1");
         $current_term_id = $stmt->fetchColumn();
 
+        // Check if themes have already been assigned to this school for the current term
         $stmt = $pdo->prepare("SELECT COUNT(*) FROM school_themes WHERE school_id = ? AND term_id = ?");
         $stmt->execute([$school_id, $current_term_id]);
         $existing_assignments = $stmt->fetchColumn();
 
         if ($existing_assignments > 0) {
-          $_SESSION['toast_message'] = 'Themes have already been assigned to this school for the current term.';
-          $_SESSION['toast_type'] = 'error';
+            $_SESSION['toast_message'] = 'Themes have already been assigned to this school for the current term.';
+            $_SESSION['toast_type'] = 'error';
             $pdo->rollBack();
             return false;
         }
 
-        $insert_sql = "INSERT INTO school_themes (school_id, theme_id, term_id) VALUES (:school_id, :theme_id, :term_id)";
+        // Split the theme_order string into an array
+        $theme_order_array = explode(',', $theme_order);
+
+        // Insert themes with their order
+        $insert_sql = "INSERT INTO school_themes (school_id, theme_id, term_id, `order`) VALUES (:school_id, :theme_id, :term_id, :order)";
         $insert_stmt = $pdo->prepare($insert_sql);
-        
-        foreach ($theme_ids as $theme_id) {
-            $insert_stmt->execute([
-                ':school_id' => $school_id,
-                ':theme_id' => $theme_id,
-                ':term_id' => $current_term_id
-            ]);
+
+        foreach ($theme_order_array as $index => $theme_id) {
+            if (in_array($theme_id, $theme_ids)) { // Ensure the theme ID is valid
+                $insert_stmt->execute([
+                    ':school_id' => $school_id,
+                    ':theme_id' => $theme_id,
+                    ':term_id' => $current_term_id,
+                    ':order' => $index + 1 // Order starts from 1
+                ]);
+            }
         }
 
         $pdo->commit();
@@ -159,38 +169,46 @@ function assignThemesToSchool($school_id, $theme_ids) {
     }
 }
 
+
+
+
 function assignThemesToAllSchools($theme_ids) {
     global $pdo;
-    
+
     try {
-      $pdo->beginTransaction();
+        $pdo->beginTransaction();
 
-      $stmt = $pdo->query("SELECT id FROM terms ORDER BY start_date DESC LIMIT 1");
-      $current_term_id = $stmt->fetchColumn();
+        // Get the current term ID
+        $stmt = $pdo->query("SELECT id FROM terms ORDER BY start_date DESC LIMIT 1");
+        $current_term_id = $stmt->fetchColumn();
 
-      $stmt = $pdo->query("SELECT id FROM schools");
-      $schools = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        // Get all schools
+        $stmt = $pdo->query("SELECT id FROM schools");
+        $schools = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-      foreach ($schools as $school_id) {
-          $stmt = $pdo->prepare("SELECT COUNT(*) FROM school_themes WHERE school_id = ? AND term_id = ?");
-          $stmt->execute([$school_id, $current_term_id]);
-          $existing_assignments = $stmt->fetchColumn();
+        foreach ($schools as $school_id) {
+            // Check if themes have already been assigned to this school for the current term
+            $stmt = $pdo->prepare("SELECT COUNT(*) FROM school_themes WHERE school_id = ? AND term_id = ?");
+            $stmt->execute([$school_id, $current_term_id]);
+            $existing_assignments = $stmt->fetchColumn();
 
-          if ($existing_assignments > 0) {
-              continue; // Skip schools that already have assignments
-          }
+            if ($existing_assignments > 0) {
+                continue; // Skip schools that already have assignments
+            }
 
-          $insert_sql = "INSERT INTO school_themes (school_id, theme_id, term_id) VALUES (:school_id, :theme_id, :term_id)";
-          $insert_stmt = $pdo->prepare($insert_sql);
+            // Insert themes with their order
+            $insert_sql = "INSERT INTO school_themes (school_id, theme_id, term_id, `order`) VALUES (:school_id, :theme_id, :term_id, :order)";
+            $insert_stmt = $pdo->prepare($insert_sql);
 
-          foreach ($theme_ids as $theme_id) {
-              $insert_stmt->execute([
-                  ':school_id' => $school_id,
-                  ':theme_id' => $theme_id,
-                  ':term_id' => $current_term_id
-              ]);
-          }
-      }
+            foreach ($theme_ids as $index => $theme_id) {
+                $insert_stmt->execute([
+                    ':school_id' => $school_id,
+                    ':theme_id' => $theme_id,
+                    ':term_id' => $current_term_id,
+                    ':order' => $index + 1 // Order starts from 1
+                ]);
+            }
+        }
 
         $pdo->commit();
         $_SESSION['toast_message'] = 'Themes assigned successfully to all schools.';
@@ -212,9 +230,25 @@ function getSchools() {
     return $stmt->fetchAll();
 }
 
+//function getAssignedThemes() {
+//    global $pdo;
+//    $sql = "SELECT ay.year_name, sc.school_name, t.term_number, s.school_id, t.id as term_id, GROUP_CONCAT(st.theme_name ORDER BY s.id SEPARATOR ', ') AS themes
+//            FROM school_themes s
+//            JOIN sel_themes st ON s.theme_id = st.id
+//            JOIN terms t ON s.term_id = t.id
+//            JOIN academic_years ay ON t.academic_year_id = ay.id
+//            JOIN schools sc ON s.school_id = sc.id
+//            GROUP BY ay.year_name, sc.school_name, t.term_number, s.school_id, t.id
+//            ORDER BY s.id";
+//    $stmt = $pdo->query($sql);
+//    return $stmt->fetchAll();
+//}
+
+
 function getAssignedThemes() {
     global $pdo;
-    $sql = "SELECT ay.year_name, sc.school_name, t.term_number, s.school_id, t.id as term_id, GROUP_CONCAT(st.theme_name ORDER BY s.id SEPARATOR ', ') AS themes
+    $sql = "SELECT ay.year_name, sc.school_name, t.term_number, s.school_id, t.id as term_id, 
+                   GROUP_CONCAT(st.theme_name ORDER BY s.order SEPARATOR ', ') AS themes
             FROM school_themes s
             JOIN sel_themes st ON s.theme_id = st.id
             JOIN terms t ON s.term_id = t.id
@@ -225,7 +259,6 @@ function getAssignedThemes() {
     $stmt = $pdo->query($sql);
     return $stmt->fetchAll();
 }
-
 function deleteAssignedThemes($school_id, $term_id) {
     global $pdo;
     $sql = "DELETE FROM school_themes WHERE school_id = :school_id AND term_id = :term_id";

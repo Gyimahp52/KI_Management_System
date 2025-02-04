@@ -14,8 +14,7 @@
 -->
 
 <?php
-//student_dashboard
-
+//educator_dashboard
 session_start();
 require_once 'includes/dbconnection.php';
 require_once 'includes/functions.php';
@@ -23,8 +22,6 @@ require_once 'includes/StudentScoreService.php';
 require_once 'includes/base_url.php';
 
 
-// Set the default timezone to Africa/Accra (Ghana)
-date_default_timezone_set('Africa/Accra');
 
 $pdo = dbConnect();
 
@@ -33,35 +30,47 @@ $studentScoreService = new StudentScoreService($pdo);
 
 $message = '';
 $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
-// Check if the user is logged in and is an student
-if (!isset($_SESSION['user_username']) || $_SESSION['role'] !== 'student') {
+// Check if the user is logged in and is an educator
+if (!isset($_SESSION['user_email']) || $_SESSION['role'] !== 'school_head') {
     header('Location: ../index.php');
     exit();
 }
 
-$student_id = $_SESSION['user_username'];
-// var_dump($student_id);
+$educatorEmail = $_SESSION['user_email'];
 
-// Fetch students's profile details
-$stmt = $pdo->prepare('SELECT 
-    class_id, name, dob, gender, hand, foot, eye_sight, medical_condition, height, weight,
-    parent_name, parent_phone, parent_whatsapp, parent_email, passport_picture
-FROM students 
-WHERE student_id = ?');
-$stmt->execute([$student_id]);
-$student = $stmt->fetch(PDO::FETCH_ASSOC);
+// Fetch educator's profile details
+$stmt = $pdo->prepare('SELECT id, profile_pic, name, gender, phone_number, emergency_contact, dob, location FROM educators WHERE email = ?');
+$stmt->execute([$educatorEmail]);
+$educator = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// print_r($student);
-
-// Check for student
-if (!$student) {
-TODO: // add 404 Redirect to an error page if the student is not found 
+// var_dump($educator);
+// Check for Educator
+if (!$educator) {
+    // Redirect to an error page if the educator is not found
     header('Location: error.php');
     exit();
 }
 
+$educatorId = $educator['id'];
+
+// Fetch all schools assigned to the educator
+$stmtSchools = $pdo->prepare('
+    SELECT s.id, s.school_name 
+    FROM schools s 
+    INNER JOIN educator_schools es ON es.school_id = s.id 
+    WHERE es.educator_id = ?
+');
+$stmtSchools->execute([$educatorId]);
+$schools = $stmtSchools->fetchAll(PDO::FETCH_ASSOC);
+// var_dump($schools);
+
+if (!$schools) {
+    $message = 'No schools assigned to you.';
+    $schools = [];
+}
 
 
+$educatorName = $educator['name'];
 $classId = isset($_GET['class_id']) ? intval($_GET['class_id']) : null;
 // $term_id = isset($_GET['term_id']) ? intval($_GET['term_id']) : null;
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
@@ -71,6 +80,9 @@ if (isset($_SESSION['message'])) {
     unset($_SESSION['message']); // Clear the message after displaying
 }
 
+
+// Set the default timezone to Africa/Accra (Ghana)
+date_default_timezone_set('Africa/Accra');
 
 ?>
 <!DOCTYPE html>
@@ -576,11 +588,10 @@ if (isset($_SESSION['message'])) {
           <div class="col-lg-7 mb-lg-0 mb-4">
             <div class="card z-index-2 h-100">
               <div class="card-header pb-0 pt-3 bg-transparent">
-              <h6 class="text-capitalize">Welcome <?php echo htmlspecialchars($student['name']); ?></h6>
                 <h6 class="text-capitalize">Student Overall Progress</h6>
                 <p class="text-sm mb-0">
                   <i class="fa fa-arrow-up text-success"></i>
-                  <span class="font-weight-bold">4% more</span> in 2024
+                  <span class="font-weight-bold">4% more</span> in 2021
                 </p>
               </div>
               <div class="card-body p-3">

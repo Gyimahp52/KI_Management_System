@@ -19,10 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } elseif (isset($_POST['assign_themes'])) {
         $school_id = $_POST['school_id'];
         $theme_ids = $_POST['theme_ids'] ?? [];
+        $theme_order = $_POST['theme_order'] ?? '';
         if ($school_id == 'all') {
-            assignThemesToAllSchools($theme_ids);
+            assignThemesToAllSchools($theme_ids, $theme_order);
         } else {
-            assignThemesToSchool($school_id, $theme_ids);
+            assignThemesToSchool($school_id, $theme_ids, $theme_order);
         }
     } elseif (isset($_POST['start_new_term'])) {
         $academic_year_id = $_POST['academic_year_id'];

@@ -1,5 +1,6 @@
 <?php
 // combined_scores.php
+global $pdo;
 include('includes/auth.php');
 
 require_once 'db_connction.php';
@@ -30,11 +31,32 @@ if (isset($_GET['school_id'])) {
 $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
 if (isset($_GET['class_id'])) {
     $students = $studentScoreService->getStudentsWithThemesAndScores($_GET['class_id'], $searchQuery);
+//    var_dump($students ['theme_name']);
 }
 
 if (isset($_GET['class_id'])) {
     $students = $studentScoreService->getStudentsWithThemesAndScores($_GET['class_id'], $searchQuery);
 }
+
+
+// Fetch themes for the class in the correct order
+if (isset($_GET['class_id'])) {
+    $class_id = $_GET['class_id'];
+    $theme_sql = "
+        SELECT st.id AS theme_id, st.theme_name, sct.order
+        FROM school_themes sct
+        JOIN sel_themes st ON sct.theme_id = st.id
+        JOIN classes c ON sct.school_id = c.school_id
+        WHERE c.class_id = ?
+        ORDER BY sct.order
+    ";
+    $theme_stmt = $pdo->prepare($theme_sql);
+    $theme_stmt->execute([$class_id]);
+    $themes = $theme_stmt->fetchAll(PDO::FETCH_ASSOC);
+
+}
+
+
 
 // Save Scores
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['view']) && $_POST['view'] === 'enter') {
@@ -311,7 +333,8 @@ $view = isset($_GET['view']) ? $_GET['view'] : 'enter'; // Default view is 'ente
                 </form>
             <?php endif; ?>
 
-            <?php if (!empty($students)): ?>
+            <?php if (!empty($students) && !empty($themes)): ?>
+                <?php print_r($themes); ?>
                 <form method="GET" class="search-bar">
                     <input type="hidden" name="school_id" value="<?php echo htmlspecialchars($_GET['school_id']); ?>">
                     <input type="hidden" name="class_id" value="<?php echo htmlspecialchars($_GET['class_id']); ?>">
@@ -325,34 +348,43 @@ $view = isset($_GET['view']) ? $_GET['view'] : 'enter'; // Default view is 'ente
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead>
-                                <tr>
-                                    <th>Student ID</th>
-                                    <th>Name</th>
-                                    <?php 
-                                    $first_student = reset($students);
-                                    foreach ($first_student as $theme) {
-                                        echo "<th>" . htmlspecialchars($theme['theme_name']) . "</th>";
-                                    }
-                                    ?>
-                                </tr>
+                            <tr>
+                                <th>Student ID</th>
+                                <th>Name</th>
+                                <?php foreach ($themes as $theme): ?>
+                                    <th><?php echo htmlspecialchars($theme['theme_name']); ?></th>
+                                <?php endforeach; ?>
+                            </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($students as $student_id => $themes): ?>
-                                    <tr>
-                                        <td><?php echo htmlspecialchars($student_id); ?></td>
-                                        <td><?php echo htmlspecialchars($themes[0]['name']); ?></td>
-                                        <?php foreach ($themes as $theme): ?>
-                                            <td>
-                                                <input type="number" name="scores[<?php echo $student_id; ?>][<?php echo $theme['theme_id']; ?>]" max="9" step="1" class="form-control score-input validate-score" value="<?php echo $theme['score'] !== null ? htmlspecialchars(round($theme['score'])) : ''; ?>">
-                                                <?php if ($theme['score'] !== null): ?>
-                                                    <div class="previous-score">
-                                                        Last updated: <?php echo htmlspecialchars($theme['date_assessed']); ?>
-                                                    </div>
-                                                <?php endif; ?>
-                                            </td>
-                                        <?php endforeach; ?>
-                                    </tr>
-                                <?php endforeach; ?>
+                            <?php foreach ($students as $student_id => $student_themes): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($student_id); ?></td>
+                                    <td><?php echo htmlspecialchars($student_themes[0]['name']); ?></td>
+                                    <?php foreach ($themes as $theme): ?>
+                                        <?php
+                                        // Find the score for the current theme
+                                        $score = '';
+                                        $date_assessed = '';
+                                        foreach ($student_themes as $student_theme) {
+                                            if ($student_theme['theme_id'] == $theme['theme_id']) {
+                                                $score = $student_theme['score'];
+                                                $date_assessed = $student_theme['date_assessed'];
+                                                break;
+                                            }
+                                        }
+                                        ?>
+                                        <td>
+                                            <input type="number" name="scores[<?php echo $student_id; ?>][<?php echo $theme['theme_id']; ?>]" max="9" step="1" class="form-control score-input validate-score" value="<?php echo $score !== null ? htmlspecialchars(round($score)) : ''; ?>">
+                                            <?php if ($date_assessed): ?>
+                                                <div class="previous-score">
+                                                    Last updated: <?php echo htmlspecialchars($date_assessed); ?>
+                                                </div>
+                                            <?php endif; ?>
+                                        </td>
+                                    <?php endforeach; ?>
+                                </tr>
+                            <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div>
@@ -448,7 +480,7 @@ $view = isset($_GET['view']) ? $_GET['view'] : 'enter'; // Default view is 'ente
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <sript src="assets/js/scripts.js"></script>
+    <script> src="assets/js/scripts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js" integrity="sha512-lbwH47l/tPXJYG9AcFNoJaTMhGvYWhVM9YI43CT+uteTRRaiLCui8snIgyAN8XWgNjNhCqlAUdzZptso6OCoFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
