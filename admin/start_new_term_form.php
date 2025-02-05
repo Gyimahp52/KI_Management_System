@@ -1,4 +1,4 @@
-//start_new_term_form.php
+<!--start_new_term_form.php-->
 <form method="POST">
     <div class="form-group">
         <select name="academic_year_id" class="form-control" required>

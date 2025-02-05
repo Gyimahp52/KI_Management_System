@@ -168,9 +168,6 @@ function assignThemesToSchool($school_id, $theme_ids, $theme_order) {
     }
 }
 
-
-
-
 function assignThemesToAllSchools($theme_ids) {
     global $pdo;
 
@@ -228,20 +225,6 @@ function getSchools() {
     $stmt = $pdo->query($sql);
     return $stmt->fetchAll();
 }
-
-//function getAssignedThemes() {
-//    global $pdo;
-//    $sql = "SELECT ay.year_name, sc.school_name, t.term_number, s.school_id, t.id as term_id, GROUP_CONCAT(st.theme_name ORDER BY s.id SEPARATOR ', ') AS themes
-//            FROM school_themes s
-//            JOIN sel_themes st ON s.theme_id = st.id
-//            JOIN terms t ON s.term_id = t.id
-//            JOIN academic_years ay ON t.academic_year_id = ay.id
-//            JOIN schools sc ON s.school_id = sc.id
-//            GROUP BY ay.year_name, sc.school_name, t.term_number, s.school_id, t.id
-//            ORDER BY s.id";
-//    $stmt = $pdo->query($sql);
-//    return $stmt->fetchAll();
-//}
 
 
 function getAssignedThemes() {
