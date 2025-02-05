@@ -1,42 +1,72 @@
 <?php
 session_start();
+
+// Display toastr message if it exists and then remove it
+$toastr_message = isset($_SESSION['login_toastr']) ? $_SESSION['login_toastr'] : null;
+unset($_SESSION['login_toastr']);
+
 require 'includes/dbconnection.php'; 
 
+// Function to sanitize input
+function sanitizeInput($input) {
+    return htmlspecialchars(strip_tags(trim($input)), ENT_QUOTES, 'UTF-8');
+}
 
-function login($username, $password) {
+// Login function that handles both username for students and email for others
+function login($usernameOrEmail, $password) {
     $pdo = dbConnect();
-    $stmt = $pdo->prepare('SELECT id, password, role FROM users WHERE username = ?');
-    $stmt->execute([$username]);
+    
+    // Step 1: Check if the user exists as a student (username login) or as a non-student (email login)
+    $stmt = $pdo->prepare('SELECT id, email, password, role FROM users WHERE (role = "student" AND username = ?) OR (role != "student" AND email = ?)');
+    $stmt->execute([sanitizeInput($usernameOrEmail), sanitizeInput($usernameOrEmail)]);
     $user = $stmt->fetch();
 
+    // Step 2: Verify the password and manage session accordingly
     if ($user && password_verify($password, $user['password'])) {
-        $_SESSION['user_id'] = $user['id'];
+        // Store session data
+        if ($user['role'] == 'student') {
+            $_SESSION['user_username'] = $usernameOrEmail;
+        } else {
+            $_SESSION['user_email'] = $user['email'];
+        }
         $_SESSION['role'] = $user['role'];
+        $_SESSION['token'] = bin2hex(random_bytes(32));
+
         return $user['role'];
     } else {
         return false;
     }
 }
-$error = '';
 
+
+
+// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username']);
+    $usernameOrEmail = trim($_POST['username']);
     $password = trim($_POST['password']);
 
-    if (empty($username) || empty($password)) {
-        $error = 'Username and password are required.';
+    // Check if both username/email and password are provided
+    if (empty($usernameOrEmail) || empty($password)) {
+        $_SESSION['login_toastr'] = ['type' => 'error', 'message' => 'Username/Email and password are required.'];
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        exit();
     } else {
-        $role = login($username, $password);
+        // Attempt to log in the user
+        $role = login($usernameOrEmail, $password);
         if ($role) {
+            // Redirect based on the user's role
             switch ($role) {
                 case 'admin':
                     header('Location: admin/adminDashboard.php');
                     break;
                 case 'educator':
-                    header('Location: admin/educator/educatorDashboard.php');
+                    header('Location: educator/classes.php');
                     break;
                 case 'student':
-                    header('Location: admin/studentDashboard.php');
+                    header('Location: student/index.php');
+                    break;
+                case 'school_head':
+                    header('Location: school_head/school_head.php');
                     break;
                 default:
                     header('Location: index.php');
@@ -44,7 +74,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             exit();
         } else {
-            echo "<script>alert('Invalid Details');</script>";
+            $_SESSION['login_toastr'] = ['type' => 'error', 'message' => 'Invalid username or password.'];
+            header('Location: ' . $_SERVER['PHP_SELF']);
+            exit();
         }
     }
 }
@@ -58,18 +90,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Login</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
-    <!-- Google Fonts Link For Icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
-   
     <link rel="stylesheet" href="css/login.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
+    <!-- favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
     <script src="js/login.js" defer></script>
 </head>
-<body>
+<body style="background-image: url(images/web3.png) !important; background-repeat:no-repeat;  background-size: cover;">
     <!-- Login form -->
     <div class="login-container">
         <img src="images/ki_logo.png" alt="ki_logo">
-        <form action="index.php" id="loginForm" method="post">
+        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" id="loginForm" method="post">
             <h2>Login</h2>
             <div class="form-group">
                 <label for="username">Username:</label>
@@ -105,5 +143,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <span id="send-btn" class="material-symbols-rounded">send</span>
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Toastr options
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+
+            <?php if ($toastr_message): ?>
+                toastr[<?php echo json_encode($toastr_message['type']); ?>](
+                    <?php echo json_encode($toastr_message['message']); ?>
+                );
+            <?php endif; ?>
+        });
+    </script>
 </body>
 </html>

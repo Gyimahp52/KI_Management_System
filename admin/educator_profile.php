@@ -1,12 +1,18 @@
-<?php
+<?php 
 session_start();
 include('includes/dbconnection.php');
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
-    $sql = "SELECT * FROM educators WHERE id = :id";
+
+    // SQL query to filter the educator based on the provided id
+    $sql = "SELECT e.*, s.school_name, u.email, u.password, u.role
+            FROM educators e
+            JOIN schools s ON e.school_id = s.id
+            JOIN users u ON e.email = u.email
+            WHERE e.id = :id";  // Filter by educator's id
     $query = $dbh->prepare($sql);
-    $query->bindParam(':id', $id, PDO::PARAM_INT);
+    $query->bindParam(':id', $id, PDO::PARAM_INT);  // Bind the id parameter
     $query->execute();
     $educator = $query->fetch(PDO::FETCH_OBJ);
 
@@ -49,7 +55,7 @@ if (isset($_GET['id'])) {
                     <p><strong>Email:</strong> <?php echo htmlspecialchars($educator->email); ?></p>
                     <p><strong>Date of Birth:</strong> <?php echo htmlspecialchars($educator->dob); ?></p>
                     <p><strong>Location:</strong> <?php echo htmlspecialchars($educator->location); ?></p>
-                    <p><strong>School:</strong> <?php echo htmlspecialchars($educator->school); ?></p>
+                    <p><strong>School:</strong> <?php echo htmlspecialchars($educator->school_name); ?></p>
                 </div>
             </div>
         </div>

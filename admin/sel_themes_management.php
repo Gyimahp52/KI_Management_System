@@ -1,5 +1,7 @@
 <?php
-session_start();
+//sel_management.php
+include('includes/auth.php');
+// session_start();
 require_once 'db_connction.php';
 require_once 'manage_sel_functions.php';
 
@@ -17,10 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } elseif (isset($_POST['assign_themes'])) {
         $school_id = $_POST['school_id'];
         $theme_ids = $_POST['theme_ids'] ?? [];
+        $theme_order = $_POST['theme_order'] ?? '';
         if ($school_id == 'all') {
-            assignThemesToAllSchools($theme_ids);
+            assignThemesToAllSchools($theme_ids, $theme_order);
         } else {
-            assignThemesToSchool($school_id, $theme_ids);
+            assignThemesToSchool($school_id, $theme_ids, $theme_order);
         }
     } elseif (isset($_POST['start_new_term'])) {
         $academic_year_id = $_POST['academic_year_id'];
@@ -59,10 +62,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>SEL Themes Management</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="assets/css/adminDashboard.css">
     <link rel="stylesheet" href="style.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png">
+    <link rel="manifest" href="assets/images/site.webmanifest">
     <style>
         .btn-flex{
             display: flex;

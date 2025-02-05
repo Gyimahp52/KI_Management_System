@@ -1,338 +1,8 @@
 <?php
+//ajax_handlers.php
 session_start();
 require_once 'function.php';
 
-
-//ajax_handler.php
-// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//     switch ($_POST['action']) {
-      
-//         case 'createClass':
-//             echo createClass($_POST['schoolId'], $_POST['name']) ? "Class created successfully" : "Failed to create class";
-//             break;
-      
-//         case 'createSchool':
-//             $logo = $_FILES['logo']['name'];
-//             $target_dir = "uploads/";
-//             $target_file = $target_dir . basename($_FILES["logo"]["name"]);
-//             move_uploaded_file($_FILES["logo"]["tmp_name"], $target_file);
-//             echo createSchool($_POST['schoolName'], $_POST['region'], $_POST['town'], $_POST['educator'], $logo) ? "School created successfully" : "Failed to create school";
-//             break;
-
-//         case 'createStudent':
-//             $passport_picture = '';
-//             if (!empty($_FILES['passport_picture']['name'])) {
-//                 $passport_picture = $_FILES['passport_picture']['name'];
-//                 $target_dir = "uploads/";
-//                 $target_file = $target_dir . basename($_FILES["passport_picture"]["name"]);
-//                 if (move_uploaded_file($_FILES["passport_picture"]["tmp_name"], $target_file)) {
-//                     $upload_success = true;
-//                 } else {
-//                     echo "Failed to upload passport picture";
-//                     $upload_success = false;
-//                 }
-//             } else {
-//                 $upload_success = true;
-//             }
-        
-//             if ($upload_success) {
-//                 $result = createStudent(
-//                     $_POST['schoolId'],
-//                     $_POST['classId'],
-//                     $_POST['name'],
-//                     $_POST['dob'],
-//                     $_POST['gender'],
-//                     $_POST['hand'],
-//                     $_POST['foot'],
-//                     $_POST['eye_sight'],
-//                     $_POST['medical_condition'],
-//                     $_POST['height'],
-//                     $_POST['weight'],
-//                     $_POST['parent_name'],
-//                     $_POST['parent_phone'],
-//                     $_POST['parent_whatsapp'],
-//                     $_POST['parent_email'],
-//                     $passport_picture,
-//                     $_POST['password']
-//                 );
-//                 echo $result;
-                
-//             }
-//             break;
-//         case 'updateStudent':
-//             echo updateStudent($_POST['studentId'], $_POST['name'], $_POST['dob'], $_POST['gender'], $_POST['hand'], $_POST['foot'], $_POST['eye_sight'], $_POST['medical_condition'], $_POST['height'], $_POST['weight'], $_POST['parent_name'], $_POST['parent_phone'], $_POST['parent_whatsapp'], $_POST['parent_email']) ? "Student updated successfully" : "Failed to update student";
-//             break;
-//         case 'deleteStudent':
-//             echo deleteStudent($_POST['studentId']) ? "Student deleted successfully " : "Failed to delete student";
-//             echo "<script>setTimeout(function(){ window.location.reload(); }, 2000);</script>";
-//             break;
-//         case 'updateSchool':
-//             echo updateSchool($_POST['schoolId'], $_POST['name']) ? "School updated successfully" : "Failed to update school";
-//             break;
-//         case 'deleteSchool':
-//             echo deleteSchool($_POST['schoolId']) ? "School deleted successfully" : "Failed to delete school";
-//             break;
-//         case 'updateClass':
-//             echo updateClass($_POST['classId'], $_POST['name']) ? "Class updated successfully" : "Failed to update class";
-//             break;
-//         case 'deleteClass':
-//             echo deleteClass($_POST['classId']) ? "Class deleted successfully" : "Failed to delete class";
-//             break;
-       
-//     }
-// }
-
-// elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
-//     switch ($_GET['action']) {
-//         case 'getTable':
-//             $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
-//             $perPage = 10;
-//             switch ($_GET['type']) {
-//                 case 'schools':
-//                     $schools = getSchools($page, $perPage);
-//                     $total = getTotal('schools');
-//                     $totalPages = ceil($total / $perPage);
-                    
-//                     echo "<table class='table table-striped'>
-//                             <thead>
-//                                 <tr>
-//                                     <th>School ID</th>
-//                                     <th>Name</th>
-//                                     <th>Region</th>
-//                                     <th>Town</th>
-//                                     <th>Educator</th>
-//                                     <th>Logo</th>
-//                                     <th>Actions</th>
-//                                 </tr>
-//                             </thead>
-//                             <tbody>";
-//                     foreach ($schools as $school) {
-//                         echo "<tr>
-//                                 <td>{$school['id']}</td>
-//                                 <td>{$school['school_name']}</td>
-//                                 <td>{$school['region']}</td>
-//                                 <td>{$school['town']}</td>
-//                                 <td>{$school['educator']}</td>
-//                                 <td><img src='uploads/{$school['school_logo']}' width='50'></td>
-//                                 <td>
-//                                     <button onclick='editSchool(\"{$school['id']}\")' class='btn btn-sm btn-primary'>Edit</button>
-//                                     <button onclick='deleteSchool(\"{$school['id']}\")' class='btn btn-sm btn-danger'>Delete</button>
-//                                 </td>
-//                               </tr>";
-//                     }
-//                     echo "</tbody></table>";
-//                     echo generatePagination($page, $totalPages, 'schools');
-//                     break;
-//                 case 'students':
-//                     $students = isset($_GET['classId']) ? getStudents($_GET['classId'], $page, $perPage) : getStudents(null, $page, $perPage);
-//                     $total = getTotal('students');
-//                     $totalPages = ceil($total / $perPage);
-                    
-//                     echo "<table class='table table-striped'>
-//                             <thead>
-//                                 <tr>
-//                                     <th>Student ID</th>
-//                                     <th>Name</th>
-//                                     <th>Date of Birth</th>
-//                                     <th>Gender</th>
-//                                     <th>Parent Name</th>
-//                                     <th>Parent Phone</th>
-//                                     <th>Actions</th>
-//                                 </tr>
-//                             </thead>
-//                             <tbody>";
-//                     foreach ($students as $student) {
-//                         echo "<tr>
-//                                 <td>{$student['student_id']}</td>
-//                                 <td>{$student['name']}</td>
-//                                 <td>{$student['dob']}</td>
-//                                 <td>{$student['gender']}</td>
-//                                 <td>{$student['parent_name']}</td>
-//                                 <td>{$student['parent_phone']}</td>
-//                                 <td>
-//                                     <button onclick='editStudent(\"{$student['student_id']}\")' class='btn btn-sm btn-primary'>Edit</button>
-//                                     <button onclick='deleteStudent(\"{$student['student_id']}\")' class='btn btn-sm btn-danger'>Delete</button>
-//                                 </td>
-//                               </tr>";
-//                     }
-//                     echo "</tbody></table>";
-//                     echo generatePagination($page, $totalPages, 'students');
-//                     break;
-//                 case 'classes':
-//                     $classes = getClasses(null, $page, $perPage);
-//                     $total = getTotal('classes');
-//                     $totalPages = ceil($total / $perPage);
-                    
-//                     echo "<table class='table table-striped'>
-//                             <thead>
-//                                 <tr>
-//                                     <th>Class ID</th>
-//                                     <th>School ID</th>
-//                                     <th>Name</th>
-//                                     <th>Actions</th>
-//                                 </tr>
-//                             </thead>
-//                             <tbody>";
-//                     foreach ($classes as $class) {
-//                         echo "<tr>
-//                                 <td>{$class['class_id']}</td>
-//                                 <td>{$class['school_id']}</td>
-//                                 <td>{$class['class_name']}</td>
-//                                 <td>
-//                                     <button onclick='editClass(\"{$class['class_id']}\")' class='btn btn-sm btn-primary'>Edit</button>
-//                                     <button onclick='deleteClass(\"{$class['class_id']}\")' class='btn btn-sm btn-danger'>Delete</button>
-//                                 </td>
-//                               </tr>";
-//                     }
-//                     echo "</tbody></table>";
-//                     echo generatePagination($page, $totalPages, 'classes');
-//                     break;
-                   
-//             }
-//             break;
-        
-//         case 'getClasses':
-//             echo getClasses($_GET['schoolId']);
-//             break;
-        
-      
-//         case 'getStudent':
-//             $student = getStudent($_GET['studentId']);
-//             if ($student) {
-//                 echo json_encode($student);
-//             } else {
-//                 echo json_encode(['error' => 'Student not found']);
-//             }
-//             break;
-//     }
-// }
-
-// function generatePagination($currentPage, $totalPages, $type) {
-//     $html = "<nav><ul class='pagination'>";
-//     for ($i = 1; $i <= $totalPages; $i++) {
-//         $activeClass = ($i == $currentPage) ? "active" : "";
-//         $html .= "<li class='page-item $activeClass'><a class='page-link' href='#' onclick='showTable(\"$type\", $i)'>$i</a></li>";
-//     }
-//     $html .= "</ul></nav>";
-//     return $html;
-// }
-
-
-// // NEW
-
-
-
-// session_start();
-// require_once 'functions.php';
-
-// function setFlashMessage($type, $message) {
-//     $_SESSION['flash'] = ['type' => $type, 'message' => $message];
-// }
-
-// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//     switch ($_POST['action']) {
-      
-//         case 'createClass':
-//             echo createClass($_POST['schoolId'], $_POST['name']) ? "Class created successfully" : "Failed to create class";
-//             break;
-      
-//         case 'createSchool':
-//             $logo = $_FILES['logo']['name'];
-//             $target_dir = "uploads/";
-//             $target_file = $target_dir . basename($_FILES["logo"]["name"]);
-//             move_uploaded_file($_FILES["logo"]["tmp_name"], $target_file);
-//             echo createSchool($_POST['schoolName'], $_POST['region'], $_POST['town'], $_POST['educator'], $logo) ? "School created successfully" : "Failed to create school";
-//             break;
-//     case 'createStudent':
-//         // ... (existing code)
-//         if ($result) {
-//             setFlashMessage('success', 'Student created successfully');
-//         } else {
-//             setFlashMessage('error', 'Failed to create student');
-//         }
-//         break;
-//     // ... (other cases)
-// }
-
-// elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
-//     switch ($_GET['action']) {
-//         case 'getTable':
-//             $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
-//             $perPage = 10;
-//             $schoolId = isset($_GET['schoolId']) ? $_GET['schoolId'] : null;
-//             $classId = isset($_GET['classId']) ? $_GET['classId'] : null;
-            
-//             switch ($_GET['type']) {
-//                 case 'schools':
-//                     $schools = getSchools($page, $perPage);
-//                     $total = getTotal('schools');
-//                     // ... (rest of the schools case remains the same)
-//                     break;
-//                 case 'students':
-//                     $students = getStudents($schoolId, $classId, $page, $perPage);
-//                     $total = getTotal('students', $schoolId, $classId);
-//                     $totalPages = ceil($total / $perPage);
-                    
-//                     $html = "<table class='table table-striped'>
-//                             <thead>
-//                                 <tr>
-//                                     <th>Student ID</th>
-//                                     <th>Name</th>
-//                                     <th>Date of Birth</th>
-//                                     <th>Gender</th>
-//                                     <th>School</th>
-//                                     <th>Class</th>
-//                                     <th>Parent Name</th>
-//                                     <th>Parent Phone</th>
-//                                     <th>Actions</th>
-//                                 </tr>
-//                             </thead>
-//                             <tbody>";
-//                     foreach ($students as $student) {
-//                         $html .= "<tr>
-//                                 <td>{$student['student_id']}</td>
-//                                 <td>{$student['name']}</td>
-//                                 <td>{$student['dob']}</td>
-//                                 <td>{$student['gender']}</td>
-//                                 <td>{$student['school_name']}</td>
-//                                 <td>{$student['class_name']}</td>
-//                                 <td>{$student['parent_name']}</td>
-//                                 <td>{$student['parent_phone']}</td>
-//                                 <td>
-//                                     <button onclick='editStudent(\"{$student['student_id']}\")' class='btn btn-sm btn-primary'>Edit</button>
-//                                     <button onclick='deleteStudent(\"{$student['student_id']}\")' class='btn btn-sm btn-danger'>Delete</button>
-//                                 </td>
-//                               </tr>";
-//                     }
-//                     $html .= "</tbody></table>";
-//                     $html .= generatePagination($page, $totalPages, 'students', $schoolId, $classId);
-//                     echo $html;
-//                     break;
-//                 // ... (classes case remains the same)
-//             }
-//             break;
-        
-//         // ... (other cases remain the same)
-//     }
-// }
-
-// function generatePagination($currentPage, $totalPages, $type, $schoolId = null, $classId = null) {
-//     $html = "<nav><ul class='pagination'>";
-//     for ($i = 1; $i <= $totalPages; $i++) {
-//         $activeClass = ($i == $currentPage) ? "active" : "";
-//         $params = "\"$type\", $i" . ($schoolId ? ", \"$schoolId\"" : "") . ($classId ? ", \"$classId\"" : "");
-//         $html .= "<li class='page-item $activeClass'><a class='page-link' href='#' onclick='showTable($params)'>$i</a></li>";
-//     }
-//     $html .= "</ul></nav>";
-//     return $html;
-// }
-
-
-//---NEW FILE
-
-
-// session_start();
-// require_once 'functions.php';
 
 function setFlashMessage($type, $message) {
     $_SESSION['flash'] = ['type' => $type, 'message' => $message];
@@ -348,8 +18,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     switch ($_POST['action']) {
         case 'createClass':
             $result = createClass($_POST['schoolId'], $_POST['name']);
-            setFlashMessage($result ? 'success' : 'error', $result ? "Class created successfully" : "Failed to create class");
-            respondWithJson(['success' => $result]);
+            
+            if ($result) {
+                respondWithJson(['success' => true, 'message' => "Class created successfully"]);
+            } else {
+                respondWithJson(['success' => false, 'message' => "Failed to create Class"]);
+            }
             break;
         
         case 'createSchool':
@@ -363,9 +37,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     respondWithJson(['success' => false]);
                 }
             }
-            $result = createSchool($_POST['schoolName'], $_POST['region'], $_POST['town'], $_POST['educator'], $logo);
-            setFlashMessage($result ? 'success' : 'error', $result ? "School created successfully" : "Failed to create school");
-            respondWithJson(['success' => $result]);
+            $result = createSchool($_POST['schoolName'], $_POST['region'], $_POST['town'], $logo);
+
+            if ($result) {
+                respondWithJson(['success' => true, 'message' => "School created successfully"]);
+            } else {
+                respondWithJson(['success' => false, 'message' => "Failed to create school"]);
+            }
             break;
 
         case 'createStudent':
@@ -376,33 +54,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $target_file = $target_dir . $passport_picture;
                 if (!move_uploaded_file($_FILES["passport_picture"]["tmp_name"], $target_file)) {
                     setFlashMessage('error', "Failed to upload passport picture");
-                    respondWithJson(['success' => false]);
+                    respondWithJson(['success' => true]);
                 }
             }
-            $result = createStudent(
-                $_POST['schoolId'],
-                $_POST['classId'],
-                $_POST['name'],
-                $_POST['dob'],
-                $_POST['gender'],
-                $_POST['hand'],
-                $_POST['foot'],
-                $_POST['eye_sight'],
-                $_POST['medical_condition'],
-                $_POST['height'],
-                $_POST['weight'],
-                $_POST['parent_name'],
-                $_POST['parent_phone'],
-                $_POST['parent_whatsapp'],
-                $_POST['parent_email'],
-                $passport_picture,
-                $_POST['password']
-            );
-            setFlashMessage($result ? 'success' : 'error', $result ? "Student created successfully" : "Failed to create student");
-            respondWithJson(['success' => $result]);
-            break;
+            $medical_condition = isset($_POST['medical_condition']) ? $_POST['medical_condition'] : '';
+                $result = createStudent(
+                    $_POST['schoolId'],
+                    $_POST['classId'],
+                    $_POST['name'],
+                    $_POST['dob'],
+                    $_POST['gender'],
+                    $_POST['hand'],
+                    $_POST['foot'],
+                    $_POST['eye_sight'],
+                    $medical_condition,  
+                    $_POST['height'],
+                    $_POST['weight'],
+                    $_POST['parent_name'],
+                    $_POST['parent_phone'],
+                    $_POST['parent_whatsapp'],
+                    $_POST['parent_email'],
+                    $passport_picture,
+                    $_POST['password']
+    );
+    if (is_string($result) && strpos($result, "successfully") !== false) {
+        respondWithJson(['success' => true, 'message' => $result]);
+    } else {
+        respondWithJson(['success' => false, 'message' => "Failed to create student"]);
+    }
+    break;
 
-        case 'updateStudent':
+    case 'updateStudent':
+        try {
+
+            // Set medical_condition to empty string if not provided
+            $medical_condition = isset($_POST['medical_condition']) ? $_POST['medical_condition'] : ''; 
+
             $result = updateStudent(
                 $_POST['studentId'],
                 $_POST['name'],
@@ -411,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_POST['hand'],
                 $_POST['foot'],
                 $_POST['eye_sight'],
-                $_POST['medical_condition'],
+                $medical_condition,
                 $_POST['height'],
                 $_POST['weight'],
                 $_POST['parent_name'],
@@ -419,39 +106,90 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_POST['parent_whatsapp'],
                 $_POST['parent_email']
             );
-            setFlashMessage($result ? 'success' : 'error', $result ? "Student updated successfully" : "Failed to update student");
-            respondWithJson(['success' => $result]);
-            break;
+            
+            respondWithJson([
+                'success' => (bool)$result,
+                'message' => $result ? "Student updated successfully" : "Failed to update student"
+            ]);
+        } catch (Exception $e) {
+            respondWithJson([
+                'success' => false,
+                'message' => "An error occurred: " . $e->getMessage()
+            ]);
+        }
+        break;
 
         case 'deleteStudent':
             $result = deleteStudent($_POST['studentId']);
-            setFlashMessage($result ? 'success' : 'error', $result ? "Student deleted successfully" : "Failed to delete student");
-            respondWithJson(['success' => $result]);
+            if ($result) {
+                respondWithJson(['success' => true, 'message' => "Student deleted successfully"]);
+            } else {
+                respondWithJson(['success' => false, 'message' => "Failed to delete student"]);
+            }
             break;
 
         case 'updateSchool':
             $result = updateSchool($_POST['schoolId'], $_POST['name']);
-            setFlashMessage($result ? 'success' : 'error', $result ? "School updated successfully" : "Failed to update school");
-            respondWithJson(['success' => $result]);
+            if($result){
+                respondWithJson(['success' => true, 'message' => "School upadted successfully"]);
+            }else{
+                respondWithJson(['success' => false, 'message' => "Failed to update school"]);
+            }
             break;
 
         case 'deleteSchool':
-            $result = deleteSchool($_POST['schoolId']);
-            setFlashMessage($result ? 'success' : 'error', $result ? "School deleted successfully" : "Failed to delete school");
-            respondWithJson(['success' => $result]);
-            break;
+                $result = deleteSchool($_POST['schoolId']);
+                $message = $result ? "School deleted successfully" : "Failed to delete school";
+                respondWithJson(['success' => $result, 'message' => $message]);
+                break;
 
         case 'updateClass':
             $result = updateClass($_POST['classId'], $_POST['name']);
-            setFlashMessage($result ? 'success' : 'error', $result ? "Class updated successfully" : "Failed to update class");
-            respondWithJson(['success' => $result]);
+            $message = $result ? "Class updated successfully" : "Failed to update Class";
+            respondWithJson(['success' => $result, 'message' => $message]);
             break;
 
         case 'deleteClass':
             $result = deleteClass($_POST['classId']);
-            setFlashMessage($result ? 'success' : 'error', $result ? "Class deleted successfully" : "Failed to delete class");
-            respondWithJson(['success' => $result]);
+            $message = $result ? "Class deleted successfully" : "Failed to delete Class";
+            respondWithJson(['success' => $result, 'message' => $message]);
             break;
+        case 'createUser':
+            $userData = [
+                'email' => $_POST['email'] ?? '',
+                'password' => $_POST['password'] ?? '',
+                'role' => $_POST['role'] ?? '',
+                'name' => $_POST['name'] ?? '',
+                'gender' => $_POST['gender'] ?? '',
+                'phone_number' => $_POST['phone_number'] ?? '',
+                'emergency_contact' => $_POST['emergency_contact'] ?? '',
+                'dob' => $_POST['dob'] ?? '',
+                'location' => $_POST['location'] ?? '',
+                // 'profile_pic' => $_POST['profile_pic'] ?? ''
+            ];
+            $result = createUser($userData);
+            respondWithJson($result);
+            // $message = $result ? "User Created successfully" : "Failed to Create User";
+            // respondWithJson(['success' => $result, 'message' => $message]);
+            break;
+
+            case 'updateRole':
+                $userId = intval($_POST['userId'] ?? 0);
+                $newRole = $_POST['newRole'] ?? '';
+                $result = updateUserRole($userId, $newRole);
+                respondWithJson(['success' => $result]);
+                break;
+
+            case 'deleteUser':
+                $userId = $_POST['userId'] ?? 0;
+                $result = deleteUser($userId);
+                $message = $result ? "User Deleted successfully" : "Failed to Delete User";
+                respondWithJson(['success' => $result, 'message' => $message]);
+            break;
+            case 'updateLastActivity':
+                $result = updateLastActivity();
+                respondWithJson(['success' => $result]);
+                break;
     }
 }
 elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -476,7 +214,6 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                     <th>Name</th>
                                     <th>Region</th>
                                     <th>Town</th>
-                                    <th>Educator</th>
                                     <th>Logo</th>
                                     <th>Actions</th>
                                 </tr>
@@ -488,7 +225,6 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                 <td>{$school['school_name']}</td>
                                 <td>{$school['region']}</td>
                                 <td>{$school['town']}</td>
-                                <td>{$school['educator']}</td>
                                 <td><img src='uploads/{$school['school_logo']}' width='50'></td>
                                 <td>
                                     <button onclick='editSchool(\"{$school['id']}\")' class='btn btn-sm btn-primary'>Edit</button>
@@ -502,9 +238,6 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     break;
 
                 case 'students':
-                    // $students = getStudents($schoolId, $classId, $page, $perPage);
-                    // $total = getTotal('students', $schoolId, $classId);
-                    
                         $students = getStudents($schoolId, $classId, $page, $perPage, $search);
                         $total = getTotal('students', $schoolId, $classId, $search);
                     $totalPages = ceil($total / $perPage);
@@ -519,7 +252,7 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                     <th>School</th>
                                     <th>Class</th>
                                     <th>Parent Name</th>
-                                    <th>Parent Phone</th>
+                                    <th>Parent whatsapp</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -533,7 +266,7 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                 <td>{$student['school_name']}</td>
                                 <td>{$student['class_name']}</td>
                                 <td>{$student['parent_name']}</td>
-                                <td>{$student['parent_phone']}</td>
+                                <td>{$student['parent_whatsapp']}</td>
                                 <td>
                                     <button onclick='editStudent(\"{$student['student_id']}\")' class='btn btn-sm btn-primary'>Edit</button>
                                     <button onclick='deleteStudent(\"{$student['student_id']}\")' class='btn btn-sm btn-danger'>Delete</button>
@@ -541,9 +274,15 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
                               </tr>";
                     }
                     $html .= "</tbody></table>";
-                    // $html .= generatePagination($page, $totalPages, 'students', $schoolId, $classId);
                     $html .= generatePagination($page, $totalPages, $_GET['type'], $schoolId, $classId, $search);
-                    echo $html;
+                    // Create an array to hold the response data
+                    $response = [
+                        'html' => $html,
+                        'total' => $total,
+                    ];
+                    
+                    // Return the response as a JSON object
+                    echo json_encode($response);
                     break;
 
                 case 'classes':
@@ -596,41 +335,16 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 respondWithJson(['error' => 'Student not found']);
             }
             break;
+
+        case 'getUsers':
+            $page = intval($_GET['page'] ?? 1);
+            $result = getUsers($page);
+            respondWithJson($result);
+            break;
     }
 }
 
-// function generatePagination($currentPage, $totalPages, $type, $schoolId = null, $classId = null) {
-//     $html = "<nav><ul class='pagination'>";
-//     for ($i = 1; $i <= $totalPages; $i++) {
-//         $activeClass = ($i == $currentPage) ? "active" : "";
-//         $params = "\"$type\", $i" . ($schoolId ? ", \"$schoolId\"" : ", null") . ($classId ? ", \"$classId\"" : ", null");
-//         $html .= "<li class='page-item $activeClass'><a class='page-link' href='#' onclick='showTable($params)'>$i</a></li>";
-//     }
-//     $html .= "</ul></nav>";
-//     return $html;
-// }
 
-// function generatePagination($currentPage, $totalPages, $type, $schoolId = null, $classId = null, $search = null) {
-//     $html = "<nav><ul class='pagination'>";
-    
-//     $range = 2;
-//     $showDots = false;
-    
-//     for ($i = 1; $i <= $totalPages; $i++) {
-//         if ($i == 1 || $i == $totalPages || ($i >= $currentPage - $range && $i <= $currentPage + $range)) {
-//             $activeClass = ($i == $currentPage) ? "active" : "";
-//             $params = json_encode(['type' => $type, 'page' => $i, 'schoolId' => $schoolId, 'classId' => $classId, 'search' => $search]);
-//             $html .= "<li class='page-item $activeClass'><a class='page-link' href='#' onclick='showTable($params)'>$i</a></li>";
-//             $showDots = true;
-//         } elseif ($showDots) {
-//             $html .= "<li class='page-item disabled'><span class='page-link'>...</span></li>";
-//             $showDots = false;
-//         }
-//     }
-    
-//     $html .= "</ul></nav>";
-//     return $html;
-// }
 function generatePagination($currentPage, $totalPages, $type, $schoolId = null, $classId = null, $search = null) {
     $html = "<nav><ul class='pagination'>";
     

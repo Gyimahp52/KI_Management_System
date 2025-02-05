@@ -1,6 +1,9 @@
 <?php
-session_start();
+// session_start();
+include('includes/auth.php');
+
 include('includes/dbconnection.php');
+include 'function.php';
 
 // Validation and Sanitization Functions
 function validate_name($name) {
@@ -18,6 +21,10 @@ function validate_email($email) {
 function sanitize_input($data) {
     return htmlspecialchars(stripslashes(trim($data)));
 }
+
+
+
+
 if (isset($_POST['delete'])) {
     $id = $_POST['id'];
     try {
@@ -37,39 +44,54 @@ if (isset($_POST['delete'])) {
         $query->execute();
 
         // Delete from users table
-        $sql = "DELETE FROM users WHERE username = :username";
+        $sql = "DELETE FROM users WHERE email = :email";
         $query = $dbh->prepare($sql);
-        $query->bindParam(':username', $email, PDO::PARAM_STR);
+        $query->bindParam(':email', $email, PDO::PARAM_STR);
         $query->execute();
 
         $dbh->commit();
-        echo '<script>alert("Educator deleted successfully."); window.location.href="educators.php";</script>';
+        
+        $_SESSION['toastr'] = ['type' => 'success', 'message' => 'Educator deleted successfully.'];
+        header("Location: educators.php");
+        exit;
     } catch (PDOException $e) {
         $dbh->rollBack();
-        echo '<script>alert("Error deleting educator: ' . $e->getMessage() . '");</script>';
+        $_SESSION['toastr'] = ['type' => 'error', 'message' => 'Error deleting educator: ' . $e->getMessage()];
+        header("Location: educators.php");
+        exit;
     }
 }
+
 
 if (isset($_POST['edit'])) {
     $id = $_POST['id'];
     $name = sanitize_input($_POST['edit_name']);
     $phone = sanitize_input($_POST['edit_phone']);
-    $school = sanitize_input($_POST['edit_school']);
+    $schoolIds = $_POST['school_ids']; // Array of school IDs
 
     try {
-        $sql = "UPDATE educators SET name = :name, phone_number = :phone, school = :school WHERE id = :id";
+        // Update educator information
+        $sql = "UPDATE educators SET name = :name, phone_number = :phone WHERE id = :id";
         $query = $dbh->prepare($sql);
         $query->bindParam(':name', $name, PDO::PARAM_STR);
         $query->bindParam(':phone', $phone, PDO::PARAM_STR);
-        $query->bindParam(':school', $school, PDO::PARAM_STR);
         $query->bindParam(':id', $id, PDO::PARAM_INT);
         $query->execute();
 
-        echo '<script>alert("Educator updated successfully."); window.location.href="educators.php";</script>';
+        // Assign schools
+        assignSchoolsToEducator($id, $schoolIds);
+
+        $_SESSION['toastr'] = ['type' => 'success', 'message' => 'Educator updated successfully.'];
+        header("Location: educators.php");
+        exit;
     } catch (PDOException $e) {
-        echo '<script>alert("Error updating educator: ' . $e->getMessage() . '");</script>';
+        $_SESSION['toastr'] = ['type' => 'error', 'message' => 'Error updating educator: ' . $e->getMessage()];
+        header("Location: educators.php");
+        exit;
     }
 }
+
+
 $form_submitted = false;
 if (isset($_POST['submit'])) {
     $required_fields = ['name', 'phone', 'emergency', 'email', 'gender', 'dob', 'location', 'school', 'password'];
@@ -82,7 +104,9 @@ if (isset($_POST['submit'])) {
     }
 
     if (!empty($missing_fields)) {
-        echo '<script>alert("Missing fields: '.implode(', ', $missing_fields).'")</script>';
+        $_SESSION['toastr'] = ['type' => 'warning', 'message' => 'Missing fields: '.implode(', ', $missing_fields)];
+        header("Location: educators.php");
+        exit;
     } else {
         $name = sanitize_input($_POST['name']);
         $phone = sanitize_input($_POST['phone']);
@@ -94,15 +118,71 @@ if (isset($_POST['submit'])) {
         $school = sanitize_input($_POST['school']);
         $password = $_POST['password']; // Will be hashed later
 
+        $profile_pic = ''; // Default empty value
+
+        // Handle file upload
+        if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] == 0) {
+            $allowed = array("jpg" => "image/jpg", "jpeg" => "image/jpeg", "gif" => "image/gif", "png" => "image/png");
+            $filename = $_FILES["profile_pic"]["name"];
+            $filetype = $_FILES["profile_pic"]["type"];
+            $filesize = $_FILES["profile_pic"]["size"];
+    
+            // Verify file extension
+            $ext = pathinfo($filename, PATHINFO_EXTENSION);
+            if (!array_key_exists($ext, $allowed)) {
+                $_SESSION['toastr'] = ['type' => 'error', 'message' => 'Error: Please select a valid file format.'];
+                header("Location: educators.php");
+                exit;
+            }
+    
+            // Verify file size - 1MB maximum
+            $maxsize = 1 * 1024 * 1024;
+            if ($filesize > $maxsize) {
+                $_SESSION['toastr'] = ['type' => 'error', 'message' => 'Error: File size is larger than the allowed limit.'];
+                header("Location: educators.php");
+                exit;
+            }
+    
+            // Verify MIME type of the file
+            if (in_array($filetype, $allowed)) {
+                // Generate a unique filename to prevent overwriting
+                $new_filename = uniqid() . '.' . $ext;
+                $upload_path = "uploads/" . $new_filename;
+                
+                if (move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $upload_path)) {
+                    $profile_pic = $upload_path;
+                    error_log("File uploaded successfully: " . $profile_pic);
+                } else {
+                    error_log("Failed to move uploaded file. Error: " . error_get_last()['message']);
+                    $_SESSION['toastr'] = ['type' => 'error', 'message' => 'Error: Failed to save the uploaded file.'];
+                    header("Location: educators.php");
+                    exit;
+                }
+            } else {
+                $_SESSION['toastr'] = ['type' => 'error', 'message' => 'Error: There was a problem uploading your file. Please try again.'];
+                header("Location: educators.php");
+                exit;
+            }
+        }
+
         // Validate inputs
         if (!validate_name($name)) {
-            echo '<script>alert("Invalid name format.")</script>';
+            error_log("Invalid name format: " . $name);
+            $_SESSION['toastr'] = ['type' => 'error', 'message' => 'Invalid name format.'];
+            header("Location: educators.php");
+            exit;
         } elseif (!validate_phone($phone)) {
-            echo '<script>alert("Invalid phone number format. Must be 10 digits.")</script>';
+            $_SESSION['toastr'] = ['type' => 'error', 'message' => 'Invalid phone number format. Must be 10 digits.'];
+            header("Location: educators.php");
+            exit;
         } elseif (!validate_phone($emerg_phone)) {
-            echo '<script>alert("Invalid emergency phone number format. Must be 10 digits.")</script>';
+            $_SESSION['toastr'] = ['type' => 'error', 'message' => 'Invalid emergency phone number format. Must be 10 digits.'];
+            header("Location: educators.php");
+            exit;
         } elseif (!validate_email($email)) {
-            echo '<script>alert("Invalid email format.")</script>';
+            $_SESSION['toastr'] = ['type' => 'error', 'message' => 'Invalid email format.'];
+            header("Location: educators.php");
+            exit;
         } else {
             try {
                 // Check if the email or phone number already exists
@@ -118,11 +198,11 @@ if (isset($_POST['submit'])) {
 
                     // Hash the password
                     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                    $username = strtolower(explode(' ', $name)[0]); // First word of the name
 
                     // Insert the new educator's details
-                    $sql = "INSERT INTO educators(name, gender, phone_number, emergency_contact, email, dob, location, school) VALUES (:name, :gender, :phone, :emerg_phone, :email, :dob, :location, :school)";
+                    $sql = "INSERT INTO educators(name, gender, phone_number, emergency_contact, email, dob, location, school_id, profile_pic) VALUES (:name, :gender, :phone, :emerg_phone, :email, :dob, :location, :school, :profile_pic)";
                     $query = $dbh->prepare($sql);
+
                     $query->bindParam(':name', $name, PDO::PARAM_STR);
                     $query->bindParam(':gender', $gender, PDO::PARAM_STR);
                     $query->bindParam(':phone', $phone, PDO::PARAM_STR);
@@ -131,76 +211,99 @@ if (isset($_POST['submit'])) {
                     $query->bindParam(':dob', $dob, PDO::PARAM_STR);
                     $query->bindParam(':location', $location, PDO::PARAM_STR);
                     $query->bindParam(':school', $school, PDO::PARAM_STR);
-                    $query->execute();
+                    $query->bindParam(':profile_pic', $profile_pic, PDO::PARAM_STR);
+                    
+                    error_log("Profile pic path before insert: " . $profile_pic);
 
-                    $educator_id = $dbh->lastInsertId();
+                    if ($query->execute()) {
+                        error_log("Educator inserted successfully with profile pic: " . $profile_pic);
+                        $educator_id = $dbh->lastInsertId();
 
-                    // Insert into users table
-                    $sql = "INSERT INTO users(username, password, role) VALUES (:username, :password, 'educator')";
-                    $query = $dbh->prepare($sql);
-                    $query->bindParam(':username', $username, PDO::PARAM_STR);
-                    $query->bindParam(':password', $hashed_password, PDO::PARAM_STR);
-                    $query->execute();
+                        // Insert into users table
+                        $sql = "INSERT INTO users(email, password, role) VALUES (:email, :password, 'educator')";
+                        $query = $dbh->prepare($sql);
+                        $query->bindParam(':email', $email, PDO::PARAM_STR);
+                        $query->bindParam(':password', $hashed_password, PDO::PARAM_STR);
+                        $query->execute();
 
-                    $dbh->commit();
-                    echo '<script>
-                    alert("Educator detail has been added.");
-                    window.location.href = "educators.php";
-                    </script>';
+                        $dbh->commit();
+                        
+                        $_SESSION['toastr'] = ['type' => 'success', 'message' => 'Educator detail has been added.'];
+                        header("Location: educators.php");
+                        exit;
+                    } else {
+                        error_log("Failed to insert educator. Error: " . implode(", ", $query->errorInfo()));
+                        throw new PDOException("Failed to insert educator.");
+                    }
                 } else {
-                    echo '<script>alert("Email or Mobile Number already exists. Please try again");
-                    window.location.href = "educators.php";</script>';
+                    $_SESSION['toastr'] = ['type' => 'warning', 'message' => 'Email or Mobile Number already exists. Please try again.'];
+                    header("Location: educators.php");
+                    exit;
                 }
             } catch (PDOException $e) {
                 $dbh->rollBack();
-                echo '<script>alert("Database error occurred: ' . $e->getMessage() . '");</script>';
-                error_log($e->getMessage(), 3, '/var/tmp/my-errors.log');
+                $_SESSION['toastr'] = ['type' => 'error', 'message' => 'Database error occurred: ' . $e->getMessage()];
+                error_log("Database error: " . $e->getMessage());
+                header("Location: educators.php");
+                exit;
             }
         }
     }
 }
 
-
 // Fetch data from the database
 // Pagination
 $recordsPerPage = 10;
+
+
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 $offset = ($page - 1) * $recordsPerPage;
 
-// Fetch all schools
-$schoolQuery = $dbh->query("SELECT DISTINCT school FROM educators ORDER BY school");
-$schools = $schoolQuery->fetchAll(PDO::FETCH_COLUMN);
+
+// Fetch distinct schools for sorting dropdown
+$schoolQuery = $dbh->query("
+    SELECT DISTINCT s.school_name, s.id
+    FROM educators e
+    JOIN schools s ON e.school_id = s.id
+    ORDER BY s.school_name
+");
+$schools = $schoolQuery->fetchAll(PDO::FETCH_ASSOC);
 
 // Handle sorting
-$sortSchool = isset($_GET['sort_school']) ? $_GET['sort_school'] : '';
+$sortSchool = isset($_GET['sort_school']) ? (int)$_GET['sort_school'] : 0;
 $sortOrder = isset($_GET['sort_order']) && $_GET['sort_order'] === 'desc' ? 'DESC' : 'ASC';
 $isSorting = isset($_GET['sort_school']) || isset($_GET['sort_order']);
 
-// Construct the main query
-$sql = "SELECT * FROM educators";
-$countSql = "SELECT COUNT(*) FROM educators";
-$params = array();
+// Base SQL queries
+$sql = "SELECT e.*, s.school_name 
+        FROM educators e
+        JOIN schools s ON e.school_id = s.id";
+$countSql = "SELECT COUNT(*) FROM educators e JOIN schools s ON e.school_id = s.id";
 
+// Filter by school if sorting is applied
+$whereConditions = [];
+$params = [];
 if ($sortSchool) {
-    $sql .= " WHERE school = :sort_school";
-    $countSql .= " WHERE school = :sort_school";
+    $whereConditions[] = "e.school_id = :sort_school";
     $params[':sort_school'] = $sortSchool;
 }
 
+if (!empty($whereConditions)) {
+    $sql .= " WHERE " . implode(" AND ", $whereConditions);
+    $countSql .= " WHERE " . implode(" AND ", $whereConditions);
+}
+
+// Handle sorting
 if ($isSorting) {
-    if ($sortSchool) {
-        $sql .= " ORDER BY school $sortOrder, id DESC";
-    } else {
-        $sql .= " ORDER BY id DESC";
-    }
+    $sql .= " ORDER BY s.school_name $sortOrder, e.id DESC";
 } else {
-    $sql .= " ORDER BY id DESC";  // Default sorting
+    $sql .= " ORDER BY e.id DESC";
 }
 
 // Fetch total number of educators (with filter applied if any)
 $countQuery = $dbh->prepare($countSql);
-if ($sortSchool) {
-    $countQuery->bindParam(':sort_school', $sortSchool, PDO::PARAM_STR);
+foreach ($params as $key => $value) {
+    $countQuery->bindParam($key, $value, PDO::PARAM_INT);
 }
 $countQuery->execute();
 $total = $countQuery->fetchColumn();
@@ -212,12 +315,17 @@ $sql .= " LIMIT :offset, :limit";
 // Prepare and execute the main query
 $query = $dbh->prepare($sql);
 foreach ($params as $key => $value) {
-    $query->bindValue($key, $value, PDO::PARAM_STR);
+    $query->bindParam($key, $value, PDO::PARAM_INT);
 }
 $query->bindParam(':offset', $offset, PDO::PARAM_INT);
 $query->bindParam(':limit', $recordsPerPage, PDO::PARAM_INT);
 $query->execute();
-$educators = $query->fetchAll(PDO::FETCH_OBJ); 
+$educators = $query->fetchAll(PDO::FETCH_OBJ);
+
+
+
+// var_dump($educators)
+
 ?> 
 
 <!DOCTYPE html>
@@ -228,15 +336,50 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
     <link rel="stylesheet" href="assets/css/adminDashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    
+    <link rel="manifest" href="assets/images/site.webmanifest">
+ 
     <title>Information Collection Form</title>
+    <style>
+
+.password-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-container input[type="password"],
+        .password-container input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .password-container ion-icon {
+            position: absolute;
+            right: 10px;
+            top: 74%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+        .btn{
+            margin-top: 5px;
+            padding: 5px 20px;
+        }
+    </style>
 </head>
+
 <body>
     <!-- Side bar -->
     <?php include_once('includes/side_bar.php'); ?>
     
     <!-- Main content space -->
     <div class="main-content">
-        <?php include_once('includes/header.php'); ?>
+        <!-- <?php include_once('includes/header.php'); ?> -->
         
         <div class="container mt-5">
             <!-- Add new educator button -->
@@ -253,14 +396,21 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
             <div class="form-container card p-4 d-none">
                 <h2>Educator's details</h2>
                 <form id="educatorForm" action="educators.php" method="post" enctype="multipart/form-data">
+                    <!-- Profile Picture -->
+                    <div class="form-group">
+                        <label for="profile-pic">Profile Picture</label>
+                        <input type="file" name="profile_pic" id="profile-pic" accept="image/*">
+                    </div>
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" id="name" name="name" placeholder="Enter your name" class="form-control" >
+                        <input type="text" id="name" name="name" placeholder="Enter your name" class="form-control" required >
                     </div>
-                    <div class="form-group">
+                    <div class="form-group password-container">
                        <label for="password">Password</label>
-                       <input type="password" id="password" name="password" class="form-control" >
+                       <input type="password" id="password" name="password" class="form-control" required>
+                       <ion-icon id="togglePassword" name="eye-off-outline"></ion-icon>
                     </div>
+
                     <div class="form-group">
                         <label for="gender">Gender</label>
                         <select id="gender" name="gender" class="form-control" >
@@ -271,7 +421,7 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
                     </div>
                     <div class="form-group">
                         <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" placeholder="Enter phone number" class="form-control" >
+                        <input type="tel" id="phone" name="phone" placeholder="Enter phone number" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="emergency">Emergency Contact</label>
@@ -293,9 +443,9 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
                         <label for="school">School</label>
                         <select id="school" name="school" class="form-control" >
                             <option value="">Select School</option>
-                            <option value="school1">School 1</option>
-                            <option value="school2">School 2</option>
-                            <option value="school3">School 3</option>
+                        <?php foreach (getSchoolsWP() as $school): ?>
+                <option value="<?= $school['id'] ?>"><?= $school['school_name'] ?></option>
+            <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="form-group d-flex justify-content-between">
@@ -309,12 +459,12 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
         <div class="form-group mr-2">
             <label for="sort_school" class="mr-2">Sort by School:</label>
             <select name="sort_school" id="sort_school" class="form-control">
-                <option value="">All Schools</option>
-                <?php foreach ($schools as $school): ?>
-                    <option value="<?php echo htmlspecialchars($school); ?>" <?php echo $sortSchool === $school ? 'selected' : ''; ?>>
-                        <?php echo htmlspecialchars($school); ?>
-                    </option>
-                <?php endforeach; ?>
+            <option value="">All Schools</option>
+    <?php foreach ($schools as $school): ?>
+        <option value="<?php echo $school['id']; ?>" <?php echo $sortSchool == $school['id'] ? 'selected' : ''; ?>>
+            <?php echo htmlspecialchars($school['school_name']); ?>
+        </option>
+    <?php endforeach; ?>
             </select>
         </div>
         <div class="form-group mr-2">
@@ -333,8 +483,10 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
                     <tr>
                         <th>Name</th>
                         <th>Phone Number</th>
+                        <th>Email</th>
                         <th>School</th>
                         <th>Action</th>
+                        <th>Profile Pic</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -343,7 +495,28 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
 <tr>
     <td><?php echo htmlspecialchars($educator->name); ?></td>
     <td><?php echo htmlspecialchars($educator->phone_number); ?></td>
-    <td><?php echo htmlspecialchars($educator->school); ?></td>
+    <td><?php echo htmlspecialchars($educator->email); ?></td>
+    <td>
+    <?php 
+    // Fetch assigned schools for this educator
+    $assignedSchools = getSchoolsByEducator($educator->id);
+    if (!empty($assignedSchools)) {
+        $schoolNames = array_map(function($school) {
+            return htmlspecialchars($school['school_name']);
+        }, $assignedSchools);
+        echo implode(', ', $schoolNames);
+    } else {
+        echo 'No schools assigned';
+    }
+    ?>
+    </td>
+    <td>
+    <?php if (!empty($educator->profile_pic)): ?>
+        <img src="<?php echo htmlspecialchars($educator->profile_pic); ?>" alt="Profile Picture" style="width: 50px; height: auto;">
+    <?php else: ?>
+        No Picture
+    <?php endif; ?>
+    </td>
     <td>
         <a href="educator_profile.php?id=<?php echo $educator->id; ?>" class="btn btn-info btn-sm">View</a>
         <button class="btn btn-primary btn-sm edit-btn" data-id="<?php echo $educator->id; ?>">Edit</button>
@@ -353,8 +526,9 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
         </form>
     </td>
 </tr>
+
 <!-- Edit Modal -->
-<div class="modal fade" id="editModal<?php echo $educator->id; ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?php echo $educator->id; ?>" aria-hidden="true">
+ <div class="modal fade" id="editModal<?php echo $educator->id; ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?php echo $educator->id; ?>" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -375,9 +549,30 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
                         <input type="tel" class="form-control" id="edit_phone<?php echo $educator->id; ?>" name="edit_phone" value="<?php echo htmlspecialchars($educator->phone_number); ?>" required>
                     </div>
                     <div class="form-group">
-                        <label for="edit_school<?php echo $educator->id; ?>">School</label>
-                        <input type="text" class="form-control" id="edit_school<?php echo $educator->id; ?>" name="edit_school" value="<?php echo htmlspecialchars($educator->school); ?>" required>
-                    </div>
+                    <label for="school-select-<?php echo htmlspecialchars($educator->id); ?>">Schools</label>
+                    <select id="school-select-<?php echo htmlspecialchars($educator->id); ?>" 
+                            name="school_ids[]" 
+                            class="form-control select2" 
+                            multiple>
+                        <?php
+                        // Fetch assigned schools for this educator
+                        $allSchools = getSchoolsWP(); // Assuming this function fetches all schools
+        
+                        // Fetch assigned schools for this educator
+                        $assignedSchools = getSchoolsByEducator($educator->id);
+                        $assignedSchoolIds = array_map(fn($school) => $school['id'], $assignedSchools);
+                
+                        foreach ($allSchools as $school) {
+                            $isSelected = in_array($school['id'], $assignedSchoolIds) ? 'selected' : '';
+                            ?>
+                            <option value="<?php echo htmlspecialchars($school['id']); ?>" <?php echo $isSelected; ?>>
+                                <?php echo htmlspecialchars($school['school_name']); ?>
+                            </option>
+                        <?php }
+                        
+                        ?>
+                    </select>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -387,6 +582,7 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
         </div>
     </div>
 </div>
+
 
 
 
@@ -436,29 +632,56 @@ $educators = $query->fetchAll(PDO::FETCH_OBJ);
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="assets/js/educators.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+  
+
     <script>
+
+<?php if (isset($_SESSION['toastr'])): ?>
+    toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": true,
+    "positionClass": "toast-top-right",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+};
+        toastr.<?php echo $_SESSION['toastr']['type']; ?>('<?php echo $_SESSION['toastr']['message']; ?>');
+        <?php unset($_SESSION['toastr']); // Clear the session after displaying the message ?>
+    <?php endif; ?>
 
 $(document).ready(function() {
     $('.edit-btn').click(function() {
         var id = $(this).data('id');
         $('#editModal' + id).modal('show');
     });
+
+    // using seslect2 
+    <?php foreach ($educators as $educator): ?>
+        $('#school-select-<?php echo $educator->id; ?>').select2({
+            placeholder: "Select schools",
+            allowClear: true,
+            theme: "classic"
+        });
+    <?php endforeach; ?>
+
 });
 
-// document.addEventListener('DOMContentLoaded', function() {
-//     const sortSchool = document.getElementById('sort_school');
-//     const sortOrder = document.getElementById('sort_order');
-//     const sortForm = sortSchool.closest('form');
 
-//     sortSchool.addEventListener('change', function() {
-//         sortForm.submit();
-//     });
-
-//     sortOrder.addEventListener('change', function() {
-//         sortForm.submit();
-//     });
-// });
 
 document.addEventListener('DOMContentLoaded', function() {
     const sortForm = document.querySelector('.sorting-controls form');
@@ -470,6 +693,23 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+
+passwordVisibility('togglePassword')
+
+function passwordVisibility(id){
+   document.getElementById(id).addEventListener('click', function () {
+        const passwordField = document.getElementById('password');
+        const icon = this;
+
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            icon.setAttribute('name', 'eye-outline'); // Change icon to closed eye
+        } else {
+            passwordField.type = 'password';
+            icon.setAttribute('name', 'eye-off-outline'); // Change icon to open eye
+        }
+    });  
+    }
     </script>
 </body>
 </html>

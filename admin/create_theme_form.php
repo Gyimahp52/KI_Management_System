@@ -1,3 +1,4 @@
+<!--create_theme_form.php-->
 <form method="POST">
     <div class="form-group">
         <input type="text" name="theme_name" class="form-control" placeholder="Theme Name" required>

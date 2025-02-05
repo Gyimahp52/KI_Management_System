@@ -1,13 +1,7 @@
 <?php
+include('includes/auth.php');
 include 'function.php';
 include 'includes/dbconnection.php';
-
-
-
-$sql1 ="SELECT * from educators";
-$query1 = $dbh->prepare($sql1);
-$query1->execute();
-$educators = $query1->fetchAll(PDO::FETCH_OBJ);
 ?>
 
 <!DOCTYPE html>
@@ -15,10 +9,15 @@ $educators = $query1->fetchAll(PDO::FETCH_OBJ);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>School Management System</title>
+    <title>Student Page</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/adminDashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<!-- favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png">
+    <link rel="manifest" href="assets/images/site.webmanifest">
 </head>
 <body>
 
@@ -45,12 +44,6 @@ $educators = $query1->fetchAll(PDO::FETCH_OBJ);
             <input type="text" name="schoolName" placeholder="School Name" required class="form-control mb-2">
             <input type="text" name="region" placeholder="Region" required class="form-control mb-2">
             <input type="text" name="town" placeholder="Town" required class="form-control mb-2">
-            <select name="educator" required class="form-control mb-2">
-                <option value="">Select Educator</option>
-                <?php foreach ($educators as $educator): ?>
-                    <option value="<?= $educator->id ?>"><?= $educator->name ?></option>
-                <?php endforeach; ?>
-            </select>
             <input type="file" name="logo" class="form-control mb-2">
             <button type="submit" class="btn btn-success">Create School</button>
         </form>
@@ -62,7 +55,7 @@ $educators = $query1->fetchAll(PDO::FETCH_OBJ);
         <form onsubmit="createClass(event)">
             <select name="schoolId" required class="form-control mb-2">
                 <option value="">Select School</option>
-                <?php foreach (getSchools() as $school): ?>
+                <?php foreach (getSchoolsWP() as $school): ?>
                     <option value="<?= $school['id'] ?>"><?= $school['school_name'] ?></option>
                 <?php endforeach; ?>
             </select>
@@ -79,37 +72,32 @@ $educators = $query1->fetchAll(PDO::FETCH_OBJ);
     <ul class="pagination"></ul>
 </nav>
 </div>
-<!-- <div class="mb-3">
-            <button class="btn btn-primary" onclick="showTable('schools')">Schools</button>
-            <button class="btn btn-primary" onclick="showTable('classes')">Classes</button>
-        </div>
-<div id="tableContainer"></div>
-<nav>
-    <ul class="pagination"></ul>
-</nav> -->
 
-<!-- EDIT MODAL -->
-<div class="modal fade" id="editStudentModal" tabindex="-1" role="dialog" aria-labelledby="editStudentModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editStudentModalLabel">Edit Student</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="editStudentForm" onsubmit="updateStudent(event)">
-                    <!-- Form fields will be dynamically populated -->
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script>
+    toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": true,
+    "positionClass": "toast-top-right",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+};
+
 function showForm(formId) {
     const schoolForm = document.getElementById('schoolForm');
     const classForm = document.getElementById('classForm');
@@ -127,7 +115,7 @@ function showForm(formId) {
     tabs.forEach(tab => {
         tab.classList.remove('active');
     });
-    // document.querySelector(`.nav-link[onclick="showForm('${formId}')"]`).classList.add('active');
+   
     document.querySelector(`.nav-link[onclick="showForm('${formId}')"]`).classList.add('active');
 }
 
@@ -142,13 +130,16 @@ function createSchool(event) {
         processData: false,
         contentType: false,
         success: function(response) {
-            alert(response);
-            if (response.includes("successfully")) {
+            // alert(response);
+            if (response.success) {
+                toastr.success(response.message);
                 // Reset the form
                 $('#schoolForm form')[0].reset();
                 // Clear the file input
                 $('#schoolForm input[type="file"]').val('');
                 showTable('schools');
+            }else{
+                toastr.error(response.message || 'An error occured while creating school')
             }
         }
     });
@@ -159,14 +150,73 @@ function createClass(event) {
     const schoolId = event.target.schoolId.value;
     const className = event.target.className.value;
     $.post('ajax_handlers.php', { action: 'createClass', schoolId: schoolId, name: className }, function(response) {
-        alert(response);
-        if (response.includes("successfully")) {
-            // Reset the form
+        if(response.success){
+            toastr.success(response.message);
             $('#classForm form')[0].reset();
             showTable('classes');
+        }else{
+            toastr.error(response.message || 'failed to create class successfully')
         }
+
     });
 }
+
+function deleteSchool(schoolId) {
+        if (confirm("Are you sure you want to delete this school?")) {
+            $.post('ajax_handlers.php', { action: 'deleteSchool', schoolId: schoolId }, function(response) {
+                if(response.success){
+                    toastr.success(response.message);
+                    showTable('schools');
+                }else{
+                    toastr.error(saveResponse.message || 'An error occurred while deleting the school');
+                }
+            });
+        }
+    }
+// TODO: add the form to populate
+function editSchool(schoolId) {
+        const newName = prompt("Enter new school name:");
+        if (newName) {
+            $.post('ajax_handlers.php', { action: 'updateSchool', schoolId: schoolId, name: newName }, function(response) {
+                if(response.success){
+                    toastr.success(response.message);
+                   showTable('schools'); 
+                }else{
+                    toastr.error(saveResponse.message || 'An error occurred while updating school the school');  
+                }
+                
+            });
+        }
+    }
+
+// FIXME: add the form to populate
+function editClass(classId) {
+        const newName = prompt("Enter new class name:");
+        if (newName) {
+            $.post('ajax_handlers.php', { action: 'updateClass', classId: classId, name: newName }, function(response) {
+                if(response.success){
+                    showTable('classes');
+                }
+            
+                
+            });
+        }
+    }
+
+    function deleteClass(classId) {
+        if (confirm("Are you sure you want to delete this class?")) {
+            $.post('ajax_handlers.php', { action: 'deleteClass', classId: classId }, function(response) {
+                if(response.success){
+                    toastr.success(response.message);
+                    showTable('classes');
+                }else{
+                    toastr.error(saveResponse.message || 'An error occurred while deleting the class');
+                }
+
+            });
+        }
+    }
+
 
 function showTable(type, page = 1) {
     $.get('ajax_handlers.php', { action: 'getTable', type: type, page: page }, function(response) {

@@ -1,3 +1,4 @@
+<!--//assigned_themes_table.php-->
 <div class="table-responsive">
     <table class="table table-bordered">
         <thead>
