@@ -1,0 +1,2660 @@
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarf
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 08669f591233ee34b3612f52c086181de1992eb5af9847a02e5b29d3d534124e
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 5c838a50466902b37c619ffa63e40dc70a74923e1f2bd911eaf5848cb4885889
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => EL48916
+    [role] => student
+    [token] => 7280ec9fee6d7dff873b5f54ce350d573408640bf577db560f629d3ac542ad54
+)
+
+Looking up student_id: EL48916
+Query results: Array
+(
+    [student_id] => EL48916
+    [class_id] => 174
+    [name] => Ambrose Sarfo
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E107
+    [role] => student
+    [token] => 4baaf5cb3d9231b85016a606f1de43181d3831dd9a7653527194348c13ed802e
+)
+
+Looking up student_id: 0000E107
+Query results: Array
+(
+    [student_id] => 0000E107
+    [class_id] => 48
+    [name] => Fareed Ismail Muda
+    [dob] => 0000-00-00
+    [gender] => Male
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 135
+    [weight] => 30
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E54
+    [role] => student
+    [token] => 69d0b937e63b638b3adc9a7e7471b35c16fa7936811f85da00bbe3263a67bb05
+)
+
+Looking up student_id: 0000E54
+Query results: Array
+(
+    [student_id] => 0000E54
+    [class_id] => 41
+    [name] => Issah Ali
+    [dob] => 0000-00-00
+    [gender] => Male
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 105
+    [weight] => 16
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E54
+    [role] => student
+    [token] => 69d0b937e63b638b3adc9a7e7471b35c16fa7936811f85da00bbe3263a67bb05
+)
+
+Looking up student_id: 0000E54
+Query results: Array
+(
+    [student_id] => 0000E54
+    [class_id] => 41
+    [name] => Issah Ali
+    [dob] => 0000-00-00
+    [gender] => Male
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 105
+    [weight] => 16
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E54
+    [role] => student
+    [token] => b524188d8322495f7220e06fdb0a4d00a59e204ac9714b3f4103e04813514cf7
+)
+
+Looking up student_id: 0000E54
+Query results: Array
+(
+    [student_id] => 0000E54
+    [class_id] => 41
+    [name] => Issah Ali
+    [dob] => 0000-00-00
+    [gender] => Male
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 105
+    [weight] => 16
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E54
+    [role] => student
+    [token] => cd68aafdaf83f121cba8b6c18d1d233a66d7587bf9260dcb59ce7d7c8943b22f
+)
+
+Looking up student_id: 0000E54
+Query results: Array
+(
+    [student_id] => 0000E54
+    [class_id] => 41
+    [name] => Issah Ali
+    [dob] => 0000-00-00
+    [gender] => Male
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 105
+    [weight] => 16
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E107
+    [role] => student
+    [token] => a29aeea0fc0c5827671205b64e94f36126c8c6f651500b81e486072a14c9e1af
+)
+
+Looking up student_id: 0000E107
+Query results: Array
+(
+    [student_id] => 0000E107
+    [class_id] => 48
+    [name] => Fareed Ismail Muda
+    [dob] => 0000-00-00
+    [gender] => Male
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 135
+    [weight] => 30
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E54
+    [role] => student
+    [token] => 33bb9c4e4d7e5523ff5542945a0f2da01c3ffa2c0597f2a0a5be2c651d957321
+)
+
+Looking up student_id: 0000E54
+Query results: Array
+(
+    [student_id] => 0000E54
+    [class_id] => 41
+    [name] => Issah Ali
+    [dob] => 0000-00-00
+    [gender] => Male
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 105
+    [weight] => 16
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E107
+    [role] => student
+    [token] => 5fb076680005eebc3bd4148183f0cedd893687ec14972c73b196e405a610de18
+)
+
+Looking up student_id: 0000E107
+Query results: Array
+(
+    [student_id] => 0000E107
+    [class_id] => 48
+    [name] => Fareed Ismail Muda
+    [dob] => 0000-00-00
+    [gender] => Male
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 135
+    [weight] => 30
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E107
+    [role] => student
+    [token] => d334fa7553d414d700a291df095e91a91311e43301261a81dc86188dd2f161b2
+)
+
+Looking up student_id: 0000E107
+Query results: Array
+(
+    [student_id] => 0000E107
+    [class_id] => 48
+    [name] => Fareed Ismail Muda
+    [dob] => 0000-00-00
+    [gender] => Male
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 135
+    [weight] => 30
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E125
+    [role] => student
+    [token] => 8102a46507b44ef1777646d00c4d4ce0a8dda09242cb588a162fea931c201449
+)
+
+Looking up student_id: 0000E125
+Query results: Array
+(
+    [student_id] => 0000E125
+    [class_id] => 54
+    [name] => Pelaiah Baffi
+    [dob] => 0000-00-00
+    [gender] => Male
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 100
+    [weight] => 16
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E125
+    [role] => student
+    [token] => 8102a46507b44ef1777646d00c4d4ce0a8dda09242cb588a162fea931c201449
+)
+
+Looking up student_id: 0000E125
+Query results: Array
+(
+    [student_id] => 0000E125
+    [class_id] => 54
+    [name] => Pelaiah Baafi Asamoah 
+    [dob] => 2020-03-02
+    [gender] => Male
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 100
+    [weight] => 16
+    [parent_name] => Emmanuel Asamoah 
+    [parent_phone] => 0247677351/024545327
+    [parent_whatsapp] => 0247677351
+    [parent_email] => asamoah667@gmail.com
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E88
+    [role] => student
+    [token] => 573d008563dffa787d06e071119cdd1de6e9a4b6fd7c49316623c7e1d5faef8f
+)
+
+Looking up student_id: 0000E88
+Query results: Array
+(
+    [student_id] => 0000E88
+    [class_id] => 46
+    [name] => Lawrence Ridley
+    [dob] => 0000-00-00
+    [gender] => Male
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 130
+    [weight] => 25
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E34
+    [role] => student
+    [token] => 2d3f82ea9c31ffe34742ff48c9e2f251e7d7dab308861f0061497699750cdbdb
+)
+
+Looking up student_id: 0000E34
+Query results: Array
+(
+    [student_id] => 0000E34
+    [class_id] => 51
+    [name] => Shidaa Tei-Mensah
+    [dob] => 0000-00-00
+    [gender] => Male
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 105
+    [weight] => 20
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E367
+    [role] => student
+    [token] => a7ffc911f990049b410f5dd039f62fb8b843572b18b1a58a669b35dc1241807a
+)
+
+Looking up student_id: 0000E367
+Query results: Array
+(
+    [student_id] => 0000E367
+    [class_id] => 50
+    [name] => Muntari Kamel
+    [dob] => 0000-00-00
+    [gender] => Male
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 110
+    [weight] => 20
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E322
+    [role] => student
+    [token] => fd9dfb16404ffe4ec31550e8430617845fc921921f8f047ab4f9d62e8f759e8c
+)
+
+Looking up student_id: 0000E322
+Query results: Array
+(
+    [student_id] => 0000E322
+    [class_id] => 49
+    [name] => Ruel Atiapah Addington
+    [dob] => 0000-00-00
+    [gender] => Male
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 145
+    [weight] => 40
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E322
+    [role] => student
+    [token] => 3f3a2ce93cc005d8fb55f7a6519eefd970a98046311e609c392db8e82368442b
+)
+
+Looking up student_id: 0000E322
+Query results: Array
+(
+    [student_id] => 0000E322
+    [class_id] => 49
+    [name] => Ruel Atiapah Addington
+    [dob] => 0000-00-00
+    [gender] => Male
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 145
+    [weight] => 40
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E463
+    [role] => student
+    [token] => 68a6489efd98f206a6155b09fe373e648f1a626dac753accabf3d2d5c90eb41e
+)
+
+Looking up student_id: 0000E463
+Query results: Array
+(
+    [student_id] => 0000E463
+    [class_id] => 174
+    [name] => Abdul Aziz Matin
+    [dob] => 0000-00-00
+    [gender] => Male
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E464
+    [role] => student
+    [token] => ed8b4c119521da9cf1fa1160890ffc613d9ba3fc22078921355c25131d5ba729
+)
+
+Looking up student_id: 0000E464
+Query results: Array
+(
+    [student_id] => 0000E464
+    [class_id] => 46
+    [name] => Wahab Matin
+    [dob] => 0000-00-00
+    [gender] => Male
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 130
+    [weight] => 30
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E322
+    [role] => student
+    [token] => cb9920b633dc86641a9211d620d9e12d4b95fe6732b3c28839eb5ee5c5268a1c
+)
+
+Looking up student_id: 0000E322
+Query results: Array
+(
+    [student_id] => 0000E322
+    [class_id] => 49
+    [name] => Ruel Atiapah Addington
+    [dob] => 0000-00-00
+    [gender] => Male
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 145
+    [weight] => 40
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E471
+    [role] => student
+    [token] => eb17df8edcd2143f8d1c2dafcade298a0bddecdd951ef5a13542bee88bac28b9
+)
+
+Looking up student_id: 0000E471
+Query results: Array
+(
+    [student_id] => 0000E471
+    [class_id] => 47
+    [name] => Fredericka Adepa Afriyie
+    [dob] => 2015-06-30
+    [gender] => Female
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 135
+    [weight] => 36
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E324
+    [role] => student
+    [token] => 60868b89e313069c0eb0a3b1c5b6eac0f351481f8ef41cee6ef40d424f2dad69
+)
+
+Looking up student_id: 0000E324
+Query results: Array
+(
+    [student_id] => 0000E324
+    [class_id] => 174
+    [name] => Inaaya Mohammed
+    [dob] => 0000-00-00
+    [gender] => 
+    [hand] => 
+    [foot] => 
+    [eye_sight] => 
+    [medical_condition] => 
+    [height] => 0
+    [weight] => 0
+    [parent_name] => 
+    [parent_phone] => 
+    [parent_whatsapp] => 
+    [parent_email] => frimpong@kiedu.net
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E80
+    [role] => student
+    [token] => bf5ae0b0514f74ed65b625c8d9d6dbb8b29afcf5adef35976108fcdc9f80211a
+)
+
+Looking up student_id: 0000E80
+Query results: Array
+(
+    [student_id] => 0000E80
+    [class_id] => 50
+    [name] => Aseda Sarpomaa
+    [dob] => 0000-00-00
+    [gender] => Female
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 100
+    [weight] => 20
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E59
+    [role] => student
+    [token] => 5f650571245c9d9da9e6645280b0e0caab0b7e68f8dfbf4f0699bf74fa42e01f
+)
+
+Looking up student_id: 0000E59
+Query results: Array
+(
+    [student_id] => 0000E59
+    [class_id] => 45
+    [name] => Kojo Amantuo Asiedu
+    [dob] => 0000-00-00
+    [gender] => Male
+    [hand] => Left
+    [foot] => Left
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 125
+    [weight] => 24
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E394
+    [role] => student
+    [token] => 0263a44f61fa4c1edbb77943ea4d98bc956ce78dd6ffb6e8e84980ab7d355cdf
+)
+
+Looking up student_id: 0000E394
+Query results: Array
+(
+    [student_id] => 0000E394
+    [class_id] => 52
+    [name] => Kawsar Mohammed
+    [dob] => 0000-00-00
+    [gender] => Female
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 94
+    [weight] => 10
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E181
+    [role] => student
+    [token] => 5e4f6b6ae54cd2b5918d4e988b5f74a3547ade6d7fc109dcfd65923aed9919a8
+)
+
+Looking up student_id: 0000E181
+Query results: Array
+(
+    [student_id] => 0000E181
+    [class_id] => 47
+    [name] => Rawsan Sungumu Siitah
+    [dob] => 0000-00-00
+    [gender] => Male
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 130
+    [weight] => 26
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E125
+    [role] => student
+    [token] => 2e37280058d3bd4cb1df1cc7236e050ba36f906b2900f94f31dd90938bf7111a
+)
+
+Looking up student_id: 0000E125
+Query results: Array
+(
+    [student_id] => 0000E125
+    [class_id] => 54
+    [name] => Pelaiah Baafi Asamoah 
+    [dob] => 2020-03-02
+    [gender] => Male
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 100
+    [weight] => 16
+    [parent_name] => Emmanuel Asamoah 
+    [parent_phone] => 0247677351/024545327
+    [parent_whatsapp] => 0247677351
+    [parent_email] => asamoah667@gmail.com
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E168
+    [role] => student
+    [token] => 2373df1c804a264a348e0b4f7f4e3c8731ba54f8cfc09ab995fdf53f6dba32ab
+)
+
+Looking up student_id: 0000E168
+Query results: Array
+(
+    [student_id] => 0000E168
+    [class_id] => 44
+    [name] => Asomoah A. Akomah
+    [dob] => 0000-00-00
+    [gender] => Male
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 120
+    [weight] => 20
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E269
+    [role] => student
+    [token] => ef65b8173def9dace1280cd31424e45ff43738f2e90e45037b6947745a82f10b
+)
+
+Looking up student_id: 0000E269
+Query results: Array
+(
+    [student_id] => 0000E269
+    [class_id] => 41
+    [name] => Sadia Ibrahim
+    [dob] => 0000-00-00
+    [gender] => Male
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 98
+    [weight] => 15
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E353
+    [role] => student
+    [token] => 1479e421590d3adaf7ebe3d882adb168561397f737b7d6fda200926e1535d3bc
+)
+
+Looking up student_id: 0000E353
+Query results: Array
+(
+    [student_id] => 0000E353
+    [class_id] => 51
+    [name] => Yakub Ali Abubakar
+    [dob] => 0000-00-00
+    [gender] => Male
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 103
+    [weight] => 20
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+
+Session data: Array
+(
+    [user_username] => 0000E420
+    [role] => student
+    [token] => 766cff7a9006968ac839f1388024a8755bb477b237387c93bf7f9528c07938e6
+)
+
+Looking up student_id: 0000E420
+Query results: Array
+(
+    [student_id] => 0000E420
+    [class_id] => 53
+    [name] => Chukwukadibia Daniel
+    [dob] => 0000-00-00
+    [gender] => Male
+    [hand] => Right
+    [foot] => Right
+    [eye_sight] => null
+    [medical_condition] => 
+    [height] => 100
+    [weight] => 14
+    [parent_name] => null
+    [parent_phone] => null
+    [parent_whatsapp] => null
+    [parent_email] => null
+    [passport_picture] => 
+)
+

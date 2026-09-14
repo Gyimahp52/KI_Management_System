@@ -148,50 +148,11 @@ unset($_SESSION['welcome_message']);
         </div>
 
        
-    
+
     </div>
 
 
 </div>
-
-
-<!-- Modal Overlay, initially hidden -->
-<!--<div id="modalOverlay" class="modal-overlay" style="display: none;">
-    <div id="modalContent" class="modal-content">
-        <div class="signup-container">
-           
-            <form id="signup-form">
-              <h2>Add User Form</h2>
-              <div class="input-group">
-                <i class="icon-user"></i>
-                <input type="text" placeholder="Enter Username" name="username" required>
-              </div>
-              <div class="input-group">
-                <i class="icon-lock"></i>
-                <input type="password" placeholder="Create Password" name="password" required>
-              </div>
-              <div class="input-group">
-                <i class="icon-lock"></i>
-                <input type="password" placeholder="Retype Password" name="confirm_password" required>
-              </div>
-              <div class="input-group">
-                <select name="user_type" required>
-                  <option value="" disabled selected>Select role</option>
-                  <option value="admin">Admin</option>
-                  <option value="user">Educator</option>
-                  <option value="accountant">Accountant</option>
-                </select>
-              </div>
-              <button type="submit">Add</button>
-            </form>
-          </div>
-    </div> 
-</div> -->
-
-
-
-
-
 
  
 <script src="assets/js/adminDashboard.js"></script>

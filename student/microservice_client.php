@@ -24,28 +24,6 @@ class MicroserviceClient
         }
     }
 
-    /**
-     * Get PDF queue status 
-     * @return array 
-     */
-    public function getPdfQueueStatus()
-    {
-        $url = $this->baseUrl . '/api/pdf-queue/status';
-        $response = $this->makeApiCall($url, 'GET');
-        return $response['data'] ?? $response;
-    }
-
-    /**
-     * Clear PDF queue (NEW METHOD)
-     * @return array Response
-     */
-    public function clearPdfQueue()
-    {
-        $url = $this->baseUrl . '/api/pdf-queue/clear';
-        $response = $this->makeApiCall($url, 'POST');
-        return $response['data'] ?? $response;
-    }
-
     public function sendWhatsAppMessage($studentId, $termId)
     {
         $url = $this->whatsappUrl . '/send-whatsapp'; // Direct send (bypasses queue)
@@ -64,7 +42,7 @@ class MicroserviceClient
     }
 
     /**
-     * Add students to the queue for bulk sending 
+     * Add students to the queue for bulk sending (NEW METHOD)
      * @param array $studentIds Array of student IDs
      * @param string $termId Term ID
      * @return array Response from the microservice

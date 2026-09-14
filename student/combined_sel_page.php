@@ -512,43 +512,8 @@ $view = isset($_GET['view']) ? $_GET['view'] : 'enter'; // Default view is 'ente
                 </table>
             </div>
             <input type="hidden" name="term_id" value="<?php echo $term_id; ?>">
-
-            <!-- Queue Status Badge -->
-            <div id="queue-status-badge"
-                style="margin: 15px 0; padding: 12px 20px; background: #f3f4f6; border-radius: 8px; display: none; align-items: center; gap: 10px;">
-                <div
-                    style="width: 12px; height: 12px; background: #10b981; border-radius: 50%; animation: pulse 2s infinite;">
-                </div>
-                <span id="queue-status-text" style="font-weight: 500; color: #374151;">Queue Active: 0/0 (0%)</span>
-            </div>
-            <style>
-            @keyframes pulse {
-
-                0%,
-                100% {
-                    opacity: 1;
-                }
-
-                50% {
-                    opacity: 0.5;
-                }
-            }
-            </style>
-
-            <div style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
-                <button id="bulk-generate" class="action-button"
-                    style="background: #3b82f6; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Generate
-                    Selected PDFs</button>
-                <button id="bulk-whatsapp" class="action-button"
-                    style="background: #10b981; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Send
-                    Selected via WhatsApp</button>
-                <button type="submit" formaction="batch_download.php" class="action-button"
-                    style="background: #6366f1; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Download
-                    Selected</button>
-                <button id="bulk-delete" class="action-button"
-                    style="background: #ef4444; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Delete
-                    Selected PDFs</button>
-            </div>
+            <button id="bulk-whatsapp">Send Selected via WhatsApp</button>
+            <button type="submit" formaction="batch_download.php">Download Selected</button>
             <?php endif; ?>
         </div>
     </div>
@@ -584,55 +549,6 @@ $view = isset($_GET['view']) ? $_GET['view'] : 'enter'; // Default view is 'ente
     // Call this function when the page loads
     window.addEventListener('load', initializeButtonStates);
 
-    // Auto-check queue status every 3 seconds to show ongoing queue progress
-    let autoQueueCheckInterval = null;
-
-    function startAutoQueueCheck() {
-        if (autoQueueCheckInterval) return; // Already running
-
-        autoQueueCheckInterval = setInterval(() => {
-            fetch('http://localhost:3005/api/queue/status')
-                .then(response => response.json())
-                .then(data => {
-                    const badge = document.getElementById('queue-status-badge');
-                    const badgeText = document.getElementById('queue-status-text');
-
-                    if (data.active && data.total > 0) {
-                        const completed = data.sent + data.failed;
-                        const percentage = Math.round((completed / data.total) * 100);
-
-                        // Show and update badge
-                        if (badge) {
-                            badge.style.display = 'flex';
-                            badgeText.textContent =
-                                `Queue Active: ${completed}/${data.total} (${percentage}%) - Sent: ${data.sent}, Failed: ${data.failed}`;
-                        }
-
-                        console.log(
-                            `Queue Active: ${completed}/${data.total} (${percentage}%) - Sent: ${data.sent}, Failed: ${data.failed}`
-                        );
-
-                        // If we're not already monitoring with toasts, start monitoring
-                        if (!queueMonitorInterval) {
-                            monitorQueueStatus();
-                        }
-                    } else {
-                        // Hide badge when queue is not active
-                        if (badge) {
-                            badge.style.display = 'none';
-                        }
-                    }
-                })
-                .catch(error => {
-                    // Silently fail - server might be down
-                    console.debug('Queue status check failed:', error.message);
-                });
-        }, 3000); // Check every 3 seconds
-    }
-
-    // Start auto-checking when page loads
-    startAutoQueueCheck();
-
     function generateReport(studentId, termId) {
         console.log(`Generating report for Student ID: ${studentId}, Term ID: ${termId}`);
 
@@ -646,8 +562,6 @@ $view = isset($_GET['view']) ? $_GET['view'] : 'enter'; // Default view is 'ente
             .then(response => response.json()) // Parse the JSON response
             .then(data => {
                 if (data.status === 'success') {
-                    // Show that PDF generation has been added to queue
-                    toastr.info('PDF generation added to queue...', 'Generation Started');
                     checkPdfStatus(studentId, termId);
                 } else {
                     console.error('Error:', data.message);
@@ -675,32 +589,28 @@ $view = isset($_GET['view']) ? $_GET['view'] : 'enter'; // Default view is 'ente
                 .then(data => {
                     switch (data.status.toLowerCase()) {
                         case 'completed':
-                            toastr.success('PDF generated successfully');
+                            toastr.success('pdf generated succesfully');
                             downloadButton.textContent = 'Download';
                             downloadButton.disabled = false; // Enable when completed
                             downloadButton.style.backgroundColor = '#33b249'
                             whatsAppButton.style.backgroundColor = '#33b249'
-                            break;
-                        case 'pending':
-                            downloadButton.textContent = 'In Queue...';
-                            setTimeout(checkStatus, 3000); // Check again after 3 seconds
+
                             break;
                         case 'generating':
                         case 'in progress':
-                            downloadButton.textContent = 'Generating...';
                             setTimeout(checkStatus, 2000); // Check again after 2 seconds
                             break;
                         case 'error':
                             console.error('Error status received:', data.status);
-                            toastr.error('An error occurred while generating the PDF');
-                            downloadButton.textContent = 'Try Again';
-                            downloadButton.disabled = false; // Allow retry
+                            alert('An error occurred while generating the PDF');
+                            downloadButton.textContent = 'Download';
+                            downloadButton.disabled = true; // Keep disabled on error
                             break;
                         default:
                             console.error('Unexpected status:', data.status);
-                            toastr.warning('Unknown status: ' + data.status);
-                            downloadButton.textContent = 'Try Again';
-                            downloadButton.disabled = false; // Allow retry
+                            alert('Unknown status: ' + data.status);
+                            downloadButton.textContent = 'Download';
+                            downloadButton.disabled = true; // Keep disabled on unknown status
                     }
                 })
                 .catch(error => {
@@ -752,29 +662,24 @@ $view = isset($_GET['view']) ? $_GET['view'] : 'enter'; // Default view is 'ente
 
                     const completed = data.sent + data.failed;
                     const percentage = Math.round((completed / data.total) * 100);
-
-                    console.log(
-                        `Queue Progress: ${completed}/${data.total} (${percentage}%) - Sent: ${data.sent}, Failed: ${data.failed}`
-                    );
-
+                    
+                    console.log(`Queue Progress: ${completed}/${data.total} (${percentage}%) - Sent: ${data.sent}, Failed: ${data.failed}`);
+                    
                     // Update toastr with progress
                     if (completed < data.total) {
-                        toastr.info(
-                            `Sending reports... ${completed}/${data.total} completed (${percentage}%)`,
-                            'Queue Progress', {
-                                timeOut: 0,
-                                extendedTimeOut: 0,
-                                closeButton: false,
-                                preventDuplicates: true
-                            });
+                        toastr.info(`Sending reports... ${completed}/${data.total} completed (${percentage}%)`, 'Queue Progress', {
+                            timeOut: 0,
+                            extendedTimeOut: 0,
+                            closeButton: false,
+                            preventDuplicates: true
+                        });
                     } else {
                         // Queue complete
                         clearInterval(queueMonitorInterval);
                         queueMonitorInterval = null;
                         toastr.clear();
-                        toastr.success(`Completed! Sent: ${data.sent}, Failed: ${data.failed}`,
-                            'Queue Complete');
-
+                        toastr.success(`Completed! Sent: ${data.sent}, Failed: ${data.failed}`, 'Queue Complete');
+                        
                         // Refresh button states and clear selections
                         setTimeout(() => {
                             // Uncheck all checkboxes
@@ -782,13 +687,9 @@ $view = isset($_GET['view']) ? $_GET['view'] : 'enter'; // Default view is 'ente
                                 checkbox.checked = false;
                             });
                             document.getElementById('select-all').checked = false;
-
-                            // Refresh button states for all visible students
-                            const buttons = document.querySelectorAll('[id^="generate-"]');
-                            buttons.forEach(button => {
-                                const [, studentId, termId] = button.id.split('-');
-                                updateButtonStates(studentId, termId);
-                            });
+                            
+                            // Refresh button states
+                            initializeButtonStates();
                         }, 2000);
                     }
                 })
@@ -796,79 +697,6 @@ $view = isset($_GET['view']) ? $_GET['view'] : 'enter'; // Default view is 'ente
                     console.error('Error monitoring queue:', error);
                 });
         }, 2000); // Poll every 2 seconds
-    }
-
-    // Monitor PDF generation queue status
-    let pdfQueueMonitorInterval = null;
-
-    function monitorPdfQueueStatus(expectedTotal) {
-        if (pdfQueueMonitorInterval) {
-            clearInterval(pdfQueueMonitorInterval);
-        }
-
-        // Show initial starting message
-        toastr.info('Starting PDF generation queue...', 'PDF Generation Started', {
-            timeOut: 2000
-        });
-
-        pdfQueueMonitorInterval = setInterval(() => {
-            fetch('http://localhost:3004/api/pdf-queue/status')
-                .then(response => response.json())
-                .then(data => {
-                    if (!data.active || data.total === 0) {
-                        // PDF queue is empty or not active
-                        clearInterval(pdfQueueMonitorInterval);
-                        pdfQueueMonitorInterval = null;
-                        return;
-                    }
-
-                    const completed = data.completed + data.failed;
-                    const percentage = Math.round((completed / data.total) * 100);
-
-                    console.log(
-                        `PDF Queue Progress: ${completed}/${data.total} (${percentage}%) - Generated: ${data.completed}, Failed: ${data.failed}`
-                    );
-
-                    // Update toastr with progress
-                    if (completed < data.total) {
-                        toastr.info(
-                            `Generating PDFs... ${completed}/${data.total} completed (${percentage}%)`,
-                            'PDF Generation Progress', {
-                                timeOut: 0,
-                                extendedTimeOut: 0,
-                                closeButton: false,
-                                preventDuplicates: true
-                            });
-                    } else {
-                        // PDF generation queue complete
-                        clearInterval(pdfQueueMonitorInterval);
-                        pdfQueueMonitorInterval = null;
-                        toastr.clear();
-                        toastr.success(
-                            `PDF Generation Complete! Generated: ${data.completed}, Failed: ${data.failed}`,
-                            'PDF Generation Complete');
-
-                        // Refresh button states and clear selections
-                        setTimeout(() => {
-                            // Uncheck all checkboxes
-                            document.querySelectorAll('.student-select').forEach(checkbox => {
-                                checkbox.checked = false;
-                            });
-                            document.getElementById('select-all').checked = false;
-
-                            // Refresh button states for all visible students
-                            const buttons = document.querySelectorAll('[id^="generate-"]');
-                            buttons.forEach(button => {
-                                const [, studentId, termId] = button.id.split('-');
-                                updateButtonStates(studentId, termId);
-                            });
-                        }, 2000);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error monitoring PDF queue:', error);
-                });
-        }, 3000); // Poll every 3 seconds
     }
 
     function sendWhatsAppMessages(studentIds, termId, whatsAppButton) {
@@ -896,10 +724,10 @@ $view = isset($_GET['view']) ? $_GET['view'] : 'enter'; // Default view is 'ente
                 if (data.status === 'success') {
                     // Messages added to queue successfully
                     toastr.success(`${studentIds.length} student(s) added to queue!`, 'Queue Started');
-
+                    
                     // Start monitoring queue status
                     monitorQueueStatus();
-
+                    
                     // Update button text
                     if (whatsAppButton) {
                         whatsAppButton.innerHTML = 'In Queue';
@@ -918,80 +746,6 @@ $view = isset($_GET['view']) ? $_GET['view'] : 'enter'; // Default view is 'ente
             });
     }
 
-    // Bulk Generate PDFs
-    document.getElementById('bulk-generate').addEventListener('click', function() {
-        const selectedStudents = Array.from(document.querySelectorAll('.student-select:checked')).map(
-            checkbox => checkbox.value);
-        const termId = <?php echo $term_id; ?>;
-
-        if (selectedStudents.length === 0) {
-            toastr.warning('Please select at least one student.');
-            return;
-        }
-
-        toastr.info(`Starting PDF generation for ${selectedStudents.length} student(s)...`,
-            'Generation Started');
-
-        // Add all students to PDF generation queue
-        selectedStudents.forEach((studentId, index) => {
-            setTimeout(() => {
-                generateReport(studentId, termId);
-            }, index * 200); // Stagger requests by 200ms
-        });
-
-        // Start monitoring PDF queue status
-        monitorPdfQueueStatus(selectedStudents.length);
-    });
-
-    // Bulk Delete PDFs
-    document.getElementById('bulk-delete').addEventListener('click', function() {
-        const selectedStudents = Array.from(document.querySelectorAll('.student-select:checked')).map(
-            checkbox => checkbox.value);
-        const termId = <?php echo $term_id; ?>;
-
-        if (selectedStudents.length === 0) {
-            toastr.warning('Please select at least one student.');
-            return;
-        }
-
-        if (!confirm(`Are you sure you want to delete ${selectedStudents.length} PDF(s)?`)) {
-            return;
-        }
-
-        toastr.info(`Deleting ${selectedStudents.length} PDF(s)...`, 'Deletion Started');
-
-        let deleted = 0;
-
-        selectedStudents.forEach((studentId) => {
-            fetch('delete_pdf.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: `student_id=${studentId}&term_id=${termId}`
-                })
-                .then(response => response.json())
-                .then(data => {
-                    deleted++;
-
-                    if (deleted === selectedStudents.length) {
-                        toastr.success(`Successfully deleted ${deleted} PDF(s)!`,
-                            'Deletion Complete');
-                        // Uncheck all and refresh button states
-                        document.querySelectorAll('.student-select').forEach(cb => cb.checked =
-                            false);
-                        document.getElementById('select-all').checked = false;
-                        initializeButtonStates();
-                    }
-                })
-                .catch(error => {
-                    console.error('Error deleting PDF:', error);
-                    deleted++;
-                });
-        });
-    });
-
-    // Bulk WhatsApp Send
     document.getElementById('bulk-whatsapp').addEventListener('click', function() {
         const selectedStudents = Array.from(document.querySelectorAll('.student-select:checked')).map(
             checkbox => checkbox.value);

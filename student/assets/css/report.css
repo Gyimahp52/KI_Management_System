@@ -15,6 +15,22 @@ body {
   height: max-content;
   position: sticky;
 }
+.term-info {
+  margin: 15px 0;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.term-info h3 {
+  color: #2d3436;
+  margin-bottom: 5px;
+}
+
+.term-info p {
+  color: #636e72;
+  font-size: 0.9em;
+}
 
 header {
   display: flex;

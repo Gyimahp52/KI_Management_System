@@ -1,0 +1,231 @@
+/* Custom Toastr Overrides */
+#toast-container > .toast {
+  background-color: #343a40 !important;
+  /* Default background color */
+  color: #fff !important;
+}
+
+#toast-container > .toast.toast-success {
+  background-color: #51a351 !important;
+}
+
+#toast-container > .toast.toast-error {
+  background-color: #bd362f !important;
+}
+
+#toast-container > .toast.toast-info {
+  background-color: #2f96b4 !important;
+}
+
+#toast-container > .toast.toast-warning {
+  background-color: #f89406 !important;
+}
+
+.ps__rail-x,
+.ps__rail-y {
+  display: none !important;
+}
+
+.navbar-vertical.navbar-expand-xs .navbar-collapse {
+  display: block;
+  overflow: auto;
+  height: auto;
+}
+.sidenav {
+  z-index: 10;
+}
+
+.collapse {
+  display: flex;
+  margin-top: 0rem;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+}
+
+/* Enhanced Modal styles */
+.st-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* When the modal should be shown */
+.st-modal.show {
+  opacity: 1;
+  visibility: visible;
+  display: flex !important;
+  /* Force display with !important */
+}
+
+.st-modal-content {
+  background-color: white;
+  border-radius: 8px;
+  padding: 25px;
+  width: 90%;
+  max-width: 650px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transform: translateX(-100px);
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.slide-in-left {
+  transform: translateX(0) !important;
+  opacity: 1 !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Form styles */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #4a90e2;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+/* For read-only fields */
+input[readonly],
+select[disabled] {
+  background-color: #f7f7f7;
+  cursor: not-allowed;
+}
+
+/* Row layout for height/weight */
+.row {
+  display: flex;
+  /* gap: 0.1rem; */
+}
+
+.col {
+  flex: 1;
+}
+
+/* Section headers */
+h3 {
+  margin-top: 25px;
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+  color: #2c3e50;
+}
+
+/* Profile picture preview */
+.profile-preview {
+  display: block;
+  max-width: 150px;
+  max-height: 150px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+/* Buttons */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.btn {
+  padding: 10px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btn.cancel {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+.btn.submit {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.btn.cancel:hover {
+  background-color: #e0e0e0;
+}
+
+.btn.submit:hover {
+  background-color: #3a7bc8;
+}
+
+/* CSS */
+.button-16 {
+  background-color: #f8f9fa;
+  border: 1px solid #f8f9fa;
+  border-radius: 4px;
+  color: #3c4043;
+  cursor: pointer;
+  font-family: arial, sans-serif;
+  font-size: 14px;
+  height: 36px;
+  line-height: 27px;
+  min-width: 54px;
+  padding: 0 16px;
+  text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: pre;
+}
+
+.button-16:hover {
+  border-color: #dadce0;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 1px 1px;
+  color: #202124;
+}
+
+.button-16:focus {
+  border-color: #4285f4;
+  outline: none;
+}
+.button-16:active {
+  background-color: #f1f3f4;
+  border-color: #f1f3f4;
+  box-shadow: rgba(60, 64, 67, 0.15) 0 1px 2px 0,
+    rgba(60, 64, 67, 0.3) 0 1px 3px 1px;
+}

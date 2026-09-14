@@ -1,0 +1,253 @@
+[2025-03-03 17:11:36] Update profile process started
+[2025-03-03 17:11:36] Processing for student ID: EL48916
+[2025-03-03 17:11:36] Current passport picture: 
+[2025-03-03 17:11:36] Adding field eye_sight with value: 
+[2025-03-03 17:11:36] Adding field medical_condition with value: 
+[2025-03-03 17:11:36] Adding field height with value: 0
+[2025-03-03 17:11:36] Adding field weight with value: 0
+[2025-03-03 17:11:36] Adding field parent_name with value: 
+[2025-03-03 17:11:36] Adding field parent_phone with value: 
+[2025-03-03 17:11:36] Adding field parent_whatsapp with value: 
+[2025-03-03 17:11:36] Adding field parent_email with value: frimpong@kiedu.net
+[2025-03-03 17:11:36] Executing SQL: UPDATE students SET eye_sight = ?, medical_condition = ?, height = ?, weight = ?, parent_name = ?, parent_phone = ?, parent_whatsapp = ?, parent_email = ? WHERE student_id = ?
+[2025-03-03 17:11:36] Update result: Success
+[2025-03-03 17:11:36] Transaction committed successfully
+[2025-03-03 17:22:40] Update profile process started
+[2025-03-03 17:22:40] Processing for student ID: EL48916
+[2025-03-03 17:22:40] Current passport picture: 
+[2025-03-03 17:22:40] Adding field name with value: Ambrose Sarf
+[2025-03-03 17:22:40] Adding field dob with value: 
+[2025-03-03 17:22:40] Adding field eye_sight with value: 
+[2025-03-03 17:22:40] Adding field medical_condition with value: 
+[2025-03-03 17:22:40] Adding field height with value: 0
+[2025-03-03 17:22:40] Adding field weight with value: 0
+[2025-03-03 17:22:40] Adding field parent_name with value: 
+[2025-03-03 17:22:40] Adding field parent_phone with value: 
+[2025-03-03 17:22:40] Adding field parent_whatsapp with value: 
+[2025-03-03 17:22:40] Adding field parent_email with value: frimpong@kiedu.net
+[2025-03-03 17:22:40] Executing SQL: UPDATE students SET name = ?, dob = ?, eye_sight = ?, medical_condition = ?, height = ?, weight = ?, parent_name = ?, parent_phone = ?, parent_whatsapp = ?, parent_email = ? WHERE student_id = ?
+[2025-03-03 17:22:40] Update result: Success
+[2025-03-03 17:22:40] Transaction committed successfully
+[2025-03-03 17:24:04] Update profile process started
+[2025-03-03 17:24:04] Processing for student ID: EL48916
+[2025-03-03 17:24:04] Current passport picture: 
+[2025-03-03 17:24:04] Adding field name with value: Ambrose Sarfo
+[2025-03-03 17:24:04] Adding field dob with value: 
+[2025-03-03 17:24:04] Adding field eye_sight with value: 
+[2025-03-03 17:24:04] Adding field medical_condition with value: 
+[2025-03-03 17:24:04] Adding field height with value: 0
+[2025-03-03 17:24:04] Adding field weight with value: 0
+[2025-03-03 17:24:04] Adding field parent_name with value: 
+[2025-03-03 17:24:04] Adding field parent_phone with value: 
+[2025-03-03 17:24:04] Adding field parent_whatsapp with value: 
+[2025-03-03 17:24:04] Adding field parent_email with value: frimpong@kiedu.net
+[2025-03-03 17:24:04] Executing SQL: UPDATE students SET name = ?, dob = ?, eye_sight = ?, medical_condition = ?, height = ?, weight = ?, parent_name = ?, parent_phone = ?, parent_whatsapp = ?, parent_email = ? WHERE student_id = ?
+[2025-03-03 17:24:04] Update result: Success
+[2025-03-03 17:24:04] Transaction committed successfully
+[2025-03-03 17:29:28] Update profile process started
+[2025-03-03 17:29:28] Processing for student ID: EL48916
+[2025-03-03 17:29:28] Current passport picture: 
+[2025-03-03 17:29:28] Adding field name with value: Ambrose Sarfo
+[2025-03-03 17:29:28] Adding field dob with value: 
+[2025-03-03 17:29:28] Adding field eye_sight with value: 
+[2025-03-03 17:29:28] Adding field medical_condition with value: 
+[2025-03-03 17:29:28] Adding field height with value: 0
+[2025-03-03 17:29:28] Adding field weight with value: 0
+[2025-03-03 17:29:28] Adding field parent_name with value: 
+[2025-03-03 17:29:28] Adding field parent_phone with value: 
+[2025-03-03 17:29:28] Adding field parent_whatsapp with value: 
+[2025-03-03 17:29:28] Adding field parent_email with value: frimpong@kiedu.net
+[2025-03-03 17:29:28] Executing SQL: UPDATE students SET name = ?, dob = ?, eye_sight = ?, medical_condition = ?, height = ?, weight = ?, parent_name = ?, parent_phone = ?, parent_whatsapp = ?, parent_email = ? WHERE student_id = ?
+[2025-03-03 17:29:28] Update result: Success
+[2025-03-03 17:29:28] Transaction committed successfully
+[2025-03-03 17:31:19] Update profile process started
+[2025-03-03 17:31:19] Processing for student ID: EL48916
+[2025-03-03 17:31:19] Current passport picture: 
+[2025-03-03 17:31:19] Adding field name with value: Ambrose Sarfo
+[2025-03-03 17:31:19] Adding field dob with value: 
+[2025-03-03 17:31:19] Adding field eye_sight with value: 
+[2025-03-03 17:31:19] Adding field medical_condition with value: 
+[2025-03-03 17:31:19] Adding field height with value: 0
+[2025-03-03 17:31:19] Adding field weight with value: 0
+[2025-03-03 17:31:19] Adding field parent_name with value: 
+[2025-03-03 17:31:19] Adding field parent_phone with value: 
+[2025-03-03 17:31:19] Adding field parent_whatsapp with value: 
+[2025-03-03 17:31:19] Adding field parent_email with value: frimpong@kiedu.net
+[2025-03-03 17:31:19] Executing SQL: UPDATE students SET name = ?, dob = ?, eye_sight = ?, medical_condition = ?, height = ?, weight = ?, parent_name = ?, parent_phone = ?, parent_whatsapp = ?, parent_email = ? WHERE student_id = ?
+[2025-03-03 17:31:19] Update result: Success
+[2025-03-03 17:31:19] Transaction committed successfully
+[2025-03-03 18:33:19] Update profile process started
+[2025-03-03 18:33:19] Processing for student ID: EL48916
+[2025-03-03 18:33:19] Current passport picture: 
+[2025-03-03 18:33:19] Adding field name with value: Ambrose Sarf
+[2025-03-03 18:33:19] Adding field dob with value: 
+[2025-03-03 18:33:19] Adding field eye_sight with value: 
+[2025-03-03 18:33:19] Adding field medical_condition with value: 
+[2025-03-03 18:33:19] Adding field height with value: 0
+[2025-03-03 18:33:19] Adding field weight with value: 0
+[2025-03-03 18:33:19] Adding field parent_name with value: 
+[2025-03-03 18:33:19] Adding field parent_phone with value: 
+[2025-03-03 18:33:19] Adding field parent_whatsapp with value: 
+[2025-03-03 18:33:19] Adding field parent_email with value: frimpong@kiedu.net
+[2025-03-03 18:33:19] Executing SQL: UPDATE students SET name = ?, dob = ?, eye_sight = ?, medical_condition = ?, height = ?, weight = ?, parent_name = ?, parent_phone = ?, parent_whatsapp = ?, parent_email = ? WHERE student_id = ?
+[2025-03-03 18:33:19] Update result: Success
+[2025-03-03 18:33:19] Transaction committed successfully
+[2025-03-03 18:33:24] Update profile process started
+[2025-03-03 18:33:24] Processing for student ID: EL48916
+[2025-03-03 18:33:24] Current passport picture: 
+[2025-03-03 18:33:24] Adding field name with value: Ambrose Sarfo
+[2025-03-03 18:33:24] Adding field dob with value: 
+[2025-03-03 18:33:24] Adding field eye_sight with value: 
+[2025-03-03 18:33:24] Adding field medical_condition with value: 
+[2025-03-03 18:33:24] Adding field height with value: 0
+[2025-03-03 18:33:24] Adding field weight with value: 0
+[2025-03-03 18:33:24] Adding field parent_name with value: 
+[2025-03-03 18:33:24] Adding field parent_phone with value: 
+[2025-03-03 18:33:24] Adding field parent_whatsapp with value: 
+[2025-03-03 18:33:24] Adding field parent_email with value: frimpong@kiedu.net
+[2025-03-03 18:33:24] Executing SQL: UPDATE students SET name = ?, dob = ?, eye_sight = ?, medical_condition = ?, height = ?, weight = ?, parent_name = ?, parent_phone = ?, parent_whatsapp = ?, parent_email = ? WHERE student_id = ?
+[2025-03-03 18:33:24] Update result: Success
+[2025-03-03 18:33:24] Transaction committed successfully
+[2025-03-03 18:33:37] Update profile process started
+[2025-03-03 18:33:37] Processing for student ID: EL48916
+[2025-03-03 18:33:37] Current passport picture: 
+[2025-03-03 18:33:37] Adding field name with value: Ambrose Sarf
+[2025-03-03 18:33:37] Adding field dob with value: 
+[2025-03-03 18:33:37] Adding field eye_sight with value: 
+[2025-03-03 18:33:37] Adding field medical_condition with value: 
+[2025-03-03 18:33:37] Adding field height with value: 0
+[2025-03-03 18:33:37] Adding field weight with value: 0
+[2025-03-03 18:33:37] Adding field parent_name with value: 
+[2025-03-03 18:33:37] Adding field parent_phone with value: 
+[2025-03-03 18:33:37] Adding field parent_whatsapp with value: 
+[2025-03-03 18:33:37] Adding field parent_email with value: frimpong@kiedu.net
+[2025-03-03 18:33:37] Executing SQL: UPDATE students SET name = ?, dob = ?, eye_sight = ?, medical_condition = ?, height = ?, weight = ?, parent_name = ?, parent_phone = ?, parent_whatsapp = ?, parent_email = ? WHERE student_id = ?
+[2025-03-03 18:33:37] Update result: Success
+[2025-03-03 18:33:37] Transaction committed successfully
+[2025-03-03 18:33:43] Update profile process started
+[2025-03-03 18:33:43] Processing for student ID: EL48916
+[2025-03-03 18:33:43] Current passport picture: 
+[2025-03-03 18:33:43] Adding field name with value: Ambrose Sarfo
+[2025-03-03 18:33:43] Adding field dob with value: 
+[2025-03-03 18:33:43] Adding field eye_sight with value: 
+[2025-03-03 18:33:43] Adding field medical_condition with value: 
+[2025-03-03 18:33:43] Adding field height with value: 0
+[2025-03-03 18:33:43] Adding field weight with value: 0
+[2025-03-03 18:33:43] Adding field parent_name with value: 
+[2025-03-03 18:33:43] Adding field parent_phone with value: 
+[2025-03-03 18:33:43] Adding field parent_whatsapp with value: 
+[2025-03-03 18:33:43] Adding field parent_email with value: frimpong@kiedu.net
+[2025-03-03 18:33:43] Executing SQL: UPDATE students SET name = ?, dob = ?, eye_sight = ?, medical_condition = ?, height = ?, weight = ?, parent_name = ?, parent_phone = ?, parent_whatsapp = ?, parent_email = ? WHERE student_id = ?
+[2025-03-03 18:33:43] Update result: Success
+[2025-03-03 18:33:43] Transaction committed successfully
+[2025-03-12 17:22:06] Update profile process started
+[2025-03-12 17:22:06] Processing for student ID: 0000E125
+[2025-03-12 17:22:06] Current passport picture: 
+[2025-03-12 17:22:06] Adding field name with value: Pelaiah Baafi Asamoah 
+[2025-03-12 17:22:06] Adding field dob with value: 2020-03-02
+[2025-03-12 17:22:06] Adding field gender with value: Male
+[2025-03-12 17:22:06] Adding field hand with value: Right
+[2025-03-12 17:22:06] Adding field foot with value: Right
+[2025-03-12 17:22:06] Adding field eye_sight with value: null
+[2025-03-12 17:22:06] Adding field medical_condition with value: 
+[2025-03-12 17:22:06] Adding field height with value: 100
+[2025-03-12 17:22:06] Adding field weight with value: 16
+[2025-03-12 17:22:06] Adding field parent_name with value: Emmanuel Asamoah 
+[2025-03-12 17:22:06] Adding field parent_phone with value: 0247677351/0245453275
+[2025-03-12 17:22:06] Adding field parent_whatsapp with value: 0247677351
+[2025-03-12 17:22:06] Adding field parent_email with value: asamoah667@gmail.com
+[2025-03-12 17:22:06] Executing SQL: UPDATE students SET name = ?, dob = ?, gender = ?, hand = ?, foot = ?, eye_sight = ?, medical_condition = ?, height = ?, weight = ?, parent_name = ?, parent_phone = ?, parent_whatsapp = ?, parent_email = ? WHERE student_id = ?
+[2025-03-12 17:22:06] Update result: Success
+[2025-03-12 17:22:06] Transaction committed successfully
+[2025-03-12 17:22:10] Update profile process started
+[2025-03-12 17:22:10] Processing for student ID: 0000E125
+[2025-03-12 17:22:10] Current passport picture: 
+[2025-03-12 17:22:10] Adding field name with value: Pelaiah Baafi Asamoah 
+[2025-03-12 17:22:10] Adding field dob with value: 2020-03-02
+[2025-03-12 17:22:10] Adding field gender with value: Male
+[2025-03-12 17:22:10] Adding field hand with value: Right
+[2025-03-12 17:22:10] Adding field foot with value: Right
+[2025-03-12 17:22:10] Adding field eye_sight with value: null
+[2025-03-12 17:22:10] Adding field medical_condition with value: 
+[2025-03-12 17:22:10] Adding field height with value: 100
+[2025-03-12 17:22:10] Adding field weight with value: 16
+[2025-03-12 17:22:10] Adding field parent_name with value: Emmanuel Asamoah 
+[2025-03-12 17:22:10] Adding field parent_phone with value: 0247677351/0245453275
+[2025-03-12 17:22:10] Adding field parent_whatsapp with value: 0247677351
+[2025-03-12 17:22:10] Adding field parent_email with value: asamoah667@gmail.com
+[2025-03-12 17:22:10] Executing SQL: UPDATE students SET name = ?, dob = ?, gender = ?, hand = ?, foot = ?, eye_sight = ?, medical_condition = ?, height = ?, weight = ?, parent_name = ?, parent_phone = ?, parent_whatsapp = ?, parent_email = ? WHERE student_id = ?
+[2025-03-12 17:22:10] Update result: Success
+[2025-03-12 17:22:10] Transaction committed successfully
+[2025-03-12 17:22:56] Update profile process started
+[2025-03-12 17:22:56] Processing for student ID: 0000E125
+[2025-03-12 17:22:56] Current passport picture: 
+[2025-03-12 17:22:56] Adding field name with value: Pelaiah Baafi Asamoah 
+[2025-03-12 17:22:56] Adding field dob with value: 2020-03-02
+[2025-03-12 17:22:56] Adding field gender with value: Male
+[2025-03-12 17:22:56] Adding field hand with value: Right
+[2025-03-12 17:22:56] Adding field foot with value: Right
+[2025-03-12 17:22:56] Adding field eye_sight with value: null
+[2025-03-12 17:22:56] Adding field medical_condition with value: 
+[2025-03-12 17:22:56] Adding field height with value: 100
+[2025-03-12 17:22:56] Adding field weight with value: 16
+[2025-03-12 17:22:56] Adding field parent_name with value: Emmanuel Asamoah 
+[2025-03-12 17:22:56] Adding field parent_phone with value: 0247677351/024545327
+[2025-03-12 17:22:56] Adding field parent_whatsapp with value: 0247677351
+[2025-03-12 17:22:56] Adding field parent_email with value: asamoah667@gmail.com
+[2025-03-12 17:22:56] Executing SQL: UPDATE students SET name = ?, dob = ?, gender = ?, hand = ?, foot = ?, eye_sight = ?, medical_condition = ?, height = ?, weight = ?, parent_name = ?, parent_phone = ?, parent_whatsapp = ?, parent_email = ? WHERE student_id = ?
+[2025-03-12 17:22:56] Update result: Success
+[2025-03-12 17:22:56] Transaction committed successfully
+[2025-03-12 18:21:56] Update profile process started
+[2025-03-12 18:21:56] Processing for student ID: 0000E367
+[2025-03-12 18:21:56] Current passport picture: 
+[2025-03-12 18:21:56] New passport picture being uploaded: ba24d50d-4c7b-4c9c-88fe-1be434818c34.mp4
+[2025-03-12 18:21:56] Target file: /0000E367_1741800116.mp4
+[2025-03-12 18:21:56] File is not an image
+[2025-03-12 18:22:25] Update profile process started
+[2025-03-12 18:22:25] Processing for student ID: 0000E367
+[2025-03-12 18:22:25] Current passport picture: 
+[2025-03-12 18:22:25] New passport picture being uploaded: ba24d50d-4c7b-4c9c-88fe-1be434818c34.mp4
+[2025-03-12 18:22:25] Target file: /0000E367_1741800145.mp4
+[2025-03-12 18:22:25] File is not an image
+[2025-03-12 18:22:27] Update profile process started
+[2025-03-12 18:22:27] Processing for student ID: 0000E367
+[2025-03-12 18:22:27] Current passport picture: 
+[2025-03-12 18:22:27] New passport picture being uploaded: ba24d50d-4c7b-4c9c-88fe-1be434818c34.mp4
+[2025-03-12 18:22:27] Target file: /0000E367_1741800147.mp4
+[2025-03-12 18:22:27] File is not an image
+[2025-03-12 18:23:33] Update profile process started
+[2025-03-12 18:23:33] Processing for student ID: 0000E367
+[2025-03-12 18:23:33] Current passport picture: 
+[2025-03-12 18:23:33] New passport picture being uploaded: ba24d50d-4c7b-4c9c-88fe-1be434818c34.mp4
+[2025-03-12 18:23:33] Target file: /0000E367_1741800213.mp4
+[2025-03-12 18:23:33] File is not an image
+[2025-03-12 18:23:34] Update profile process started
+[2025-03-12 18:23:34] Processing for student ID: 0000E367
+[2025-03-12 18:23:34] Current passport picture: 
+[2025-03-12 18:23:34] New passport picture being uploaded: ba24d50d-4c7b-4c9c-88fe-1be434818c34.mp4
+[2025-03-12 18:23:34] Target file: /0000E367_1741800214.mp4
+[2025-03-12 18:23:34] File is not an image
+[2025-03-12 18:23:34] Update profile process started
+[2025-03-12 18:23:34] Processing for student ID: 0000E367
+[2025-03-12 18:23:34] Current passport picture: 
+[2025-03-12 18:23:34] New passport picture being uploaded: ba24d50d-4c7b-4c9c-88fe-1be434818c34.mp4
+[2025-03-12 18:23:34] Target file: /0000E367_1741800214.mp4
+[2025-03-12 18:23:34] File is not an image
+[2025-03-12 18:23:39] Update profile process started
+[2025-03-12 18:23:39] Processing for student ID: 0000E367
+[2025-03-12 18:23:39] Current passport picture: 
+[2025-03-12 18:23:39] New passport picture being uploaded: ba24d50d-4c7b-4c9c-88fe-1be434818c34.mp4
+[2025-03-12 18:23:39] Target file: /0000E367_1741800219.mp4
+[2025-03-12 18:23:39] File is not an image
+[2025-03-12 18:23:41] Update profile process started
+[2025-03-12 18:23:41] Processing for student ID: 0000E367
+[2025-03-12 18:23:41] Current passport picture: 
+[2025-03-12 18:23:41] New passport picture being uploaded: ba24d50d-4c7b-4c9c-88fe-1be434818c34.mp4
+[2025-03-12 18:23:41] Target file: /0000E367_1741800221.mp4
+[2025-03-12 18:23:41] File is not an image
+[2025-03-12 18:23:43] Update profile process started
+[2025-03-12 18:23:43] Processing for student ID: 0000E367
+[2025-03-12 18:23:43] Current passport picture: 
+[2025-03-12 18:23:43] New passport picture being uploaded: ba24d50d-4c7b-4c9c-88fe-1be434818c34.mp4
+[2025-03-12 18:23:43] Target file: /0000E367_1741800223.mp4
+[2025-03-12 18:23:43] File is not an image

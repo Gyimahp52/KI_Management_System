@@ -1,0 +1,261 @@
+                                <div class="report-view">
+
+                                    <div id="report-view" class="">
+                                        <h4>Report for <?php echo htmlspecialchars($Term['term_number']) ;?>st Term
+                                            <?php echo htmlspecialchars($Term['year_name']) ;?> Academic Year</h4>
+                                        <div class="report-container ">
+                                            <!-- <button class="close-btn" onclick="closeReport()"><strong>X</strong></button> -->
+                                            <div id="report-content">
+                                                <!-- Page 1 -->
+                                                <div id="report-page-1" class="page-1">
+                                                    <h1 style="font-size: 2rem"><u>KIE STUDENT PROGRESS REPORT</u></h1>
+                                                    <p style="text-align: left;">Kinesthetic Intelligence Education
+                                                        personal progress report for <strong><span
+                                                                id="student-name"><?php echo htmlspecialchars($student['name']); ?></span></strong>
+                                                        at <strong><span
+                                                                id="student-school"><?php echo htmlspecialchars($student['school_name']); ?></span></strong>.
+                                                        The Kinesthetic Intelligence Education (KIE) student personal
+                                                        progress report provides a comprehensive assessment of each
+                                                        student’s development over the 12-week program, which focused on
+                                                        one Social Emotional Learning (SEL) theme per week. These themes
+                                                        were designed to enhance students’ overall Emotional
+                                                        Intelligence. The report evaluates each student’s marginal
+                                                        improvements in mastering these skills, offering valuable
+                                                        insights into their growth and areas for further development.
+                                                        This progress assessment aims to encourage continuous learning
+                                                        and promote personal growth in alignment with Open Mind Africa’s
+                                                        mission to develop well-rounded, emotionally intelligent
+                                                        individuals.</p>
+                                                    <div class="flex-column">
+                                                        <div>
+                                                            <h2>Personal Information</h2>
+                                                        </div>
+                                                        <div class="d-flex flex-row">
+                                                            <div class="left-side">
+                                                                <p><strong>Name:</strong> <span
+                                                                        id="student-name-info"><?php echo htmlspecialchars($student['name']); ?></span>
+                                                                </p>
+                                                                <p><strong>Age:</strong>
+                                                                    <?php echo htmlspecialchars($age ?? 'N/A'); ?> YEARS
+                                                                </p>
+                                                                <p><strong>School:</strong> <span
+                                                                        id="student-school-info"><?php echo htmlspecialchars($student['school_name']); ?></span>
+                                                                </p>
+                                                                <p><strong>Class:</strong> <span
+                                                                        id="student-class-info"><?php echo htmlspecialchars($student['class_name']); ?></span>
+                                                                </p>
+                                                                <p><strong>Height:</strong>
+                                                                    <?php echo htmlspecialchars($student['height'] ?? 'N/A'); ?>
+                                                                    cm</p>
+                                                                <p><strong>Weight:</strong>
+                                                                    <?php echo htmlspecialchars($student['weight'] ?? 'N/A'); ?>
+                                                                    kg</p>
+                                                            </div>
+                                                            <div class="right-side">
+                                                                <p><strong>Foot:</strong>
+                                                                    <?php echo htmlspecialchars($student['foot'] ?? 'N/A'); ?>
+                                                                </p>
+                                                                <p><strong>Hand:</strong>
+                                                                    <?php echo htmlspecialchars($student['hand'] ?? 'N/A'); ?>
+                                                                </p>
+                                                                <p><strong>Eyesight:</strong>
+                                                                    <?php echo htmlspecialchars($student['eye_sight'] ?? 'N/A'); ?>
+                                                                </p>
+                                                                <p><strong>Heart Rate:</strong>
+                                                                    <?php echo htmlspecialchars($student['heart_rate'] ?? 'N/A'); ?>
+                                                                </p>
+                                                                <p><strong>Medical Condition:</strong>
+                                                                    <?php echo htmlspecialchars($student['medical_condition'] ?? 'N/A'); ?>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <section class="data-tables">
+                                                    <h2>1. Student KEQ Field Data</h2>
+                                                    <table>
+                                                        <tr>
+                                                            <th>Metrics</th>
+                                                            <?php foreach ($sel_themes as $theme): ?>
+                                                            <th><?php echo htmlspecialchars($theme['theme_name'] ?? 'N/A'); ?>
+                                                            </th>
+                                                            <?php endforeach; ?>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>KEQ</td>
+                                                            <?php foreach ($sel_themes as $theme): ?>
+                                                            <td><?php echo htmlspecialchars($theme['score']); ?></td>
+                                                            <?php endforeach; ?>
+                                                        </tr>
+                                                    </table>
+                                                </section>
+                                                <div class="graph-descriptio">
+                                                    <h3>GRAPH DESCRIPTION</h3>
+                                                    <ul>
+                                                        <li>Each student starts from the green base line of 50% and work
+                                                            their way up.</li>
+                                                        <li>The blue area represents the marginal percentage improvement
+                                                            this term.</li>
+                                                        <li>The yellow area represents the target they are working
+                                                            towards over a period.</li>
+                                                        <li>Students are expected to have a termly marginal improvement
+                                                            over a period.</li>
+                                                    </ul>
+                                                </div>
+
+                                                <!-- Placeholder for KEQ Bar Chart -->
+                                                <div class="">
+                                                    <?php echo generateKEQBarChart($sel_themes, $student['name']); ?>
+                                                </div>
+                                            </div>
+                                            <!-- Page 2 -->
+                                            <div id="report-page-2" class="page-2">
+                                                <h3>RESULTS ANALYSIS</h3>
+                                                <ul>
+                                                    <li><strong>Strength Recognition:</strong> Keep an eye on 8% - 10%
+                                                        marginal improvement. This is one of your ward's strengths. Be
+                                                        aware of this skill especially in challenging situations at
+                                                        home. We will keep working on it.</li>
+                                                    <li><strong>Skill Development:</strong> Next keep an eye on 5% - 7%
+                                                        marginal improvement. Your ward has some ability in this skill
+                                                        but with more practice we could get better.</li>
+                                                    <li><strong>Developmental Focus:</strong> Now look at 2% - 4%
+                                                        marginal improvement. This skill will take your ward more time
+                                                        to develop and strengthen. The K.I coach will focus more
+                                                        attention to help your ward to develop this skill.</li>
+                                                </ul>
+                                                <h2>Social Emotional Learning Competencies (SEL)</h2>
+                                                <table>
+                                                    <tr>
+                                                        <th>Metrics</th>
+                                                        <?php foreach ($sel_themes as $theme): ?>
+                                                        <th><?php echo htmlspecialchars($theme['theme_name'] ?? 'N/A'); ?>
+                                                        </th>
+                                                        <?php endforeach; ?>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>KEQ</td>
+                                                        <?php foreach ($sel_themes as $theme): ?>
+                                                        <td><?php echo htmlspecialchars($theme['score']); ?></td>
+                                                        <?php endforeach; ?>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>SEL</td>
+                                                        <?php foreach ($sel_themes as $theme): ?>
+                                                        <td><?php echo htmlspecialchars($theme['competency']); ?></td>
+                                                        <?php endforeach; ?>
+                                                    </tr>
+                                                </table>
+                                                <!-- Placeholder for SEL Pie Chart -->
+                                                <?php echo generateSELPieChart($sel_themes, $student['name']); ?>
+                                                <h3>RESULTS ANALYSIS</h3>
+                                                <ul>
+                                                    <li><strong>Thematic Exposure:</strong> Each term students explore a
+                                                        minimum of two character development themes related to the five
+                                                        SEL competencies.</li>
+                                                    <li><strong>Metric Evaluation:</strong> Internal metrics assess
+                                                        their performance on each competency with a maximum achievable
+                                                        score of 20% for each totaling 100%.</li>
+                                                    <li><strong>Focus on Improvement:</strong> The emphasis is on
+                                                        fostering continuous marginal improvement each term rather than
+                                                        solely achieving high scores.</li>
+                                                    <li><strong>Understanding Scores:</strong> An SEL score above 15
+                                                        indicates robust emotional intelligence while a score below 10
+                                                        signals opportunities for ongoing improvement.</li>
+                                                </ul>
+                                            </div>
+                                            <!-- Page 3 -->
+                                            <div id="report-page-3">
+                                                <h2>Character Strengths (CS)</h2>
+                                                <table>
+                                                    <tr>
+                                                        <th>Metrics</th>
+                                                        <?php foreach ($sel_themes as $theme): ?>
+                                                        <th><?php echo htmlspecialchars($theme['theme_name'] ?? 'N/A'); ?>
+                                                        </th>
+                                                        <?php endforeach; ?>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>KEQ</td>
+                                                        <?php foreach ($sel_themes as $theme): ?>
+                                                        <td><?php echo htmlspecialchars($theme['score']); ?></td>
+                                                        <?php endforeach; ?>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>SEL</td>
+                                                        <?php foreach ($sel_themes as $theme): ?>
+                                                        <td><?php echo htmlspecialchars($theme['character_strength']); ?>
+                                                        </td>
+                                                        <?php endforeach; ?>
+                                                    </tr>
+                                                </table>
+                                                <!-- Placeholder for CS Bar Chart -->
+                                                <?php echo generateCharacterStrengthsBarChart($sel_themes, $student['name']); ?>
+                                                <h3>RESULTS ANALYSIS</h3>
+                                                <ul>
+                                                    <li>Your child is actively developing their character strengths of
+                                                        Will Heart and Mind aiming for a maximum score of 10 points in
+                                                        each category over time.</li>
+                                                    <li>Achieving a score between 8 - 10 signifies high strength in the
+                                                        respective area. Encourage your child to keep honing these
+                                                        strengths as they play a vital role in academic success and
+                                                        overall personal development.</li>
+                                                    <li>Scores falling within 5 - 7 indicate a medium level of strength.
+                                                        Your child possesses some ability in these areas and with
+                                                        consistent effort and practice they can further enhance their
+                                                        capabilities.</li>
+                                                    <li>A score of 2 – 4 is positive feedback. The K.I coach will
+                                                        provide additional attention to support your child in developing
+                                                        these character strengths more fully. Your engagement and
+                                                        encouragement are crucial during this developmental process.
+                                                    </li>
+                                                </ul>
+                                                <footer>
+                                                    <p><strong>Joseph A. Adams</strong> <br><strong>Founder, K.I.
+                                                            Education LLC</strong></p>
+                                                    <div class="contact-info">
+                                                        <p class="link"><strong>hi@kiedu.net</strong></p>
+                                                        <p class="ki_number">054 396 1150</p>
+                                                        <p class="ki_link"><strong>www.kiedu.net</strong></p>
+                                                    </div>
+                                                </footer>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+                                DB_NAME="ki_db"
+                                MYSQL_USER="root"
+                                MYSQL_PASS=""
+                                DUMP_FILE="partial_dump.sql"
+
+                                # Start SQL dump file
+                                echo "SET FOREIGN_KEY_CHECKS=0;" > $DUMP_FILE
+
+                                # Get all table names
+                                TABLES=$(mysql -u$MYSQL_USER -p$MYSQL_PASS -N -e "SHOW TABLES FROM $DB_NAME")
+
+                                for TABLE in $TABLES; do
+                                echo "Exporting $TABLE..."
+
+                                # Dump only the first 5 rows from each table
+                                echo "LOCK TABLES \`$TABLE\` WRITE;" >> $DUMP_FILE
+                                echo "DELETE FROM \`$TABLE\`;" >> $DUMP_FILE
+                                mysql -u$MYSQL_USER -p$MYSQL_PASS -N -e "SELECT * FROM $DB_NAME.$TABLE LIMIT 5" | awk -v
+                                table="$TABLE" '
+                                BEGIN { print "INSERT INTO `" table "` VALUES" }
+                                {
+                                printf "(";
+                                for (i = 1; i <= NF; i++) { printf (i==NF) ? "\x27" $i "\x27" : "\x27" $i "\x27, " ; }
+                                    printf "),\n" ; } END { print ";" }'>> $DUMP_FILE
+                                    echo "UNLOCK TABLES;" >> $DUMP_FILE
+
+                                    done
+
+                                    echo "SET FOREIGN_KEY_CHECKS=1;" >> $DUMP_FILE
+                                    echo "Export completed: $DUMP_FILE"

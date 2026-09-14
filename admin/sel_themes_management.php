@@ -56,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -71,108 +72,109 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png">
     <link rel="manifest" href="assets/images/site.webmanifest">
     <style>
-        .btn-flex{
-            display: flex;
-            gap: 0.2rem;
-        }
-        .as-check{
-            display: flex;
-            gap: 0.4rem;
-            flex-wrap: wrap;
-        }
+    .btn-flex {
+        display: flex;
+        gap: 0.2rem;
+    }
+
+    .as-check {
+        display: flex;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+    }
     </style>
 </head>
+
 <body>
     <!--Side bar-->
-<?php include_once('includes/side_bar.php');?>
+    <?php include_once('includes/side_bar.php');?>
 
-<div class="container">
-    <h1 class="mb-4">SEL Themes Management</h1>
+    <div class="container">
+        <h1 class="mb-4">SEL Themes Management</h1>
 
-    <?php if ($current_term_info): ?>
+        <?php if ($current_term_info): ?>
         <div class="alert alert-info">
-            <strong>Current Term:</strong> Term <?php echo htmlspecialchars($current_term_info['term_number']); ?>, Academic Year <?php echo htmlspecialchars($current_term_info['year_name']); ?>
+            <strong>Current Term:</strong> Term <?php echo htmlspecialchars($current_term_info['term_number']); ?>,
+            Academic Year <?php echo htmlspecialchars($current_term_info['year_name']); ?>
         </div>
-    <?php endif; ?>
+        <?php endif; ?>
 
-    <div class="grid-container">
-        <div class="grid-item">
-            <h2>Create SEL Theme</h2>
-            <?php include 'create_theme_form.php'; ?>
-        </div>
+        <div class="grid-container">
+            <div class="grid-item">
+                <h2>Create SEL Theme</h2>
+                <?php include 'create_theme_form.php'; ?>
+            </div>
 
-        <div class="grid-item">
-            <h2>Start New Term</h2>
-            <?php include 'start_new_term_form.php'; ?>
-        </div>
+            <div class="grid-item">
+                <h2>Start New Term</h2>
+                <?php include 'start_new_term_form.php'; ?>
+            </div>
 
-        <div class="grid-item">
-            <h2>Assign SEL Themes to School</h2>
-            <?php include 'assign_themes_form.php'; ?>
-        </div>
+            <div class="grid-item">
+                <h2>Assign SEL Themes to School</h2>
+                <?php include 'assign_themes_form.php'; ?>
+            </div>
 
-        <div class="grid-item full-width">
-            <h2>Assigned SEL Themes</h2>
-            <?php include 'assigned_themes_table.php'; ?>
+            <div class="grid-item full-width">
+                <h2>Assigned SEL Themes</h2>
+                <?php include 'assigned_themes_table.php'; ?>
+            </div>
         </div>
     </div>
-</div>
 
-<?php include 'modal.php'; ?>
+    <?php include 'modal.php'; ?>
 
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-<script src="assets/js/adminDashboard.js"></script>
-<script src="assets/js/scripts.j"></script>
-<script>
-toastr.options = {
-  "closeButton": true,
-  "debug": false,
-  "newestOnTop": false,
-  "progressBar": true,
-  "positionClass": "toast-top-right",
-  "preventDuplicates": false,
-  "onclick": null,
-  "showDuration": "300",
-  "hideDuration": "1000",
-  "timeOut": "5000",
-  "extendedTimeOut": "1000",
-  "showEasing": "swing",
-  "hideEasing": "linear",
-  "showMethod": "fadeIn",
-  "hideMethod": "fadeOut"
-};
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="assets/js/adminDashboard.js"></script>
+    <script src="assets/js/scripts.j"></script>
+    <script>
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
 
-function showThemes(themes) {
-  document.getElementById('modalBody').textContent = themes;
-  $('#themesModal').modal('show');
-}
+    function showThemes(themes) {
+        document.getElementById('modalBody').textContent = themes;
+        $('#themesModal').modal('show');
+    }
 
-// Prevent form resubmission on page reload
-if (window.history.replaceState) {
-  window.history.replaceState(null, null, window.location.href);
-}
+    // Prevent form resubmission on page reload
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
 
-// Prevent form resubmission on page reload
-if (window.history.replaceState) {
-    window.history.replaceState(null, null, window.location.href);
-}
+    // Prevent form resubmission on page reload
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
 
-// Display toasts
-<?php
+    // Display toasts
+    <?php
 if (isset($_SESSION['toast_message']) && isset($_SESSION['toast_type'])) {
   echo "toastr." . $_SESSION['toast_type'] . "('" . $_SESSION['toast_message'] . "');";
   unset($_SESSION['toast_message']);
   unset($_SESSION['toast_type']);
 }
 
-
-
 ?>
-</script>
-
+    </script>
 
 </body>
+
 </html>

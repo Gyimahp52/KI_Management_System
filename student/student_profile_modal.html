@@ -1,0 +1,144 @@
+<!-- Modal for Student Profile Form -->
+<div id="profile-form-modal" class="st-modal hidden">
+  <div class="st-modal-content slide-in-left">
+    <h2>Student Profile</h2>
+    <form id="profile-form" enctype="multipart/form-data">
+      <!-- Profile Picture -->
+      <div class="form-group">
+        <label for="profile-pic">Passport Picture</label>
+        <img
+          id="current-profile-pic"
+          src=""
+          alt="Current passport picture"
+          class="profile-preview"
+        />
+        <input type="file" name="passport_picture" id="profile-pic" />
+      </div>
+
+      <!-- Student Information Section -->
+      <h3>Student Information</h3>
+
+      <!-- Name (non-editable) -->
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" />
+      </div>
+
+      <!-- Date of Birth -->
+      <div class="form-group">
+        <label for="dob">Date of Birth</label>
+        <input type="date" name="dob" id="dob" />
+      </div>
+
+      <!-- Gender -->
+      <div class="form-group">
+        <label for="gender">Gender</label>
+        <select name="gender" id="gender">
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <!-- Physical Attributes Section -->
+      <h3>Physical Attributes</h3>
+
+      <!-- Hand Dominance -->
+      <div class="form-group">
+        <label for="hand">Hand Dominance</label>
+        <select name="hand" id="hand">
+          <option value="Right">Right</option>
+          <option value="Left">Left</option>
+          <option value="Ambidextrous">Ambidextrous</option>
+        </select>
+      </div>
+
+      <!-- Foot Dominance -->
+      <div class="form-group">
+        <label for="foot">Foot Dominance</label>
+        <select name="foot" id="foot">
+          <option value="Right">Right</option>
+          <option value="Left">Left</option>
+        </select>
+      </div>
+
+      <!-- Eye Sight -->
+      <div class="form-group">
+        <label for="eye-sight">Eye Sight</label>
+        <input type="text" name="eye_sight" id="eye-sight" />
+      </div>
+
+      <!-- Medical Condition -->
+      <div class="form-group">
+        <label for="medical-condition">Medical Condition</label>
+        <textarea
+          name="medical_condition"
+          id="medical-condition"
+          rows="3"
+        ></textarea>
+      </div>
+
+      <!-- Height & Weight -->
+      <div class="form-group row">
+        <div class="col">
+          <label for="height">Height (cm)</label>
+          <input type="number" name="height" id="height" />
+        </div>
+        <div class="col">
+          <label for="weight">Weight (kg)</label>
+          <input type="number" name="weight" id="weight" />
+        </div>
+      </div>
+
+      <!-- Parent/Guardian Information Section -->
+      <h3>Parent/Guardian Information</h3>
+
+      <!-- Parent Name -->
+      <div class="form-group">
+        <label for="parent-name">Parent/Guardian Name</label>
+        <input type="text" name="parent_name" id="parent-name" />
+      </div>
+
+      <!-- Parent Phone -->
+      <div class="form-group">
+        <label for="parent-phone">Parent/Guardian Phone</label>
+        <input type="text" name="parent_phone" id="parent-phone" />
+      </div>
+
+      <!-- Parent WhatsApp -->
+      <div class="form-group">
+        <label for="parent-whatsapp">Parent/Guardian WhatsApp</label>
+        <input type="text" name="parent_whatsapp" id="parent-whatsapp" />
+      </div>
+
+      <!-- Parent Email -->
+      <div class="form-group">
+        <label for="parent-email">Parent/Guardian Email</label>
+        <input type="email" name="parent_email" id="parent-email" />
+      </div>
+
+      <!-- Password Fields -->
+      <h3>Change Password</h3>
+      <div class="form-group">
+        <label for="old-password">Old Password</label>
+        <input type="password" name="old_password" id="old-password" />
+      </div>
+      <div class="form-group">
+        <label for="new-password">New Password</label>
+        <input type="password" name="new_password" id="new-password" />
+      </div>
+      <div class="form-group">
+        <label for="confirm-password">Confirm Password</label>
+        <input type="password" name="confirm_password" id="confirm-password" />
+      </div>
+
+      <!-- Submit and Cancel Buttons -->
+      <div class="form-actions">
+        <button type="button" id="cancel-profile" class="btn cancel">
+          Cancel
+        </button>
+        <button type="submit" class="btn submit">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>

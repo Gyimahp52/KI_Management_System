@@ -113,7 +113,7 @@ class StudentScoreService {
                         }
                     } elseif (is_numeric($score)) {
                         $score = (int)$score;
-                        if ($score >= 2 && $score <= 9) {
+                        if ($score >= 1 && $score <= 10) {
                             if ($existing_score) {
                                 if ($existing_score['score'] != $score) {
                                     $update_stmt->execute([$score, $date_assessed, $existing_score['id']]);
@@ -122,7 +122,7 @@ class StudentScoreService {
                                 $insert_stmt->execute([$student_id, $theme_id, $score, $date_assessed, $current_term_id]);
                             }
                         } else {
-                            $feedback[] = "Invalid score for Student ID: $student_id, Theme ID: $theme_id. Score must be between 2 and 9.";
+                            $feedback[] = "Invalid score for Student ID: $student_id, Theme ID: $theme_id. Score must be between 1 and 10.";
                         }
                     } else {
                         $feedback[] = "Invalid input for Student ID: $student_id, Theme ID: $theme_id. Please enter a number or leave blank.";

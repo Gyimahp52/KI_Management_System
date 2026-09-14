@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     case 'updateStudent':
         try {
 
-            // Set medical_condition to empty string if not provided
+            // Set medical_condition to empty string: not provided
             $medical_condition = isset($_POST['medical_condition']) ? $_POST['medical_condition'] : ''; 
 
             $result = updateStudent(
